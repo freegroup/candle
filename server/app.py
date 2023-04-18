@@ -1,13 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, Blueprint
 from utils.database import create_tables, SessionLocal
 from models.user import AppUser
 from models.route import Route
 from models.coordinate import Coordinate
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
+
+api = Blueprint("api", __name__, url_prefix="/api")
+ui = Blueprint("ui", __name__, url_prefix="/ui")
+
 create_tables()
 
-@app.route('/users')
+@api.route('/users')
 def get_users():
     # Erstellen Sie eine neue Sitzung
     session = SessionLocal()
@@ -22,7 +26,7 @@ def get_users():
     return {'users': [user.to_dict() for user in users]}
 
 
-@app.route('/createTestUser')
+@api.route('/createTestUser')
 def create_test_user():
     email = "testuser@example.com"
     db = SessionLocal()
@@ -44,7 +48,7 @@ def create_test_user():
     return jsonify(user.serialize())
 
 
-@app.route('/startRecording', methods=['POST'])
+@api.route('/startRecording', methods=['POST'])
 def start_recording():
     # Lese die Benutzer-ID aus dem JSON-Payload
     user_id = request.json.get('user_id')
@@ -70,7 +74,7 @@ def start_recording():
 
     return jsonify({'message': 'Aufzeichnung gestartet.', 'route_id': route.id})
 
-@app.route('/record', methods=['POST'])
+@api.route('/record', methods=['POST'])
 def record():
     data = request.json
     route_id = data.get('route')
@@ -86,6 +90,34 @@ def record():
     db.commit()
 
     return jsonify(coordinate.serialize()), 201
+
+@api.route('/route/<route_id>')
+def get_route(route_id):
+    # Create a new session
+    session = SessionLocal()
+
+    # Query the database to get the route
+    route = session.query(Route).filter_by(id=route_id).first()
+    if not route:
+        session.close()
+        return jsonify({'error': 'Route not found.'}), 404
+
+    # Query the database to get the coordinates for the route
+    coordinates = session.query(Coordinate).filter_by(route_id=route_id).all()
+
+    # Close the session
+    session.close()
+
+    # Return the route and its coordinates in GeoJSON format
+    return jsonify(route.serialize_geojson())
+
+@ui.route('/map')
+def map():
+    return send_from_directory(app.static_folder, 'html/map.html')
+
+
+app.register_blueprint(api)
+app.register_blueprint(ui)
 
 if __name__ == "__main__":
     app.run(debug=True)

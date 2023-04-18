@@ -20,4 +20,8 @@ curl --request POST \
       "route": "f24bf17b-73f1-40e5-9ef2-5947455e3869"
   }'
 
+
+curl http://localhost:5000/route/f24bf17b-73f1-40e5-9ef2-5947455e3869
+
+
 ```
