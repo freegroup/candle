@@ -14,7 +14,7 @@ class AppUser(Base):
     email = Column(String, nullable=False, unique=True)
     created_date = Column(DateTime, nullable=False, default=datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
-    stride_length = Column(Float, nullable=False)
+    stride_length = Column(Float, nullable=True)
 
     __table_args__ = (
         UniqueConstraint('email', name='uix_email'),

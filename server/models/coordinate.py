@@ -11,3 +11,11 @@ class Coordinate(Base):
     route_id = Column(UUID(as_uuid=True), ForeignKey('routes.id'), nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': str(self.id),
+            'route_id': str(self.route_id),
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+        }

@@ -70,5 +70,22 @@ def start_recording():
 
     return jsonify({'message': 'Aufzeichnung gestartet.', 'route_id': route.id})
 
+@app.route('/record', methods=['POST'])
+def record():
+    data = request.json
+    route_id = data.get('route')
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+
+    if not all([route_id, latitude, longitude]):
+        return jsonify({'message': 'Invalid request data.'}), 400
+
+    db = SessionLocal()
+    coordinate = Coordinate(route_id=route_id, latitude=latitude, longitude=longitude)
+    db.add(coordinate)
+    db.commit()
+
+    return jsonify(coordinate.serialize()), 201
+
 if __name__ == "__main__":
     app.run(debug=True)
