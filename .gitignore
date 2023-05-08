@@ -1,3 +1,2 @@
-.env
-**/venv
-
+.history
+.parcel-cache
