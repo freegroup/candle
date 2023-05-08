@@ -1,0 +1,17 @@
+{
+  "name": "route-creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "leaflet": "^1.9.3",
+    "leaflet-geometryutil": "^0.10.2",
+    "parcel": "^2.8.3"
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>BLE Web App</title>
+  </head>
+  <body>
+    <h1>BLE Web App</h1>
+    <button id="connect">Connect</button>
+    <button id="disconnect" disabled>Disconnect</button>
+    <br>
+    <input id="command" type="text" placeholder="Enter command">
+    <button id="send" disabled>Send Command</button>
+
+    <script>
+      const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+      const characteristicUuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+      let device, server, service, characteristic;
+
+      document.getElementById('connect').addEventListener('click', async () => {
+        try {
+          console.log('Requesting Bluetooth Device...');
+          device = await navigator.bluetooth.requestDevice({
+      acceptAllDevices: true,
+      optionalServices: [serviceUuid]
+    });
+          console.log('Connecting to GATT Server...');
+          server = await device.gatt.connect();
+
+          console.log('Getting Service...');
+          service = await server.getPrimaryService(serviceUuid);
+
+          console.log('Getting Characteristic...');
+          characteristic = await service.getCharacteristic(characteristicUuid);
+
+          document.getElementById('connect').disabled = true;
+          document.getElementById('disconnect').disabled = false;
+          document.getElementById('send').disabled = false;
+
+          device.addEventListener('gattserverdisconnected', onDisconnected);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+
+      document.getElementById('disconnect').addEventListener('click', () => {
+        device.gatt.disconnect();
+      });
+
+      document.getElementById('send').addEventListener('click', async () => {
+        const command = document.getElementById('command').value;
+        const commandBuffer = new TextEncoder().encode(command);
+        await characteristic.writeValue(commandBuffer);
+      });
+
+      function onDisconnected() {
+        document.getElementById('connect').disabled = false;
+        document.getElementById('disconnect').disabled = true;
+        document.getElementById('send').disabled = true;
+      }
+    </script>
+  </body>
+</html>
