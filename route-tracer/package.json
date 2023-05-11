@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --dist-dir ../docs/route-tracer"
+    "build": "parcel build src/index.html --dist-dir ../docs/route-tracer --public-url ./"
   },
   "keywords": [],
   "author": "",
