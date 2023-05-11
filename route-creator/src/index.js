@@ -21,7 +21,6 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
-
 // Fix the default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -80,9 +79,11 @@ const createMarker = (latlng, index) => {
   marker.on('click', (event) => {
     console.log('Marker clicked!', event.target, shiftKeyDown);
     if(shiftKeyDown){
-        routePoints.splice(index, 1);
-        updateRoute();
-        updateMarkers();
+        if(routePoints.length > 2){
+            routePoints.splice(index, 1);
+            updateRoute();
+            updateMarkers();
+        }
     }
   });
 
@@ -124,3 +125,38 @@ map.on('click', (event) => {
   updateMarkers();
   console.log(JSON.stringify(routePoints));
 });
+
+// add a button to the leaflet map which copies the routePoints to the clipboard
+// The button shold be on the bottom left corner of the map. Avoid, that the defalt
+// eventhandler for the map.click is called when the button is clicked.
+const copyButton = L.control({ position: 'topright' });
+copyButton.onAdd = () => {
+  const button = L.DomUtil.create('button');
+  button.innerHTML = 'Copy Route';
+  button.onclick = (event) => {
+    // avoid default eventhandler for map.click
+    event.stopPropagation();
+    const preciseRoutePoints = routePoints.map(point => truncateGPSCoordinatesToPrecision(point, 1));
+    // copy the json array as formated json, with indent=2 into the clipboard
+    navigator.clipboard.writeText(JSON.stringify(preciseRoutePoints, null, 2));
+  };
+  return button;
+}
+
+copyButton.addTo(map);
+
+function getDecimalPlacesForPrecision(precisionInMeters) {
+  const metersPerDegree = 111111;
+  const degrees = precisionInMeters / metersPerDegree;
+  const decimalPlaces = Math.ceil(-Math.log10(degrees));
+  return decimalPlaces;
+}
+
+function truncateGPSCoordinatesToPrecision(gpsCoordinate, precisionInMeters) {
+  const decimalPlaces = getDecimalPlacesForPrecision(precisionInMeters);
+  
+  const lat = parseFloat(gpsCoordinate[0].toFixed(decimalPlaces));
+  const lng = parseFloat(gpsCoordinate[1].toFixed(decimalPlaces));
+
+  return [lat, lng];
+}
