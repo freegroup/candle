@@ -47,6 +47,35 @@ const DistanceControl = L.Control.extend({
 });
 const distanceControl = new DistanceControl().addTo(map);
 
+function addRouteMarkers(coordinatesArray) {
+  coordinatesArray.forEach((coord) => {
+    L.circleMarker(coord, {
+      color: 'green',
+      fillColor: 'green',
+      fillOpacity: 1,
+      radius: 5,
+    }).addTo(map);
+  });
+}
+
+
+let nextLocationMarker;
+
+function updateNextLocationMarker(coord) {
+  if (nextLocationMarker) {
+    map.removeLayer(nextLocationMarker);
+  }
+
+  nextLocationMarker = L.circleMarker(coord, {
+    color: 'red',
+    fillColor: 'red',
+    fillOpacity: 1,
+    radius: 5,
+  }).addTo(map);
+}
+
+
+
 // Function to update the user's position
 function updatePosition(position) {
   const lat = position.coords.latitude;
@@ -70,6 +99,7 @@ function updatePosition(position) {
 
   if (nextCoordinateIndex >= 0) {
     gpsCoordinatesArray.shift();
+    updateNextLocationMarker(gpsCoordinatesArray[0]);
   }
   // Calculate the distance
   const nearestCoord = gpsCoordinatesArray[0];
@@ -80,6 +110,8 @@ function updatePosition(position) {
   const distanceControlElement = document.getElementById('distance-control');
   distanceControlElement.innerHTML = `Distance: ${(distance / 1000).toFixed(1)} km`;
 }
+
+addRouteMarkers(gpsCoordinatesArray);
 
 // Function to handle geolocation errors
 function geolocationError(error) {
