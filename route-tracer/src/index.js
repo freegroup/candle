@@ -14,7 +14,7 @@ Icon.Default.mergeOptions({
 const gpsCoordinatesArray = require('./route.json');
 
 // Set distanceToDetectHit
-const distanceToDetectHit = 50; // Meters
+const distanceToDetectHit = 3; // Meters
 
 // Initialize the map
 const map = L.map('map').setView([51.505, -0.09], 13);
