@@ -1,5 +1,14 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Icon } from 'leaflet';
+
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
 
 // Initialize GPS coordinates array
 const gpsCoordinatesArray = require('./route.json');
@@ -19,7 +28,24 @@ const route = L.polyline(gpsCoordinatesArray, { color: 'blue' }).addTo(map);
 map.fitBounds(route.getBounds());
 
 // Initialize the user's marker
-const userMarker = L.marker(gpsCoordinatesArray[0]).addTo(map);
+const userMarker = L.marker(gpsCoordinatesArray[0], { icon: new Icon.Default() }).addTo(map);
+
+const DistanceControl = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+
+  onAdd: function () {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+    container.style.backgroundColor = 'white';
+    container.style.padding = '5px';
+    container.style.fontSize = '14px';
+    container.innerHTML = 'Distance: - m';
+    container.id = 'distance-control';
+    return container;
+  },
+});
+const distanceControl = new DistanceControl().addTo(map);
 
 // Function to update the user's position
 function updatePosition(position) {
@@ -45,6 +71,14 @@ function updatePosition(position) {
   if (nextCoordinateIndex >= 0) {
     gpsCoordinatesArray.shift();
   }
+  // Calculate the distance
+  const nearestCoord = gpsCoordinatesArray[0];
+  const nearestCoordLatLng = L.latLng(nearestCoord);
+  const distance = currentLatLng.distanceTo(nearestCoordLatLng);
+
+  // Update the distance control
+  const distanceControlElement = document.getElementById('distance-control');
+  distanceControlElement.innerHTML = `Distance: ${(distance / 1000).toFixed(1)} km`;
 }
 
 // Function to handle geolocation errors
