@@ -11,7 +11,7 @@ import { Device } from './Device.js';
 extendLatLng(L);
 
 // Set distanceToDetectHit
-const distanceToDetectHit = 3; // Meters
+const distanceToDetectHit = 5; // Meters
 const distanceToInsert = 5; // Meter
 const minSegmentLength = 10; // Meter
 
