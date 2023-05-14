@@ -2,6 +2,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import { extendLatLng } from './leafletExtensions';
+import { DistanceControl } from './DistanceControl';
+import { StartControl } from './StartControl';
 
 // Erweitert die L.LatLng-Klasse mit den zusätzlichen Funktionen
 extendLatLng(L);
@@ -126,22 +128,10 @@ map.fitBounds(route.getBounds());
 // Initialize the user's marker
 const userMarker = L.marker(gpsCoordinatesArray[0], { icon: new Icon.Default() }).addTo(map);
 
-const DistanceControl = L.Control.extend({
-  options: {
-    position: 'topright',
-  },
-
-  onAdd: function () {
-    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-    container.style.backgroundColor = 'white';
-    container.style.padding = '5px';
-    container.style.fontSize = '14px';
-    container.innerHTML = 'Distance: - m';
-    container.id = 'distance-control';
-    return container;
-  },
-});
-const distanceControl = new DistanceControl().addTo(map);
+const distanceControl = new DistanceControl();
+distanceControl.addTo(map);
+const startControl = new StartControl();
+startControl.addTo(map);
 
 function addRouteMarkers(coordinatesArray) {
   coordinatesArray.forEach((coord, index) => {
@@ -212,6 +202,11 @@ function updatePosition(position) {
   );
 
   if (nextCoordinateIndex >= 0) {
+    // Lassen Sie das Handy für 200 Millisekunden vibrieren, wenn ein neuer Punkt ausgewählt wird
+    if (typeof navigator.vibrate === "function") {
+      navigator.vibrate(200);
+    }
+
     currentCoordinateIndex = nextCoordinateIndex;
     if (currentCoordinateIndex < gpsCoordinatesArray.length - 1) {
       updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
@@ -235,6 +230,37 @@ function updatePosition(position) {
 
 addRouteMarkers(gpsCoordinatesArray);
 updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+
+let watchId = null;
+function handleStartButtonClick() {
+  (async () => {
+    if (watchId) {
+      // Stoppe die aktuelle GPS-Überwachung oder Debug-Simulation
+      navigator.geolocation.clearWatch(watchId);
+      clearTimeout(watchId);
+      watchId = null;
+      document.getElementById("start-button").innerText = "Start";
+    } else {
+      const isGpsAllowed = await requestGeolocationPermission();
+      if (isGpsAllowed) {
+        currentCoordinateIndex = 0;
+        updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+        watchId = navigator.geolocation.watchPosition(updatePosition, geolocationError, {
+          enableHighAccuracy: true,
+          maximumAge: 10000,
+          timeout: 10000,
+        });
+      } else {
+        currentCoordinateIndex = 0;
+        updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+        watchId = debugWatchPosition(updatePosition, geolocationError);
+      }
+      document.getElementById("start-button").innerText = "Stop";
+    }
+  })();
+}
+
+document.getElementById('start-button').addEventListener('click', handleStartButtonClick);
 
 // Function to handle geolocation errors
 function geolocationError(error) {
@@ -275,20 +301,34 @@ function debugWatchPosition(callback, errorCallback, options) {
     };
 
     callback(position);
-    setTimeout(updateDebugPosition, simulationInterval);
+    watchId = setTimeout(updateDebugPosition, simulationInterval);
   }
 
   updateDebugPosition();
+  return watchId;
 }
 
-
-
-//debugWatchPosition(updatePosition, geolocationError);
-// Update the user's position every 10 seconds
-
-navigator.geolocation.watchPosition(updatePosition, geolocationError, {
-  enableHighAccuracy: true,
-  maximumAge: 10000,
-  timeout: 10000,
-});
-
+async function requestGeolocationPermission() {
+  if ('geolocation' in navigator) {
+    try {
+      const permissionStatus = await navigator.permissions.query({name: 'geolocation'});
+      if (permissionStatus.state === 'prompt') {
+        return new Promise((resolve) => {
+          navigator.geolocation.getCurrentPosition(() => {
+            resolve(true);
+          }, () => {
+            resolve(false);
+          });
+        });
+      } else {
+        return permissionStatus.state === 'granted';
+      }
+    } catch (error) {
+      console.error("Fehler bei der Abfrage der Berechtigungen:", error);
+      return false;
+    }
+  } else {
+    console.log("Keine GPS-Unterstützung");
+    return false;
+  }
+}
