@@ -4,9 +4,17 @@ import { Icon } from 'leaflet';
 import { extendLatLng } from './leafletExtensions';
 import { DistanceControl } from './DistanceControl';
 import { StartControl } from './StartControl';
+import { angleBetweenPoints, isSpecialCoordinate } from './utils.js';
+import { Device } from './Device.js';
 
 // Erweitert die L.LatLng-Klasse mit den zusätzlichen Funktionen
 extendLatLng(L);
+
+// Set distanceToDetectHit
+const distanceToDetectHit = 3; // Meters
+const distanceToInsert = 5; // Meter
+const minSegmentLength = 10; // Meter
+
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -23,42 +31,6 @@ gpsCoordinatesArray = gpsCoordinatesArray.map(coord => ({
   lng: coord[1],
 }));
 
-
-// Set distanceToDetectHit
-const distanceToDetectHit = 3; // Meters
-const walkingSpeed = 8; // m/s
-const simulationInterval = 100; // ms
-const distanceToInsert = 5; // Meter
-const minSegmentLength = 10; // Meter
-
-function angleBetweenPoints(p1, p2, p3) {
-  const v1 = {
-    lat: p1.lat - p2.lat,
-    lng: p1.lng - p2.lng,
-  };
-  
-  const v2 = {
-    lat: p3.lat - p2.lat,
-    lng: p3.lng - p2.lng,
-  };
-  
-  const dotProduct = v1.lat * v2.lat + v1.lng * v2.lng;
-  const v1Magnitude = Math.sqrt(v1.lat * v1.lat + v1.lng * v1.lng);
-  const v2Magnitude = Math.sqrt(v2.lat * v2.lat + v2.lng * v2.lng);
-  
-  const cosAngle = dotProduct / (v1Magnitude * v2Magnitude);
-  const angle = Math.acos(cosAngle) * (180 / Math.PI);
-
-  return angle;
-}
-
-function isSpecialCoordinate(prevCoordLatLng, currentCoordLatLng, nextCoordLatLng){
-  if (!prevCoordLatLng || !currentCoordLatLng || !nextCoordLatLng) {
-    return false;
-  }
-  const angle = angleBetweenPoints(prevCoordLatLng, currentCoordLatLng, nextCoordLatLng);
-  return (angle >= 60 && angle <= 120)
-}
 
 function addExtraPoints(coords) {
   const modifiedCoords = [];
@@ -107,10 +79,6 @@ function addExtraPoints(coords) {
 
   return modifiedCoords;
 }
-
-
-
-console.log(JSON.stringify(gpsCoordinatesArray, undefined, 2))
 
 gpsCoordinatesArray = addExtraPoints(gpsCoordinatesArray);
 
@@ -202,10 +170,7 @@ function updatePosition(position) {
   );
 
   if (nextCoordinateIndex >= 0) {
-    // Lassen Sie das Handy für 200 Millisekunden vibrieren, wenn ein neuer Punkt ausgewählt wird
-    if (typeof navigator.vibrate === "function") {
-      navigator.vibrate(200);
-    }
+    Device.vibrate()
 
     currentCoordinateIndex = nextCoordinateIndex;
     if (currentCoordinateIndex < gpsCoordinatesArray.length - 1) {
@@ -221,39 +186,24 @@ function updatePosition(position) {
     const nearestCoordLatLng = L.latLng(nearestCoord);
     const distance = currentLatLng.distanceTo(nearestCoordLatLng);
 
+    // Calculate the angle
+    const angle = currentLatLng.bearingTo(nearestCoordLatLng);
+
     // Update the distance control
-    const distanceControlElement = document.getElementById('distance-control');
-    distanceControlElement.innerHTML = `Distance: ${(distance).toFixed(1)} m`;
+    distanceControl.setInfo(distance, currentCoordinateIndex, angle);
   }
 }
 
-addRouteMarkers(gpsCoordinatesArray);
-updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
 
-let watchId = null;
 function handleStartButtonClick() {
   (async () => {
-    if (watchId) {
-      // Stoppe die aktuelle GPS-Überwachung oder Debug-Simulation
-      navigator.geolocation.clearWatch(watchId);
-      clearTimeout(watchId);
-      watchId = null;
+    if (Device.watchId !== null) {
+      Device.stopGPSTracking();
       document.getElementById("start-button").innerText = "Start";
     } else {
-      const isGpsAllowed = await requestGeolocationPermission();
-      if (isGpsAllowed) {
-        currentCoordinateIndex = 0;
-        updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
-        watchId = navigator.geolocation.watchPosition(updatePosition, geolocationError, {
-          enableHighAccuracy: true,
-          maximumAge: 10000,
-          timeout: 10000,
-        });
-      } else {
-        currentCoordinateIndex = 0;
-        updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
-        watchId = debugWatchPosition(updatePosition, geolocationError);
-      }
+      currentCoordinateIndex = 0;
+      updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+      await Device.startGPSTracking(updatePosition, geolocationError, gpsCoordinatesArray);
       document.getElementById("start-button").innerText = "Stop";
     }
   })();
@@ -307,57 +257,23 @@ function debugWatchPosition(callback, errorCallback, options) {
   return watchId;
 }
 
-async function requestGeolocationPermission() {
-  if ('geolocation' in navigator) {
-    try {
-      const permissionStatus = await navigator.permissions.query({name: 'geolocation'});
-      if (permissionStatus.state === 'prompt') {
-        return new Promise((resolve) => {
-          navigator.geolocation.getCurrentPosition(() => {
-            resolve(true);
-          }, () => {
-            resolve(false);
-          });
-        });
-      } else {
-        return permissionStatus.state === 'granted';
-      }
-    } catch (error) {
-      console.error("Fehler bei der Abfrage der Berechtigungen:", error);
-      return false;
-    }
-  } else {
-    console.log("Keine GPS-Unterstützung");
-    return false;
+
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible') {
+    (async () => {
+      addRouteMarkers(gpsCoordinatesArray);
+      updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+
+      await Device.requestGeolocationPermission();
+      await Device.requestWakeLock();
+    })();
   }
 }
 
-
-
-
-
-let wakeLock = null;
-async function requestWakeLock() {
-  try {
-    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
-      wakeLock = await navigator.wakeLock.request('screen');
-      console.log('Wake Lock aktiviert.');
-
-      wakeLock.addEventListener('release', () => {
-        console.log('Wake Lock wurde freigegeben.');
-      });
-
-      document.addEventListener('visibilitychange', async () => {
-        if (wakeLock !== null && document.visibilityState === 'visible') {
-          wakeLock = await navigator.wakeLock.request('screen');
-          console.log('Wake Lock erneut aktiviert.');
-        }
-      });
-    } else {
-      console.log('Wake Lock API wird vom Browser nicht unterstützt.');
-    }
-  } catch (err) {
-    console.error(`Wake Lock konnte nicht aktiviert werden: ${err.name}, ${err.message}`);
-  }
+// Event Listener für 'visibilitychange'
+document.addEventListener('visibilitychange', handleVisibilityChange);
+// Führen Sie die Funktion aus, wenn die Seite bereits sichtbar ist
+if (document.visibilityState === 'visible') {
+  handleVisibilityChange();
 }
-requestWakeLock();
