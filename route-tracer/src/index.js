@@ -200,6 +200,8 @@ function handleStartButtonClick() {
     if (Device.watchId !== null) {
       Device.stopGPSTracking();
       document.getElementById("start-button").innerText = "Start";
+      currentCoordinateIndex = 0;
+      updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
     } else {
       currentCoordinateIndex = 0;
       updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
@@ -208,6 +210,7 @@ function handleStartButtonClick() {
     }
   })();
 }
+
 
 document.getElementById('start-button').addEventListener('click', handleStartButtonClick);
 
