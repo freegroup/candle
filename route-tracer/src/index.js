@@ -130,6 +130,7 @@ function addRouteMarkers(coordinatesArray) {
 
 let nextLocationMarker;
 function updateNextLocationMarker(coord) {
+  //console.log("update next locatiom:", coord, !!nextLocationMarker)
   if (!nextLocationMarker) {
     nextLocationMarker = L.circleMarker(coord, {
       color: 'red',
