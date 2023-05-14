@@ -1,6 +1,10 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
+import { extendLatLng } from './leafletExtensions';
+
+// Erweitert die L.LatLng-Klasse mit den zusätzlichen Funktionen
+extendLatLng(L);
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -11,10 +15,102 @@ Icon.Default.mergeOptions({
 
 
 // Initialize GPS coordinates array
-const gpsCoordinatesArray = require('./route.json');
+let gpsCoordinatesArray = require('./route.json');
+gpsCoordinatesArray = gpsCoordinatesArray.map(coord => ({
+  lat: coord[0],
+  lng: coord[1],
+}));
+
 
 // Set distanceToDetectHit
 const distanceToDetectHit = 3; // Meters
+const walkingSpeed = 8; // m/s
+const simulationInterval = 100; // ms
+const distanceToInsert = 5; // Meter
+const minSegmentLength = 10; // Meter
+
+function angleBetweenPoints(p1, p2, p3) {
+  const v1 = {
+    lat: p1.lat - p2.lat,
+    lng: p1.lng - p2.lng,
+  };
+  
+  const v2 = {
+    lat: p3.lat - p2.lat,
+    lng: p3.lng - p2.lng,
+  };
+  
+  const dotProduct = v1.lat * v2.lat + v1.lng * v2.lng;
+  const v1Magnitude = Math.sqrt(v1.lat * v1.lat + v1.lng * v1.lng);
+  const v2Magnitude = Math.sqrt(v2.lat * v2.lat + v2.lng * v2.lng);
+  
+  const cosAngle = dotProduct / (v1Magnitude * v2Magnitude);
+  const angle = Math.acos(cosAngle) * (180 / Math.PI);
+
+  return angle;
+}
+
+function isSpecialCoordinate(prevCoordLatLng, currentCoordLatLng, nextCoordLatLng){
+  if (!prevCoordLatLng || !currentCoordLatLng || !nextCoordLatLng) {
+    return false;
+  }
+  const angle = angleBetweenPoints(prevCoordLatLng, currentCoordLatLng, nextCoordLatLng);
+  return (angle >= 60 && angle <= 120)
+}
+
+function addExtraPoints(coords) {
+  const modifiedCoords = [];
+
+  for (let i = 0; i < coords.length; i++) {
+    let prevCoord = i > 0 ? new L.LatLng(coords[i - 1].lat, coords[i - 1].lng) : null;
+    let currentCoord = new L.LatLng(coords[i].lat, coords[i].lng);
+    let nextCoord = i < coords.length - 1 ? new L.LatLng(coords[i + 1].lat, coords[i + 1].lng) : null;
+
+    // Füge den eingefügten Vorgänger hinzu
+    if (prevCoord && isSpecialCoordinate(prevCoord, currentCoord, nextCoord)) {
+      const prevSegmentLength = currentCoord.distanceTo(prevCoord);
+      if (prevSegmentLength > minSegmentLength) {
+        const extraPrevCoord = currentCoord.destinationPoint(distanceToInsert, currentCoord.bearingTo(prevCoord));
+        modifiedCoords.push({
+          lat: extraPrevCoord.lat,
+          lng: extraPrevCoord.lng,
+          color: 'blue',
+          synthetic: true,
+        });
+      }
+    }
+
+    // Füge die aktuelle Koordinate hinzu
+    modifiedCoords.push({
+      lat: currentCoord.lat,
+      lng: currentCoord.lng,
+      color: isSpecialCoordinate(prevCoord, currentCoord, nextCoord) ? 'yellow' : 'green',
+      synthetic: false,
+    });
+
+    // Füge den eingefügten Nachfolger hinzu
+    if (nextCoord && isSpecialCoordinate(prevCoord, currentCoord, nextCoord)) {
+      const nextSegmentLength = currentCoord.distanceTo(nextCoord);
+      if (nextSegmentLength > minSegmentLength) {
+        const extraNextCoord = currentCoord.destinationPoint(distanceToInsert, currentCoord.bearingTo(nextCoord));
+        modifiedCoords.push({
+          lat: extraNextCoord.lat,
+          lng: extraNextCoord.lng,
+          color: 'blue',
+          synthetic: true,
+        });
+      }
+    }
+  }
+
+  return modifiedCoords;
+}
+
+
+
+console.log(JSON.stringify(gpsCoordinatesArray, undefined, 2))
+
+gpsCoordinatesArray = addExtraPoints(gpsCoordinatesArray);
 
 // Initialize the map
 const map = L.map('map').setView([51.505, -0.09], 13);
@@ -48,10 +144,25 @@ const DistanceControl = L.Control.extend({
 const distanceControl = new DistanceControl().addTo(map);
 
 function addRouteMarkers(coordinatesArray) {
-  coordinatesArray.forEach((coord) => {
+  coordinatesArray.forEach((coord, index) => {
+    let color = 'green';
+
+    if (index > 0 && index < coordinatesArray.length - 1) {
+      const prevCoord = coordinatesArray[index - 1];
+      const nextCoord = coordinatesArray[index + 1];
+
+      const currentCoordLatLng = L.latLng(coord);
+      const prevCoordLatLng = L.latLng(prevCoord);
+      const nextCoordLatLng = L.latLng(nextCoord);
+
+      if(isSpecialCoordinate(prevCoordLatLng, currentCoordLatLng, nextCoordLatLng)){
+        color = 'yellow';
+      }
+    }
+
     L.circleMarker(coord, {
-      color: 'green',
-      fillColor: 'green',
+      color: color,
+      fillColor: color,
       fillOpacity: 1,
       radius: 5,
     }).addTo(map);
@@ -60,23 +171,24 @@ function addRouteMarkers(coordinatesArray) {
 
 
 let nextLocationMarker;
-
 function updateNextLocationMarker(coord) {
-  if (nextLocationMarker) {
+  if (!nextLocationMarker) {
+    nextLocationMarker = L.circleMarker(coord, {
+      color: 'red',
+      fillColor: 'red',
+      fillOpacity: 1,
+      radius: 5,
+    }).addTo(map);
+  } else if (coord) {
+    nextLocationMarker.setLatLng(coord);
+  } else {
     map.removeLayer(nextLocationMarker);
+    nextLocationMarker = null;
   }
-
-  nextLocationMarker = L.circleMarker(coord, {
-    color: 'red',
-    fillColor: 'red',
-    fillOpacity: 1,
-    radius: 5,
-  }).addTo(map);
 }
 
 
-
-// Function to update the user's position
+let currentCoordinateIndex = 0;
 function updatePosition(position) {
   const lat = position.coords.latitude;
   const lng = position.coords.longitude;
@@ -86,7 +198,9 @@ function updatePosition(position) {
 
   const nextCoordinateIndex = gpsCoordinatesArray.findIndex(
     (coord, index, array) => {
-      const prevCoord = index > 0 ? array[index - 1] : array[0];
+      if (index <= currentCoordinateIndex) return false;
+
+      const prevCoord = array[currentCoordinateIndex];
       const currentCoord = L.latLng(coord);
       const prevCoordLatLng = L.latLng(prevCoord);
 
@@ -98,29 +212,83 @@ function updatePosition(position) {
   );
 
   if (nextCoordinateIndex >= 0) {
-    gpsCoordinatesArray.shift();
-    updateNextLocationMarker(gpsCoordinatesArray[0]);
+    currentCoordinateIndex = nextCoordinateIndex;
+    if (currentCoordinateIndex < gpsCoordinatesArray.length - 1) {
+      updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
+    } else {
+      updateNextLocationMarker(null);
+    }
   }
-  // Calculate the distance
-  const nearestCoord = gpsCoordinatesArray[0];
-  const nearestCoordLatLng = L.latLng(nearestCoord);
-  const distance = currentLatLng.distanceTo(nearestCoordLatLng);
 
-  // Update the distance control
-  const distanceControlElement = document.getElementById('distance-control');
-  distanceControlElement.innerHTML = `Distance: ${(distance / 1000).toFixed(1)} km`;
+  // Calculate the distance
+  if (gpsCoordinatesArray[currentCoordinateIndex + 1]) {
+    const nearestCoord = gpsCoordinatesArray[currentCoordinateIndex + 1];
+    const nearestCoordLatLng = L.latLng(nearestCoord);
+    const distance = currentLatLng.distanceTo(nearestCoordLatLng);
+
+    // Update the distance control
+    const distanceControlElement = document.getElementById('distance-control');
+    distanceControlElement.innerHTML = `Distance: ${(distance).toFixed(1)} m`;
+  }
 }
 
+
 addRouteMarkers(gpsCoordinatesArray);
+updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
 
 // Function to handle geolocation errors
 function geolocationError(error) {
   console.error('Error occurred in geolocation:', error);
 }
 
+
+function debugWatchPosition(callback, errorCallback, options) {
+  let debugCurrentCoordinateIndex = 0;
+  let currentLatLng = L.latLng(gpsCoordinatesArray[0]);
+
+  function updateDebugPosition() {
+    if (debugCurrentCoordinateIndex >= gpsCoordinatesArray.length - 1) {
+      return;
+    }
+
+    const nextLatLng = L.latLng(gpsCoordinatesArray[debugCurrentCoordinateIndex + 1]);
+    const distance = currentLatLng.distanceTo(nextLatLng);
+    const bearing = currentLatLng.bearingTo(nextLatLng);
+
+    // Berechne die normalisierte walkingSpeed für das Simulationsintervall
+    const normalizedWalkingSpeed = walkingSpeed * (simulationInterval / 1000);
+
+    if (distance > normalizedWalkingSpeed) {
+      // Bewege dich mit der normalisierten Fußgängergeschwindigkeit entlang der Route
+      currentLatLng = currentLatLng.destinationPoint(normalizedWalkingSpeed, bearing);
+    } else {
+      // Bewege dich zur nächsten Koordinate auf der Route
+      debugCurrentCoordinateIndex++;
+      currentLatLng = nextLatLng;
+    }
+
+    const position = {
+      coords: {
+        latitude: currentLatLng.lat,
+        longitude: currentLatLng.lng,
+      },
+    };
+
+    callback(position);
+    setTimeout(updateDebugPosition, simulationInterval);
+  }
+
+  updateDebugPosition();
+}
+
+
+
+//debugWatchPosition(updatePosition, geolocationError);
 // Update the user's position every 10 seconds
+
 navigator.geolocation.watchPosition(updatePosition, geolocationError, {
   enableHighAccuracy: true,
   maximumAge: 10000,
   timeout: 10000,
 });
+
