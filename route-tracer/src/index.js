@@ -227,7 +227,6 @@ function updatePosition(position) {
   }
 }
 
-
 addRouteMarkers(gpsCoordinatesArray);
 updateNextLocationMarker(gpsCoordinatesArray[currentCoordinateIndex + 1]);
 
@@ -332,3 +331,33 @@ async function requestGeolocationPermission() {
     return false;
   }
 }
+
+
+
+
+
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator && 'request' in navigator.wakeLock) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      console.log('Wake Lock aktiviert.');
+
+      wakeLock.addEventListener('release', () => {
+        console.log('Wake Lock wurde freigegeben.');
+      });
+
+      document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log('Wake Lock erneut aktiviert.');
+        }
+      });
+    } else {
+      console.log('Wake Lock API wird vom Browser nicht unterstützt.');
+    }
+  } catch (err) {
+    console.error(`Wake Lock konnte nicht aktiviert werden: ${err.name}, ${err.message}`);
+  }
+}
+requestWakeLock();
