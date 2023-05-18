@@ -1,10 +1,17 @@
 const walkingSpeed = 8; // m/s
 const simulationInterval = 100; // ms
 
+
+// Function to handle geolocation errors
+function geolocationError(error) {
+    console.error('Error occurred in geolocation:', error);
+  }
+  
 export class Device {
     static wakeLock = null;
     static watchId = null;
-    static async startGPSTracking(updatePositionCallback, geolocationErrorCallback, gpsCoordinatesArray) {
+
+    static async startGPSTracking(updatePositionCallback, route) {
         if (this.watchId !== null) {
           throw new Error('GPSTracking is already running.');
         }
@@ -12,13 +19,13 @@ export class Device {
         const isGpsAllowed = await this.requestGeolocationPermission();
     
         if (isGpsAllowed) {
-          this.watchId = navigator.geolocation.watchPosition(updatePositionCallback, geolocationErrorCallback, {
+          this.watchId = navigator.geolocation.watchPosition(updatePositionCallback, geolocationError, {
             enableHighAccuracy: true,
             maximumAge: 10000,
             timeout: 10000,
           });
         } else {
-          this.watchId = this.debugWatchPosition(updatePositionCallback, geolocationErrorCallback, gpsCoordinatesArray);
+          this.watchId = this.debugWatchPosition(updatePositionCallback, route);
         }
     }
 
@@ -33,16 +40,16 @@ export class Device {
         this.watchId = null;
     }  
 
-    static debugWatchPosition(callback, errorCallback, gpsCoordinatesArray) {
-        let debugCurrentCoordinateIndex = 0;
-        let currentLatLng = L.latLng(gpsCoordinatesArray[0]);
-    
+    static debugWatchPosition(callback, route) {
+        let currentLatLng = L.latLng(route.getRandomPointNearRoute())
+        let debugCurrentCoordinateIndex = route.getClosestSegment(currentLatLng).end.index;
+
         const updateDebugPosition = () => {
-            if (debugCurrentCoordinateIndex >= gpsCoordinatesArray.length - 1) {
+            if (debugCurrentCoordinateIndex >= route.length - 1) {
                 return;
             }
     
-            const nextLatLng = L.latLng(gpsCoordinatesArray[debugCurrentCoordinateIndex + 1]);
+            const nextLatLng = L.latLng(route[debugCurrentCoordinateIndex + 1]);
             const distance = currentLatLng.distanceTo(nextLatLng);
             const bearing = currentLatLng.bearingTo(nextLatLng);
     
