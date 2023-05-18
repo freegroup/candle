@@ -1,3 +1,4 @@
+
 // Erweitert die L.LatLng-Klasse um zusätzliche Funktionen
 export const extendLatLng = function (L) {
 
@@ -9,6 +10,38 @@ export const extendLatLng = function (L) {
         };
     };
     
+
+    L.LatLng.prototype.distanceToSquared = function(otherLatLng) {
+        const dx = this.lat - otherLatLng.lat;
+        const dy = this.lng - otherLatLng.lng;
+        return dx * dx + dy * dy;
+    };
+      
+    L.LatLng.prototype.distanceToSegment = function(a, b) {
+        const p = this;
+        const l2 = a.distanceToSquared(b);
+      
+        if (l2 === 0) {
+          return p.distanceTo(a);
+        }
+      
+        const t = ((p.lat - a.lat) * (b.lat - a.lat) + (p.lng - a.lng) * (b.lng - a.lng)) / l2;
+      
+        if (t < 0) {
+          return p.distanceTo(a);
+        }
+        if (t > 1) {
+          return p.distanceTo(b);
+        }
+      
+        const projectedPoint = L.latLng(
+          a.lat + t * (b.lat - a.lat),
+          a.lng + t * (b.lng - a.lng)
+        );
+      
+        return p.distanceTo(projectedPoint);
+      };
+      
     L.LatLng.prototype.bearingTo = function (destination) {
         const rad1 = this.toRadians();
         const rad2 = destination.toRadians();
