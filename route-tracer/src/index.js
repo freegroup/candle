@@ -11,6 +11,7 @@ let route = new Route(gpsCoordinatesArray);
 Map.init();
 Map.setRoute(route);
 
+let lastVibratedIndex = -1;
 
 function onPositionUpdate(position) {
   const lat = position.coords.latitude;
@@ -22,11 +23,10 @@ function onPositionUpdate(position) {
   // Update current index based on current position
   let segment = route.getClosestSegment(currentLatLng);
   let currentCoordinateIndex = segment.start.index;
-  const nextCoordinateIndex = segment.start.index;
 
-  if (nextCoordinateIndex >= 0) {
-    Device.vibrate()
-    currentCoordinateIndex = nextCoordinateIndex;
+  if (currentCoordinateIndex > lastVibratedIndex) {
+    Device.vibrate();
+    lastVibratedIndex = currentCoordinateIndex;
     if (currentCoordinateIndex < route.length - 1) {
       Map.setNextMarker(route[currentCoordinateIndex + 1]);
     } else {
