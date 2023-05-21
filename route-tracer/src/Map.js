@@ -4,6 +4,7 @@ import { Icon } from 'leaflet';
 
 import { DistanceControl } from './DistanceControl';
 import { StartControl } from './StartControl';
+import { BLEConnectControl } from './BLEConnectControl';
 
 
 export class Map {
@@ -35,6 +36,9 @@ export class Map {
         this.startControl = new StartControl();
         this.startControl.addTo(this.map);
 
+        this.bleConnectControl = new BLEConnectControl();
+        this.bleConnectControl.addTo(this.map);
+
         function setMapHeight() {
             const mapElement = document.getElementById("map")
             const windowHeight = window.innerHeight
@@ -55,6 +59,9 @@ export class Map {
 
     static setInfo(distance, currentCoordinateIndex, angle) {
         this.distanceControl.setInfo(distance, currentCoordinateIndex, angle);
+        
+        // Pass the angle to the BLEConnectControl
+        this.bleConnectControl.setAngle(angle);
     }
 
 

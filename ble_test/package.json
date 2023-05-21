@@ -1,0 +1,13 @@
+{
+    "name": "my-web-app",
+    "version": "1.0.0",
+    "description": "My Web Application",
+    "main": "index.js",
+    "scripts": {
+      "start": "http-server ."
+    },
+    "devDependencies": {
+      "http-server": "^0.12.3"
+    }
+  }
+  
