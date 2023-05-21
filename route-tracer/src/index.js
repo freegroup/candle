@@ -24,6 +24,14 @@ function onPositionUpdate(position) {
   let segment = route.getClosestSegment(currentLatLng);
   let currentCoordinateIndex = segment.start.index;
 
+  const minDistance = 5; // Minimum distance in meters
+  let nextCoordinateIndex = currentCoordinateIndex + 1;
+  while (nextCoordinateIndex < route.length && currentLatLng.distanceTo(L.latLng(route[nextCoordinateIndex])) < minDistance) {
+    currentCoordinateIndex = nextCoordinateIndex;
+    nextCoordinateIndex++;
+  }
+
+
   if (currentCoordinateIndex > lastVibratedIndex) {
     Device.vibrate();
     lastVibratedIndex = currentCoordinateIndex;
