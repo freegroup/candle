@@ -41,7 +41,7 @@ class CommandCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
 
         // Check if the received angle is within the valid range
         if(angle >= 0 && angle <= 359) {
-          targetAngle = angle;
+          targetAngle = -angle;
           Serial.println("*********");
           Serial.print("Received command: ");
           Serial.println(targetAngle);
@@ -67,7 +67,14 @@ void setup()
   delay(500);
 
   // Initialize the BLE library
-  NimBLEDevice::init("My BLE Device");
+  NimBLEDevice::init("Candle");
+
+  // Get the device address
+  NimBLEAddress deviceAddress = NimBLEDevice::getAddress();
+  std::string deviceAddressStr = deviceAddress.toString();
+
+  Serial.print("Device MAC Address: ");
+  Serial.println(deviceAddressStr.c_str());
 
   // Setup BLE
   server = NimBLEDevice::createServer();
