@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Web Bluetooth</title>
+ 
+</head>
+<body>
+  <button id="connect">Connect</button>
+  <input id="value" type="number">
+  <button id="send">Send</button>
+</body>
+<script>
+    var myCharacteristic;
+
+    document.querySelector('#connect').addEventListener('click', function() {
+      navigator.bluetooth.requestDevice({ 
+        acceptAllDevices: true,
+        optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b'] // Set the service UUID you want to connect with
+      })
+      .then(device => {
+        return device.gatt.connect();
+      })
+      .then(server => {
+        return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
+      })
+      .then(service => {
+        return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+      })
+      .then(characteristic => {
+        myCharacteristic = characteristic;
+      })
+      .catch(error => {
+        console.log('Error: ' + error);
+      });
+    });
+
+    document.querySelector('#send').addEventListener('click', function() {
+      var value = document.querySelector('#value').value;
+      myCharacteristic.writeValue(new TextEncoder().encode(value))
+      .catch(error => {
+        console.log('Error: ' + error);
+      });
+    });
+  </script>
+</html>
