@@ -1,4 +1,4 @@
-const walkingSpeed = 8; // m/s
+const walkingSpeed = 1; // m/s
 const simulationInterval = 100; // ms
 
 

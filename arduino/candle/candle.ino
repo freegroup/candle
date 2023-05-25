@@ -1,8 +1,8 @@
-#include <ESP32Servo.h>
-#include <PID_v1_bc.h>
+#include <ESP32Servo360.h>
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
+#include "BNO055.h"
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -12,6 +12,12 @@
 #include <NimBLEUtils.h>
 #include <NimBLECharacteristic.h>
 #include <cmath> // Fügen Sie diese Zeile am Anfang Ihres Codes ein
+
+// Parallax 360 Servo variables
+#define SERVO_FEEDBACK  16
+#define SERVO_CONTROL   4
+#define SERVO_PWM_MIN   1280 
+#define SERVO_PWM_MAX   1720
 
 // Bildschirmkonfiguration
 #define SCREEN_WIDTH 128 // OLED Displaybreite in Pixeln
@@ -29,20 +35,35 @@ NimBLECharacteristic *commandCharacteristic;
 NimBLEServer* server;
 
 // BNO055 Sensor
-Adafruit_BNO055 bno = Adafruit_BNO055(55);
+BNO055 bno = BNO055(55);
 imu::Vector<3> euler;
 
-// PID variables
-double compasAngle = 160.0;    // Target servoAngle to achieve
-double servoAngle = 0.0;       // Current servoAngle read from the feedback pin
-double targetAngle = 0;
+// Instantiate the Servo instances
+ESP32Servo360 servo;
 
-// Parallax 360 Servo variables
-int PIN_FEEDBACK = 32;
-int PIN_SERVO = 27;
+double compassAngle = 0.0;    // compass angle read from the BNO055
+double servoAngle   = 0.0;      // Current servoAngle read from the feedback pin
+double targetAngle  = 0.0;      // The angle we want point to
 
-// Instantiate the PID and Servo instances
-Servo servo;
+
+#define NUM_ARRAYS 3
+#define ARRAY_SIZE 22
+byte data[NUM_ARRAYS][ARRAY_SIZE] = {
+    {0, 0, 0, 0, 0, 0, 163, 1, 85, 1, 86, 0, 1, 0, 254, 255, 2, 0, 232, 3, 208, 2},
+    {0, 0, 0, 0, 0, 0, 203, 1, 184, 1, 131, 0, 0, 0, 254, 255, 2, 0, 232, 3, 253, 2},
+    {0, 0, 0, 0, 0, 0, 188, 0, 220, 1, 96, 0, 0, 0, 0, 0, 0, 0, 232, 3, 188, 2}
+};
+byte c_data[ARRAY_SIZE];
+
+void calculate_cdata() {
+  for(int i=0; i<ARRAY_SIZE; i++) {
+    int sum = 0;
+    for(int j=0; j<NUM_ARRAYS; j++) {
+      sum += data[j][i];
+    }
+    c_data[i] = sum / NUM_ARRAYS;
+  }
+}
 
 class CommandCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
     void onWrite(NimBLECharacteristic* pCharacteristic) {
@@ -68,7 +89,7 @@ class CommandCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
 class MyServerCallbacks: public NimBLEServerCallbacks {
     void onConnect(NimBLEServer* pServer) {
         Serial.println("Device connected");
-    };
+    }
 
     void onDisconnect(NimBLEServer* pServer) {
         Serial.println("Device disconnected");
@@ -79,14 +100,21 @@ MyServerCallbacks myCallbacks;
 CommandCharacteristicCallbacks commandCallbacks;
 
 double getServoAngle() {
-  unsigned long pulseWidth = pulseIn(PIN_FEEDBACK, HIGH, 25000);
-  return 360-map(pulseWidth, 30, 1067, 0, 360);
+  //unsigned long pulseWidth = pulseIn(SERVO_FEEDBACK, HIGH, 25000);
+  //return 360-map(pulseWidth, 37, 1046, 0, 360);
+  //return servo.getAngle();
+  return 360-fmod((servo.getAngle() + 360), 360.0);
 }
 
+void setServoAngle(float angle){
+  //float value = map(angle, 0, 360, SERVO_PWM_MIN, SERVO_PWM_MAX);
+  //servo.writeMicroseconds(value);
+  servo.rotateTo(angle);
+}
 
-void drawCompass(float angle) {
-  float drawCorrection = 90;
-  float drawAngle = fmod((angle + 360)+drawCorrection, 360.0);
+void drawCompass(float angle, float motorAngle) {
+  float drawCorrection = 180;
+  float drawAngle = 360 - fmod((angle + 360)-drawCorrection, 360.0);
 
   display.clearDisplay();
   display.setTextSize(1);
@@ -109,12 +137,18 @@ void drawCompass(float angle) {
   display.setCursor(0, SCREEN_HEIGHT - 10); // Set cursor position to start text
   display.println(angle); // Display the angle value
 
+  display.setCursor(SCREEN_WIDTH-40, SCREEN_HEIGHT - 10); // Set cursor position to start text
+  display.println(servoAngle); // Display the angle value
+
   // Update the display
   display.display();
 }
 
 void setup() 
 { 
+  pinMode(SERVO_FEEDBACK, INPUT);
+  pinMode(SERVO_CONTROL, OUTPUT);
+
   Serial.begin(115200);
   
   // SSD1306_SWITCHCAPVCC = Spannungsversorgung vom 3.3V Pin erzeugen
@@ -126,11 +160,13 @@ void setup()
   display.display();
   
   // BNO055 Sensor initialisieren
-  if (!bno.begin()) {
+  calculate_cdata();
+  if (!bno.begin(BNO055::OPERATION_MODE_COMPASS)) {
     Serial.print("Es konnte keine Verbindung zum BNO055 hergestellt werden");
     while (1);
   }
-  delay(500);
+  bno.setCalibData(c_data);
+  bno.setExtCrystalUse(true);
 
   // Initialize the BLE library
   NimBLEDevice::init("Candle");
@@ -154,29 +190,25 @@ void setup()
   Serial.println("BLE peripheral device started advertising");
 
   // Servo initialization
-  servo.attach(PIN_SERVO, 1280, 1720);
-  servo.setPeriodHertz(50);
-
-  servo.write(0);  // Setzen Sie den Winkel auf 0 Grad (Norden)
-  delay(500);
-
-
-  pinMode(PIN_FEEDBACK, INPUT);
+  servo.attach(SERVO_CONTROL, SERVO_FEEDBACK);
+  servo.setSpeed(60);
+  //servo.adjustSignal(SERVO_PWM_MIN, SERVO_PWM_MAX);
+  for(int i=0; i<=360; i+=90){
+    setServoAngle(i);  // Setzen Sie den Winkel auf 0 Grad (Norden)
+    delay(1000);
+  }
+  setServoAngle(0);
 } 
   
 void loop() 
 {
-  euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
-  //  compasAngle = euler.x();
-  compasAngle = fmod((euler.x() + targetAngle + 360), 360.0);
+  euler = bno.getVector(BNO055::VECTOR_EULER);
 
-  unsigned long pulseWidth = pulseIn(PIN_FEEDBACK, HIGH, 25000);
-  servoAngle = getServoAngle();
+  compassAngle = fmod((euler.x() + targetAngle + 360), 360.0);
+  servoAngle   = getServoAngle();
 
-  // Calculate the difference between compasAngle and servoAngle
-  float diffAngle = compasAngle - servoAngle;
-  //Serial.print("diffAngle Diff: ");
-  //Serial.println(diffAngle);
+  // Calculate the difference between compassAngle and servoAngle
+  float diffAngle = compassAngle - servoAngle;
 
   // Normalize the difference to be between -180 and 180
   if (diffAngle > 180) {
@@ -185,9 +217,11 @@ void loop()
     diffAngle += 360;
   }
 
-  drawCompass((360-euler.x()));
-  servo.write(diffAngle); //Move the servo
-  delay(10);
+  drawCompass(compassAngle, diffAngle);
+  if(abs(diffAngle)>2){
+    servo.rotate(-diffAngle);
+    delay(200);
+  }
 }
 
 
