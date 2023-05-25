@@ -6,7 +6,8 @@ import { Map } from './Map.js';
 import { Route } from './Route.js';
 
 // Initialize GPS coordinates array
-let gpsCoordinatesArray = require('./route.json');
+let gpsCoordinatesArray = require('./route1.json');
+
 let route = new Route(gpsCoordinatesArray);
 Map.init();
 Map.setRoute(route);

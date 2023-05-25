@@ -2,7 +2,7 @@ import L from 'leaflet';
 import { extendLatLng } from './leafletExtensions';
 import { isSpecialCoordinate } from './utils.js';
 
-const distanceToInsert = 5; // Meter
+const distanceToInsert = 8; // Meter
 const minSegmentLength = 10; // Meter
 
 // Erweitert die L.LatLng-Klasse mit den zusätzlichen Funktionen
@@ -115,29 +115,6 @@ export class Route {
         }
     }
       
-    /*
-    getClosestSegment(currentLatLng) {
-        let minDistance = Infinity;
-        let closestSegmentStartIndex = null;
-      
-        for (let i = 0; i < this.gpsRoute.length - 1; i++) {
-          const startCoord = L.latLng(this.gpsRoute[i]);
-          const endCoord = L.latLng(this.gpsRoute[i + 1]);
-          const currentDistance = currentLatLng.distanceToSegment(startCoord, endCoord);
-      
-          if (currentDistance < minDistance) {
-            minDistance = currentDistance;
-            closestSegmentStartIndex = i;
-          }
-        }
-      
-        if (closestSegmentStartIndex === null) {
-          throw new Error('Could not find closest segment.');
-        }
-      
-        return [closestSegmentStartIndex, closestSegmentStartIndex + 1];
-    }
-    */
     getClosestSegment(currentLatLng) {
         let minDistance = Infinity;
         let closestSegmentStartIndex = null;
@@ -172,10 +149,9 @@ export class Route {
         };
       }
       
-      
     
     getRandomPointNearRoute() {
-        const randomIndex = Math.floor(Math.random() * this.gpsRoute.length);
+        const randomIndex = 0;//Math.floor(Math.random() * this.gpsRoute.length);
         const randomRadius = 2 + Math.random() * 18; // Radius between 2 and 20 meters
     
         const originalPoint = L.latLng(this.gpsRoute[randomIndex]);
