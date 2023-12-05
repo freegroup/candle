@@ -16,6 +16,7 @@ export class Route {
         }));
 
         this.gpsRoute = this.addExtraPoints(this.gpsCoordinatesArray);
+        //this.gpsRoute = this.gpsCoordinatesArray;
 
         // Return the Proxy instead of the instance itself
         return new Proxy(this, {

@@ -1,3 +1,5 @@
 .history
 .parcel-cache
 .envrc
+.buildozer
+mobile/cache
