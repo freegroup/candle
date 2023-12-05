@@ -21,7 +21,7 @@ class CustomButton(Button):
 class SayButton(BoxLayout):
     text = StringProperty('')
     say = StringProperty('')
-    on_release = ObjectProperty(None)
+    action = ObjectProperty(None)
 
     last_inside = BooleanProperty(False)  # Flag to track if the last touch move was inside SayButton
 
@@ -44,29 +44,6 @@ class SayButton(BoxLayout):
     def tts(self, text):
         tts.speak(message=text)
 
-    def play_sound(self, sound_file):
-        base_path = os.path.dirname(__file__)  # Already in the src directory
-        base_path = os.path.join(base_path, '../')
-        sound_path = os.path.join(base_path, 'sounds', sound_file)
-
-        sound_path = os.path.normpath(sound_path) 
-        print("play sound:"+sound_path)
-        if not os.path.exists(sound_path):
-            print("Sound file do not exits:"+sound_path)
-            for root, dirs, files in os.walk(base_path):
-                level = root.replace(base_path, '').count(os.sep)
-                indent = ' ' * 4 * (level)
-                print(f"{indent}{os.path.basename(root)}/")
-                subindent = ' ' * 4 * (level + 1)
-                for f in files:
-                    print(f"{subindent}{f}")
-
-        sound = SoundLoader.load(sound_path)
-        if sound:
-            sound.play()
-        else:
-            print("Sound file not playable:"+sound_path)
-
-
-    def custom_action(self):
-        print("do action")
+    def on_button_release(self):
+        if self.action:
+            self.action()
