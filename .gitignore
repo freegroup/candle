@@ -4,3 +4,4 @@
 .buildozer
 mobile/cache
 .env
+mobile/.env
