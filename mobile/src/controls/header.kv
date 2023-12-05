@@ -1,0 +1,22 @@
+<Header>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: dp(96) 
+
+    BoxLayout:
+
+        Button:
+            text: root.text
+            size_hint_x: 1
+            on_release: root.announce()
+
+    # This acts as the separator line
+    Widget:  
+        size_hint_y: None
+        height: dp(10)
+        canvas.before:
+            Color:
+                rgba: 0.5, 0.5, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size

@@ -1,0 +1,54 @@
+#:import SayButton controls.say_button.SayButton
+#:import Header controls.header.Header
+
+<Main>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+
+        Header:
+            id: header
+            text: 'Hauptmenu'
+            say: 'Sie sind im Hauptmenu'
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 1  # Take up the remaining space
+
+
+            # Add your SayButtons here
+            SayButton:
+                say: 'Navigation'
+                text: 'Navigation'
+
+            SayButton:
+                say: 'Routen verwalten.'
+                text: 'Routen Verwalten'
+
+            SayButton:
+                say: 'Routen aufzeichnen.'
+                text: 'Routen aufzeichnen'
+                action: app.record
+
+            # Spacer to push SayButtons to the top
+            Widget:
+                size_hint_y: 1
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+
+            SayButton:
+                text: 'Beenden'
+                say: 'Programm beenden'
+                action: app.terminate
+
+            SayButton:
+                text: 'Hilfe'
+                say: 'Hilfe'
+
+
+

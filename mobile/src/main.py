@@ -1,27 +1,31 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
-from screens.main_screen import MainScreen
-from screens.recording_screen import RecordingScreen
-
+from screens.main import Main
+from screens.record import Record
 
 class CandleApp(App):
-    
-    def custom_action(self):
-        pass
+
 
     def build(self):
         self.sm = ScreenManager()
-        self.sm.add_widget(MainScreen(name='main'))
-        self.sm.add_widget(RecordingScreen(name='recording'))
-
-        self.set_screen('main')
+        self.sm.add_widget(Main(name='main'))
+        self.sm.add_widget(Record(name='record'))
+        
+        self.main()
 
         return self.sm
-
-    def set_screen(self, name):
-        self.sm.current = name
+    
+    def terminate(self):
+        self.stop()
         
+    def main(self):
+        self.sm.current="main"
+        
+    def record(self):
+        self.sm.current="record"
+
+
 if __name__ == '__main__':
     CandleApp().run()
 
