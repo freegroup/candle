@@ -1,0 +1,44 @@
+#:import SayButton controls.say_button.SayButton
+#:import Header controls.header.Header
+#:import ScrollView kivy.uix.scrollview.ScrollView
+#:import Label kivy.uix.label.Label
+
+<SelectDevice>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+
+        Header:
+            id: header
+            text: 'Einstellungen'
+            say: 'Untermenü: Einstellungen'
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 1
+            id: devices_list
+
+            SayButton:
+                text: 'Geräte suchen..'
+                say: 'Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen'
+                action: root.start_ble_scan
+
+            # Spacer to push SayButtons to the top
+            Widget:
+                size_hint_y: 1
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+
+            SayButton:
+                text: 'Zurück'
+                say: 'Zurück ins Hauptmenü'
+                action: app.main
+
+            SayButton:
+                text: 'Hilfe'
+                say: 'Hilfe'

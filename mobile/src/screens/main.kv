@@ -20,6 +20,11 @@
 
             # Add your SayButtons here
             SayButton:
+                say: 'Ihr derzeitigne Standort ermitteln und Vorlesen'
+                text: 'Standort'
+                action: root.location
+
+            SayButton:
                 say: 'Navigation'
                 text: 'Navigation'
 
@@ -31,6 +36,16 @@
                 say: 'Routen aufzeichnen.'
                 text: 'Routen aufzeichnen'
                 action: app.record
+
+            SayButton:
+                say: 'Kompass'
+                text: 'Kompass'
+                action: app.navigate_to_compass
+
+            SayButton:
+                say: 'Einstellungen'
+                text: 'Einstellungen'
+                action: app.settings_device
 
             # Spacer to push SayButtons to the top
             Widget:
@@ -44,7 +59,7 @@
             SayButton:
                 text: 'Beenden'
                 say: 'Programm beenden'
-                action: app.terminate
+                action: app.request_terminate
 
             SayButton:
                 text: 'Hilfe'

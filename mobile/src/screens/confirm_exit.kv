@@ -1,0 +1,41 @@
+#:import SayButton controls.say_button.SayButton
+#:import Header controls.header.Header
+
+<ConfirmExit>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+
+        Header:
+            id: header
+            text: 'Bestätigung Programmende'
+            say: 'Bitte bestätigen Sie, dass sie das Programm beenden wollen'
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 1  # Take up the remaining space
+
+
+            # Spacer to push SayButtons to the top
+            Widget:
+                size_hint_y: 1
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+
+            SayButton:
+                text: 'Beenden'
+                say: 'Programm beenden'
+                action: app.terminate
+
+            SayButton:
+                text: 'Nicht beenden'
+                say: 'Programm nicht beenden'
+                action: app.close_popup
+
+
+

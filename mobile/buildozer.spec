@@ -18,7 +18,17 @@ source.include_patterns = sounds/*
 
 # (list) Application requirements
 # Specify your app's requirements here. Start with the basics: python3 and kivy.
-requirements = python3,kivy,openssl, kivy_garden.mapview , https://github.com/HyTurtle/plyer/archive/master.zip
+requirements = 
+    python3,
+    kivy,
+    openssl,
+    android,
+    kivy_garden.mapview,
+    bleak,
+    typing_extensions, 
+    async_to_sync, 
+    async-timeout,
+    https://github.com/HyTurtle/plyer/archive/master.zip
 
 # (str) Application version
 version = 0.1
@@ -30,11 +40,25 @@ orientation = portrait
 # Android specific
 #
 
+p4a.local_recipes = ./recipes
+
+
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1
 
 # (list) Permissions
-android.permissions = INTERNET,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION, VIBRATE, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
+android.permissions = 
+    BLUETOOTH_ADMIN,
+    BLUETOOTH,
+    BLUETOOTH_SCAN,
+    BLUETOOTH_CONNECT,
+    INTERNET,
+    ACCESS_BACKGROUND_LOCATION,
+    ACCESS_FINE_LOCATION,
+    ACCESS_COARSE_LOCATION,
+    VIBRATE,
+    WRITE_EXTERNAL_STORAGE,
+    READ_EXTERNAL_STORAGE
 
 # (int) Target Android API
 android.api = 33
@@ -46,7 +70,7 @@ android.minapi = 21
 android.ndk = 25b
 
 # (list) The Android archs to build for
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 [buildozer]
 

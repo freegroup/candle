@@ -1,0 +1,51 @@
+<Compass>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+
+        Header:
+            id: header
+            text: 'Kompass'
+            say: 'Untermenü: Kompass'
+
+
+        FloatLayout:
+            Image:
+                id: arrow
+                size_hint: None, None
+                size: 100, 100
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                canvas.before:
+                    PushMatrix
+                    Rotate:
+                        angle: root.needle_angle
+                        origin: self.center
+                canvas.after:
+                    PopMatrix
+
+
+            Label:
+                id: angle
+                size_hint_y: None
+                height: '30dp'
+                center_x: self.parent.center_x
+                y: arrow.y - self.height - 5
+                # Initial text can be empty or a placeholder
+                text: ''
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+
+            SayButton:
+                text: 'Zurück'
+                say: 'Zurück zum Hauptmeü'
+                action: app.main
+
+            SayButton:
+                text: 'Hilfe'
+                say: 'Hilfe'
+

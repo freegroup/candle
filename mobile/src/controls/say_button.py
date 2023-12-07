@@ -26,7 +26,7 @@ class SayButton(BoxLayout):
     text = StringProperty('')
     say = StringProperty('')
     action = ObjectProperty(None)
-    long_press_time = 1  # Time in seconds for long press
+    long_press_time = 0.5  # Time in seconds for long press
     long_press_event = None
     last_inside = BooleanProperty(False)
 
@@ -75,6 +75,7 @@ class SayButton(BoxLayout):
 
 
     def tts(self, text):
+        print(text)
         threading.Thread(target=tts_speak, args=(text,)).start()
 
 
