@@ -1,0 +1,158 @@
+# English translations for d package.
+# Copyright (C) 2023 THE d'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the d package.
+# Herz <a.herz@freegroup.de>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: d 023280\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-08 13:14+0100\n"
+"PO-Revision-Date: 2023-12-08 09:00+0100\n"
+"Last-Translator: Herz <a.herz@freegroup.de>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/utils/i18n.py:44
+msgid "TEST"
+msgstr "EN EN EN TEST"
+
+#: src/screens/main.py:22
+msgid "Sie befinden sich in: {}"
+msgstr ""
+
+#: src/screens/main.py:25
+msgid "Ich konnte leider ihren Standort nicht ermitteln."
+msgstr "Unable to determine your current location or address"
+
+#: src/main.py:32
+msgid "I18n Test"
+msgstr "en en en en en"
+
+#: src/main.py:81
+msgid "Programm wird beendet"
+msgstr "Terminating candle."
+
+#: src/screens/confirm_exit.kv:13
+msgid "Bestätigung Programmende"
+msgstr ""
+
+#: src/screens/confirm_exit.kv:14
+msgid "Bitte bestätigen Sie, dass sie das Programm beenden wollen"
+msgstr ""
+
+#: src/screens/confirm_exit.kv:32 src/screens/main.kv:61
+msgid "Beenden"
+msgstr ""
+
+#: src/screens/confirm_exit.kv:33 src/screens/main.kv:62
+#, fuzzy
+msgid "Programm beenden"
+msgstr "Terminating candle."
+
+#: src/screens/confirm_exit.kv:37
+msgid "Nicht beenden"
+msgstr ""
+
+#: src/screens/confirm_exit.kv:38
+#, fuzzy
+msgid "Programm nicht beenden"
+msgstr "Terminating candle."
+
+#: src/screens/record.kv:13
+msgid "Routen Aufzeichnen"
+msgstr ""
+
+#: src/screens/record.kv:14
+msgid "Untermenu: Route aufzeichnen"
+msgstr ""
+
+#: src/screens/record.kv:24 src/screens/record.kv:25
+msgid "Aufzeichnung starten"
+msgstr ""
+
+#: src/screens/record.kv:38 src/screens/compass.kv:46
+#: src/screens/select_device.kv:39
+msgid "Zurück"
+msgstr ""
+
+#: src/screens/record.kv:39 src/screens/select_device.kv:40
+msgid "Zurück ins Hauptmenü"
+msgstr ""
+
+#: src/screens/record.kv:43 src/screens/record.kv:44 src/screens/compass.kv:51
+#: src/screens/compass.kv:52 src/screens/select_device.kv:44
+#: src/screens/select_device.kv:45 src/screens/main.kv:66
+#: src/screens/main.kv:67
+msgid "Hilfe"
+msgstr ""
+
+#: src/screens/compass.kv:11 src/screens/main.kv:42 src/screens/main.kv:43
+msgid "Kompass"
+msgstr ""
+
+#: src/screens/compass.kv:12
+msgid "Untermenü: Kompass"
+msgstr ""
+
+#: src/screens/compass.kv:47
+msgid "Zurück zum Hauptmeü"
+msgstr ""
+
+#: src/screens/select_device.kv:15 src/screens/main.kv:47
+#: src/screens/main.kv:48
+msgid "Einstellungen"
+msgstr ""
+
+#: src/screens/select_device.kv:16
+msgid "Untermenü: Einstellungen"
+msgstr ""
+
+#: src/screens/select_device.kv:25
+msgid "Geräte suchen.."
+msgstr ""
+
+#: src/screens/select_device.kv:26
+msgid "Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen"
+msgstr ""
+
+#: src/screens/main.kv:13
+msgid "Hauptmenu"
+msgstr "Main menu"
+
+#: src/screens/main.kv:14
+#, fuzzy
+msgid "Sie sind im Hauptmenu"
+msgstr "Main menu"
+
+#: src/screens/main.kv:24
+msgid "Ihr derzeitigne Standort ermitteln und Vorlesen"
+msgstr ""
+
+#: src/screens/main.kv:25
+msgid "Standort"
+msgstr ""
+
+#: src/screens/main.kv:29 src/screens/main.kv:30
+msgid "Navigation"
+msgstr ""
+
+#: src/screens/main.kv:33
+msgid "Routen verwalten."
+msgstr ""
+
+#: src/screens/main.kv:34
+msgid "Routen Verwalten"
+msgstr ""
+
+#: src/screens/main.kv:37
+msgid "Routen aufzeichnen."
+msgstr ""
+
+#: src/screens/main.kv:38
+msgid "Routen aufzeichnen"
+msgstr ""

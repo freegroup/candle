@@ -7,10 +7,13 @@ from kivy.clock import Clock
 from plyer import spatialorientation
 from screens.base_screen import BaseScreen
 from kivy.properties import NumericProperty
-from storage import Storage
+from utils.storage import Storage
+from utils.tts import say
 from bleak import BleakClient
 import asyncio
 import queue
+
+from utils.i18n import _
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 kv_file_path = os.path.join(dir_path, 'compass.kv')

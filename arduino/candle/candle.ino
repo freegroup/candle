@@ -101,15 +101,10 @@ MyServerCallbacks myCallbacks;
 CommandCharacteristicCallbacks commandCallbacks;
 
 double getServoAngle() {
-  //unsigned long pulseWidth = pulseIn(SERVO_FEEDBACK, HIGH, 25000);
-  //return 360-map(pulseWidth, 37, 1046, 0, 360);
-  //return servo.getAngle();
   return 360-fmod((servo.getAngle() + 360), 360.0);
 }
 
 void setServoAngle(float angle){
-  //float value = map(angle, 0, 360, SERVO_PWM_MIN, SERVO_PWM_MAX);
-  //servo.writeMicroseconds(value);
   servo.rotateTo(angle);
 }
 
@@ -193,7 +188,6 @@ void setup()
   // Servo initialization
   servo.attach(SERVO_CONTROL, SERVO_FEEDBACK);
   servo.setSpeed(60);
-  //servo.adjustSignal(SERVO_PWM_MIN, SERVO_PWM_MAX);
   for(int i=0; i<=360; i+=90){
     setServoAngle(i);  // Setzen Sie den Winkel auf 0 Grad (Norden)
     delay(1000);

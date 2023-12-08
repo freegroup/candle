@@ -5,8 +5,7 @@ Config.set('graphics', 'height', '900')  # Set the height of the window
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from kivy.core.window import Window
-from plyer import tts
-from kivy.clock import Clock
+
 import asyncio
 import threading
 import logging
@@ -20,6 +19,8 @@ from screens.record import Record
 from screens.select_device import SelectDevice
 from screens.confirm_exit import ConfirmExit
 from gps.location import LocationManager
+from utils.i18n import setup_i18n, _
+from utils.tts import say
 
 logging.getLogger("bleak").setLevel(logging.INFO)
 
@@ -27,6 +28,8 @@ logging.getLogger("bleak").setLevel(logging.INFO)
 class CandleApp(App):
 
     def build(self):
+        setup_i18n()
+        print(_("I18n Test"))
         self.loop = asyncio.new_event_loop()
 
         Window.bind(on_request_close=self.on_request_close)
@@ -75,11 +78,11 @@ class CandleApp(App):
 
 
     def terminate(self):
-        tts.speak(message="Programm wird beendet")
+        say(_("Programm wird beendet"))
         self.stop()
 
     def request_terminate(self):
-        if self.gps_tracker.is_active():
+        if LocationManager.is_active():
             self.previous_screen = self.sm.current
             self.sm.current = 'confirm_exit'
         else:

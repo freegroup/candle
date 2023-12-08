@@ -5,9 +5,12 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
 from bleak import BleakScanner
+
 from controls.say_button import SayButton
 from screens.base_screen import BaseScreen
-from storage import Storage
+from utils.storage import Storage
+from utils.i18n import _
+from utils.tts import say
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 kv_file_path = os.path.join(dir_path, 'select_device.kv')
@@ -22,10 +25,10 @@ class SelectDevice(BaseScreen):
 
     def start_ble_scan(self):
         if self.scan_in_progress:
-            self.tts("Suche nach bereits nach Geräte...bitte etwas geduld.")  # Avoid duplicate scans
+            say("Suche nach bereits nach Geräte...bitte etwas geduld.")  # Avoid duplicate scans
             return
          
-        self.tts("Starte suche nach kompatiblen Geräten...")
+        say("Starte suche nach kompatiblen Geräten...")
         asyncio.create_task(self.scan_and_populate_devices())
 
 
@@ -34,14 +37,14 @@ class SelectDevice(BaseScreen):
         try:
             devices = await BleakScanner.discover()
             if len(devices)>0:
-                self.tts("Es wurden Geräte gefunden, bitte ein Gerät aus der Liste auswählen")
+                say("Es wurden Geräte gefunden, bitte ein Gerät aus der Liste auswählen")
             else:
-                self.tts("Es konnten leider keine Geräte gefunden werden. Eventell ist dein Candle nicht eingeschaltet.")
+                say("Es konnten leider keine Geräte gefunden werden. Eventell ist dein Candle nicht eingeschaltet.")
 
             self.populate_devices(devices)
         except Exception as e:
             print(e)
-            self.tts("Leider ist ein Fehler bei der Suche von neuen Geräten passiert. Es konnten keine neuen Geräte gefnden werden")
+            say("Leider ist ein Fehler bei der Suche von neuen Geräten passiert. Es konnten keine neuen Geräte gefnden werden")
         self.scan_in_progress = False 
 
     def populate_devices(self, devices):
@@ -90,7 +93,7 @@ class SelectDevice(BaseScreen):
 
 
     def connect_to_device(self, device):
-        self.tts(f"Ich verbinde mich mit dem Gerät: {device.name}.")
+        say(f"Ich verbinde mich mit dem Gerät: {device.name}.")
         Storage.set_connected_device(device)
 
  

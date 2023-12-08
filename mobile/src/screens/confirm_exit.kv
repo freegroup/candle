@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import _ utils.i18n._
 
 <ConfirmExit>:
 
@@ -9,8 +10,8 @@
 
         Header:
             id: header
-            text: 'Bestätigung Programmende'
-            say: 'Bitte bestätigen Sie, dass sie das Programm beenden wollen'
+            text: _('Bestätigung Programmende')
+            say: _('Bitte bestätigen Sie, dass sie das Programm beenden wollen')
 
 
         BoxLayout:
@@ -28,13 +29,13 @@
             height: '48dp'
 
             SayButton:
-                text: 'Beenden'
-                say: 'Programm beenden'
+                text: _('Beenden')
+                say: _('Programm beenden')
                 action: app.terminate
 
             SayButton:
-                text: 'Nicht beenden'
-                say: 'Programm nicht beenden'
+                text: _('Nicht beenden')
+                say: _('Programm nicht beenden')
                 action: app.close_popup
 
 

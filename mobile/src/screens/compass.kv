@@ -1,3 +1,5 @@
+#:import _ utils.i18n._
+
 <Compass>:
 
     BoxLayout:
@@ -6,8 +8,8 @@
 
         Header:
             id: header
-            text: 'Kompass'
-            say: 'Untermenü: Kompass'
+            text: _('Kompass')
+            say: _('Untermenü: Kompass')
 
 
         FloatLayout:
@@ -41,11 +43,11 @@
             height: '48dp'
 
             SayButton:
-                text: 'Zurück'
-                say: 'Zurück zum Hauptmeü'
+                text: _('Zurück')
+                say: _('Zurück zum Hauptmeü')
                 action: app.main
 
             SayButton:
-                text: 'Hilfe'
-                say: 'Hilfe'
+                text: _('Hilfe')
+                say: _('Hilfe')
 

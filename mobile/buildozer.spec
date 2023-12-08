@@ -12,9 +12,7 @@ package.domain = de.freegroup
 # (str) Source code where the main.py lives
 source.dir = ./src
 
-source.include_exts = py,png,jpg,kv,atlas,mp3
-
-source.include_patterns = sounds/*
+source.include_exts = py,png,jpg,kv,atlas,mp3,mo,po
 
 # (list) Application requirements
 # Specify your app's requirements here. Start with the basics: python3 and kivy.

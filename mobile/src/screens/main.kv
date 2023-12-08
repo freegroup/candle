@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import _ utils.i18n._
 
 <Main>:
 
@@ -9,8 +10,8 @@
 
         Header:
             id: header
-            text: 'Hauptmenu'
-            say: 'Sie sind im Hauptmenu'
+            text: _('Hauptmenu')
+            say: _('Sie sind im Hauptmenu')
 
 
         BoxLayout:
@@ -20,31 +21,31 @@
 
             # Add your SayButtons here
             SayButton:
-                say: 'Ihr derzeitigne Standort ermitteln und Vorlesen'
-                text: 'Standort'
+                say: _('Ihr derzeitigne Standort ermitteln und Vorlesen')
+                text: _('Standort')
                 action: root.location
 
             SayButton:
-                say: 'Navigation'
-                text: 'Navigation'
+                say: _('Navigation')
+                text: _('Navigation')
 
             SayButton:
-                say: 'Routen verwalten.'
-                text: 'Routen Verwalten'
+                say: _('Routen verwalten.')
+                text: _('Routen Verwalten')
 
             SayButton:
-                say: 'Routen aufzeichnen.'
-                text: 'Routen aufzeichnen'
+                say: _('Routen aufzeichnen.')
+                text: _('Routen aufzeichnen')
                 action: app.record
 
             SayButton:
-                say: 'Kompass'
-                text: 'Kompass'
+                say: _('Kompass')
+                text: _('Kompass')
                 action: app.navigate_to_compass
 
             SayButton:
-                say: 'Einstellungen'
-                text: 'Einstellungen'
+                say: _('Einstellungen')
+                text: _('Einstellungen')
                 action: app.settings_device
 
             # Spacer to push SayButtons to the top
@@ -57,13 +58,13 @@
             height: '48dp'
 
             SayButton:
-                text: 'Beenden'
-                say: 'Programm beenden'
+                text: _('Beenden')
+                say: _('Programm beenden')
                 action: app.request_terminate
 
             SayButton:
-                text: 'Hilfe'
-                say: 'Hilfe'
+                text: _('Hilfe')
+                say: _('Hilfe')
 
 
 

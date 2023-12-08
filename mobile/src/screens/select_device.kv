@@ -2,6 +2,7 @@
 #:import Header controls.header.Header
 #:import ScrollView kivy.uix.scrollview.ScrollView
 #:import Label kivy.uix.label.Label
+#:import _ utils.i18n._
 
 <SelectDevice>:
 
@@ -11,8 +12,8 @@
 
         Header:
             id: header
-            text: 'Einstellungen'
-            say: 'Untermenü: Einstellungen'
+            text: _('Einstellungen')
+            say: _('Untermenü: Einstellungen')
 
 
         BoxLayout:
@@ -21,8 +22,8 @@
             id: devices_list
 
             SayButton:
-                text: 'Geräte suchen..'
-                say: 'Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen'
+                text: _('Geräte suchen..')
+                say: _('Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen')
                 action: root.start_ble_scan
 
             # Spacer to push SayButtons to the top
@@ -35,10 +36,10 @@
             height: '48dp'
 
             SayButton:
-                text: 'Zurück'
-                say: 'Zurück ins Hauptmenü'
+                text: _('Zurück')
+                say: _('Zurück ins Hauptmenü')
                 action: app.main
 
             SayButton:
-                text: 'Hilfe'
-                say: 'Hilfe'
+                text: _('Hilfe')
+                say: _('Hilfe')

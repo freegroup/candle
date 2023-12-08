@@ -9,7 +9,7 @@ from kivy.uix.button import Button
 from kivy.lang import Builder
 
 from plyer import vibrator
-from plyer import tts
+from utils.tts import say as tts_say
 
 # Load the KV file for this module
 Builder.load_file(os.path.join(os.path.dirname(__file__), 'say_button.kv'))
@@ -19,8 +19,6 @@ class CustomButton(Button):
     def on_touch_move(self, touch):
         return False  # Continue propagating the event
 
-def tts_speak(text):
-    tts.speak(message=text)
 
 class SayButton(BoxLayout):
     text = StringProperty('')
@@ -63,7 +61,7 @@ class SayButton(BoxLayout):
 
     def on_long_press(self, touch):
         # Your long press action, e.g., TTS or sound playback
-        self.tts(self.say)
+        tts_say(self.say)
 
 
     def vibrate_device(self, duration=0.05):
@@ -72,11 +70,6 @@ class SayButton(BoxLayout):
                 vibrator.vibrate(duration)
         except:
             print("vibrate not supported")
-
-
-    def tts(self, text):
-        print(text)
-        threading.Thread(target=tts_speak, args=(text,)).start()
 
 
     def on_button_release(self):

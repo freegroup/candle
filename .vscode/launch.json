@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Python: File",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/mobile/src/main.py",
+            "justMyCode": true
+        }
+    ]
+}

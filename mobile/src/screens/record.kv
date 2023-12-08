@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import _ utils.i18n._
 
 <Record>:
 
@@ -9,8 +10,8 @@
 
         Header:
             id: header
-            text: 'Routen Aufzeichnen'
-            say: 'Untermenu: Route aufzeichnen'
+            text: _('Routen Aufzeichnen')
+            say: _('Untermenu: Route aufzeichnen')
 
 
         BoxLayout:
@@ -20,8 +21,8 @@
 
             # Add your SayButtons here
             SayButton:
-                say: 'Aufzeichnung starten'
-                text: 'Aufzeichnung starten'
+                say: _('Aufzeichnung starten')
+                text: _('Aufzeichnung starten')
 
 
             # Spacer to push SayButtons to the top
@@ -34,13 +35,13 @@
             height: '48dp'
 
             SayButton:
-                text: 'Zurück'
-                say: 'Zurück ins Hauptmenü'
+                text: _('Zurück')
+                say: _('Zurück ins Hauptmenü')
                 action: app.main
 
             SayButton:
-                text: 'Hilfe'
-                say: 'Hilfe'
+                text: _('Hilfe')
+                say: _('Hilfe')
 
 
 
