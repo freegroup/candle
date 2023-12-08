@@ -1,4 +1,3 @@
-from plyer import tts
 from utils.i18n import _
 
 from kivy.uix.screenmanager import Screen

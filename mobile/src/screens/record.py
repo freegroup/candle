@@ -12,8 +12,5 @@ kv_file_path = os.path.join(dir_path, 'record.kv')
 Builder.load_file(kv_file_path)
 
 class Record(BaseScreen):
-
-    def back(self):
-        app = App.get_running_app()
-        app.main()
+    pass
    

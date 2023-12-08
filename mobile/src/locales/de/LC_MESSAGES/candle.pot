@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-08 13:14+0100\n"
+"POT-Creation-Date: 2023-12-08 16:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,116 @@ msgstr ""
 msgid "TEST"
 msgstr ""
 
+#: src/screens/permissions.py:29
+msgid ""
+"Berechtigungen werden nun von ihrem Telefon erfragt. Bitte diese bestätigen, "
+"damit sie das Programm nutzen können."
+msgstr ""
+
+#: src/screens/compass.py:92
+msgid "Norden"
+msgstr ""
+
+#: src/screens/compass.py:92
+msgid "Nord-Nordost"
+msgstr ""
+
+#: src/screens/compass.py:92
+msgid "Nordost"
+msgstr ""
+
+#: src/screens/compass.py:92
+msgid "Ost-Nordost"
+msgstr ""
+
+#: src/screens/compass.py:93
+msgid "Osten"
+msgstr ""
+
+#: src/screens/compass.py:93
+msgid "Ost-Südost"
+msgstr ""
+
+#: src/screens/compass.py:93
+msgid "Südost"
+msgstr ""
+
+#: src/screens/compass.py:93
+msgid "Süd-Südost"
+msgstr ""
+
+#: src/screens/compass.py:94
+msgid "Süden"
+msgstr ""
+
+#: src/screens/compass.py:94
+msgid "Süd-Südwest"
+msgstr ""
+
+#: src/screens/compass.py:94
+msgid "Südwest"
+msgstr ""
+
+#: src/screens/compass.py:94
+msgid "West-Südwest"
+msgstr ""
+
+#: src/screens/compass.py:95
+msgid "Westen"
+msgstr ""
+
+#: src/screens/compass.py:95
+msgid "West-Nordwest"
+msgstr ""
+
+#: src/screens/compass.py:95
+msgid "Nordwest"
+msgstr ""
+
+#: src/screens/compass.py:95
+msgid "Nord-Nordwest"
+msgstr ""
+
+#: src/screens/compass.py:98
+msgid "Sie halten das Handy in Richtung {}"
+msgstr ""
+
+#: src/screens/compass.py:115
+msgid "Sie halten das Handy genau in Richtung 0 Grad, also Norden"
+msgstr ""
+
+#: src/screens/compass.py:117
+msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Norden"
+msgstr ""
+
+#: src/screens/compass.py:120
+msgid "Sie halten das Handy genau in Richtung 90 Grad, also Osten"
+msgstr ""
+
+#: src/screens/compass.py:122
+msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Osten"
+msgstr ""
+
+#: src/screens/compass.py:125
+msgid "Sie halten das Handy genau in Richtung 180 Grad, also Süden"
+msgstr ""
+
+#: src/screens/compass.py:127
+msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Süden"
+msgstr ""
+
+#: src/screens/compass.py:130
+msgid "Sie halten das Handy genau in Richtung 270 Grad, also Westen"
+msgstr ""
+
+#: src/screens/compass.py:132
+msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Westen"
+msgstr ""
+
+#: src/screens/compass.py:134
+msgid "Sie halten das Handy in Richtung {} Grad"
+msgstr ""
+
 #: src/screens/main.py:22
 msgid "Sie befinden sich in: {}"
 msgstr ""
@@ -29,11 +139,7 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr ""
 
-#: src/main.py:32
-msgid "I18n Test"
-msgstr ""
-
-#: src/main.py:81
+#: src/main.py:86
 msgid "Programm wird beendet"
 msgstr ""
 
@@ -61,6 +167,29 @@ msgstr ""
 msgid "Programm nicht beenden"
 msgstr ""
 
+#: src/screens/permissions.kv:13
+msgid "Android Berechtigungen"
+msgstr ""
+
+#: src/screens/permissions.kv:14
+msgid "Untermenü: App Berechtigungen anfordern"
+msgstr ""
+
+#: src/screens/permissions.kv:22
+msgid "App Berechtigungen"
+msgstr ""
+
+#: src/screens/permissions.kv:23
+msgid "App Berechtigungen für GPS, Bluetooth und den Kompass erfragen"
+msgstr ""
+
+#: src/screens/permissions.kv:38 src/screens/permissions.kv:39
+#: src/screens/record.kv:43 src/screens/record.kv:44 src/screens/compass.kv:63
+#: src/screens/select_device.kv:44 src/screens/select_device.kv:45
+#: src/screens/main.kv:66 src/screens/main.kv:67
+msgid "Hilfe"
+msgstr ""
+
 #: src/screens/record.kv:13
 msgid "Routen Aufzeichnen"
 msgstr ""
@@ -73,20 +202,13 @@ msgstr ""
 msgid "Aufzeichnung starten"
 msgstr ""
 
-#: src/screens/record.kv:38 src/screens/compass.kv:46
+#: src/screens/record.kv:38 src/screens/compass.kv:58
 #: src/screens/select_device.kv:39
 msgid "Zurück"
 msgstr ""
 
 #: src/screens/record.kv:39 src/screens/select_device.kv:40
 msgid "Zurück ins Hauptmenü"
-msgstr ""
-
-#: src/screens/record.kv:43 src/screens/record.kv:44 src/screens/compass.kv:51
-#: src/screens/compass.kv:52 src/screens/select_device.kv:44
-#: src/screens/select_device.kv:45 src/screens/main.kv:66
-#: src/screens/main.kv:67
-msgid "Hilfe"
 msgstr ""
 
 #: src/screens/compass.kv:11 src/screens/main.kv:42 src/screens/main.kv:43
@@ -97,8 +219,28 @@ msgstr ""
 msgid "Untermenü: Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:47
+#: src/screens/compass.kv:21
+msgid "Himmelsrichtungen"
+msgstr ""
+
+#: src/screens/compass.kv:22
+msgid "Himmelsrichtung ausgeben"
+msgstr ""
+
+#: src/screens/compass.kv:26
+msgid "Winkelangabe"
+msgstr ""
+
+#: src/screens/compass.kv:27
+msgid "Richtung von 0 bis 360 Grad ausgeben"
+msgstr ""
+
+#: src/screens/compass.kv:59
 msgid "Zurück zum Hauptmeü"
+msgstr ""
+
+#: src/screens/compass.kv:64
+msgid "Hilfe über dieses Untermenü"
 msgstr ""
 
 #: src/screens/select_device.kv:15 src/screens/main.kv:47

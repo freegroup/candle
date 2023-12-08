@@ -13,12 +13,34 @@
 
 
         FloatLayout:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: 1  # Take up the remaining space
+
+                SayButton:
+                    text: _('Himmelsrichtungen')
+                    say: _('Himmelsrichtung ausgeben')
+                    action: root.say_horizon
+
+                SayButton:
+                    text: _('Winkelangabe')
+                    say: _('Richtung von 0 bis 360 Grad ausgeben')
+                    action: root.say_angle
+
+                # Spacer to push SayButtons to the top
+                Widget:
+                    size_hint_y: 1
+
             Image:
                 id: arrow
                 size_hint: None, None
-                size: 100, 100
+                width: root.width
+                height: root.width
                 center_x: self.parent.center_x
                 center_y: self.parent.center_y
+                opacity: 0.4
+                disabled: True
+                fit_mode: 'fill' 
                 canvas.before:
                     PushMatrix
                     Rotate:
@@ -28,16 +50,6 @@
                     PopMatrix
 
 
-            Label:
-                id: angle
-                size_hint_y: None
-                height: '30dp'
-                center_x: self.parent.center_x
-                y: arrow.y - self.height - 5
-                # Initial text can be empty or a placeholder
-                text: ''
-
-
         BoxLayout:
             size_hint_y: None
             height: '48dp'
@@ -45,9 +57,9 @@
             SayButton:
                 text: _('Zurück')
                 say: _('Zurück zum Hauptmeü')
-                action: app.main
+                action: app.navigate_to_main
 
             SayButton:
                 text: _('Hilfe')
-                say: _('Hilfe')
+                say: _('Hilfe über dieses Untermenü')
 

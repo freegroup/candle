@@ -10,17 +10,17 @@ import asyncio
 import threading
 import logging
 
-from plyer.utils import platform
-
-
 from screens.main import Main
 from screens.compass import Compass
 from screens.record import Record
 from screens.select_device import SelectDevice
+from screens.permissions import Permissions
 from screens.confirm_exit import ConfirmExit
-from gps.location import LocationManager
+from utils.location import LocationManager
+from utils.compass import CompassManager
 from utils.i18n import setup_i18n, _
 from utils.tts import say
+from utils.permissions import has_all_permissions, ask_all_permission
 
 logging.getLogger("bleak").setLevel(logging.INFO)
 
@@ -29,12 +29,9 @@ class CandleApp(App):
 
     def build(self):
         setup_i18n()
-        print(_("I18n Test"))
         self.loop = asyncio.new_event_loop()
 
         Window.bind(on_request_close=self.on_request_close)
-
-        LocationManager.start()
 
         self.sm = ScreenManager()
         self.sm.add_widget(Main(name='main'))
@@ -42,14 +39,21 @@ class CandleApp(App):
         self.sm.add_widget(SelectDevice(name='device'))
         self.sm.add_widget(Compass(name='compass'))
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
+        self.sm.add_widget(Permissions(name='permissions'))
         
-        self.main()
-
-        if platform == "android":
-            from android.permissions import request_permissions, Permission
-            request_permissions([Permission.BLUETOOTH_SCAN,  Permission.BLUETOOTH, Permission.BLUETOOTH_CONNECT, Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION])
+        if has_all_permissions():
+            # User has granted all permissions, BUT I must ask for them evertime on startup to get access in location and BLE
+            ask_all_permission()
+            LocationManager.start()
+            CompassManager.start()
+            self.navigate_to_main()
+        else:
+            # Inform the user, that now a system menu comes and asks for permissions
+            #
+            self.navigate_to_permissions()
 
         return self.sm
+    
     
     def on_start(self):
         # Start the asyncio loop
@@ -66,6 +70,7 @@ class CandleApp(App):
         self.loop.call_soon_threadsafe(self.loop.stop)
         self.loop_thread.join()
         LocationManager.stop()
+        CompassManager.stop()
 
 
     def on_request_close(self, *args, **kwargs):
@@ -88,18 +93,22 @@ class CandleApp(App):
         else:
             self.terminate()
 
-
-    def main(self):
+    def navigate_to_main(self):
         self.sm.current="main"
 
+    def navigate_to_permissions_granted(self):
+        LocationManager.start()
+        CompassManager.start()
+        self.sm.current="main"
 
-    def settings_device(self):
+    def navigate_to_permissions(self):
+        self.sm.current="permissions"
+
+    def navigate_to_settings(self):
         self.sm.current="device"
 
-
-    def record(self):
+    def navigate_to_record(self):
         self.sm.current="record"
-
 
     def navigate_to_compass(self):
         self.sm.current="compass"

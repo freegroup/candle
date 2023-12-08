@@ -2,7 +2,7 @@ import os
 from screens.base_screen import BaseScreen
 from kivy.lang import Builder
 
-from gps.location import LocationManager
+from utils.location import LocationManager
 from utils.i18n import _
 from utils.tts import say
 
