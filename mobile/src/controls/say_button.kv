@@ -1,5 +1,7 @@
 <SayButton>:
     orientation: "vertical"
+    halign: 'left'
+    font_size: '20sp' 
     size_hint_y: None
     height: dp(64) 
 
@@ -9,9 +11,11 @@
             text: root.text
             size_hint_x: 4
             on_release: root.on_button_release
-            font_size: '20sp' 
+            font_size: root.font_size
             bold: True
-            halign: 'left'
+            halign: root.halign
             valign: 'middle'
             text_size: self.width - dp(20), None
             padding: dp(10), dp(0)
+            background_normal: ''
+            background_color:0.0, 0.50, 0.61, 1

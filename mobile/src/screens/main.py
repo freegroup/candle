@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 from screens.base_screen import BaseScreen
 from kivy.lang import Builder
 
@@ -23,3 +25,9 @@ class Main(BaseScreen):
         except Exception as e:
             print(e)
             say(_("Ich konnte leider ihren Standort nicht ermitteln."))
+
+    def daytime(self):
+        now = datetime.now()
+        # Formatierung der Uhrzeit im 12-Stunden-Format mit AM/PM
+        formatted_time = now.strftime("Wir haben %H Uhr %m.")
+        say(formatted_time)

@@ -35,5 +35,4 @@ class Permissions(BaseScreen):
             # Berechtigungen wurden erteilt, Clock-Event abbrechen
             self.permission_check_event.cancel()
             # Navigieren zu einer anderen Funktion
-            App.get_running_app().navigate_to_permissions_granted()        
-   
+            Clock.schedule_once(lambda dt: App.get_running_app().navigate_to_permissions_granted())   

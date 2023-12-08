@@ -41,12 +41,12 @@ class CandleApp(App):
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
         self.sm.add_widget(Permissions(name='permissions'))
         
+        self.navigate_to_main()
         if has_all_permissions():
             # User has granted all permissions, BUT I must ask for them evertime on startup to get access in location and BLE
             ask_all_permission()
             LocationManager.start()
             CompassManager.start()
-            self.navigate_to_main()
         else:
             # Inform the user, that now a system menu comes and asks for permissions
             #
@@ -54,7 +54,7 @@ class CandleApp(App):
 
         return self.sm
     
-    
+
     def on_start(self):
         # Start the asyncio loop
         self.loop_thread = threading.Thread(target=self.start_asyncio_loop, daemon=True)

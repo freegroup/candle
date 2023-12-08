@@ -17,6 +17,8 @@
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
+            spacing: 10
+            padding: 10
 
 
             # Spacer to push SayButtons to the top
@@ -27,16 +29,19 @@
         BoxLayout:
             size_hint_y: None
             height: '48dp'
+            spacing: 10
 
             SayButton:
                 text: _('Beenden')
                 say: _('Programm beenden')
                 action: app.terminate
+                halign: 'center'
 
             SayButton:
                 text: _('Nicht beenden')
                 say: _('Programm nicht beenden')
                 action: app.close_popup
+                halign: 'center'
 
 
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: d 023280\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-08 16:01+0100\n"
+"POT-Creation-Date: 2023-12-08 17:32+0100\n"
 "PO-Revision-Date: 2023-12-08 09:00+0100\n"
 "Last-Translator: Herz <a.herz@freegroup.de>\n"
 "Language-Team: English\n"
@@ -131,11 +131,11 @@ msgstr ""
 msgid "Sie halten das Handy in Richtung {} Grad"
 msgstr ""
 
-#: src/screens/main.py:22
+#: src/screens/main.py:24
 msgid "Sie befinden sich in: {}"
 msgstr ""
 
-#: src/screens/main.py:25
+#: src/screens/main.py:27
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr "Unable to determine your current location or address"
 
@@ -151,20 +151,20 @@ msgstr ""
 msgid "Bitte bestätigen Sie, dass sie das Programm beenden wollen"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:32 src/screens/main.kv:61
+#: src/screens/confirm_exit.kv:35 src/screens/main.kv:68
 msgid "Beenden"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:33 src/screens/main.kv:62
+#: src/screens/confirm_exit.kv:36 src/screens/main.kv:69
 #, fuzzy
 msgid "Programm beenden"
 msgstr "Terminating candle."
 
-#: src/screens/confirm_exit.kv:37
+#: src/screens/confirm_exit.kv:41
 msgid "Nicht beenden"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:38
+#: src/screens/confirm_exit.kv:42
 #, fuzzy
 msgid "Programm nicht beenden"
 msgstr "Terminating candle."
@@ -177,18 +177,18 @@ msgstr ""
 msgid "Untermenü: App Berechtigungen anfordern"
 msgstr ""
 
-#: src/screens/permissions.kv:22
+#: src/screens/permissions.kv:24
 msgid "App Berechtigungen"
 msgstr ""
 
-#: src/screens/permissions.kv:23
+#: src/screens/permissions.kv:25
 msgid "App Berechtigungen für GPS, Bluetooth und den Kompass erfragen"
 msgstr ""
 
-#: src/screens/permissions.kv:38 src/screens/permissions.kv:39
-#: src/screens/record.kv:43 src/screens/record.kv:44 src/screens/compass.kv:63
-#: src/screens/select_device.kv:44 src/screens/select_device.kv:45
-#: src/screens/main.kv:66 src/screens/main.kv:67
+#: src/screens/permissions.kv:41 src/screens/permissions.kv:42
+#: src/screens/record.kv:47 src/screens/record.kv:48 src/screens/compass.kv:68
+#: src/screens/select_device.kv:48 src/screens/select_device.kv:49
+#: src/screens/main.kv:74 src/screens/main.kv:75
 msgid "Hilfe"
 msgstr ""
 
@@ -200,53 +200,53 @@ msgstr ""
 msgid "Untermenu: Route aufzeichnen"
 msgstr ""
 
-#: src/screens/record.kv:24 src/screens/record.kv:25
+#: src/screens/record.kv:26 src/screens/record.kv:27
 msgid "Aufzeichnung starten"
 msgstr ""
 
-#: src/screens/record.kv:38 src/screens/compass.kv:58
-#: src/screens/select_device.kv:39
+#: src/screens/record.kv:41 src/screens/compass.kv:62
+#: src/screens/select_device.kv:42
 msgid "Zurück"
 msgstr ""
 
-#: src/screens/record.kv:39 src/screens/select_device.kv:40
+#: src/screens/record.kv:42 src/screens/select_device.kv:43
 msgid "Zurück ins Hauptmenü"
 msgstr ""
 
-#: src/screens/compass.kv:11 src/screens/main.kv:42 src/screens/main.kv:43
+#: src/screens/compass.kv:12 src/screens/main.kv:30 src/screens/main.kv:31
 msgid "Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:12
+#: src/screens/compass.kv:13
 msgid "Untermenü: Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:21
+#: src/screens/compass.kv:24
 msgid "Himmelsrichtungen"
 msgstr ""
 
-#: src/screens/compass.kv:22
+#: src/screens/compass.kv:25
 msgid "Himmelsrichtung ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:26
+#: src/screens/compass.kv:29
 msgid "Winkelangabe"
 msgstr ""
 
-#: src/screens/compass.kv:27
+#: src/screens/compass.kv:30
 msgid "Richtung von 0 bis 360 Grad ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:59
+#: src/screens/compass.kv:63
 msgid "Zurück zum Hauptmeü"
 msgstr ""
 
-#: src/screens/compass.kv:64
+#: src/screens/compass.kv:69
 msgid "Hilfe über dieses Untermenü"
 msgstr ""
 
-#: src/screens/select_device.kv:15 src/screens/main.kv:47
-#: src/screens/main.kv:48
+#: src/screens/select_device.kv:15 src/screens/main.kv:53
+#: src/screens/main.kv:54
 msgid "Einstellungen"
 msgstr ""
 
@@ -254,11 +254,11 @@ msgstr ""
 msgid "Untermenü: Einstellungen"
 msgstr ""
 
-#: src/screens/select_device.kv:25
+#: src/screens/select_device.kv:27
 msgid "Geräte suchen.."
 msgstr ""
 
-#: src/screens/select_device.kv:26
+#: src/screens/select_device.kv:28
 msgid "Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen"
 msgstr ""
 
@@ -271,32 +271,41 @@ msgstr "Main menu"
 msgid "Sie sind im Hauptmenu"
 msgstr "Main menu"
 
-#: src/screens/main.kv:24
-msgid "Ihr derzeitigne Standort ermitteln und Vorlesen"
-msgstr ""
-
 #: src/screens/main.kv:25
-msgid "Standort"
+msgid "Wo bin ich"
 msgstr ""
 
-#: src/screens/main.kv:29 src/screens/main.kv:30
+#: src/screens/main.kv:26
+#, fuzzy
+msgid "Ihr aktuellen Standort ermitteln"
+msgstr "Unable to determine your current location or address"
+
+#: src/screens/main.kv:35 src/screens/main.kv:36
 msgid "Navigation"
 msgstr ""
 
-#: src/screens/main.kv:33
-msgid "Routen verwalten."
-msgstr ""
-
-#: src/screens/main.kv:34
+#: src/screens/main.kv:39
 msgid "Routen Verwalten"
 msgstr ""
 
-#: src/screens/main.kv:37
+#: src/screens/main.kv:40
+msgid "Routen verwalten."
+msgstr ""
+
+#: src/screens/main.kv:43
+msgid "Routen aufzeichnen"
+msgstr ""
+
+#: src/screens/main.kv:44
 msgid "Routen aufzeichnen."
 msgstr ""
 
-#: src/screens/main.kv:38
-msgid "Routen aufzeichnen"
+#: src/screens/main.kv:48
+msgid "Uhrzeit"
+msgstr ""
+
+#: src/screens/main.kv:49
+msgid "Uhrzeit und Datum ansagen"
 msgstr ""
 
 #~ msgid "I18n Test"

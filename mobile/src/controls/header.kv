@@ -1,16 +1,20 @@
+#:import SayButton controls.say_button.SayButton
+
 <Header>:
     orientation: "vertical"
     size_hint_y: None
-    height: dp(96) 
+    height: dp(120) 
 
     BoxLayout:
 
-        Button:
+        SayButton:
             text: root.text
+            say: root.say
             size_hint_x: 1
-            on_release: root.announce()
-            font_size: '25sp'  # Größere Schriftgröße
-            bold: True        # Fette Schrift
+            action: root.announce
+            font_size: '25sp'
+            bold: True
+            halign: 'center'
 
     # This acts as the separator line
     Widget:  

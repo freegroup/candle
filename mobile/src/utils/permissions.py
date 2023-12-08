@@ -4,15 +4,24 @@ from utils.storage import Storage
 def _required_permissions():
     if platform == "android":
         from android.permissions import Permission
-        return [Permission.BLUETOOTH_SCAN,  Permission.BLUETOOTH, Permission.BLUETOOTH_CONNECT, Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION]
+        return [
+                Permission.BLUETOOTH_SCAN,  
+                Permission.BLUETOOTH, 
+                Permission.BLUETOOTH_CONNECT, 
+                Permission.ACCESS_COARSE_LOCATION, 
+                Permission.ACCESS_FINE_LOCATION
+                ]
     
     return []
 
 def has_all_permissions():
     if platform == "android":
         from android.permissions import check_permission
-        return check_permission(_required_permissions())
-    
+        for permission in _required_permissions():
+            if not check_permission(permission):
+                return False
+        return True
+
     return Storage.get("permissions")!=None
 
 

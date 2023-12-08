@@ -17,35 +17,41 @@
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
-
+            spacing: 10
+            padding: 10
 
             # Add your SayButtons here
             SayButton:
-                say: _('Ihr derzeitigne Standort ermitteln und Vorlesen')
-                text: _('Standort')
+                text: _('Wo bin ich')
+                say: _('Ihr aktuellen Standort ermitteln')
                 action: root.location
 
             SayButton:
-                say: _('Navigation')
-                text: _('Navigation')
-
-            SayButton:
-                say: _('Routen verwalten.')
-                text: _('Routen Verwalten')
-
-            SayButton:
-                say: _('Routen aufzeichnen.')
-                text: _('Routen aufzeichnen')
-                action: app.navigate_to_record
-
-            SayButton:
-                say: _('Kompass')
                 text: _('Kompass')
+                say: _('Kompass')
                 action: app.navigate_to_compass
 
             SayButton:
-                say: _('Einstellungen')
+                text: _('Navigation')
+                say: _('Navigation')
+
+            SayButton:
+                text: _('Routen Verwalten')
+                say: _('Routen verwalten.')
+
+            SayButton:
+                text: _('Routen aufzeichnen')
+                say: _('Routen aufzeichnen.')
+                action: app.navigate_to_record
+
+            SayButton:
+                text: _('Uhrzeit')
+                say: _('Uhrzeit und Datum ansagen')
+                action: root.daytime
+
+            SayButton:
                 text: _('Einstellungen')
+                say: _('Einstellungen')
                 action: app.navigate_to_settings
 
             # Spacer to push SayButtons to the top
@@ -56,15 +62,18 @@
         BoxLayout:
             size_hint_y: None
             height: '48dp'
+            spacing: 10
 
             SayButton:
                 text: _('Beenden')
                 say: _('Programm beenden')
                 action: app.request_terminate
+                halign: 'center'
 
             SayButton:
                 text: _('Hilfe')
                 say: _('Hilfe')
+                halign: 'center'
 
 
 

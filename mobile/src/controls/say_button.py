@@ -24,15 +24,18 @@ class SayButton(BoxLayout):
     text = StringProperty('')
     say = StringProperty('')
     action = ObjectProperty(None)
-    long_press_time = 0.5  # Time in seconds for long press
+    long_press_time = 1.0  # Time in seconds for long press
     long_press_event = None
+    long_pressed = BooleanProperty(False) 
     last_inside = BooleanProperty(False)
+
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.vibrate_device()
             self.start_long_press_timer(touch)
         return super(SayButton, self).on_touch_down(touch)
+
 
     def on_touch_move(self, touch):
         inside = self.collide_point(*touch.pos)
@@ -44,15 +47,19 @@ class SayButton(BoxLayout):
         self.last_inside = inside
         return super(SayButton, self).on_touch_move(touch)
 
+
     def on_touch_up(self, touch):
         self.cancel_long_press_timer()
-        if self.collide_point(*touch.pos) and self.action:
+        if self.collide_point(*touch.pos) and self.action and self.long_pressed==False:
             self.action()
+        self.long_pressed = False
         return super(SayButton, self).on_touch_up(touch)
+
 
     def start_long_press_timer(self, touch):
         self.cancel_long_press_timer()
         self.long_press_event = Clock.schedule_once(lambda dt: self.on_long_press(touch), self.long_press_time)
+
 
     def cancel_long_press_timer(self):
         if self.long_press_event:
@@ -62,6 +69,7 @@ class SayButton(BoxLayout):
     def on_long_press(self, touch):
         # Your long press action, e.g., TTS or sound playback
         tts_say(self.say)
+        self.long_pressed = True 
 
 
     def vibrate_device(self, duration=0.05):

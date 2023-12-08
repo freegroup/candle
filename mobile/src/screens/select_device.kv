@@ -20,6 +20,8 @@
             orientation: 'vertical'
             size_hint_y: 1
             id: devices_list
+            spacing: 10
+            padding: 10
 
             SayButton:
                 text: _('Geräte suchen..')
@@ -34,12 +36,15 @@
         BoxLayout:
             size_hint_y: None
             height: '48dp'
+            spacing: 10
 
             SayButton:
                 text: _('Zurück')
                 say: _('Zurück ins Hauptmenü')
                 action: app.navigate_to_main
+                halign: 'center'
 
             SayButton:
                 text: _('Hilfe')
                 say: _('Hilfe')
+                halign: 'center'
