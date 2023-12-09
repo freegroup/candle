@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: d 023280\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-08 17:32+0100\n"
+"POT-Creation-Date: 2023-12-08 18:34+0100\n"
 "PO-Revision-Date: 2023-12-08 09:00+0100\n"
 "Last-Translator: Herz <a.herz@freegroup.de>\n"
 "Language-Team: English\n"
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr "Unable to determine your current location or address"
 
-#: src/main.py:86
+#: src/main.py:92
 msgid "Programm wird beendet"
 msgstr "Terminating candle."
 

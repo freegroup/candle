@@ -5,6 +5,7 @@ Config.set('graphics', 'height', '900')  # Set the height of the window
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 from kivy.core.window import Window
+from kivy.clock import Clock
 
 import asyncio
 import threading
@@ -20,10 +21,16 @@ from utils.location import LocationManager
 from utils.compass import CompassManager
 from utils.i18n import setup_i18n, _
 from utils.tts import say
-from utils.permissions import has_all_permissions, ask_all_permission
+from utils.permissions import has_all_permissions
 
 logging.getLogger("bleak").setLevel(logging.INFO)
 
+
+
+def start_location_services(dt):
+    # Starten Sie hier GPS und Kompass
+    LocationManager.start()
+    CompassManager.start()
 
 class CandleApp(App):
 
@@ -42,20 +49,19 @@ class CandleApp(App):
         self.sm.add_widget(Permissions(name='permissions'))
         
         self.navigate_to_main()
+        return self.sm
+    
+
+    def on_start(self):
         if has_all_permissions():
             # User has granted all permissions, BUT I must ask for them evertime on startup to get access in location and BLE
-            ask_all_permission()
-            LocationManager.start()
-            CompassManager.start()
+            #ask_all_permission()
+            Clock.schedule_once(start_location_services, 4)
         else:
             # Inform the user, that now a system menu comes and asks for permissions
             #
             self.navigate_to_permissions()
 
-        return self.sm
-    
-
-    def on_start(self):
         # Start the asyncio loop
         self.loop_thread = threading.Thread(target=self.start_asyncio_loop, daemon=True)
         self.loop_thread.start()
@@ -97,8 +103,7 @@ class CandleApp(App):
         self.sm.current="main"
 
     def navigate_to_permissions_granted(self):
-        LocationManager.start()
-        CompassManager.start()
+        Clock.schedule_once(start_location_services, 4)
         self.sm.current="main"
 
     def navigate_to_permissions(self):
