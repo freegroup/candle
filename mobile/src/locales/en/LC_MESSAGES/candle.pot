@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-08 18:34+0100\n"
+"POT-Creation-Date: 2023-12-09 12:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr ""
 
-#: src/main.py:92
+#: src/main.py:94
 msgid "Programm wird beendet"
 msgstr ""
 
@@ -151,11 +151,11 @@ msgstr ""
 msgid "Bitte bestätigen Sie, dass sie das Programm beenden wollen"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:35 src/screens/main.kv:68
+#: src/screens/confirm_exit.kv:35 src/screens/main.kv:60
 msgid "Beenden"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:36 src/screens/main.kv:69
+#: src/screens/confirm_exit.kv:36 src/screens/main.kv:61
 msgid "Programm beenden"
 msgstr ""
 
@@ -185,8 +185,9 @@ msgstr ""
 
 #: src/screens/permissions.kv:41 src/screens/permissions.kv:42
 #: src/screens/record.kv:47 src/screens/record.kv:48 src/screens/compass.kv:68
+#: src/screens/favoriten.kv:54 src/screens/favoriten.kv:55
 #: src/screens/select_device.kv:48 src/screens/select_device.kv:49
-#: src/screens/main.kv:74 src/screens/main.kv:75
+#: src/screens/main.kv:66 src/screens/main.kv:67
 msgid "Hilfe"
 msgstr ""
 
@@ -203,11 +204,12 @@ msgid "Aufzeichnung starten"
 msgstr ""
 
 #: src/screens/record.kv:41 src/screens/compass.kv:62
-#: src/screens/select_device.kv:42
+#: src/screens/favoriten.kv:48 src/screens/select_device.kv:42
 msgid "Zurück"
 msgstr ""
 
-#: src/screens/record.kv:42 src/screens/select_device.kv:43
+#: src/screens/record.kv:42 src/screens/favoriten.kv:49
+#: src/screens/select_device.kv:43
 msgid "Zurück ins Hauptmenü"
 msgstr ""
 
@@ -243,8 +245,40 @@ msgstr ""
 msgid "Hilfe über dieses Untermenü"
 msgstr ""
 
-#: src/screens/select_device.kv:15 src/screens/main.kv:53
-#: src/screens/main.kv:54
+#: src/screens/favoriten.kv:13 src/screens/main.kv:35 src/screens/main.kv:36
+msgid "Favoriten"
+msgstr ""
+
+#: src/screens/favoriten.kv:14
+msgid "Untermenu: Favoriten"
+msgstr ""
+
+#: src/screens/favoriten.kv:26
+msgid "Standort speichern"
+msgstr ""
+
+#: src/screens/favoriten.kv:27
+msgid "Ihren aktuellen Standort speichern"
+msgstr ""
+
+#: src/screens/favoriten.kv:30
+msgid "Orte"
+msgstr ""
+
+#: src/screens/favoriten.kv:31
+msgid "Gespeicherte Orte"
+msgstr ""
+
+#: src/screens/favoriten.kv:34
+msgid "Strecken"
+msgstr ""
+
+#: src/screens/favoriten.kv:35
+msgid "Aufgezeichnete Strecken"
+msgstr ""
+
+#: src/screens/select_device.kv:15 src/screens/main.kv:45
+#: src/screens/main.kv:46
 msgid "Einstellungen"
 msgstr ""
 
@@ -276,30 +310,10 @@ msgstr ""
 msgid "Ihr aktuellen Standort ermitteln"
 msgstr ""
 
-#: src/screens/main.kv:35 src/screens/main.kv:36
-msgid "Navigation"
-msgstr ""
-
-#: src/screens/main.kv:39
-msgid "Routen Verwalten"
-msgstr ""
-
 #: src/screens/main.kv:40
-msgid "Routen verwalten."
-msgstr ""
-
-#: src/screens/main.kv:43
-msgid "Routen aufzeichnen"
-msgstr ""
-
-#: src/screens/main.kv:44
-msgid "Routen aufzeichnen."
-msgstr ""
-
-#: src/screens/main.kv:48
 msgid "Uhrzeit"
 msgstr ""
 
-#: src/screens/main.kv:49
+#: src/screens/main.kv:41
 msgid "Uhrzeit und Datum ansagen"
 msgstr ""

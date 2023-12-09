@@ -17,6 +17,7 @@ from screens.record import Record
 from screens.select_device import SelectDevice
 from screens.permissions import Permissions
 from screens.confirm_exit import ConfirmExit
+from screens.favoriten import Favoriten
 from utils.location import LocationManager
 from utils.compass import CompassManager
 from utils.i18n import setup_i18n, _
@@ -46,6 +47,7 @@ class CandleApp(App):
         self.sm.add_widget(SelectDevice(name='device'))
         self.sm.add_widget(Compass(name='compass'))
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
+        self.sm.add_widget(Favoriten(name='favoriten'))
         self.sm.add_widget(Permissions(name='permissions'))
         
         self.navigate_to_main()
@@ -117,6 +119,9 @@ class CandleApp(App):
 
     def navigate_to_compass(self):
         self.sm.current="compass"
+
+    def navigate_to_favoriten(self):
+        self.sm.current="favoriten"
 
 
 
