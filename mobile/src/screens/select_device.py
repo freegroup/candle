@@ -3,6 +3,7 @@ import asyncio
 
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
+from kivy.app import App
 
 from bleak import BleakScanner
 
@@ -17,6 +18,10 @@ kv_file_path = os.path.join(dir_path, 'select_device.kv')
 Builder.load_file(kv_file_path)
 
 class SelectDevice(BaseScreen):
+
+    def back(self):
+        App.get_running_app().navigate_to_main("right")
+
     def on_pre_enter(self):
         super().on_pre_enter()
         self.populate_devices([])

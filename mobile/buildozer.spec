@@ -20,6 +20,7 @@ requirements =
     python3,
     kivy,
     openssl,
+    gpxpy,
     android,
     kivy_garden.mapview,
     bleak,

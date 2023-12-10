@@ -29,5 +29,5 @@ class Main(BaseScreen):
     def daytime(self):
         now = datetime.now()
         # Formatierung der Uhrzeit im 12-Stunden-Format mit AM/PM
-        formatted_time = now.strftime("Wir haben %H Uhr %m.")
+        formatted_time = now.strftime("Wir haben %H Uhr %M.")
         say(formatted_time)

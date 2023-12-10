@@ -1,5 +1,7 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import Swipe controls.swipe_box.Swipe
+
 #:import _ utils.i18n._
 
 <Main>:
@@ -14,7 +16,7 @@
             say: _('Sie sind im Hauptmenu')
 
 
-        BoxLayout:
+        Swipe:
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
             spacing: 10
@@ -32,9 +34,9 @@
                 action: app.navigate_to_compass
 
             SayButton:
-                text: _('Favoriten')
-                say: _('Favoriten')
-                action: app.navigate_to_favoriten
+                text: _('Navigation')
+                say: _('Navigation')
+                action: app.navigate_to_navigation
 
             SayButton:
                 text: _('Uhrzeit')
@@ -59,12 +61,14 @@
             SayButton:
                 text: _('Beenden')
                 say: _('Programm beenden')
+                vibrate: 2
                 action: app.request_terminate
                 halign: 'center'
 
             SayButton:
                 text: _('Hilfe')
                 say: _('Hilfe')
+                vibrate: 2
                 halign: 'center'
 
 

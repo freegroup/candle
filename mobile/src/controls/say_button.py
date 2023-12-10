@@ -2,13 +2,13 @@ import os
 
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty, ObjectProperty, BooleanProperty, ListProperty
+from kivy.properties import StringProperty, ObjectProperty, BooleanProperty, ListProperty, NumericProperty
 from kivy.uix.button import Button
 from kivy.utils import get_color_from_hex
-
+from kivy.utils import platform
 from kivy.lang import Builder
+import time
 
-from plyer import vibrator
 from utils.tts import say as tts_say
 
 # Load the KV file for this module
@@ -34,6 +34,7 @@ class SayButton(BoxLayout):
     text = StringProperty('')
     say = StringProperty('')
     action = ObjectProperty(None)
+    vibrate = NumericProperty(1)  # Custom property
     long_press_time = 1.0  # Time in seconds for long press
     long_press_event = None
     long_pressed = BooleanProperty(False) 
@@ -104,11 +105,17 @@ class SayButton(BoxLayout):
 
 
     def vibrate_device(self, duration=0.05):
-        try:
-            if vibrator.exists():  # Check if the vibrator exists on the device
+        if platform == 'android':
+            from plyer import vibrator
+            for _ in range(self.vibrate):
                 vibrator.vibrate(duration)
-        except:
-            print("vibrate not supported")
+                if self.vibrate >1:
+                    time.sleep(0.2)
+        else:
+            for _ in range(self.vibrate):
+                print("bbbrrrrr.......vibrate")  # Vibrate for 500 milliseconds
+                if self.vibrate>1:
+                    time.sleep(0.2)  # Wait for 500 milliseconds between vibrations
 
 
     def on_button_release(self):

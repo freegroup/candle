@@ -2,6 +2,8 @@ import os
 
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.app import App
+
 from screens.base_screen import BaseScreen
 from kivy.properties import NumericProperty
 from utils.storage import Storage
@@ -29,6 +31,8 @@ class Compass(BaseScreen):
     needle_angle = NumericProperty(0)  # Add this line
     ble_task = None  # For tracking the asyncio task
 
+    def back(self):
+        App.get_running_app().navigate_to_main("right")
 
     def on_enter(self):
         self.ids.arrow.source = image_path  # Set the full path to the image 
@@ -54,7 +58,7 @@ class Compass(BaseScreen):
     def update_compass(self, dt):
         try:
             self.needle_angle   = CompassManager.get_angle()
-            print("Needle Angle:" + str(self.needle_angle))
+            #print("Needle Angle:" + str(self.needle_angle))
             device = Storage.get_connected_device()
             if device:
                 self.enqueue_ble_data(device.address, CompassManager.get_angle())

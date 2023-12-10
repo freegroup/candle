@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import Swipe controls.swipe_box.Swipe
 #:import _ utils.i18n._
 
 <Record>:
@@ -14,7 +15,7 @@
             say: _('Untermenu: Route aufzeichnen')
 
 
-        BoxLayout:
+        Swipe:
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
             spacing: 10
@@ -40,12 +41,14 @@
             SayButton:
                 text: _('Zurück')
                 say: _('Zurück ins Hauptmenü')
+                vibrate: 2
                 action: app.navigate_to_main
                 halign: 'center'
 
             SayButton:
                 text: _('Hilfe')
                 say: _('Hilfe')
+                vibrate: 2
                 halign: 'center'
 
 

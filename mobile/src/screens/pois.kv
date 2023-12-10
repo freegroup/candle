@@ -1,0 +1,56 @@
+#:import SayButton controls.say_button.SayButton
+#:import Header controls.header.Header
+#:import Swipe controls.swipe_box.Swipe
+#:import _ utils.i18n._
+
+<Pois>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+
+        Header:
+            id: header
+            text: _('Orte')
+            say: _('Untermenu: Orte')
+
+
+        Swipe:
+            orientation: 'vertical'
+            size_hint_y: 1  # Take up the remaining space
+            spacing: 10
+            padding: 10
+            swipe_right: root.back
+
+
+            # Add your SayButtons here
+            SayButton:
+                text: _('Standort speichern')
+                say: _('Ihren aktuellen Standort speichern')
+
+
+            # Spacer to push SayButtons to the top
+            Widget:
+                size_hint_y: 1
+
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
+            spacing: 10
+
+            SayButton:
+                text: _('Zurück')
+                say: _('Zurück ins Hauptmenü')
+                vibrate: 2
+                action: app.navigate_to_main
+                halign: 'center'
+
+            SayButton:
+                text: _('Hilfe')
+                say: _('Hilfe')
+                vibrate: 2
+                halign: 'center'
+
+
+

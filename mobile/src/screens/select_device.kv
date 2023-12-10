@@ -2,6 +2,7 @@
 #:import Header controls.header.Header
 #:import ScrollView kivy.uix.scrollview.ScrollView
 #:import Label kivy.uix.label.Label
+#:import Swipe controls.swipe_box.Swipe
 #:import _ utils.i18n._
 
 <SelectDevice>:
@@ -16,12 +17,13 @@
             say: _('Untermenü: Einstellungen')
 
 
-        BoxLayout:
+        Swipe:
             orientation: 'vertical'
             size_hint_y: 1
             id: devices_list
             spacing: 10
             padding: 10
+            swipe_right: root.back
 
             SayButton:
                 text: _('Geräte suchen..')
@@ -41,10 +43,12 @@
             SayButton:
                 text: _('Zurück')
                 say: _('Zurück ins Hauptmenü')
-                action: app.navigate_to_main
+                vibrate: 2
+                action: root.back
                 halign: 'center'
 
             SayButton:
                 text: _('Hilfe')
                 say: _('Hilfe')
+                vibrate: 2
                 halign: 'center'

@@ -3,7 +3,7 @@ Config.set('graphics', 'width', '500')  # Set the width of the window
 Config.set('graphics', 'height', '900')  # Set the height of the window
 
 from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.core.window import Window
 from kivy.clock import Clock
 
@@ -17,7 +17,8 @@ from screens.record import Record
 from screens.select_device import SelectDevice
 from screens.permissions import Permissions
 from screens.confirm_exit import ConfirmExit
-from screens.favoriten import Favoriten
+from screens.navigation import Navigation
+from screens.pois import Pois
 from utils.location import LocationManager
 from utils.compass import CompassManager
 from utils.i18n import setup_i18n, _
@@ -25,7 +26,6 @@ from utils.tts import say
 from utils.permissions import has_all_permissions
 
 logging.getLogger("bleak").setLevel(logging.INFO)
-
 
 
 def start_location_services(dt):
@@ -47,7 +47,8 @@ class CandleApp(App):
         self.sm.add_widget(SelectDevice(name='device'))
         self.sm.add_widget(Compass(name='compass'))
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
-        self.sm.add_widget(Favoriten(name='favoriten'))
+        self.sm.add_widget(Navigation(name='navigation'))
+        self.sm.add_widget(Pois(name='pois'))
         self.sm.add_widget(Permissions(name='permissions'))
         
         self.navigate_to_main()
@@ -101,28 +102,34 @@ class CandleApp(App):
         else:
             self.terminate()
 
-    def navigate_to_main(self):
-        self.sm.current="main"
+    def navigate_to_main(self, dir="left"):
+        self._navigate("main", dir)
 
-    def navigate_to_permissions_granted(self):
+    def navigate_to_permissions_granted(self, dir="left"):
         Clock.schedule_once(start_location_services, 4)
-        self.sm.current="main"
+        self.navigate_to_main(dir)
 
-    def navigate_to_permissions(self):
-        self.sm.current="permissions"
+    def navigate_to_permissions(self, dir="left"):
+        self._navigate("permissions", dir)
 
-    def navigate_to_settings(self):
-        self.sm.current="device"
+    def navigate_to_settings(self, dir="left"):
+        self._navigate("device", dir)
 
-    def navigate_to_record(self):
-        self.sm.current="record"
+    def navigate_to_record(self, dir="left"):
+        self._navigate("record", dir)
 
-    def navigate_to_compass(self):
-        self.sm.current="compass"
+    def navigate_to_compass(self, dir="left"):
+        self._navigate("compass", dir)
 
-    def navigate_to_favoriten(self):
-        self.sm.current="favoriten"
+    def navigate_to_navigation(self, dir="left"):
+        self._navigate("navigation", dir)
 
+    def navigate_to_pois(self, dir="left"):
+        self._navigate("pois", dir)
+
+    def _navigate(self, screen, dir):
+        self.sm.transition = SlideTransition(direction=dir)
+        self.sm.current=screen
 
 
 async def main():
