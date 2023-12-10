@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import SwipeFloat controls.swipe_float.SwipeFloat
+#:import BorderWidget controls.border_widget.BorderWidget
 #:import _ utils.i18n._
 
 <Compass>:
@@ -7,7 +8,8 @@
     BoxLayout:
         orientation: 'vertical'
         size: root.width, root.height
-
+        spacing: 0
+        
         Header:
             id: header
             text: _('Kompass')
@@ -16,25 +18,43 @@
 
         SwipeFloat:
             swipe_right: root.back
+            size_hint_y: 1  # Take up the remaining space
+            padding: [0, 0, 0, 0]
 
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: 1  # Take up the remaining space
                 spacing: 10
                 padding: 10
+                pos_hint: {'y': 0}
 
                 SayButton:
                     text: _('Himmelsrichtungen')
                     say: _('Himmelsrichtung ausgeben')
                     action: root.say_horizon
+                    size_hint_y: 1
 
                 SayButton:
                     text: _('Winkelangabe')
                     say: _('Richtung von 0 bis 360 Grad ausgeben')
                     action: root.say_angle
+                    size_hint_y: 1
 
-                # Spacer to push SayButtons to the top
-                Widget:
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
+                    size_hint_y: 1
+                BorderWidget:
                     size_hint_y: 1
 
             Image:

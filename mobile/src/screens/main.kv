@@ -1,4 +1,5 @@
 #:import SayButton controls.say_button.SayButton
+#:import BorderWidget controls.border_widget.BorderWidget
 #:import Header controls.header.Header
 #:import Swipe controls.swipe_box.Swipe
 
@@ -27,31 +28,46 @@
                 text: _('Wo bin ich')
                 say: _('Ihr aktuellen Standort ermitteln')
                 action: root.location
+                size_hint_y: 1
 
             SayButton:
                 text: _('Kompass')
                 say: _('Kompass')
                 action: app.navigate_to_compass
+                size_hint_y: 1
 
             SayButton:
                 text: _('Navigation')
                 say: _('Navigation')
                 action: app.navigate_to_navigation
+                size_hint_y: 1
 
             SayButton:
                 text: _('Uhrzeit')
                 say: _('Uhrzeit und Datum ansagen')
                 action: root.daytime
+                size_hint_y: 1
 
             SayButton:
                 text: _('Einstellungen')
                 say: _('Einstellungen')
                 action: app.navigate_to_settings
-
-            # Spacer to push SayButtons to the top
-            Widget:
                 size_hint_y: 1
 
+            BorderWidget:
+                size_hint_y: 1
+
+            BorderWidget:
+                size_hint_y: 1
+
+            BorderWidget:
+                size_hint_y: 1
+
+            BorderWidget:
+                size_hint_y: 1
+
+            BorderWidget:
+                size_hint_y: 1
 
         BoxLayout:
             size_hint_y: None

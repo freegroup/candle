@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import BorderWidget controls.border_widget.BorderWidget
 #:import Swipe controls.swipe_box.Swipe
 #:import _ utils.i18n._
 
@@ -14,7 +15,6 @@
             text: _('Navigation')
             say: _('Untermenu: Navigation')
 
-
         Swipe:
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
@@ -22,29 +22,37 @@
             padding: 10
             swipe_right: root.back
 
-
-            # Add your SayButtons here
             SayButton:
                 text: _('Standort speichern')
                 say: _('Ihren aktuellen Standort speichern')
                 action: root.save_location
-
+                size_hint_y: 1
 
             SayButton:
                 text: _('Orte')
                 say: _('Gespeicherte Orte')
                 action: app.navigate_to_pois
-
+                size_hint_y: 1
 
             SayButton:
                 text: _('Strecken')
                 say: _('Aufgezeichnete Strecken')
-
-
-            # Spacer to push SayButtons to the top
-            Widget:
                 size_hint_y: 1
 
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
+            BorderWidget:
+                size_hint_y: 1
 
         BoxLayout:
             size_hint_y: None

@@ -2,6 +2,8 @@ import time
 
 from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
+from kivy.graphics import Color, Rectangle
+
 from kivy.utils import platform
 
 class SwipeFloat(FloatLayout):
@@ -10,7 +12,6 @@ class SwipeFloat(FloatLayout):
 
     def __init__(self, **kwargs):
         super(SwipeFloat, self).__init__(**kwargs)
-
 
     def on_touch_down(self, touch):
         touch.ud['start_pos'] = (touch.x, touch.y)

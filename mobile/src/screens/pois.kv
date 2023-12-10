@@ -1,5 +1,6 @@
 #:import SayButton controls.say_button.SayButton
 #:import Header controls.header.Header
+#:import BorderWidget controls.border_widget.BorderWidget
 #:import Swipe controls.swipe_box.Swipe
 #:import _ utils.i18n._
 
@@ -16,17 +17,16 @@
 
 
         Swipe:
+            id: poi_list
             orientation: 'vertical'
             size_hint_y: 1  # Take up the remaining space
             spacing: 10
             padding: 10
             swipe_right: root.back
 
-
-            # Add your SayButtons here
-            SayButton:
-                text: _('Standort speichern')
-                say: _('Ihren aktuellen Standort speichern')
+            #################
+            # Add here yor dynamic added poi Buttons....
+            ##################
 
 
             # Spacer to push SayButtons to the top

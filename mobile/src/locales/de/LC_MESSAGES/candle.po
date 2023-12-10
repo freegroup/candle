@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-10 16:11+0100\n"
+"POT-Creation-Date: 2023-12-10 19:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,72 +143,64 @@ msgstr ""
 msgid "Programm wird beendet"
 msgstr "Terminate Program"
 
-#: src/screens/pois.kv:14 src/screens/navigation.kv:34
+#: src/screens/pois.kv:15 src/screens/navigation.kv:32
 msgid "Orte"
 msgstr ""
 
-#: src/screens/pois.kv:15
+#: src/screens/pois.kv:16
 msgid "Untermenu: Orte"
 msgstr ""
 
-#: src/screens/pois.kv:28 src/screens/navigation.kv:28
-msgid "Standort speichern"
-msgstr ""
-
-#: src/screens/pois.kv:29 src/screens/navigation.kv:29
-msgid "Ihren aktuellen Standort speichern"
-msgstr ""
-
-#: src/screens/pois.kv:43 src/screens/record.kv:42 src/screens/compass.kv:64
-#: src/screens/select_device.kv:44 src/screens/navigation.kv:55
+#: src/screens/pois.kv:43 src/screens/record.kv:43 src/screens/compass.kv:84
+#: src/screens/select_device.kv:45 src/screens/navigation.kv:63
 msgid "Zurück"
 msgstr ""
 
-#: src/screens/pois.kv:44 src/screens/record.kv:43
-#: src/screens/select_device.kv:45 src/screens/navigation.kv:56
+#: src/screens/pois.kv:44 src/screens/record.kv:44
+#: src/screens/select_device.kv:46 src/screens/navigation.kv:64
 msgid "Zurück ins Hauptmenü"
 msgstr ""
 
 #: src/screens/pois.kv:50 src/screens/pois.kv:51 src/screens/permissions.kv:42
-#: src/screens/permissions.kv:43 src/screens/record.kv:49
-#: src/screens/record.kv:50 src/screens/compass.kv:71
-#: src/screens/select_device.kv:51 src/screens/select_device.kv:52
-#: src/screens/main.kv:69 src/screens/main.kv:70 src/screens/navigation.kv:62
-#: src/screens/navigation.kv:63
+#: src/screens/permissions.kv:43 src/screens/record.kv:50
+#: src/screens/record.kv:51 src/screens/compass.kv:91
+#: src/screens/select_device.kv:52 src/screens/select_device.kv:53
+#: src/screens/main.kv:85 src/screens/main.kv:86 src/screens/navigation.kv:70
+#: src/screens/navigation.kv:71
 msgid "Hilfe"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:13
+#: src/screens/confirm_exit.kv:14
 msgid "Bestätigung Programmende"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:14
+#: src/screens/confirm_exit.kv:15
 msgid "Bitte bestätigen Sie, dass sie das Programm beenden wollen"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:35 src/screens/main.kv:62
+#: src/screens/confirm_exit.kv:36 src/screens/main.kv:78
 msgid "Beenden"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:36 src/screens/main.kv:63
+#: src/screens/confirm_exit.kv:37 src/screens/main.kv:79
 #, fuzzy
 msgid "Programm beenden"
 msgstr "Terminate Program"
 
-#: src/screens/confirm_exit.kv:42
+#: src/screens/confirm_exit.kv:43
 msgid "Nicht beenden"
 msgstr ""
 
-#: src/screens/confirm_exit.kv:43
+#: src/screens/confirm_exit.kv:44
 #, fuzzy
 msgid "Programm nicht beenden"
 msgstr "Terminate Program"
 
-#: src/screens/permissions.kv:14
+#: src/screens/permissions.kv:15
 msgid "Android Berechtigungen"
 msgstr ""
 
-#: src/screens/permissions.kv:15
+#: src/screens/permissions.kv:16
 msgid "Untermenü: App Berechtigungen anfordern"
 msgstr ""
 
@@ -220,109 +212,117 @@ msgstr ""
 msgid "App Berechtigungen für GPS, Bluetooth und den Kompass erfragen"
 msgstr ""
 
-#: src/screens/record.kv:14
+#: src/screens/record.kv:15
 msgid "Routen Aufzeichnen"
 msgstr ""
 
-#: src/screens/record.kv:15
+#: src/screens/record.kv:16
 msgid "Untermenu: Route aufzeichnen"
 msgstr ""
 
-#: src/screens/record.kv:27 src/screens/record.kv:28
+#: src/screens/record.kv:28 src/screens/record.kv:29
 msgid "Aufzeichnung starten"
 msgstr ""
 
-#: src/screens/compass.kv:13 src/screens/main.kv:32 src/screens/main.kv:33
+#: src/screens/compass.kv:15 src/screens/main.kv:34 src/screens/main.kv:35
 msgid "Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:14
+#: src/screens/compass.kv:16
 msgid "Untermenü: Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:27
+#: src/screens/compass.kv:32
 msgid "Himmelsrichtungen"
 msgstr ""
 
-#: src/screens/compass.kv:28
+#: src/screens/compass.kv:33
 msgid "Himmelsrichtung ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:32
+#: src/screens/compass.kv:38
 msgid "Winkelangabe"
 msgstr ""
 
-#: src/screens/compass.kv:33
+#: src/screens/compass.kv:39
 msgid "Richtung von 0 bis 360 Grad ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:65
+#: src/screens/compass.kv:85
 msgid "Zurück zum Hauptmeü"
 msgstr ""
 
-#: src/screens/compass.kv:72
+#: src/screens/compass.kv:92
 msgid "Hilfe über dieses Untermenü"
 msgstr ""
 
-#: src/screens/select_device.kv:16 src/screens/main.kv:47
-#: src/screens/main.kv:48
+#: src/screens/select_device.kv:17 src/screens/main.kv:52
+#: src/screens/main.kv:53
 msgid "Einstellungen"
 msgstr ""
 
-#: src/screens/select_device.kv:17
+#: src/screens/select_device.kv:18
 msgid "Untermenü: Einstellungen"
 msgstr ""
 
-#: src/screens/select_device.kv:29
+#: src/screens/select_device.kv:30
 msgid "Geräte suchen.."
 msgstr ""
 
-#: src/screens/select_device.kv:30
+#: src/screens/select_device.kv:31
 msgid "Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen"
 msgstr ""
 
-#: src/screens/main.kv:15
+#: src/screens/main.kv:16
 msgid "Hauptmenu"
 msgstr "Hauptmenu"
 
-#: src/screens/main.kv:16
+#: src/screens/main.kv:17
 #, fuzzy
 msgid "Sie sind im Hauptmenu"
 msgstr "Hauptmenu"
 
-#: src/screens/main.kv:27
+#: src/screens/main.kv:28
 msgid "Wo bin ich"
 msgstr ""
 
-#: src/screens/main.kv:28
+#: src/screens/main.kv:29
 msgid "Ihr aktuellen Standort ermitteln"
 msgstr ""
 
-#: src/screens/main.kv:37 src/screens/main.kv:38 src/screens/navigation.kv:14
+#: src/screens/main.kv:40 src/screens/main.kv:41 src/screens/navigation.kv:15
 msgid "Navigation"
 msgstr ""
 
-#: src/screens/main.kv:42
+#: src/screens/main.kv:46
 msgid "Uhrzeit"
 msgstr ""
 
-#: src/screens/main.kv:43
+#: src/screens/main.kv:47
 msgid "Uhrzeit und Datum ansagen"
 msgstr ""
 
-#: src/screens/navigation.kv:15
+#: src/screens/navigation.kv:16
 msgid "Untermenu: Navigation"
 msgstr ""
 
-#: src/screens/navigation.kv:35
+#: src/screens/navigation.kv:26
+msgid "Standort speichern"
+msgstr ""
+
+#: src/screens/navigation.kv:27
+msgid "Ihren aktuellen Standort speichern"
+msgstr ""
+
+#: src/screens/navigation.kv:33
 msgid "Gespeicherte Orte"
 msgstr ""
 
-#: src/screens/navigation.kv:40
+#: src/screens/navigation.kv:38
 msgid "Strecken"
 msgstr ""
 
-#: src/screens/navigation.kv:41
+#: src/screens/navigation.kv:39
 msgid "Aufgezeichnete Strecken"
 msgstr ""
 
