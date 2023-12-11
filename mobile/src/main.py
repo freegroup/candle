@@ -18,6 +18,7 @@ from screens.select_device import SelectDevice
 from screens.permissions import Permissions
 from screens.confirm_exit import ConfirmExit
 from screens.navigation import Navigation
+from screens.poi_details import PoiDetails
 from screens.pois import Pois
 from utils.location import LocationManager
 from utils.compass import CompassManager
@@ -49,6 +50,7 @@ class CandleApp(App):
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
         self.sm.add_widget(Navigation(name='navigation'))
         self.sm.add_widget(Pois(name='pois'))
+        self.sm.add_widget(PoiDetails(name='poi_details'))
         self.sm.add_widget(Permissions(name='permissions'))
         
         self.navigate_to_main()
@@ -126,6 +128,12 @@ class CandleApp(App):
 
     def navigate_to_pois(self, dir="left"):
         self._navigate("pois", dir)
+
+    def navigate_to_poi_details(self, poi, dir="left"):
+        target_screen = self.sm.get_screen("poi_details")
+        target_screen.poi = poi
+        target_screen.ids.header.say = _("Details für: {}").format(poi.name)
+        self._navigate("poi_details", dir)
 
     def _navigate(self, screen, dir):
         self.sm.transition = SlideTransition(direction=dir)

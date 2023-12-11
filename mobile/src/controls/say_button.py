@@ -63,8 +63,6 @@ class SayButton(BoxLayout):
 
         return r
 
-
-
     def on_touch_move(self, touch):
         inside = self.collide_point(*touch.pos)
         if inside and not self.last_inside:
@@ -107,16 +105,10 @@ class SayButton(BoxLayout):
     def vibrate_device(self, duration=0.05):
         if platform == 'android':
             from plyer import vibrator
-            for _ in range(self.vibrate):
-                vibrator.vibrate(duration)
-                if self.vibrate >1:
-                    time.sleep(0.2)
+            vibrator.vibrate(duration*self.vibrate)
         else:
-            for _ in range(self.vibrate):
-                print("bbbrrrrr.......vibrate")  # Vibrate for 500 milliseconds
-                if self.vibrate>1:
-                    time.sleep(0.2)  # Wait for 500 milliseconds between vibrations
-
+            print("bbbrrrrr.......vibrate")  # Vibrate for 500 milliseconds
+ 
 
     def on_button_release(self):
         if self.action:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-10 19:59+0100\n"
+"POT-Creation-Date: 2023-12-11 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,30 @@ msgstr ""
 #: src/utils/i18n.py:44
 msgid "TEST"
 msgstr "DE DE DE TEST"
+
+#: src/screens/pois.py:28
+msgid "Übersicht Orte: Seite {} von {}"
+msgstr ""
+
+#: src/screens/pois.py:55
+msgid "<<"
+msgstr ""
+
+#: src/screens/pois.py:55
+msgid "Vorgänger"
+msgstr ""
+
+#: src/screens/pois.py:63
+msgid ">>"
+msgstr ""
+
+#: src/screens/pois.py:63
+msgid "Weitere Orte"
+msgstr ""
+
+#: src/screens/pois.py:76 src/screens/pois.py:82
+msgid "Seite {} von {}"
+msgstr ""
 
 #: src/screens/permissions.py:29
 msgid ""
@@ -139,9 +163,65 @@ msgstr "Sie befinden sich in: {}"
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr ""
 
-#: src/main.py:95
+#: src/main.py:97
 msgid "Programm wird beendet"
 msgstr "Terminate Program"
+
+#: src/main.py:135
+msgid "Details für: {}"
+msgstr ""
+
+#: src/screens/poi_details.kv:15
+msgid "Ort Details"
+msgstr ""
+
+#: src/screens/poi_details.kv:16
+msgid "Untermenu: Ort Details"
+msgstr ""
+
+#: src/screens/poi_details.kv:26 src/screens/poi_details.kv:27
+msgid "Navigation Starten"
+msgstr ""
+
+#: src/screens/poi_details.kv:31 src/screens/poi_details.kv:32
+msgid "Richtung anzeigen"
+msgstr ""
+
+#: src/screens/poi_details.kv:36
+msgid "Umbenennen"
+msgstr ""
+
+#: src/screens/poi_details.kv:37
+msgid "Ort umbenennen"
+msgstr ""
+
+#: src/screens/poi_details.kv:41
+msgid "Löschen"
+msgstr ""
+
+#: src/screens/poi_details.kv:42
+msgid "Ort löschen"
+msgstr ""
+
+#: src/screens/poi_details.kv:66 src/screens/pois.kv:43
+#: src/screens/record.kv:43 src/screens/compass.kv:84
+#: src/screens/select_device.kv:45 src/screens/navigation.kv:63
+msgid "Zurück"
+msgstr ""
+
+#: src/screens/poi_details.kv:67
+msgid "Zurück zur Orte"
+msgstr ""
+
+#: src/screens/poi_details.kv:73 src/screens/poi_details.kv:74
+#: src/screens/pois.kv:50 src/screens/pois.kv:51 src/screens/permissions.kv:42
+#: src/screens/permissions.kv:43 src/screens/record.kv:50
+#: src/screens/record.kv:51 src/screens/compass.kv:91
+#: src/screens/select_device.kv:52 src/screens/select_device.kv:53
+#: src/screens/main.kv:85 src/screens/main.kv:86 src/screens/navigation.kv:70
+#: src/screens/navigation.kv:71
+msgid "Hilfe"
+msgstr ""
 
 #: src/screens/pois.kv:15 src/screens/navigation.kv:32
 msgid "Orte"
@@ -151,23 +231,8 @@ msgstr ""
 msgid "Untermenu: Orte"
 msgstr ""
 
-#: src/screens/pois.kv:43 src/screens/record.kv:43 src/screens/compass.kv:84
-#: src/screens/select_device.kv:45 src/screens/navigation.kv:63
-msgid "Zurück"
-msgstr ""
-
-#: src/screens/pois.kv:44 src/screens/record.kv:44
-#: src/screens/select_device.kv:46 src/screens/navigation.kv:64
-msgid "Zurück ins Hauptmenü"
-msgstr ""
-
-#: src/screens/pois.kv:50 src/screens/pois.kv:51 src/screens/permissions.kv:42
-#: src/screens/permissions.kv:43 src/screens/record.kv:50
-#: src/screens/record.kv:51 src/screens/compass.kv:91
-#: src/screens/select_device.kv:52 src/screens/select_device.kv:53
-#: src/screens/main.kv:85 src/screens/main.kv:86 src/screens/navigation.kv:70
-#: src/screens/navigation.kv:71
-msgid "Hilfe"
+#: src/screens/pois.kv:44
+msgid "Zurück zu Navigation"
 msgstr ""
 
 #: src/screens/confirm_exit.kv:14
@@ -222,6 +287,11 @@ msgstr ""
 
 #: src/screens/record.kv:28 src/screens/record.kv:29
 msgid "Aufzeichnung starten"
+msgstr ""
+
+#: src/screens/record.kv:44 src/screens/select_device.kv:46
+#: src/screens/navigation.kv:64
+msgid "Zurück ins Hauptmenü"
 msgstr ""
 
 #: src/screens/compass.kv:15 src/screens/main.kv:34 src/screens/main.kv:35

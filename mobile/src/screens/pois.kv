@@ -36,14 +36,14 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: '64dp'
             spacing: 10
 
             SayButton:
                 text: _('Zurück')
-                say: _('Zurück ins Hauptmenü')
+                say: _('Zurück zu Navigation')
                 vibrate: 2
-                action: app.navigate_to_main
+                action: root.back
                 halign: 'center'
 
             SayButton:

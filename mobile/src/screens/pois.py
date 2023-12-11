@@ -1,6 +1,7 @@
 import os
 from kivy.app import App
 from screens.base_screen import BaseScreen
+from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from utils.i18n import _
 from utils.tts import say
@@ -21,47 +22,65 @@ class Pois(BaseScreen):
     def back(self):
         App.get_running_app().navigate_to_navigation("right")
 
-    def on_enter(self, *args):
-        super(Pois, self).on_enter(*args)
+
+    def on_pre_enter(self, *args):
         self.load_pois()
-
+        self.ids.header.say = _("Übersicht Orte: Seite {} von {}").format(self.current_page+1, len(self.pages))
+        super(Pois, self).on_pre_enter(*args)
+  
+  
     def load_pois(self):
-        all_pois = PoiManager.get_all()
-        pages = [all_pois[i:i + self.pois_per_page] for i in range(0, len(all_pois), self.pois_per_page)]
+        self.all_pois = PoiManager.get_all()
+        self.pages = [self.all_pois[i:i + self.pois_per_page] for i in range(0, len(self.all_pois), self.pois_per_page)]
 
-        if self.current_page >= len(pages):
+        if self.current_page >= len(self.pages):
             self.current_page = 0  # Reset to first page if out of range
 
         self.ids.poi_list.clear_widgets()
-        for poi in pages[self.current_page]:
-            self.ids.poi_list.add_widget(SayButton(text=poi.name, say=poi.name,  size_hint_y=1, action=lambda x, poi=poi: self.on_poi_select(poi)))
+        for poi in self.pages[self.current_page]:
+            self.ids.poi_list.add_widget(SayButton(text=poi.name, say=poi.name,  size_hint_y=1, action=lambda poi=poi: self.on_poi_select(poi)))
 
         # Fill up with placeholder Widgets if needed
-        for _ in range(self.pois_per_page - len(pages[self.current_page])):
+        for _ in range(self.pois_per_page - len(self.pages[self.current_page])):
             self.ids.poi_list.add_widget(BorderWidget(size_hint_y=1))
 
-        if len(all_pois) > self.pois_per_page:
-            self.add_navigation_buttons(len(pages))
+        if len(self.all_pois) > self.pois_per_page:
+            self.add_navigation_buttons(len(self.pages))
+
 
     def add_navigation_buttons(self, total_pages):
+        layout = BoxLayout(orientation='horizontal', size_hint_y=1, spacing=10)
+  
         if self.current_page > 0:
-            self.ids.poi_list.add_widget(SayButton(text='Previous', say="Vorgänger", action=self.go_previous))
+            button = SayButton(text=_('<<'), say=_('Vorgänger'), action=self.go_previous)
+            button.halign = 'left'
+            layout.add_widget(button)
+        else:
+            layout.add_widget(BorderWidget(size_hint_y=1))
 
-        if self.current_page < total_pages - 1:
-            self.ids.poi_list.add_widget(SayButton(text='Next', say="Weitere Orte", action=self.go_next))
+        print(f"current: {self.current_page} , len {total_pages}")
+        if self.current_page < (total_pages-1):
+            button = SayButton(text=_('>>'), say=_('Weitere Orte'), action=self.go_next)
+            button.halign = 'right'
+            layout.add_widget(button)
+        else:
+            layout.add_widget(BorderWidget(size_hint_y=1))
 
-        # Fill with placeholder widgets if necessary
-        for _ in range(self.pois_per_page - len(self.ids.poi_list.children) + 2):
-            self.ids.poi_list.add_widget(BorderWidget())
+        if self.current_page > 0 or self.current_page < total_pages - 1:
+            self.ids.poi_list.add_widget(layout)
+
 
     def go_next(self, *args):
         self.current_page += 1
         self.load_pois()
+        say(_("Seite {} von {}").format(self.current_page+1, len(self.pages)))
+        
 
     def go_previous(self, *args):
         self.current_page -= 1
         self.load_pois()
-
+        say(_("Seite {} von {}").format(self.current_page+1, len(self.pages)))
+  
     def on_poi_select(self, poi):
-        # Handle POI selection
-        pass
+        App.get_running_app().navigate_to_poi_details(poi)
+
