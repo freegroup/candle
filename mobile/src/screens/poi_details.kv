@@ -31,16 +31,19 @@
                 text: _('Richtung anzeigen')
                 say: _('Richtung anzeigen')
                 size_hint_y: 1
+                action: root.direction
 
             SayButton:
                 text: _('Umbenennen')
                 say: _('Ort umbenennen')
                 size_hint_y: 1
+                action: root.rename
 
             SayButton:
                 text: _('Löschen')
                 say: _('Ort löschen')
                 size_hint_y: 1
+                action: root.delete
 
             BorderWidget:
                 size_hint_y: 1

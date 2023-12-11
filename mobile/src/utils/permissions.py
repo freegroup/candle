@@ -9,6 +9,7 @@ def _required_permissions():
                 Permission.BLUETOOTH, 
                 Permission.BLUETOOTH_CONNECT, 
                 Permission.ACCESS_COARSE_LOCATION, 
+                Permission.RECORD_AUDIO,
                 Permission.ACCESS_FINE_LOCATION
                 ]
     

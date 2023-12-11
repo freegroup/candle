@@ -16,9 +16,11 @@ from screens.compass import Compass
 from screens.record import Record
 from screens.select_device import SelectDevice
 from screens.permissions import Permissions
+from screens.confirm import Confirm
 from screens.confirm_exit import ConfirmExit
 from screens.navigation import Navigation
 from screens.poi_details import PoiDetails
+from screens.poi_direction import PoiDirection
 from screens.pois import Pois
 from utils.location import LocationManager
 from utils.compass import CompassManager
@@ -47,11 +49,13 @@ class CandleApp(App):
         self.sm.add_widget(Record(name='record'))
         self.sm.add_widget(SelectDevice(name='device'))
         self.sm.add_widget(Compass(name='compass'))
+        self.sm.add_widget(Confirm(name='confirm'))
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
         self.sm.add_widget(Navigation(name='navigation'))
         self.sm.add_widget(Pois(name='pois'))
         self.sm.add_widget(PoiDetails(name='poi_details'))
         self.sm.add_widget(Permissions(name='permissions'))
+        self.sm.add_widget(PoiDirection(name='poi_direction'))
         
         self.navigate_to_main()
         return self.sm
@@ -97,6 +101,7 @@ class CandleApp(App):
         say(_("Programm wird beendet"))
         self.stop()
 
+
     def request_terminate(self):
         if LocationManager.is_active():
             self.previous_screen = self.sm.current
@@ -134,6 +139,29 @@ class CandleApp(App):
         target_screen.poi = poi
         target_screen.ids.header.say = _("Details für: {}").format(poi.name)
         self._navigate("poi_details", dir)
+
+    def navigate_to_poi_direction(self, poi, dir="left"):
+        target_screen = self.sm.get_screen("poi_direction")
+        target_screen.poi = poi
+        self._navigate("poi_direction", dir)
+
+    def confirm(self, text, say, on_confirm):
+        def _cancel(screen):
+            self._navigate(screen, "right")
+        
+        def _confirm(screen, func):
+            self._navigate(screen, "right")
+            func()
+
+        current_screen = self.sm.current
+        confirm_screen = self.sm.get_screen("confirm")
+        confirm_screen.ids.header.text = text
+        confirm_screen.ids.header.say = say
+        confirm_screen.cancel = lambda screen=current_screen: _cancel(screen)
+        confirm_screen.confirm = lambda screen=current_screen: _confirm(screen, on_confirm)
+
+        self._navigate("confirm", "left")
+
 
     def _navigate(self, screen, dir):
         self.sm.transition = SlideTransition(direction=dir)

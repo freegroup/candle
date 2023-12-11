@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: d 023280\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 09:02+0100\n"
+"POT-Creation-Date: 2023-12-11 17:10+0100\n"
 "PO-Revision-Date: 2023-12-08 09:00+0100\n"
 "Last-Translator: Herz <a.herz@freegroup.de>\n"
 "Language-Team: English\n"
@@ -25,24 +25,42 @@ msgstr "EN EN EN TEST"
 msgid "Übersicht Orte: Seite {} von {}"
 msgstr ""
 
-#: src/screens/pois.py:55
+#: src/screens/pois.py:38
+msgid "Sie haben noch keine eigene Orte hinterlegt oder gespeichert."
+msgstr ""
+
+#: src/screens/pois.py:60
 msgid "<<"
 msgstr ""
 
-#: src/screens/pois.py:55
-msgid "Vorgänger"
+#: src/screens/pois.py:60 src/screens/pois.py:68
+msgid "Gehe zu Seite {} von {}"
 msgstr ""
 
-#: src/screens/pois.py:63
+#: src/screens/pois.py:68
 msgid ">>"
 msgstr ""
 
-#: src/screens/pois.py:63
-msgid "Weitere Orte"
+#: src/screens/pois.py:81 src/screens/pois.py:87
+msgid "Seite {} von {}"
 msgstr ""
 
-#: src/screens/pois.py:76 src/screens/pois.py:82
-msgid "Seite {} von {}"
+#: src/screens/poi_details.py:30
+msgid "Ort wurde gelöscht"
+msgstr ""
+
+#: src/screens/poi_details.py:33
+msgid "Ort: {}, wirklich löschen?"
+msgstr ""
+
+#: src/screens/poi_details.py:70
+msgid "Ort wurde von: {} , nach: {} umbenannt"
+msgstr ""
+
+#: src/screens/poi_details.py:74
+msgid ""
+"Konnte Ort nicht umbenennen. Bitte nochmal versuchen und den neuen Namen "
+"deutlich in das Mikrophon sprechen."
 msgstr ""
 
 #: src/screens/permissions.py:29
@@ -155,6 +173,14 @@ msgstr ""
 msgid "Sie halten das Handy in Richtung {} Grad"
 msgstr ""
 
+#: src/screens/navigation.py:27
+msgid "{} wurde in 'Orte' gespeichert."
+msgstr ""
+
+#: src/screens/navigation.py:30
+msgid "Leider ist ein Fehler aufgetreten. Ort konnte nicht gespeichert werden"
+msgstr ""
+
 #: src/screens/main.py:24
 msgid "Sie befinden sich in: {}"
 msgstr ""
@@ -163,11 +189,11 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr "Unable to determine your current location or address"
 
-#: src/main.py:97
+#: src/main.py:101
 msgid "Programm wird beendet"
 msgstr "Terminating candle."
 
-#: src/main.py:135
+#: src/main.py:140
 msgid "Details für: {}"
 msgstr ""
 
@@ -187,39 +213,41 @@ msgstr ""
 msgid "Richtung anzeigen"
 msgstr ""
 
-#: src/screens/poi_details.kv:36
+#: src/screens/poi_details.kv:37
 msgid "Umbenennen"
 msgstr ""
 
-#: src/screens/poi_details.kv:37
+#: src/screens/poi_details.kv:38
 msgid "Ort umbenennen"
 msgstr ""
 
-#: src/screens/poi_details.kv:41
+#: src/screens/poi_details.kv:43
 msgid "Löschen"
 msgstr ""
 
-#: src/screens/poi_details.kv:42
+#: src/screens/poi_details.kv:44
 msgid "Ort löschen"
 msgstr ""
 
-#: src/screens/poi_details.kv:66 src/screens/pois.kv:43
+#: src/screens/poi_details.kv:69 src/screens/pois.kv:43
 #: src/screens/record.kv:43 src/screens/compass.kv:84
-#: src/screens/select_device.kv:45 src/screens/navigation.kv:63
+#: src/screens/select_device.kv:45 src/screens/poi_direction.kv:82
+#: src/screens/navigation.kv:69
 msgid "Zurück"
 msgstr ""
 
-#: src/screens/poi_details.kv:67
+#: src/screens/poi_details.kv:70
 msgid "Zurück zur Orte"
 msgstr ""
 
-#: src/screens/poi_details.kv:73 src/screens/poi_details.kv:74
+#: src/screens/poi_details.kv:76 src/screens/poi_details.kv:77
 #: src/screens/pois.kv:50 src/screens/pois.kv:51 src/screens/permissions.kv:42
 #: src/screens/permissions.kv:43 src/screens/record.kv:50
 #: src/screens/record.kv:51 src/screens/compass.kv:91
 #: src/screens/select_device.kv:52 src/screens/select_device.kv:53
-#: src/screens/main.kv:85 src/screens/main.kv:86 src/screens/navigation.kv:70
-#: src/screens/navigation.kv:71
+#: src/screens/poi_direction.kv:89 src/screens/main.kv:85
+#: src/screens/main.kv:86 src/screens/navigation.kv:76
+#: src/screens/navigation.kv:77
 msgid "Hilfe"
 msgstr ""
 
@@ -290,7 +318,7 @@ msgid "Aufzeichnung starten"
 msgstr ""
 
 #: src/screens/record.kv:44 src/screens/select_device.kv:46
-#: src/screens/navigation.kv:64
+#: src/screens/navigation.kv:70
 msgid "Zurück ins Hauptmenü"
 msgstr ""
 
@@ -302,28 +330,44 @@ msgstr ""
 msgid "Untermenü: Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:32
+#: src/screens/compass.kv:32 src/screens/poi_direction.kv:32
 msgid "Himmelsrichtungen"
 msgstr ""
 
-#: src/screens/compass.kv:33
+#: src/screens/compass.kv:33 src/screens/poi_direction.kv:33
 msgid "Himmelsrichtung ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:38
+#: src/screens/compass.kv:38 src/screens/poi_direction.kv:37
 msgid "Winkelangabe"
 msgstr ""
 
-#: src/screens/compass.kv:39
+#: src/screens/compass.kv:39 src/screens/poi_direction.kv:38
 msgid "Richtung von 0 bis 360 Grad ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:85
+#: src/screens/compass.kv:85 src/screens/poi_direction.kv:83
 msgid "Zurück zum Hauptmeü"
 msgstr ""
 
-#: src/screens/compass.kv:92
+#: src/screens/compass.kv:92 src/screens/poi_direction.kv:90
 msgid "Hilfe über dieses Untermenü"
+msgstr ""
+
+#: src/screens/confirm.kv:14
+msgid "Bestätigung"
+msgstr ""
+
+#: src/screens/confirm.kv:15
+msgid "Bitte bestätigen Sie"
+msgstr ""
+
+#: src/screens/confirm.kv:35 src/screens/confirm.kv:36
+msgid "Bestätigen"
+msgstr ""
+
+#: src/screens/confirm.kv:42 src/screens/confirm.kv:43
+msgid "Abbruch"
 msgstr ""
 
 #: src/screens/select_device.kv:17 src/screens/main.kv:52
@@ -341,6 +385,14 @@ msgstr ""
 
 #: src/screens/select_device.kv:31
 msgid "Sie sind mit keinem Gerät verbunden. Klicke um Geräte zu suchen"
+msgstr ""
+
+#: src/screens/poi_direction.kv:15
+msgid "Richtung und Abstand"
+msgstr ""
+
+#: src/screens/poi_direction.kv:16
+msgid "Untermenü: Richtung und Abstand zum Ort"
 msgstr ""
 
 #: src/screens/main.kv:16
@@ -396,6 +448,14 @@ msgstr ""
 
 #: src/screens/navigation.kv:39
 msgid "Aufgezeichnete Strecken"
+msgstr ""
+
+#: src/screens/navigation.kv:43
+msgid "Testdaten"
+msgstr ""
+
+#: src/screens/navigation.kv:44
+msgid "Testdaten einfügen"
 msgstr ""
 
 #~ msgid "I18n Test"

@@ -24,6 +24,8 @@ requirements =
     android,
     kivy_garden.mapview,
     bleak,
+    geopy,
+    geographiclib,
     typing_extensions, 
     async_to_sync, 
     async-timeout,
@@ -56,6 +58,7 @@ android.permissions =
     ACCESS_FINE_LOCATION,
     ACCESS_COARSE_LOCATION,
     VIBRATE,
+    RECORD_AUDIO,
     WRITE_EXTERNAL_STORAGE,
     READ_EXTERNAL_STORAGE
 

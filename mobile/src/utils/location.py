@@ -3,6 +3,8 @@ import time
 import requests
 import json
 from threading import Thread, Lock
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 
 from plyer import gps
 
@@ -93,3 +95,21 @@ class LocationManager:
             return formatted_address.strip()
         else:
             raise Exception("openstreetmap do not response with an 200 code.")
+        
+
+    @staticmethod
+    def geocode_address( address_query):
+        # Erstellen eines Geocoders mit Nominatim
+        geolocator = Nominatim(user_agent="candle")
+
+        lat = LocationManager._location[0]
+        lon = LocationManager._location[1]
+
+        # Geocoding der Adresse, beschränkt auf die Nähe des Ausgangspunkts
+        location = geolocator.geocode(address_query, viewbox=[(lat - 0.05, lon - 0.05),  (lat + 0.05, lon + 0.05)],   bounded=False)
+
+        if location:
+            print(f"Adresse: {location.address}")
+            print(f"GPS-Koordinaten: {location.latitude}, {location.longitude}")
+        else:
+            print("Adresse konnte nicht geocodiert werden")

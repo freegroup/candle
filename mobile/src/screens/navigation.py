@@ -19,8 +19,16 @@ class Navigation(BaseScreen):
         App.get_running_app().navigate_to_main("right")
 
     def save_location(self):
-        loc = LocationManager.get_location()
-        address = LocationManager.get_human_short_address(loc)
-        say(address)
-        poi = Poi(lat=loc[0], lon=loc[1], name=address, desc=None)        
-        PoiManager.add(poi)
+        try:
+            loc = LocationManager.get_location()
+            address = LocationManager.get_human_short_address(loc)
+            poi = Poi(lat=loc[0], lon=loc[1], name=address, desc=None)        
+            PoiManager.add(poi)
+            say( _("{} wurde in 'Orte' gespeichert.").format(address))
+        except Exception as e:
+            print(e)
+            say(_("Leider ist ein Fehler aufgetreten. Ort konnte nicht gespeichert werden"))
+
+    def testdata(self):
+        PoiManager.add( Poi(name="Lidl", desc="Lidl in Edingen Neckarhausen", lat=49.4557504788511, lon=8.595504632766987))
+        print("Testdaten hinzugefügt")

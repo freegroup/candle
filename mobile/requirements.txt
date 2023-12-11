@@ -6,3 +6,4 @@ pyjnius==1.6.1
 kivy-garden.mapview==1.0.6
 python-dotenv==1.0.0
 bleak==0.21.1
+geopy==2.4.1
