@@ -54,6 +54,10 @@ class SayButton(BoxLayout):
         button.background_normal = ''
         button.background_down = ''
 
+    def on_double_tap(self):
+            # Implementieren Sie hier die Aktion, die bei einem Double-Tap ausgeführt werden soll.
+            print("Double Tap Detected")
+
     def on_touch_down(self, touch):
         r = super(SayButton, self).on_touch_down(touch)
         if self.collide_point(*touch.pos):

@@ -27,6 +27,7 @@ class PoiDirection(BaseScreen):
     needle_angle = NumericProperty(0)  # Add this line
     poi = None
     vibration_schedule = None
+    distance_announced = False
 
     def back(self):
         App.get_running_app().navigate_to_poi_details(self.poi, "right")
@@ -49,6 +50,25 @@ class PoiDirection(BaseScreen):
         # Berechnen des Winkels für die Nadel
         self.needle_angle = (current_heading -bearing_to_poi ) % 360
 
+        angle_abs = abs(self.needle_angle)
+        if angle_abs <= 10 and not self.distance_announced:
+            self.say_distance()
+            self.distance_announced = True
+        # Zurücksetzen der Ansage, wenn der Winkel außerhalb von +/- 30 Grad liegt
+        elif angle_abs > 30:
+            self.distance_announced = False
+
+  
+    def say_distance(self):
+        distance = self._calculate_distance()
+        say(_("Die Entfernung beträgt {} Meter").format(distance))
+
+
+    def say_angle(self):
+        angle = self._calculate_bearing()
+        say(_("Der Winkel zum Zielort beträgt {} Grad").format(angle))
+
+
     def vibrate_continuously(self, dt):
         angle_difference = abs(self.needle_angle)
         vibration_duration = max(0.2, 1 - angle_difference / 180)  # Längere Vibration bei größerem Winkel
@@ -59,6 +79,18 @@ class PoiDirection(BaseScreen):
         print(pause_duration)
         print("-------")
         self.vibrate(vibration_duration)
+
+
+    def _calculate_distance(self):
+        # Aktuelle Position
+        lat1, lon1 = LocationManager.get_location()
+
+        # Zielort
+        lat2, lon2 = self.poi.lat, self.poi.lon
+
+        # Berechnung der Entfernung zwischen den beiden Punkten
+        distance = geodesic((lat1, lon1), (lat2, lon2)).meters
+        return int(distance)
 
 
     def _calculate_bearing(self):
@@ -81,4 +113,4 @@ class PoiDirection(BaseScreen):
         # Umwandlung von Radianten in Grad
         bearing = math.degrees(math.atan2(x, y))
         bearing = (bearing + 360) % 360  # Normalisierung auf 0-360 Grad
-        return bearing
+        return int(bearing)

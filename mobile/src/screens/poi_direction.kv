@@ -29,14 +29,16 @@
                 pos_hint: {'y': 0}
 
                 SayButton:
-                    text: _('Himmelsrichtungen')
-                    say: _('Himmelsrichtung ausgeben')
+                    text: _('Abstand')
+                    say: _('Abstand zum Zielort ansagen')
                     size_hint_y: 1
+                    action: root.say_distance
 
                 SayButton:
                     text: _('Winkelangabe')
-                    say: _('Richtung von 0 bis 360 Grad ausgeben')
+                    say: _('Richtung zum Zielort von 0 bis 360 Grad ausgeben')
                     size_hint_y: 1
+                    action: root.say_angle
 
                 BorderWidget:
                     size_hint_y: 1

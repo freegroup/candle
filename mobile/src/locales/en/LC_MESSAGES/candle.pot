@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 18:23+0100\n"
+"POT-Creation-Date: 2023-12-12 09:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,6 +189,14 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr ""
 
+#: src/screens/poi_direction.py:64
+msgid "Die Entfernung beträgt {} Meter"
+msgstr ""
+
+#: src/screens/poi_direction.py:69
+msgid "Der Winkel zum Zielort beträgt {} Grad"
+msgstr ""
+
 #: src/main.py:101
 msgid "Programm wird beendet"
 msgstr ""
@@ -231,7 +239,7 @@ msgstr ""
 
 #: src/screens/poi_details.kv:69 src/screens/pois.kv:43
 #: src/screens/record.kv:43 src/screens/compass.kv:84
-#: src/screens/select_device.kv:45 src/screens/poi_direction.kv:82
+#: src/screens/select_device.kv:45 src/screens/poi_direction.kv:84
 #: src/screens/navigation.kv:69
 msgid "Zurück"
 msgstr ""
@@ -245,8 +253,8 @@ msgstr ""
 #: src/screens/permissions.kv:43 src/screens/record.kv:50
 #: src/screens/record.kv:51 src/screens/compass.kv:91
 #: src/screens/select_device.kv:52 src/screens/select_device.kv:53
-#: src/screens/poi_direction.kv:89 src/screens/main.kv:85
-#: src/screens/main.kv:86 src/screens/navigation.kv:76
+#: src/screens/poi_direction.kv:91 src/screens/main.kv:86
+#: src/screens/main.kv:87 src/screens/navigation.kv:76
 #: src/screens/navigation.kv:77
 msgid "Hilfe"
 msgstr ""
@@ -328,27 +336,27 @@ msgstr ""
 msgid "Untermenü: Kompass"
 msgstr ""
 
-#: src/screens/compass.kv:32 src/screens/poi_direction.kv:32
+#: src/screens/compass.kv:32
 msgid "Himmelsrichtungen"
 msgstr ""
 
-#: src/screens/compass.kv:33 src/screens/poi_direction.kv:33
+#: src/screens/compass.kv:33
 msgid "Himmelsrichtung ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:38 src/screens/poi_direction.kv:37
+#: src/screens/compass.kv:38 src/screens/poi_direction.kv:38
 msgid "Winkelangabe"
 msgstr ""
 
-#: src/screens/compass.kv:39 src/screens/poi_direction.kv:38
+#: src/screens/compass.kv:39
 msgid "Richtung von 0 bis 360 Grad ausgeben"
 msgstr ""
 
-#: src/screens/compass.kv:85 src/screens/poi_direction.kv:83
+#: src/screens/compass.kv:85 src/screens/poi_direction.kv:85
 msgid "Zurück zum Hauptmeü"
 msgstr ""
 
-#: src/screens/compass.kv:92 src/screens/poi_direction.kv:90
+#: src/screens/compass.kv:92 src/screens/poi_direction.kv:92
 msgid "Hilfe über dieses Untermenü"
 msgstr ""
 
@@ -391,6 +399,18 @@ msgstr ""
 
 #: src/screens/poi_direction.kv:16
 msgid "Untermenü: Richtung und Abstand zum Ort"
+msgstr ""
+
+#: src/screens/poi_direction.kv:32
+msgid "Abstand"
+msgstr ""
+
+#: src/screens/poi_direction.kv:33
+msgid "Abstand zum Zielort ansagen"
+msgstr ""
+
+#: src/screens/poi_direction.kv:39
+msgid "Richtung zum Zielort von 0 bis 360 Grad ausgeben"
 msgstr ""
 
 #: src/screens/main.kv:16
