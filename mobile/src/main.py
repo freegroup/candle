@@ -1,3 +1,10 @@
+from dotenv import load_dotenv
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+dot_env_file = os.path.join(dir_path, 'secret.env')
+load_dotenv(dotenv_path=dot_env_file)
+
+
 from kivy.config import Config
 Config.set('graphics', 'width', '500')  # Set the width of the window
 Config.set('graphics', 'height', '900')  # Set the height of the window
@@ -18,9 +25,10 @@ from screens.select_device import SelectDevice
 from screens.permissions import Permissions
 from screens.confirm import Confirm
 from screens.confirm_exit import ConfirmExit
-from screens.navigation import Navigation
+from screens.favorites import Favorites
 from screens.poi_details import PoiDetails
 from screens.poi_direction import PoiDirection
+from screens.poi_routing import PoiRouting
 from screens.pois import Pois
 from utils.location import LocationManager
 from utils.compass import CompassManager
@@ -51,11 +59,12 @@ class CandleApp(App):
         self.sm.add_widget(Compass(name='compass'))
         self.sm.add_widget(Confirm(name='confirm'))
         self.sm.add_widget(ConfirmExit(name='confirm_exit'))
-        self.sm.add_widget(Navigation(name='navigation'))
+        self.sm.add_widget(Favorites(name='favorites'))
         self.sm.add_widget(Pois(name='pois'))
         self.sm.add_widget(PoiDetails(name='poi_details'))
         self.sm.add_widget(Permissions(name='permissions'))
         self.sm.add_widget(PoiDirection(name='poi_direction'))
+        self.sm.add_widget(PoiRouting(name='poi_routing'))
         
         self.navigate_to_main()
         return self.sm
@@ -128,8 +137,8 @@ class CandleApp(App):
     def navigate_to_compass(self, dir="left"):
         self._navigate("compass", dir)
 
-    def navigate_to_navigation(self, dir="left"):
-        self._navigate("navigation", dir)
+    def navigate_to_favorites(self, dir="left"):
+        self._navigate("favorites", dir)
 
     def navigate_to_pois(self, dir="left"):
         self._navigate("pois", dir)
@@ -144,6 +153,11 @@ class CandleApp(App):
         target_screen = self.sm.get_screen("poi_direction")
         target_screen.poi = poi
         self._navigate("poi_direction", dir)
+
+    def navigate_to_poi_routing(self, poi, dir="left"):
+        target_screen = self.sm.get_screen("poi_routing")
+        target_screen.poi = poi
+        self._navigate("poi_routing", dir)
 
     def confirm(self, text, say, on_confirm):
         def _cancel(screen):

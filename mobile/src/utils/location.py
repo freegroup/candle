@@ -4,14 +4,15 @@ import requests
 import json
 from threading import Thread, Lock
 from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
 
 from plyer import gps
+
+from utils.poi import Poi
 
 class LocationManager:
     _running = False
     _thread = None
-    _location = None
+    _location = Poi(lat=49.459511293925765, lon=8.603279976958548)
     _location_lock = Lock()
 
     @classmethod
@@ -49,8 +50,8 @@ class LocationManager:
         while LocationManager._running:
             # Simulate GPS coordinates (latitude, longitude)
             with LocationManager._location_lock:
-                LocationManager._location = (random.uniform(-90, 90), random.uniform(-180, 180))
-                LocationManager._location = (49.45981391590654, 8.603280728748059)
+                LocationManager._location = Poi(lat=random.uniform(-90, 90), lon=random.uniform(-180, 180))
+                LocationManager._location = Poi(lat=49.459511293925765, lon=8.603279976958548)
             time.sleep(5)
 
 
@@ -61,7 +62,7 @@ class LocationManager:
         latitude = kwargs.get('lat', 0.0)
         longitude = kwargs.get('lon', 0.0)
         with LocationManager._location_lock:
-            LocationManager._location = (latitude, longitude)
+            LocationManager._location = Poi(lat=latitude, lon=longitude)
 
 
     @staticmethod
@@ -77,7 +78,7 @@ class LocationManager:
 
 
     def get_human_short_address(location):
-        (lat, lon ) = location
+        lat, lon  = location.lat, location.lon
         # Use a geocoding service to resolve the address
         url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
         response = requests.get(url)
@@ -102,11 +103,11 @@ class LocationManager:
         # Erstellen eines Geocoders mit Nominatim
         geolocator = Nominatim(user_agent="candle")
 
-        lat = LocationManager._location[0]
-        lon = LocationManager._location[1]
+        lat = LocationManager._location.lat
+        lon = LocationManager._location.lon
 
         # Geocoding der Adresse, beschränkt auf die Nähe des Ausgangspunkts
-        location = geolocator.geocode(address_query, viewbox=[(lat - 0.05, lon - 0.05),  (lat + 0.05, lon + 0.05)],   bounded=False)
+        location = geolocator.geocode(address_query, viewbox=[(lat - 0.05, lon - 0.05),  (lat + 0.05, lon + 0.05)], bounded=True)
 
         if location:
             print(f"Adresse: {location.address}")

@@ -12,12 +12,13 @@ package.domain = de.freegroup
 # (str) Source code where the main.py lives
 source.dir = ./src
 
-source.include_exts = py,png,jpg,kv,atlas,mp3,mo,po
+source.include_exts = py,png,jpg,kv,atlas,mp3,mo,po,env
 
 # (list) Application requirements
 # Specify your app's requirements here. Start with the basics: python3 and kivy.
 requirements = 
     python3,
+    libbz2,
     kivy,
     openssl,
     gpxpy,
@@ -25,8 +26,10 @@ requirements =
     kivy_garden.mapview,
     bleak,
     geopy,
+    openrouteservice,
     geographiclib,
     typing_extensions, 
+    python-dotenv,
     async_to_sync, 
     async-timeout,
     https://github.com/HyTurtle/plyer/archive/master.zip

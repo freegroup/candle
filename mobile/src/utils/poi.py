@@ -4,11 +4,14 @@ import os
 from kivy.app import App
 
 class Poi:
-    def __init__(self, lon, lat, name, desc):
+    def __init__(self, lat, lon, name="", desc=""):
         self.lon = lon
         self.lat = lat
         self.name = name
         self.desc = desc
+
+    def __str__(self):
+        return f"Poi(name='{self.name}', lat={self.lat}, lon={self.lon}, desc='{self.desc}')"
 
 
 class PoiManager:
@@ -32,7 +35,7 @@ class PoiManager:
         file_path = PoiManager._ensure_file()
         with open(file_path, 'r') as file:
             gpx = gpxpy.parse(file)
-        return [Poi(lon=wpt.longitude, lat=wpt.latitude, name=wpt.name, desc=wpt.comment) for wpt in gpx.waypoints]
+        return [Poi(lat=wpt.latitude, lon=wpt.longitude, name=wpt.name, desc=wpt.comment) for wpt in gpx.waypoints]
 
 
     @staticmethod

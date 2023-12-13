@@ -4,4 +4,4 @@
 .buildozer
 mobile/cache
 .env
-mobile/.env
+secret.env

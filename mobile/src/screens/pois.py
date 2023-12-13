@@ -20,7 +20,7 @@ class Pois(BaseScreen):
     pois_per_page = 8
 
     def back(self):
-        App.get_running_app().navigate_to_navigation("right")
+        App.get_running_app().navigate_to_favorites("right")
 
 
     def on_pre_enter(self, *args):

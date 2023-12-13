@@ -65,7 +65,9 @@ class PoiDirection(BaseScreen):
 
 
     def say_angle(self):
-        angle = self._calculate_bearing()
+        bearing_to_poi = self._calculate_bearing()
+        current_heading = CompassManager.get_angle()
+        angle = (current_heading -bearing_to_poi ) % 360
         say(_("Der Winkel zum Zielort beträgt {} Grad").format(angle))
 
 
@@ -83,7 +85,8 @@ class PoiDirection(BaseScreen):
 
     def _calculate_distance(self):
         # Aktuelle Position
-        lat1, lon1 = LocationManager.get_location()
+        loc = LocationManager.get_location()
+        lat1, lon1 = loc.lat, loc.lon
 
         # Zielort
         lat2, lon2 = self.poi.lat, self.poi.lon
@@ -95,7 +98,8 @@ class PoiDirection(BaseScreen):
 
     def _calculate_bearing(self):
         # Aktuelle Position
-        lat1, lon1 = LocationManager.get_location()
+        loc = LocationManager.get_location()
+        lat1, lon1 = loc.lat, loc.lon
 
         # Zielort
         lat2, lon2 = self.poi.lat, self.poi.lon

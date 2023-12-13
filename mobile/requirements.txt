@@ -7,3 +7,7 @@ kivy-garden.mapview==1.0.6
 python-dotenv==1.0.0
 bleak==0.21.1
 geopy==2.4.1
+gpxpy==1.6.2
+scikit-learn==1.3.2
+osmnx==1.8.0
+requests==2.31.0

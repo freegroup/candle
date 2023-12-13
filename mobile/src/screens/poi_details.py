@@ -33,6 +33,10 @@ class PoiDetails(BaseScreen):
         App.get_running_app().confirm("Löschen", _("Ort: {}, wirklich löschen?").format(self.poi.name), confirm)
 
 
+    def navigate(self):
+        App.get_running_app().navigate_to_poi_routing(self.poi)
+
+
     def direction(self):
         App.get_running_app().navigate_to_poi_direction(self.poi)
 
