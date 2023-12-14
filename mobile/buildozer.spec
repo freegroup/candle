@@ -26,6 +26,7 @@ requirements =
     kivy_garden.mapview,
     bleak,
     geopy,
+    shapely,
     openrouteservice,
     geographiclib,
     typing_extensions, 

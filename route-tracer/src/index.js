@@ -21,7 +21,7 @@ function onPositionUpdate(position) {
 
   Map.setUserPosition(currentLatLng)
 
-  // Update current index based on current position
+  // Update current index based on current position 
   let segment = route.getClosestSegment(currentLatLng);
   let currentCoordinateIndex = segment.start.index;
 

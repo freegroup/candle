@@ -1,7 +1,4 @@
-const walkingSpeed = 1; // m/s
-const simulationInterval = 100; // ms
-
-
+ 
 // Function to handle geolocation errors
 function geolocationError(error) {
     console.error('Error occurred in geolocation:', error);

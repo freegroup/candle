@@ -6,10 +6,12 @@ from kivy_garden.mapview.utils import clamp
 from kivy_garden.mapview.constants import (MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE)
 from math import radians, log, tan, cos, pi
 
+from utils.route import Route
+
 class LineMapLayer(MapLayer):
-    def __init__(self, coordinates=[[0, 0], [0, 0]], color=[0, 0, 1, 1], **kwargs):
+    def __init__(self, route: Route, color=[0, 0, 1, 1], **kwargs):
         super().__init__(**kwargs)
-        self._coordinates = coordinates
+        self._route = route
         self.color = color
         self._line_points = None
         self._line_points_offset = (0, 0)
@@ -19,12 +21,12 @@ class LineMapLayer(MapLayer):
         self.ms = 0
 
     @property
-    def coordinates(self):
-        return self._coordinates
+    def route(self):
+        return self._route
 
-    @coordinates.setter
-    def coordinates(self, coordinates):
-        self._coordinates = coordinates
+    @route.setter
+    def route(self, route):
+        self._route = route
         self.invalidate_line_points()
         self.clear_and_redraw()
 
@@ -44,12 +46,15 @@ class LineMapLayer(MapLayer):
         # Offset all points by the coordinates of the first point,
         # to keep coordinates closer to zero.
         # (and therefore avoid some float precision issues when drawing lines)
-        self._line_points_offset = (self.get_x(self.coordinates[0][1]),
-                                    self.get_y(self.coordinates[0][0]))
+        poi = self.route.points[0]
+        self._line_points_offset = (self.get_x(poi.lon), self.get_y(poi.lat))
         # Since lat is not a linear transform we must compute manually
-        self._line_points = [(self.get_x(lon) - self._line_points_offset[0],
-                              self.get_y(lat) - self._line_points_offset[1])
-                             for lat, lon in self.coordinates]
+        self._line_points = [
+            (self.get_x(poi.lon) - self._line_points_offset[0],
+             self.get_y(poi.lat) - self._line_points_offset[1],
+             (0, 1,0,1) if self.route.is_special_coordinate(poi) else (1,0,0,1))
+            for poi in self.route.points
+        ]
 
     def invalidate_line_points(self):
         self._line_points = None
@@ -127,16 +132,14 @@ class LineMapLayer(MapLayer):
             Translate(*self.line_points_offset)
 
             Color(*self.color)
-            Line(points=self.line_points, width=2)
-
+            Line(points=[ (coord[0], coord[1]) for coord in self.line_points ], width=2)
 
             # Draw a circle at the start and end of the line
             circle_size = 20  # 4 times the line width, adjust as needed
-            Color(1, 0, 0, 1)  # Red color for the circle
             for point in self.line_points:
                 # Draw circle at each vertex point
+                Color(*point[2])  # Red color for the circle
                 Ellipse(pos=(point[0] - circle_size / 2, point[1] - circle_size / 2), size=(circle_size, circle_size))
-
     
             # Retrieve the last saved coordinate space context
             PopMatrix()

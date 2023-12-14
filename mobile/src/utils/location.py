@@ -1,9 +1,13 @@
 import random
 import time
 import requests
+import math
 import json
 from threading import Thread, Lock
 from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from geopy import Point
+
 
 from plyer import gps
 
@@ -11,7 +15,9 @@ from utils.poi import Poi
 
 class LocationManager:
     _running = False
-    _thread = None
+    _simulate_route_running = False
+    _thread_loc_fallback = None
+    _thread_simulation = None
     _location = Poi(lat=49.459511293925765, lon=8.603279976958548)
     _location_lock = Lock()
 
@@ -30,8 +36,8 @@ class LocationManager:
             gps.start(minTime=1000, minDistance=0)
             print("Using platform GPS")
         except NotImplementedError:
-            cls._thread = Thread(target=cls._simulate_location)
-            cls._thread.start()
+            cls._thread_loc_fallback = Thread(target=cls._simulate_location)
+            cls._thread_loc_fallback.start()
             print("Simulate GPS Coordinates")
 
 
@@ -39,20 +45,69 @@ class LocationManager:
     def stop(cls):
         """Stops the GPS tracking."""
         cls._running = False
-        if cls._thread:
-            cls._thread.join()
+        if cls._thread_loc_fallback:
+            cls._thread_loc_fallback.join()
+            cls._thread_loc_fallback = None
         else:
             gps.stop()
+
+        cls.stop_simulate_route()
+
+
+    @classmethod
+    def start_simulate_route(cls, route):
+        """Starts simulating movement along the given route."""
+        cls._simulate_route_running = True
+        cls._thread_simulation = Thread(target=cls._simulate_route, args=(route,))
+        cls._thread_simulation.start()
+        print("Simulating movement along the route")
+
+
+    @classmethod
+    def stop_simulate_route(cls):
+        """Stop simulating movement along the given route."""
+        cls._simulate_route_running = False
+        if cls._thread_simulation:
+            cls._thread_simulation.join()
+            cls._thread_simulation = None
 
 
     @staticmethod
     def _simulate_location():
         while LocationManager._running:
-            # Simulate GPS coordinates (latitude, longitude)
-            with LocationManager._location_lock:
-                LocationManager._location = Poi(lat=random.uniform(-90, 90), lon=random.uniform(-180, 180))
-                LocationManager._location = Poi(lat=49.459511293925765, lon=8.603279976958548)
+            if not LocationManager._simulate_route_running:
+                # Simulate GPS coordinates (latitude, longitude)
+                with LocationManager._location_lock:
+                    LocationManager._location = Poi(lat=random.uniform(-90, 90), lon=random.uniform(-180, 180))
+                    LocationManager._location = Poi(lat=49.459511293925765, lon=8.603279976958548)
             time.sleep(5)
+
+
+    @staticmethod
+    def _simulate_route(route):
+        walking_speed = 4  # Walking speed in meters/sec
+        simulation_interval = 1  # Update interval in seconds
+        current_point = route.get_random_point_near_route()
+        current_coordinate_index = route.find_closest_segment(current_point)['end']['index']
+
+        while LocationManager._simulate_route and current_coordinate_index < len(route.points) - 1:
+            next_point = route.points[current_coordinate_index + 1]
+            distance = geodesic((current_point.lat, current_point.lon), (next_point.lat, next_point.lon)).meters
+            bearing = LocationManager.calculate_initial_bearing(current_point,next_point)
+            normalized_walking_speed = walking_speed * simulation_interval
+
+            if distance > normalized_walking_speed:
+                destination = geodesic(meters=normalized_walking_speed).destination((current_point.lat, current_point.lon), bearing)
+                current_point = Poi(lat=destination.latitude, lon=destination.longitude)
+            else:
+                current_coordinate_index += 1
+                current_point = Poi(lat=next_point.lat, lon=next_point.lon)
+
+            print(current_point)
+
+            with LocationManager._location_lock:
+                LocationManager._location = current_point
+            time.sleep(simulation_interval)
 
 
     @staticmethod
@@ -74,6 +129,7 @@ class LocationManager:
     @classmethod
     def get_location(cls):
         with cls._location_lock:
+            print(f"get location {cls._location}")
             return cls._location
 
 
@@ -114,3 +170,20 @@ class LocationManager:
             print(f"GPS-Koordinaten: {location.latitude}, {location.longitude}")
         else:
             print("Adresse konnte nicht geocodiert werden")
+
+
+
+    @staticmethod
+    def calculate_initial_bearing(poi1, poi2):
+        lat1, lon1 = math.radians(poi1.lat), math.radians(poi1.lon)
+        lat2, lon2 = math.radians(poi2.lat), math.radians(poi2.lon)
+
+        dlon = lon2 - lon1
+        x = math.sin(dlon) * math.cos(lat2)
+        y = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+
+        initial_bearing = math.atan2(x, y)
+        initial_bearing = math.degrees(initial_bearing)
+        bearing = (initial_bearing + 360) % 360
+
+        return bearing

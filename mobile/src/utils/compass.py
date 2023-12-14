@@ -71,3 +71,4 @@ class CompassManager:
     def get_angle(cls):
         """Returns the current compass angle."""
         return cls._needle_angle
+    

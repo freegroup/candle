@@ -17,20 +17,20 @@
 
         Swipe:
             orientation: 'vertical'
-            size_hint_y: 1  # Take up the remaining space
+            size_hint_y: 1
             spacing: 10
             padding: 10
             swipe_right: root.back
 
             SayButton:
                 text: _('Navigation Starten')
-                say: _('Navigation Starten')
+                say: _('Navigation zum Ort starten')
                 size_hint_y: 1
                 action: root.navigate
 
             SayButton:
                 text: _('Richtung anzeigen')
-                say: _('Richtung anzeigen')
+                say: _('Richtung zum Ort anzeigen')
                 size_hint_y: 1
                 action: root.direction
 

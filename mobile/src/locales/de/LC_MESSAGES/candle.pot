@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-13 15:15+0100\n"
+"POT-Creation-Date: 2023-12-14 00:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,28 +197,36 @@ msgstr ""
 msgid "Der Winkel zum Zielort beträgt {} Grad"
 msgstr ""
 
-#: src/main.py:110
+#: src/main.py:104
 msgid "Programm wird beendet"
 msgstr ""
 
-#: src/main.py:149
+#: src/main.py:152
 msgid "Details für: {}"
 msgstr ""
 
-#: src/screens/poi_details.kv:15 src/screens/poi_routing.kv:16
+#: src/screens/poi_details.kv:15
 msgid "Ort Details"
 msgstr ""
 
-#: src/screens/poi_details.kv:16 src/screens/poi_routing.kv:17
+#: src/screens/poi_details.kv:16
 msgid "Untermenu: Ort Details"
 msgstr ""
 
-#: src/screens/poi_details.kv:26 src/screens/poi_details.kv:27
+#: src/screens/poi_details.kv:26
 msgid "Navigation Starten"
 msgstr ""
 
-#: src/screens/poi_details.kv:32 src/screens/poi_details.kv:33
+#: src/screens/poi_details.kv:27
+msgid "Navigation zum Ort starten"
+msgstr ""
+
+#: src/screens/poi_details.kv:32
 msgid "Richtung anzeigen"
+msgstr ""
+
+#: src/screens/poi_details.kv:33
+msgid "Richtung zum Ort anzeigen"
 msgstr ""
 
 #: src/screens/poi_details.kv:38
@@ -237,19 +245,19 @@ msgstr ""
 msgid "Ort löschen"
 msgstr ""
 
-#: src/screens/poi_details.kv:70 src/screens/poi_routing.kv:63
-#: src/screens/pois.kv:43 src/screens/record.kv:43 src/screens/compass.kv:84
+#: src/screens/poi_details.kv:70 src/screens/pois.kv:43
+#: src/screens/record.kv:43 src/screens/compass.kv:84
 #: src/screens/favorites.kv:69 src/screens/select_device.kv:45
 #: src/screens/poi_direction.kv:84
 msgid "Zurück"
 msgstr ""
 
-#: src/screens/poi_details.kv:71 src/screens/poi_routing.kv:64
+#: src/screens/poi_details.kv:71
 msgid "Zurück zur Orte"
 msgstr ""
 
 #: src/screens/poi_details.kv:77 src/screens/poi_details.kv:78
-#: src/screens/poi_routing.kv:70 src/screens/poi_routing.kv:71
+#: src/screens/poi_routing.kv:59 src/screens/poi_routing.kv:60
 #: src/screens/pois.kv:50 src/screens/pois.kv:51 src/screens/permissions.kv:42
 #: src/screens/permissions.kv:43 src/screens/record.kv:50
 #: src/screens/record.kv:51 src/screens/compass.kv:91
@@ -260,28 +268,37 @@ msgstr ""
 msgid "Hilfe"
 msgstr ""
 
+#: src/screens/poi_routing.kv:16
+msgid "Ort Navigation"
+msgstr ""
+
+#: src/screens/poi_routing.kv:17
+msgid "Navigation zum Ort wurde gestartet"
+msgstr ""
+
 #: src/screens/poi_routing.kv:27
-msgid "Anhalten"
+msgid "Pausieren"
 msgstr ""
 
 #: src/screens/poi_routing.kv:28
 msgid "Navigation Pausieren"
 msgstr ""
 
-#: src/screens/poi_routing.kv:33 src/screens/poi_routing.kv:34
-msgid "Route anzeigen"
+#: src/screens/poi_routing.kv:33
+msgid "Details"
 msgstr ""
 
-#: src/screens/poi_routing.kv:39 src/screens/poi_routing.kv:40
-msgid "Ziel ändern"
+#: src/screens/poi_routing.kv:34
+msgid "Routen Details"
 msgstr ""
 
-#: src/screens/poi_routing.kv:45
-msgid "Stopp"
+#: src/screens/poi_routing.kv:52 src/screens/confirm.kv:42
+#: src/screens/confirm.kv:43
+msgid "Abbruch"
 msgstr ""
 
-#: src/screens/poi_routing.kv:46
-msgid "Stopp der Navigation"
+#: src/screens/poi_routing.kv:53
+msgid "Zurück zum Ort"
 msgstr ""
 
 #: src/screens/pois.kv:15 src/screens/favorites.kv:32
@@ -431,10 +448,6 @@ msgstr ""
 
 #: src/screens/confirm.kv:35 src/screens/confirm.kv:36
 msgid "Bestätigen"
-msgstr ""
-
-#: src/screens/confirm.kv:42 src/screens/confirm.kv:43
-msgid "Abbruch"
 msgstr ""
 
 #: src/screens/select_device.kv:17 src/screens/main.kv:52

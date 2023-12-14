@@ -1,17 +1,37 @@
-import gpxpy
-import gpxpy.gpx
 import os
+from enum import Enum
+
 from kivy.app import App
 
+import gpxpy
+import gpxpy.gpx
+from geopy.distance import geodesic
+
+
+class PoiType(Enum):
+    ROUTE = "route"
+    SYNTHETIC = "synthetic"
+
+
 class Poi:
-    def __init__(self, lat, lon, name="", desc=""):
+    def __init__(self, lat, lon, name="", desc="", poi_type= PoiType.ROUTE):
         self.lon = lon
         self.lat = lat
         self.name = name
         self.desc = desc
+        self.type = poi_type
+
+
+    def distance(self, poi: Poi):
+        # Zielort
+        lat2, lon2 = poi.lat, poi.lon
+
+        # Berechnung der Entfernung zwischen den beiden Punkten
+        return abs(int(geodesic((self.lat, self.lon), (lat2, lon2)).meters))
+
 
     def __str__(self):
-        return f"Poi(name='{self.name}', lat={self.lat}, lon={self.lon}, desc='{self.desc}')"
+        return f"Poi(name='{self.name}', lat={self.lat}, lon={self.lon}, type='{self.type}', desc='{self.desc}')"
 
 
 class PoiManager:

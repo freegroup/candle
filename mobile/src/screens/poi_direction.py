@@ -1,21 +1,18 @@
 import os
-import math
 
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.app import App
 
-from geopy.distance import geodesic
-
 from screens.base_screen import BaseScreen
 from kivy.properties import NumericProperty
-from utils.storage import Storage
 from utils.tts import say
 
 
 from utils.i18n import _
 from utils.compass import CompassManager
 from utils.location import LocationManager
+from utils.gps_utils import calculate_north_bearing
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 kv_file_path = os.path.join(dir_path, 'poi_direction.kv')
@@ -32,10 +29,11 @@ class PoiDirection(BaseScreen):
     def back(self):
         App.get_running_app().navigate_to_poi_details(self.poi, "right")
 
+
     def on_enter(self):
         self.ids.arrow.source = image_path  # Set the full path to the image 
         Clock.schedule_interval(self.update_compass, 1 / 20)
-        self.vibration_schedule = Clock.schedule_interval(self.vibrate_continuously, 1)
+        self.vibration_schedule = Clock.schedule_interval(self.vibrate_continuously, 2)
 
 
     def on_leave(self):
@@ -44,77 +42,34 @@ class PoiDirection(BaseScreen):
 
 
     def update_compass(self, dt):
-        bearing_to_poi = self._calculate_bearing()
-        current_heading = CompassManager.get_angle()
+        poi_heading = calculate_north_bearing(LocationManager.get_location, self.poi)
+        device_heading = CompassManager.get_angle()
 
-        # Berechnen des Winkels für die Nadel
-        self.needle_angle = (current_heading -bearing_to_poi ) % 360
+        self.needle_angle = (poi_heading - device_heading ) % 360
 
         angle_abs = abs(self.needle_angle)
         if angle_abs <= 10 and not self.distance_announced:
             self.say_distance()
             self.distance_announced = True
-        # Zurücksetzen der Ansage, wenn der Winkel außerhalb von +/- 30 Grad liegt
         elif angle_abs > 30:
             self.distance_announced = False
 
-  
+
     def say_distance(self):
-        distance = self._calculate_distance()
+        distance = self.poi.calculate_distance(LocationManager.get_location())
         say(_("Die Entfernung beträgt {} Meter").format(distance))
 
 
     def say_angle(self):
-        bearing_to_poi = self._calculate_bearing()
-        current_heading = CompassManager.get_angle()
-        angle = (current_heading -bearing_to_poi ) % 360
+        poi_heading = calculate_north_bearing(LocationManager.get_location, self.poi)
+        device_heading = CompassManager.get_angle()
+        angle = (device_heading - poi_heading) % 360
         say(_("Der Winkel zum Zielort beträgt {} Grad").format(angle))
 
 
     def vibrate_continuously(self, dt):
         angle_difference = abs(self.needle_angle)
-        vibration_duration = max(0.2, 1 - angle_difference / 180)  # Längere Vibration bei größerem Winkel
-        pause_duration = max(0.5, angle_difference / 36) # Längere Pause bei größerem Winkel
+        vibration_duration = max(0.2, 2 - 2*(angle_difference / 180))  # Längere Vibration bei größerem Winkel
 
-        # Vibration starten
-        print(vibration_duration)
-        print(pause_duration)
-        print("-------")
         self.vibrate(vibration_duration)
 
-
-    def _calculate_distance(self):
-        # Aktuelle Position
-        loc = LocationManager.get_location()
-        lat1, lon1 = loc.lat, loc.lon
-
-        # Zielort
-        lat2, lon2 = self.poi.lat, self.poi.lon
-
-        # Berechnung der Entfernung zwischen den beiden Punkten
-        distance = geodesic((lat1, lon1), (lat2, lon2)).meters
-        return int(distance)
-
-
-    def _calculate_bearing(self):
-        # Aktuelle Position
-        loc = LocationManager.get_location()
-        lat1, lon1 = loc.lat, loc.lon
-
-        # Zielort
-        lat2, lon2 = self.poi.lat, self.poi.lon
-
-        # Differenz der Längengrade
-        delta_lon = math.radians(lon2 - lon1)
-
-        # Umrechnung in Radianten
-        lat1, lat2 = map(math.radians, [lat1, lat2])
-
-        # Berechnung des Azimuts
-        x = math.sin(delta_lon) * math.cos(lat2)
-        y = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(delta_lon)
-
-        # Umwandlung von Radianten in Grad
-        bearing = math.degrees(math.atan2(x, y))
-        bearing = (bearing + 360) % 360  # Normalisierung auf 0-360 Grad
-        return int(bearing)

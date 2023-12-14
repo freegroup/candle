@@ -13,8 +13,8 @@
 
         Header:
             id: header
-            text: _('Ort Details')
-            say: _('Untermenu: Ort Details')
+            text: _('Ort Navigation')
+            say: _('Navigation zum Ort wurde gestartet')
 
         Swipe:
             orientation: 'vertical'
@@ -24,35 +24,24 @@
             swipe_right: root.back
 
             SayButton:
-                text: _('Anhalten')
+                text: _('Pausieren')
                 say: _('Navigation Pausieren')
                 size_hint_y: 1
                 action: root.navigation_pause
 
             SayButton:
-                text: _('Route anzeigen')
-                say: _('Route anzeigen')
+                text: _('Details')
+                say: _('Routen Details')
                 size_hint_y: 1
-                action: root.navigation_show
+                action: root.navigation_details
 
-            SayButton:
-                text: _('Ziel ändern')
-                say: _('Ziel ändern')
-                size_hint_y: 1
-                action: root.navigation_change
-
-            SayButton:
-                text: _('Stopp')
-                say: _('Stopp der Navigation')
-                size_hint_y: 1
-                action: root.navigation_stop
 
             MapView:
                 id: mapview
                 zoom: 20
                 lat: 37.7749  # Initial latitude
                 lon: -122.4194  # Initial longitude
-                size_hint_y: 6
+                size_hint_y: 8
 
         BoxLayout:
             size_hint_y: None
@@ -60,8 +49,8 @@
             spacing: 10
 
             SayButton:
-                text: _('Zurück')
-                say: _('Zurück zur Orte')
+                text: _('Abbruch')
+                say: _('Zurück zum Ort')
                 vibrate: 2
                 action: root.back
                 halign: 'center'

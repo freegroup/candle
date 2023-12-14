@@ -10,7 +10,7 @@ Config.set('graphics', 'width', '500')  # Set the width of the window
 Config.set('graphics', 'height', '900')  # Set the height of the window
 
 from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, SlideTransition
+from kivy.uix.screenmanager import ScreenManager, SlideTransition, Screen
 from kivy.core.window import Window
 from kivy.clock import Clock
 
@@ -18,6 +18,8 @@ import asyncio
 import threading
 import logging
 
+# DO NOT REMOVE THE IMPORTS. lazy loading will not work in this case
+#
 from screens.main import Main
 from screens.compass import Compass
 from screens.record import Record
@@ -30,6 +32,10 @@ from screens.poi_details import PoiDetails
 from screens.poi_direction import PoiDirection
 from screens.poi_routing import PoiRouting
 from screens.pois import Pois
+#
+#####
+
+
 from utils.location import LocationManager
 from utils.compass import CompassManager
 from utils.i18n import setup_i18n, _
@@ -53,19 +59,7 @@ class CandleApp(App):
         Window.bind(on_request_close=self.on_request_close)
 
         self.sm = ScreenManager()
-        self.sm.add_widget(Main(name='main'))
-        self.sm.add_widget(Record(name='record'))
-        self.sm.add_widget(SelectDevice(name='device'))
-        self.sm.add_widget(Compass(name='compass'))
-        self.sm.add_widget(Confirm(name='confirm'))
-        self.sm.add_widget(ConfirmExit(name='confirm_exit'))
-        self.sm.add_widget(Favorites(name='favorites'))
-        self.sm.add_widget(Pois(name='pois'))
-        self.sm.add_widget(PoiDetails(name='poi_details'))
-        self.sm.add_widget(Permissions(name='permissions'))
-        self.sm.add_widget(PoiDirection(name='poi_direction'))
-        self.sm.add_widget(PoiRouting(name='poi_routing'))
-        
+     
         self.navigate_to_main()
         return self.sm
     
@@ -114,50 +108,62 @@ class CandleApp(App):
     def request_terminate(self):
         if LocationManager.is_active():
             self.previous_screen = self.sm.current
-            self.sm.current = 'confirm_exit'
+            self._navigate('ConfirmExit')
         else:
             self.terminate()
 
+
     def navigate_to_main(self, dir="left"):
-        self._navigate("main", dir)
+        self._navigate("Main", dir)
+
 
     def navigate_to_permissions_granted(self, dir="left"):
         Clock.schedule_once(start_location_services, 4)
         self.navigate_to_main(dir)
 
+
     def navigate_to_permissions(self, dir="left"):
-        self._navigate("permissions", dir)
+        self._navigate("Permissions", dir)
+
 
     def navigate_to_settings(self, dir="left"):
-        self._navigate("device", dir)
+        self._navigate("SelectDevice", dir)
+
 
     def navigate_to_record(self, dir="left"):
-        self._navigate("record", dir)
+        self._navigate("Record", dir)
+
 
     def navigate_to_compass(self, dir="left"):
-        self._navigate("compass", dir)
+        self._navigate("Compass", dir)
+
 
     def navigate_to_favorites(self, dir="left"):
-        self._navigate("favorites", dir)
+        self._navigate("Favorites", dir)
+
 
     def navigate_to_pois(self, dir="left"):
-        self._navigate("pois", dir)
+        self._navigate("Pois", dir)
+
 
     def navigate_to_poi_details(self, poi, dir="left"):
-        target_screen = self.sm.get_screen("poi_details")
+        target_screen = self._lazy_get_screen("PoiDetails")
         target_screen.poi = poi
         target_screen.ids.header.say = _("Details für: {}").format(poi.name)
-        self._navigate("poi_details", dir)
+        self._navigate(target_screen.name, dir)
+
 
     def navigate_to_poi_direction(self, poi, dir="left"):
-        target_screen = self.sm.get_screen("poi_direction")
+        target_screen = self._lazy_get_screen("PoiDirection")
         target_screen.poi = poi
-        self._navigate("poi_direction", dir)
+        self._navigate(target_screen.name, dir)
+
 
     def navigate_to_poi_routing(self, poi, dir="left"):
-        target_screen = self.sm.get_screen("poi_routing")
+        target_screen = self._lazy_get_screen("PoiRouting")
         target_screen.poi = poi
-        self._navigate("poi_routing", dir)
+        self._navigate(target_screen.name, dir)
+
 
     def confirm(self, text, say, on_confirm):
         def _cancel(screen):
@@ -168,18 +174,30 @@ class CandleApp(App):
             func()
 
         current_screen = self.sm.current
-        confirm_screen = self.sm.get_screen("confirm")
-        confirm_screen.ids.header.text = text
-        confirm_screen.ids.header.say = say
-        confirm_screen.cancel = lambda screen=current_screen: _cancel(screen)
-        confirm_screen.confirm = lambda screen=current_screen: _confirm(screen, on_confirm)
+        target_screen = self.sm._lazy_get_screen("Confirm")
+        target_screen.ids.header.text = text
+        target_screen.ids.header.say = say
+        target_screen.cancel = lambda screen=current_screen: _cancel(screen)
+        target_screen.confirm = lambda screen=current_screen: _confirm(screen, on_confirm)
+        self._navigate(target_screen.name, "left")
 
-        self._navigate("confirm", "left")
 
-
-    def _navigate(self, screen, dir):
+    def _navigate(self, screen, dir="left"):
+        self._lazy_get_screen(screen)
         self.sm.transition = SlideTransition(direction=dir)
         self.sm.current=screen
+
+
+    def _lazy_get_screen(self, screen_name, **kwargs):
+        if not self.sm.has_screen(screen_name):
+            # Dynamically create and add the screen based on the screen_name
+            screen_class = globals().get(screen_name)
+            if screen_class and issubclass(screen_class, Screen):
+                screen = screen_class(name=screen_name, **kwargs)
+                self.sm.add_widget(screen)
+            else:
+                raise ValueError(f"Screen class for '{screen_name}' not found or is not a Screen.")
+        return self.sm.get_screen(screen_name)
 
 
 async def main():
