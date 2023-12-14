@@ -104,7 +104,7 @@ class PoiRouting(BaseScreen):
                     poi_heading = calculate_north_bearing(LocationManager.get_location(), next_poi)
                     device_heading = CompassManager.get_angle()
                     needle_angle = (poi_heading - device_heading ) % 360
-                    HapticCompass.set_angle(needle_angle)
+                    HapticCompass.set_angle(poi_heading)
                 else:
                     self.set_next_marker(None)
 

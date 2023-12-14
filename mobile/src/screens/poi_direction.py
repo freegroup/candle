@@ -51,18 +51,18 @@ class PoiDirection(BaseScreen):
         #
         HapticCompass.set_angle(poi_heading)
 
-        self.needle_angle = (poi_heading - device_heading ) % 360
+        self.needle_angle = (device_heading - poi_heading ) % 360
 
-        angle_abs = abs(self.needle_angle)
-        if angle_abs <= 10 and not self.distance_announced:
-            self.say_distance()
-            self.distance_announced = True
-        elif angle_abs > 30:
-            self.distance_announced = False
+        #angle_abs = abs(self.needle_angle)
+        #if angle_abs <= 10 and not self.distance_announced:
+        #    self.say_distance()
+        #    self.distance_announced = True
+        #elif angle_abs > 30:
+        #    self.distance_announced = False
 
 
     def say_distance(self):
-        distance = self.poi.calculate_distance(LocationManager.get_location())
+        distance = self.poi.distance(LocationManager.get_location())
         say(_("Die Entfernung beträgt {} Meter").format(distance))
 
 
@@ -77,5 +77,5 @@ class PoiDirection(BaseScreen):
         angle_difference = abs(self.needle_angle)
         vibration_duration = max(0.2, 2 - 2*(angle_difference / 180))  # Längere Vibration bei größerem Winkel
 
-        self.vibrate(vibration_duration)
+        #self.vibrate(vibration_duration)
 
