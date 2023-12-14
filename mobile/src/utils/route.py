@@ -10,17 +10,19 @@ import gpxpy
 import gpxpy.gpx
 from geopy.distance import geodesic
 from shapely.geometry import Point, LineString
+import openrouteservice
 
 
 from utils.poi import Poi, PoiType
 
 GPX_ROUTE_SUBDIR="gpx_routes"
+OPENSTREETMAP_API_KEY= os.getenv('OPENSTREETMAP_API_KEY')
 
 
 class Route:
 
-    @classmethod
-    def load_gpx(cls, filename):
+    @staticmethod
+    def load_gpx(filename) -> 'Route':
         data_directory = App.get_running_app().user_data_dir
         file_path = os.path.join(data_directory,GPX_ROUTE_SUBDIR, filename)
 
@@ -35,6 +37,22 @@ class Route:
                     pois.append(poi)
         return Route(name=filename, points=pois)
 
+
+    @staticmethod
+    def calculate_route(poi_from: Poi, poi_target: Poi) -> 'Route':
+        client = openrouteservice.Client(key=OPENSTREETMAP_API_KEY)  # Replace with your OpenRouteService API key
+        
+        coords = ((poi_from.lon, poi_from.lat), (poi_target.lon, poi_target.lat))
+        routes = client.directions(coords, profile='foot-walking', format='geojson')
+        
+        route_latlons = [
+            Poi(lat=coord[1], lon=coord[0])
+            for coord in routes['features'][0]['geometry']['coordinates']
+        ]
+        route = Route("current", route_latlons)
+        route = route.calculate_waypoint_route()
+        return route
+        
 
 
     def __init__(self, name, points: List[Poi]):
@@ -74,7 +92,7 @@ class Route:
         print(f"GPX data written to {file_path}")
 
 
-    def calculate_waypoint_route(self) -> Route:
+    def calculate_waypoint_route(self) -> 'Route':
         min_segment_length = 15
         distance_to_insert = 10
 

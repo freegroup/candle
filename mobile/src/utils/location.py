@@ -90,7 +90,7 @@ class LocationManager:
         current_point = route.get_random_point_near_route()
         current_coordinate_index = route.find_closest_segment(current_point)['end']['index']
 
-        while LocationManager._simulate_route and current_coordinate_index < len(route.points) - 1:
+        while LocationManager._simulate_route_running and current_coordinate_index < len(route.points) - 1:
             next_point = route.points[current_coordinate_index + 1]
             distance = geodesic((current_point.lat, current_point.lon), (next_point.lat, next_point.lon)).meters
             bearing = LocationManager.calculate_initial_bearing(current_point,next_point)

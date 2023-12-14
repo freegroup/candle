@@ -1,5 +1,4 @@
 import os
-import openrouteservice
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -10,13 +9,13 @@ from geopy.distance import geodesic
 
 from screens.base_screen import BaseScreen
 from utils.i18n import _
-from utils.poi import Poi
 from utils.route import Route
 from utils.location import LocationManager
+from utils.compass import CompassManager
+from utils.haptic_compass import HapticCompass
 from controls.line_map_layer import LineMapLayer
+from utils.gps_utils import calculate_north_bearing
 
-
-OPENSTREETMAP_API_KEY= os.getenv('OPENSTREETMAP_API_KEY')
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -39,19 +38,28 @@ class PoiRouting(BaseScreen):
     def on_enter(self):
         print("on_enter")
         current = LocationManager.get_location()
+        mapview = self.ids.mapview
 
         self.current_location_marker = MapMarker(lat=current.lat, lon=current.lon, source=pin_path)
-        mapview = self.ids.mapview
         mapview.add_marker(self.current_location_marker)
 
         self.next_location_marker = MapMarker(lat=current.lat, lon=current.lon, source=pin_t_path)
-        mapview = self.ids.mapview
         mapview.add_marker(self.next_location_marker)
 
-        Clock.schedule_once(lambda dx: self._calculate_walking_route(current.lat, current.lon, self.poi.lat, self.poi.lon), 0)
+        Clock.schedule_once(lambda dx: self._calculate_walking_route(current, self.poi), 0)
 
         # Schedule the callback function to update the current location
         Clock.schedule_interval(self.update_navigation_target, 1)  # Check every 5 seconds
+
+
+    def on_leave(self):
+        last_target_poi = None
+        last_vibrated_index = None
+        mapview = self.ids.mapview
+        Clock.unschedule(self.update_navigation_target)
+        mapview.remove_marker(self.current_location_marker)
+        mapview.remove_marker(self.next_location_marker)
+
 
 
     def update_navigation_target(self, dt):
@@ -91,9 +99,15 @@ class PoiRouting(BaseScreen):
                 self.vibrate()
                 self.last_vibrated_index = current_coordinate_index
                 if current_coordinate_index < len(self.route.points) - 1:
-                    self.set_next_marker(self.route.points[current_coordinate_index + 1])
+                    next_poi = self.route.points[current_coordinate_index + 1]
+                    self.set_next_marker(next_poi)
+                    poi_heading = calculate_north_bearing(LocationManager.get_location(), next_poi)
+                    device_heading = CompassManager.get_angle()
+                    needle_angle = (poi_heading - device_heading ) % 360
+                    HapticCompass.set_angle(needle_angle)
                 else:
                     self.set_next_marker(None)
+
 
 
     def set_next_marker(self, poi):
@@ -122,32 +136,12 @@ class PoiRouting(BaseScreen):
         print("navigation_stop")
 
 
-    def target_poi_has_changed(self, new_target_poi):
-        # Check if the target POI has changed
-        return new_target_poi != self.last_target_poi
-
-
-    def _calculate_walking_route(self, lat1, lon1, lat2, lon2):
-        client = openrouteservice.Client(key=OPENSTREETMAP_API_KEY)  # Replace with your OpenRouteService API key
-        
-        coords = ((lon1, lat1), (lon2, lat2))
-        self.routes = client.directions(coords, profile='foot-walking', format='geojson')
-        
-        self.route_latlons = [
-            Poi(lat=coord[1], lon=coord[0])
-            for coord in self.routes['features'][0]['geometry']['coordinates']
-        ]
-        self.route = Route("current", self.route_latlons)
-        self.route = self.route.calculate_waypoint_route()
-        
+    def _calculate_walking_route(self, poi_from, poi_target):
+        self.route = Route.calculate_route(poi_from=poi_from, poi_target=poi_target).calculate_waypoint_route()
         self.route.dump_gpx()
 
-        # Assuming you have a method in MapView to add a line
-        mapview = self.ids.mapview
-
-        # Add routes
         lml1 = LineMapLayer(route=self.route, color=[1, 0, 0, 1])
-        mapview.add_layer(lml1, mode="scatter")
+        self.ids.mapview.add_layer(lml1, mode="scatter")
 
-        #LocationManager.start_simulate_route(self.route)
+        LocationManager.start_simulate_route(self.route)
        

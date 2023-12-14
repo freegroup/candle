@@ -26,6 +26,7 @@ class PoiDirection(BaseScreen):
     vibration_schedule = None
     distance_announced = False
 
+
     def back(self):
         App.get_running_app().navigate_to_poi_details(self.poi, "right")
 

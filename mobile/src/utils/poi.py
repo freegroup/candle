@@ -22,7 +22,7 @@ class Poi:
         self.type = poi_type
 
 
-    def distance(self, poi: Poi):
+    def distance(self, poi: 'Poi'):
         # Zielort
         lat2, lon2 = poi.lat, poi.lon
 

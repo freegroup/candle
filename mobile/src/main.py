@@ -38,6 +38,7 @@ from screens.pois import Pois
 
 from utils.location import LocationManager
 from utils.compass import CompassManager
+from utils.haptic_compass import HapticCompass
 from utils.i18n import setup_i18n, _
 from utils.tts import say
 from utils.permissions import has_all_permissions
@@ -49,6 +50,7 @@ def start_location_services(dt):
     # Starten Sie hier GPS und Kompass
     LocationManager.start()
     CompassManager.start()
+    HapticCompass.start()
 
 class CandleApp(App):
 
@@ -89,6 +91,7 @@ class CandleApp(App):
         self.loop_thread.join()
         LocationManager.stop()
         CompassManager.stop()
+        HapticCompass.stop()
 
 
     def on_request_close(self, *args, **kwargs):
