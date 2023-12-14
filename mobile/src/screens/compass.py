@@ -36,7 +36,9 @@ class Compass(BaseScreen):
 
     def update_compass(self, dt):
         self.needle_angle = CompassManager.get_angle()
-        HapticCompass.set_angle(self.needle_angle)
+        # HapticCompass should point to NORTH. this is the idea of an compass ats it's own
+        #
+        HapticCompass.set_angle(0)
 
 
     def say_horizon(self):

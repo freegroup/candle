@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: d 023280\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 00:23+0100\n"
+"POT-Creation-Date: 2023-12-14 18:02+0100\n"
 "PO-Revision-Date: 2023-12-08 09:00+0100\n"
 "Last-Translator: Herz <a.herz@freegroup.de>\n"
 "Language-Team: English\n"
@@ -77,107 +77,107 @@ msgid ""
 "damit sie das Programm nutzen können."
 msgstr ""
 
-#: src/screens/compass.py:96
+#: src/screens/compass.py:46
 msgid "Norden"
 msgstr ""
 
-#: src/screens/compass.py:96
+#: src/screens/compass.py:46
 msgid "Nord-Nordost"
 msgstr ""
 
-#: src/screens/compass.py:96
+#: src/screens/compass.py:46
 msgid "Nordost"
 msgstr ""
 
-#: src/screens/compass.py:96
+#: src/screens/compass.py:46
 msgid "Ost-Nordost"
 msgstr ""
 
-#: src/screens/compass.py:97
+#: src/screens/compass.py:47
 msgid "Osten"
 msgstr ""
 
-#: src/screens/compass.py:97
+#: src/screens/compass.py:47
 msgid "Ost-Südost"
 msgstr ""
 
-#: src/screens/compass.py:97
+#: src/screens/compass.py:47
 msgid "Südost"
 msgstr ""
 
-#: src/screens/compass.py:97
+#: src/screens/compass.py:47
 msgid "Süd-Südost"
 msgstr ""
 
-#: src/screens/compass.py:98
+#: src/screens/compass.py:48
 msgid "Süden"
 msgstr ""
 
-#: src/screens/compass.py:98
+#: src/screens/compass.py:48
 msgid "Süd-Südwest"
 msgstr ""
 
-#: src/screens/compass.py:98
+#: src/screens/compass.py:48
 msgid "Südwest"
 msgstr ""
 
-#: src/screens/compass.py:98
+#: src/screens/compass.py:48
 msgid "West-Südwest"
 msgstr ""
 
-#: src/screens/compass.py:99
+#: src/screens/compass.py:49
 msgid "Westen"
 msgstr ""
 
-#: src/screens/compass.py:99
+#: src/screens/compass.py:49
 msgid "West-Nordwest"
 msgstr ""
 
-#: src/screens/compass.py:99
+#: src/screens/compass.py:49
 msgid "Nordwest"
 msgstr ""
 
-#: src/screens/compass.py:99
+#: src/screens/compass.py:49
 msgid "Nord-Nordwest"
 msgstr ""
 
-#: src/screens/compass.py:102
+#: src/screens/compass.py:52
 msgid "Sie halten das Handy in Richtung {}"
 msgstr ""
 
-#: src/screens/compass.py:119
+#: src/screens/compass.py:69
 msgid "Sie halten das Handy genau in Richtung 0 Grad, also Norden"
 msgstr ""
 
-#: src/screens/compass.py:121
+#: src/screens/compass.py:71
 msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Norden"
 msgstr ""
 
-#: src/screens/compass.py:124
+#: src/screens/compass.py:74
 msgid "Sie halten das Handy genau in Richtung 90 Grad, also Osten"
 msgstr ""
 
-#: src/screens/compass.py:126
+#: src/screens/compass.py:76
 msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Osten"
 msgstr ""
 
-#: src/screens/compass.py:129
+#: src/screens/compass.py:79
 msgid "Sie halten das Handy genau in Richtung 180 Grad, also Süden"
 msgstr ""
 
-#: src/screens/compass.py:131
+#: src/screens/compass.py:81
 msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Süden"
 msgstr ""
 
-#: src/screens/compass.py:134
+#: src/screens/compass.py:84
 msgid "Sie halten das Handy genau in Richtung 270 Grad, also Westen"
 msgstr ""
 
-#: src/screens/compass.py:136
+#: src/screens/compass.py:86
 msgid "Sie halten das Handy in Richtung {} Grad, das ist fast genau Westen"
 msgstr ""
 
-#: src/screens/compass.py:138
+#: src/screens/compass.py:88
 msgid "Sie halten das Handy in Richtung {} Grad"
 msgstr ""
 
@@ -189,19 +189,19 @@ msgstr ""
 msgid "Ich konnte leider ihren Standort nicht ermitteln."
 msgstr "Unable to determine your current location or address"
 
-#: src/screens/poi_direction.py:64
+#: src/screens/poi_direction.py:66
 msgid "Die Entfernung beträgt {} Meter"
 msgstr ""
 
-#: src/screens/poi_direction.py:71
+#: src/screens/poi_direction.py:73
 msgid "Der Winkel zum Zielort beträgt {} Grad"
 msgstr ""
 
-#: src/main.py:104
+#: src/main.py:107
 msgid "Programm wird beendet"
 msgstr "Terminating candle."
 
-#: src/main.py:152
+#: src/main.py:155
 msgid "Details für: {}"
 msgstr ""
 

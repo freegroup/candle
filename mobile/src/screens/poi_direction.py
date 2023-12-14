@@ -11,6 +11,7 @@ from utils.tts import say
 
 from utils.i18n import _
 from utils.compass import CompassManager
+from utils.haptic_compass import HapticCompass
 from utils.location import LocationManager
 from utils.gps_utils import calculate_north_bearing
 
@@ -43,8 +44,12 @@ class PoiDirection(BaseScreen):
 
 
     def update_compass(self, dt):
-        poi_heading = calculate_north_bearing(LocationManager.get_location, self.poi)
+        poi_heading = calculate_north_bearing(LocationManager.get_location(), self.poi)
         device_heading = CompassManager.get_angle()
+
+        # Let's point the HapticCompass into the direction of the poi
+        #
+        HapticCompass.set_angle(poi_heading)
 
         self.needle_angle = (poi_heading - device_heading ) % 360
 
@@ -62,7 +67,7 @@ class PoiDirection(BaseScreen):
 
 
     def say_angle(self):
-        poi_heading = calculate_north_bearing(LocationManager.get_location, self.poi)
+        poi_heading = calculate_north_bearing(LocationManager.get_location(), self.poi)
         device_heading = CompassManager.get_angle()
         angle = (device_heading - poi_heading) % 360
         say(_("Der Winkel zum Zielort beträgt {} Grad").format(angle))

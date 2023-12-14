@@ -78,7 +78,7 @@ class LocationManager:
             if not LocationManager._simulate_route_running:
                 # Simulate GPS coordinates (latitude, longitude)
                 with LocationManager._location_lock:
-                    LocationManager._location = Poi(lat=random.uniform(-90, 90), lon=random.uniform(-180, 180))
+                    #LocationManager._location = Poi(lat=random.uniform(-90, 90), lon=random.uniform(-180, 180))
                     LocationManager._location = Poi(lat=49.459511293925765, lon=8.603279976958548)
             time.sleep(5)
 
@@ -113,7 +113,6 @@ class LocationManager:
     @staticmethod
     def on_gps_location(**kwargs):
         """Callback for when a new GPS location is received."""
-        print("GPS location")
         latitude = kwargs.get('lat', 0.0)
         longitude = kwargs.get('lon', 0.0)
         with LocationManager._location_lock:
@@ -129,7 +128,6 @@ class LocationManager:
     @classmethod
     def get_location(cls):
         with cls._location_lock:
-            print(f"get location {cls._location}")
             return cls._location
 
 

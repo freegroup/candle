@@ -26,7 +26,7 @@
 // Define the BLE service and characteristic UUIDs
 #define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-
+                    
 // Deklaration für einen SSD1306-Display verbunden mit I2C (SDA, SCL pins)
 #define OLED_RESET -1 // Reset-Pin nicht verwendet (manche Versionen benötigen den Pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -69,6 +69,7 @@ void calculate_cdata() {
 class CommandCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
     void onWrite(NimBLECharacteristic* pCharacteristic) {
       // Handle the write event here
+      Serial.println("onWrite");
       std::string value = pCharacteristic->getValue();
       if (value.length() > 0) {
         int angle = std::stoi(value); // Convert string to integer

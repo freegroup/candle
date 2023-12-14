@@ -10,7 +10,6 @@ from utils.storage import Storage
 
 CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
-
 class HapticCompass:
     direction = 0
     # Create a global queue with a maximum size of 2
@@ -41,8 +40,9 @@ class HapticCompass:
     def set_angle(cls, angle):
         device = Storage.get_connected_device()
         if device and not cls.ble_send_queue.full():
+            angle = int(angle)
             cls.ble_send_queue.put((device.address, str(angle)))
-            print("Enqueued compass data for sending")
+            print(f"Enqueued compass data '{angle}' for sending")
 
 
     @classmethod
@@ -58,9 +58,10 @@ class HapticCompass:
     async def _send_ble_data(cls, device_address, angle_str):
         try:
             async with BleakClient(device_address) as client:
+                
                 if client.is_connected:
-                    await client.write_gatt_char(CHARACTERISTIC_UUID, angle_str.encode(), response=False)
-                    print("Data sent successfully")
+                    await client.write_gatt_char(CHARACTERISTIC_UUID, angle_str.encode(), response=True)
+                    print(f"Data '{angle_str}' sent successfully")
                 else:
                     print("Failed to connect to the BLE device")
         except Exception as e:
