@@ -66,7 +66,7 @@ class _LocationAddressTileState extends State<LocationAddressTile> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(street,
+                        Text(AppLocalizations.of(context)!.home_street(street, number),
                             style: Theme.of(context).textTheme.titleLarge,
                             textAlign: TextAlign.center),
                         Text(city,
@@ -102,7 +102,7 @@ class _LocationAddressTileState extends State<LocationAddressTile> {
     if (data != null) {
       print("Fetch Address...");
       final add = await getLocationAddress(lat: data.latitude!, lon: data.longitude!);
-      if (add != null) {
+      if (add != null && mounted) {
         setState(() {
           number = add.number;
           street = add.street;

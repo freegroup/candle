@@ -3,11 +3,37 @@
   "@home_address_t": {
     "description": "Talkback announcement for an address with street, number, and city",
     "placeholders": {
-      "street": {},
-      "number": {},
-      "city": {}
+      "street": {
+        "description": "The name of the street",
+        "example": "Main Street"
+      },
+      "number": {
+        "description": "The house or building number",
+        "example": "123"
+      },
+      "city": {
+        "description": "The name of the city",
+        "example": "Springfield"
+      }
     }
   },
+
+
+  "home_street": "{number}, {street}",
+  "@home_street": {
+    "description": "rendering of street, number",
+    "placeholders": {
+      "street": {
+        "description": "The name of the street",
+        "example": "Main Street"
+      },
+      "number": {
+        "description": "The house or building number",
+        "example": "123"
+      }
+    }
+  },
+
   "home_mainmenu_t": "Main Menu",
   "@home_mainmenu_t": {
     "description": "Talkback for MainMenu"
@@ -34,9 +60,8 @@
   },
   "settings_mainmenu": "Settings",
   "@settings_mainmenu": {
-    "description": "Title for Favorites screen"
+    "description": "Title for Settings screen"
   },
-
 
 
   "button_compass_t": "Compass to North",
@@ -47,5 +72,4 @@
   "@button_compass": {
     "description": "Title for compass button"
   }
-
 }

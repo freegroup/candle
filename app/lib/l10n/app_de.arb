@@ -1,5 +1,8 @@
 {
   "home_address_t": "Sie befinden sich in der {street} {number} in {city}",
+  "home_street": "{street} {number}",
+
+
   "home_mainmenu_t": "Hauptmenü",
   "home_mainmenu": "Candle",
 

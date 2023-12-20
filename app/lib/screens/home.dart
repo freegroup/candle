@@ -1,6 +1,7 @@
 import 'package:candle/icons/compass.dart';
+import 'package:candle/screens/compass.dart';
 import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/buttonbar.dart';
+
 import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ class HomeScreen extends StatelessWidget {
           title: Text(AppLocalizations.of(context)!.home_mainmenu),
           talkback: AppLocalizations.of(context)!.home_mainmenu_t,
         ),
-        bottomNavigationBar: const CandleButtonBar(),
         body: Padding(
           padding: const EdgeInsets.all(18.0),
           child: Center(
@@ -36,8 +36,13 @@ class HomeScreen extends StatelessWidget {
                         TileButton(
                           title: AppLocalizations.of(context)!.button_compass,
                           talkback: AppLocalizations.of(context)!.button_compass_t,
-                          icon: const CompassSvgIcon(),
-                          onPressed: () {},
+                          icon: const CompassSvgIcon(rotationDegrees: 30),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CompassScreen(), // Replace with your new screen widget
+                            ));
+                          },
                         )
                       ]),
                 )

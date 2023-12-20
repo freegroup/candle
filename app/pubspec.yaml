@@ -25,6 +25,8 @@ dependencies:
   sqflite: ^2.3.0
   visibility_detector: ^0.4.0+2
   flutter_svg: ^2.0.9
+  flutter_compass: ^0.8.0
+  permission_handler: ^11.1.0
 
 dev_dependencies:
   flutter_lints: ^3.0.1
