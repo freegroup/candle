@@ -7,6 +7,8 @@
   "favorite_mainmenu": "Favoriten",
  
   "settings_mainmenu_t": "Einstellungen der App vornehmen",
-  "settings_mainmenu": "Einstellungen"
+  "settings_mainmenu": "Einstellungen",
 
+  "button_compass_t": "Kompass anzeigen",
+  "button_compass": "Kompass"
 }

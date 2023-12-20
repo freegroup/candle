@@ -35,6 +35,17 @@
   "settings_mainmenu": "Settings",
   "@settings_mainmenu": {
     "description": "Title for Favorites screen"
+  },
+
+
+
+  "button_compass_t": "Compass to North",
+  "@button_compass_t": {
+    "description": "Talkback for Compass Button"
+  },
+  "button_compass": "Compass",
+  "@button_compass": {
+    "description": "Title for compass button"
   }
 
 }

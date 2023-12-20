@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? talkback;
+  final String talkback;
   final Widget? title;
   final Color? backgroundColor;
   final List<Widget>? actions;
