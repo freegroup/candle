@@ -1,0 +1,12 @@
+{
+  "home_address_t": "Sie befinden sich in der {street} {number} in {city}",
+  "home_mainmenu_t": "Hauptmenü",
+  "home_mainmenu": "Candle",
+
+  "favorite_mainmenu_t": "Verwalten von Favoriten",
+  "favorite_mainmenu": "Favoriten",
+ 
+  "settings_mainmenu_t": "Einstellungen der App vornehmen",
+  "settings_mainmenu": "Einstellungen"
+
+}

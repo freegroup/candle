@@ -1,16 +1,3 @@
-.history
-.parcel-cache
-.envrc
-.buildozer
-mobile/cache
-.env
-secret.env
-
-
-
-
-
-
 # Miscellaneous
 *.class
 *.log

@@ -1,0 +1,40 @@
+{
+  "home_address_t": "You are at {number} {street} in {city}",
+  "@home_address_t": {
+    "description": "Talkback announcement for an address with street, number, and city",
+    "placeholders": {
+      "street": {},
+      "number": {},
+      "city": {}
+    }
+  },
+  "home_mainmenu_t": "Main Menu",
+  "@home_mainmenu_t": {
+    "description": "Talkback for MainMenu"
+  },
+  "home_mainmenu": "Candle",
+  "@home_mainmenu": {
+    "description": "Title for MainMenu"
+  },
+
+
+  "favorite_mainmenu_t": "Favorites Screen",
+  "@favorite_mainmenu_t": {
+    "description": "Talkback for Favorites"
+  },
+  "favorite_mainmenu": "Favoriten",
+  "@favorite_mainmenu": {
+    "description": "Title for Favorites screen"
+  },
+
+
+  "settings_mainmenu_t": "Settings Screen",
+  "@settings_mainmenu_t": {
+    "description": "Talkback for Settings"
+  },
+  "settings_mainmenu": "Settings",
+  "@settings_mainmenu": {
+    "description": "Title for Favorites screen"
+  }
+
+}

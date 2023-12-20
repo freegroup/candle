@@ -1,0 +1,40 @@
+name: candle
+description: "Accessible Navigation App"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  flutter_blue_plus: ^1.30.5
+  flutter_slidable: ^3.0.1
+  geocoding: ^2.1.1
+  google_fonts: ^6.1.0
+  http: ^1.1.2
+  intl: any
+  location: ^5.0.3
+  path: ^1.8.3
+  path_provider: ^2.1.1
+  sqflite: ^2.3.0
+  visibility_detector: ^0.4.0+2
+  flutter_svg: ^2.0.9
+
+dev_dependencies:
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  generate: true # Add this line
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+  
