@@ -21,7 +21,82 @@
   "button_close_t": "Fenster schliessen und ins Hauptmenü",
   "button_close": "Schliessen",
 
-  "compass_dialog_t": "Fenster mit einem Kompass der nach Norden zeigt",
-  "compass_dialog": "Kompass"
+  "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
+  "compass_dialog": "Kompass",
 
+
+  "compassHorizonNorth": "Norden",
+  "@compassHorizonNorth": {
+    "description": "Kompassrichtung: Norden"
+  },
+  "compassHorizonNorthNortheast": "Nord-Nordost",
+  "@compassHorizonNorthNortheast": {
+    "description": "Kompassrichtung: Nord-Nordost"
+  },
+  "compassHorizonNortheast": "Nordost",
+  "@compassHorizonNortheast": {
+    "description": "Kompassrichtung: Nordost"
+  },
+  "compassHorizonEastNortheast": "Ost-Nordost",
+  "@compassHorizonEastNortheast": {
+    "description": "Kompassrichtung: Ost-Nordost"
+  },
+  "compassHorizonEast": "Osten",
+  "@compassHorizonEast": {
+    "description": "Kompassrichtung: Osten"
+  },
+  "compassHorizonEastSoutheast": "Ost-Südost",
+  "@compassHorizonEastSoutheast": {
+    "description": "Kompassrichtung: Ost-Südost"
+  },
+  "compassHorizonSoutheast": "Südost",
+  "@compassHorizonSoutheast": {
+    "description": "Kompassrichtung: Südost"
+  },
+  "compassHorizonSouthSoutheast": "Süd-Südost",
+  "@compassHorizonSouthSoutheast": {
+    "description": "Kompassrichtung: Süd-Südost"
+  },
+  "compassHorizonSouth": "Süden",
+  "@compassHorizonSouth": {
+    "description": "Kompassrichtung: Süden"
+  },
+  "compassHorizonSouthSouthwest": "Süd-Südwest",
+  "@compassHorizonSouthSouthwest": {
+    "description": "Kompassrichtung: Süd-Südwest"
+  },
+  "compassHorizonSouthwest": "Südwest",
+  "@compassHorizonSouthwest": {
+    "description": "Kompassrichtung: Südwest"
+  },
+  "compassHorizonWestSouthwest": "West-Südwest",
+  "@compassHorizonWestSouthwest": {
+    "description": "Kompassrichtung: West-Südwest"
+  },
+  "compassHorizonWest": "Westen",
+  "@compassHorizonWest": {
+    "description": "Kompassrichtung: Westen"
+  },
+  "compassHorizonWestNorthwest": "West-Nordwest",
+  "@compassHorizonWestNorthwest": {
+    "description": "Kompassrichtung: West-Nordwest"
+  },
+  "compassHorizonNorthwest": "Nordwest",
+  "@compassHorizonNorthwest": {
+    "description": "Kompassrichtung: Nordwest"
+  },
+  "compassHorizonNorthNorthwest": "Nord-Nordwest",
+  "@compassHorizonNorthNorthwest": {
+    "description": "Kompassrichtung: Nord-Nordwest"
+  },
+  "compassDirection": "Sie halten das Handy in Richtung {direction}",
+  "@compassDirection": {
+    "description": "Nachricht, die die Richtung angibt, in die das Telefon zeigt",
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "description": "Der Name der Richtung"
+      }
+    }
+  }
 }

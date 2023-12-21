@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:candle/icons/compass.dart';
+import 'package:candle/l10n/helper.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/utils/shadow.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -58,31 +59,56 @@ class _CompassScreenState extends State<CompassScreen> {
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   double containerWidth = constraints.maxWidth * 0.9;
-                  return CompassIcon(
-                    shadow: true,
-                    rotationDegrees: _currentHeadingDegrees,
-                    height: containerWidth,
-                    width: containerWidth,
+                  return Semantics(
+                    label: sayHorizon(context, _currentHeadingDegrees),
+                    child: CompassIcon(
+                      shadow: true,
+                      rotationDegrees: _currentHeadingDegrees,
+                      height: containerWidth,
+                      width: containerWidth,
+                    ),
                   );
                 },
               ),
             ),
           ),
-          Text(
-            '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          SizedBox(
+            height: 70,
+            width: double.infinity,
+            child: Semantics(
+              label: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+              child: Align(
+                alignment: Alignment.center,
+                child: ExcludeSemantics(
+                  child: Text(
+                    '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+              ),
+            ),
           ),
           Expanded(
             flex: 2, // 1/3 of the screen for the text and buttons
             child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
               double buttonWidth = constraints.maxWidth / 3; // 1/3 of the parent width
-              return BoldIconButton(
-                talkback: AppLocalizations.of(context)!.button_close_t,
-                buttonWidth: buttonWidth,
-                icons: Icons.close_rounded,
-                onTab: () {
-                  Navigator.pop(context);
-                },
+              return Container(
+                width: double.infinity, // Full width for TalkBack focus
+                child: Semantics(
+                  button: true, // Explicitly mark as a button
+                  label: AppLocalizations.of(context)!.button_close_t,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: BoldIconButton(
+                      talkback: "",
+                      buttonWidth: buttonWidth,
+                      icons: Icons.close_rounded,
+                      onTab: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
               );
             }),
           ),

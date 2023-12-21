@@ -41,15 +41,15 @@ class Compass(BaseScreen):
         HapticCompass.set_angle(0)
 
 
-    def say_horizon(self):
+    def say_horizon(self, angle):
         directions = [
             _("Norden"), _("Nord-Nordost"), _("Nordost"), _("Ost-Nordost"),
             _("Osten"), _("Ost-Südost"), _("Südost"), _("Süd-Südost"),
             _("Süden"), _("Süd-Südwest"), _("Südwest"), _("West-Südwest"),
             _("Westen"), _("West-Nordwest"), _("Nordwest"), _("Nord-Nordwest")
         ]
-        segment = round(CompassManager.get_angle() / 22.5) % 16
-        say(_("Sie halten das Handy in Richtung {}").format(directions[segment]))
+        segment = round(angle / 22.5) % 16
+        return (_("Sie halten das Handy in Richtung {}").format(directions[segment]))
 
 
     def say_angle(self):

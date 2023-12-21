@@ -64,7 +64,7 @@
   },
 
 
-  "compass_dialog_t": "Compass dialog pointing to north",
+  "compass_dialog_t": "A compass that can announce the cardinal direction to you.",
   "@compass_dialog_t": {
     "description": "Talkback for the CompassDialog AppBar"
   },
@@ -99,5 +99,82 @@
   "button_close": "Close",
   "@button_favorite": {
     "description": "Title for close button"
+  },
+
+
+  "compassHorizonNorth": "North",
+  "@compassHorizonNorth": {
+    "description": "Compass direction: North"
+  },
+  "compassHorizonNorthNortheast": "North-Northeast",
+  "@compassHorizonNorthNortheast": {
+    "description": "Compass direction: North-Northeast"
+  },
+  "compassHorizonNortheast": "Northeast",
+  "@compassHorizonNortheast": {
+    "description": "Compass direction: Northeast"
+  },
+  "compassHorizonEastNortheast": "East-Northeast",
+  "@compassHorizonEastNortheast": {
+    "description": "Compass direction: East-Northeast"
+  },
+  "compassHorizonEast": "East",
+  "@compassHorizonEast": {
+    "description": "Compass direction: East"
+  },
+  "compassHorizonEastSoutheast": "East-Southeast",
+  "@compassHorizonEastSoutheast": {
+    "description": "Compass direction: East-Southeast"
+  },
+  "compassHorizonSoutheast": "Southeast",
+  "@compassHorizonSoutheast": {
+    "description": "Compass direction: Southeast"
+  },
+  "compassHorizonSouthSoutheast": "South-Southeast",
+  "@compassHorizonSouthSoutheast": {
+    "description": "Compass direction: South-Southeast"
+  },
+  "compassHorizonSouth": "South",
+  "@compassHorizonSouth": {
+    "description": "Compass direction: South"
+  },
+  "compassHorizonSouthSouthwest": "South-Southwest",
+  "@compassHorizonSouthSouthwest": {
+    "description": "Compass direction: South-Southwest"
+  },
+  "compassHorizonSouthwest": "Southwest",
+  "@compassHorizonSouthwest": {
+    "description": "Compass direction: Southwest"
+  },
+  "compassHorizonWestSouthwest": "West-Southwest",
+  "@compassHorizonWestSouthwest": {
+    "description": "Compass direction: West-Southwest"
+  },
+  "compassHorizonWest": "West",
+  "@compassHorizonWest": {
+    "description": "Compass direction: West"
+  },
+  "compassHorizonWestNorthwest": "West-Northwest",
+  "@compassHorizonWestNorthwest": {
+    "description": "Compass direction: West-Northwest"
+  },
+  "compassHorizonNorthwest": "Northwest",
+  "@compassHorizonNorthwest": {
+    "description": "Compass direction: Northwest"
+  },
+  "compassHorizonNorthNorthwest": "North-Northwest",
+  "@compassHorizonNorthNorthwest": {
+    "description": "Compass direction: North-Northwest"
+  },
+  "compassDirection": "You are facing {direction}",
+  "@compassDirection": {
+    "description": "Message indicating the direction the phone is pointing",
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "description": "The direction name"
+      }
+    }
   }
 }
+
