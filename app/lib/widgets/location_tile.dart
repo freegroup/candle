@@ -1,5 +1,6 @@
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/utils/shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'dart:convert';
@@ -47,10 +48,9 @@ class _LocationAddressTileState extends State<LocationAddressTile> {
         child: ExcludeSemantics(
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.05),
-              border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                  width: 1.0), // Use primary color for border
+              color: Theme.of(context).cardColor,
+              boxShadow: createShadow(),
+              border: Border.all(width: 1.0), // Use primary color for border
               borderRadius: BorderRadius.circular(8.0), // Adjust radius for roundness
             ),
             constraints: const BoxConstraints(minHeight: 150.0), // Minimum height for the container

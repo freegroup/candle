@@ -13,5 +13,15 @@
   "settings_mainmenu": "Einstellungen",
 
   "button_compass_t": "Kompass anzeigen",
-  "button_compass": "Kompass"
+  "button_compass": "Kompass",
+
+  "button_favorite_t": "Aktuellen Standort speichern",
+  "button_favorite": "Speichern",
+
+  "button_close_t": "Fenster schliessen und ins Hauptmenü",
+  "button_close": "Schliessen",
+
+  "compass_dialog_t": "Fenster mit einem Kompass der nach Norden zeigt",
+  "compass_dialog": "Kompass"
+
 }

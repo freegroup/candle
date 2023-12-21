@@ -5,7 +5,8 @@ class CThemeData {
     MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 218, 0, 1));
     return ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: Color.fromRGBO(20, 20, 20, 1),
+      cardColor: Colors.black,
       textTheme: TextTheme(
         bodySmall: TextStyle(color: mySwatch),
         bodyMedium: TextStyle(color: mySwatch),
@@ -18,25 +19,28 @@ class CThemeData {
         displayLarge: TextStyle(color: mySwatch),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.black45,
-        elevation: 1.0,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        shadowColor: Colors.black,
         titleTextStyle: TextStyle(
           color: mySwatch,
+          letterSpacing: 5,
           fontSize: 30,
-          fontWeight: FontWeight.normal,
+          fontWeight: FontWeight.w300,
         ),
         iconTheme: IconThemeData(color: mySwatch),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.transparent), // Transparent background
-          side: MaterialStateProperty.all(BorderSide(color: mySwatch)), // Border Color
+    
+          backgroundColor: MaterialStateProperty.all(Colors.black), // Transparent background
+          side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Border Color
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0) // Adjust border radius as needed
               )),
           // Ensure that the button's minimum size is zero so it can be as small as its padding allows
           minimumSize: MaterialStateProperty.all(Size.zero),
-          elevation: MaterialStateProperty.all(1),
+          elevation: MaterialStateProperty.all(0.2),
           foregroundColor: MaterialStateProperty.all(mySwatch),
           padding:
               MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),

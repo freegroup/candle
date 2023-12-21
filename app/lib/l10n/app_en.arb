@@ -64,6 +64,16 @@
   },
 
 
+  "compass_dialog_t": "Compass dialog pointing to north",
+  "@compass_dialog_t": {
+    "description": "Talkback for the CompassDialog AppBar"
+  },
+  "compass_dialog": "Compass",
+  "@compass_dialog": {
+    "description": "Title for comcpass dialog"
+  },
+
+
   "button_compass_t": "Compass to North",
   "@button_compass_t": {
     "description": "Talkback for Compass Button"
@@ -71,5 +81,23 @@
   "button_compass": "Compass",
   "@button_compass": {
     "description": "Title for compass button"
+  },
+
+  "button_favorite_t": "Save current location as favorite",
+  "@button_favorite_t": {
+    "description": "Talkback for Poi Create Button"
+  },
+  "button_favorite": "Save as",
+  "@button_favorite": {
+    "description": "Title for poi create button"
+  },
+
+  "button_close_t": "Close Dialog and back to main screen",
+  "@button_favorite_t": {
+    "description": "Talkback for close button"
+  },
+  "button_close": "Close",
+  "@button_favorite": {
+    "description": "Title for close button"
   }
 }

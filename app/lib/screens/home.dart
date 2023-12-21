@@ -1,4 +1,5 @@
 import 'package:candle/icons/compass.dart';
+import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/screens/compass.dart';
 import 'package:candle/widgets/appbar.dart';
 
@@ -36,7 +37,18 @@ class HomeScreen extends StatelessWidget {
                         TileButton(
                           title: AppLocalizations.of(context)!.button_compass,
                           talkback: AppLocalizations.of(context)!.button_compass_t,
-                          icon: const CompassSvgIcon(rotationDegrees: 30),
+                          icon: const CompassIcon(rotationDegrees: 30),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CompassScreen(), // Replace with your new screen widget
+                            ));
+                          },
+                        ),
+                        TileButton(
+                          title: AppLocalizations.of(context)!.button_favorite,
+                          talkback: AppLocalizations.of(context)!.button_favorite_t,
+                          icon: const PoiFavoriteIcon(),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>

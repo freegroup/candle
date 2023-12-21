@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:candle/models/shopping_item.dart';
+import 'package:candle/models/location.dart';
 import "package:path/path.dart";
 
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
+  static const String _locationTable = "location";
+
   // singleton Pattern
   DatabaseService._privateConstructor();
   static final DatabaseService instance = DatabaseService._privateConstructor();
@@ -16,7 +18,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "shopping_items.db");
+    String path = join(docDirector.path, "favorites.db");
     return await openDatabase(
       path,
       version: 1,
@@ -26,35 +28,36 @@ class DatabaseService {
 
   FutureOr<void> _onCreate(Database db, int version) async {
     await db.execute(''' 
-    CREATE TABLE shopping_items(
+    CREATE TABLE $_locationTable(
       id INTEGER PRIMARY KEY,
       name TEXT,
-      done INTEGER
+      lat REAL,
+      lon REAL
     )
     ''');
   }
 
-  Future<List<ShoppingItem>> all() async {
+  Future<List<Location>> all() async {
     Database db = await instance.database;
-    var rows = await db.query('shopping_items', orderBy: "name");
-    List<ShoppingItem> shopppingItems =
-        rows.isNotEmpty ? rows.map((e) => ShoppingItem.fromMap(e)).toList() : [];
+    var rows = await db.query(_locationTable, orderBy: "name");
+    List<Location> shopppingItems =
+        rows.isNotEmpty ? rows.map((e) => Location.fromMap(e)).toList() : [];
 
     return shopppingItems;
   }
 
-  Future<int> add(ShoppingItem item) async {
+  Future<int> add(Location item) async {
     Database db = await instance.database;
-    return await db.insert('shopping_items', item.toMap());
+    return await db.insert(_locationTable, item.toMap());
   }
 
-  Future<int> remove(ShoppingItem item) async {
+  Future<int> remove(Location item) async {
     Database db = await instance.database;
-    return await db.delete('shopping_items', where: 'id = ?', whereArgs: [item.id]);
+    return await db.delete(_locationTable, where: 'id = ?', whereArgs: [item.id]);
   }
 
-  Future<int> update(ShoppingItem item) async {
+  Future<int> update(Location item) async {
     Database db = await instance.database;
-    return await db.update('shopping_items', item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+    return await db.update(_locationTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
   }
 }

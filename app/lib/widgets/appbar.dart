@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String talkback;
   final Widget? title;
-  final Color? backgroundColor;
   final List<Widget>? actions;
   final double height;
 
@@ -11,7 +10,6 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.talkback,
     this.title,
-    this.backgroundColor,
     this.actions,
     this.height = kToolbarHeight, // Default AppBar height
   });
@@ -23,8 +21,16 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: ExcludeSemantics(
         child: AppBar(
           title: title,
-          backgroundColor: backgroundColor,
+          automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           actions: actions,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1.0),
+            child: Container(
+              color: Theme.of(context).appBarTheme.titleTextStyle?.color?.withAlpha(50),
+              height: 1.0,
+            ),
+          ),
           // Add other properties if needed
         ),
       ),

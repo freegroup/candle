@@ -16,7 +16,7 @@ class _CandleAppState extends State<CandleApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Candle Navigation',
       debugShowCheckedModeBanner: false,
       theme: CThemeData.darkTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>poi_favorite_create</title>
+    <g id="poi_favorite_create" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M50,11 C62.7025492,11 73,20.6258779 73,32.5 C73,40.4160814 65.3333333,56.2113288 50,79.8857422 C34.6666667,56.2113288 27,40.4160814 27,32.5 C27,20.6258779 37.2974508,11 50,11 Z M50.5,19 L46.2385569,27.6346268 L36.7096805,29.0192536 L43.6048403,35.7403732 L41.9771138,45.2307464 L50.5,40.75 L59.0228862,45.2307464 L57.3951597,35.7403732 L64.2903195,29.0192536 L54.7614431,27.6346268 L50.5,19 Z" id="Combined-Shape" fill="#D8D8D8"></path>
+    </g>
+</svg>

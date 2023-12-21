@@ -1,7 +1,7 @@
 import 'package:candle/icons/base.dart';
 
-class CompassIcon extends BaseSvgIcon {
-  const CompassIcon({
+class PoiFavoriteIcon extends BaseSvgIcon {
+  const PoiFavoriteIcon({
     super.key,
     super.height,
     super.width,
@@ -12,5 +12,5 @@ class CompassIcon extends BaseSvgIcon {
 
   @override
   String get assetPath =>
-      'assets/images/compass.svg'; // Specify the asset path for the compass icon
+      'assets/images/poi_favorite_create.svg'; // Specify the asset path for the compass icon
 }
