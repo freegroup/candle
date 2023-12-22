@@ -1,3 +1,4 @@
+import 'package:candle/screens/favorites_cu.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -54,7 +55,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         return Semantics(
                           customSemanticsActions: {
                             CustomSemanticsAction(label: l10n.button_common_edit_t): () {
-                              showSnackbar(context, l10n.location_delete_toast("name"));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                    builder: (context) => FavoriteCreateUpdateScreen(
+                                      initialLocation: location,
+                                    ),
+                                  ))
+                                  .then((value) => {setState(() => {})});
                             },
                             CustomSemanticsAction(label: l10n.button_common_delete_t): () {
                               setState(() {
@@ -70,7 +77,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
                               // All actions are defined in the children parameter.
                               children: [
-                                // A SlidableAction can have an icon and/or a label.
                                 SlidableAction(
                                   onPressed: (context) {
                                     setState(() {
@@ -79,15 +85,23 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                           context, l10n.location_delete_toast(location.name));
                                     });
                                   },
-                                  backgroundColor: Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Color.fromARGB(255, 101, 2, 2),
+                                  foregroundColor: theme.primaryColor,
                                   icon: Icons.delete,
                                   label: l10n.button_common_delete,
                                 ),
                                 SlidableAction(
-                                  onPressed: (context) {},
-                                  backgroundColor: Color(0xFF21B7CA),
-                                  foregroundColor: Colors.white,
+                                  onPressed: (context) {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                          builder: (context) => FavoriteCreateUpdateScreen(
+                                            initialLocation: location,
+                                          ),
+                                        ))
+                                        .then((value) => {setState(() => {})});
+                                  },
+                                  backgroundColor: Color.fromARGB(255, 0, 51, 58),
+                                  foregroundColor: theme.primaryColor,
                                   icon: Icons.edit,
                                   label: l10n.button_common_edit,
                                 ),

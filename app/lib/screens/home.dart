@@ -40,10 +40,8 @@ class HomeScreen extends StatelessWidget {
                           talkback: AppLocalizations.of(context)!.button_compass_t,
                           icon: const CompassIcon(rotationDegrees: 30),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CompassScreen(), // Replace with your new screen widget
-                            ));
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => const CompassScreen()));
                           },
                         ),
                         TileButton(
@@ -52,9 +50,7 @@ class HomeScreen extends StatelessWidget {
                           icon: const PoiFavoriteIcon(),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  FavoriteAddScreen(), // Replace with your new screen widget
-                            ));
+                                builder: (context) => const FavoriteCreateUpdateScreen()));
                           },
                         )
                       ]),

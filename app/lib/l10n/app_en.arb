@@ -121,6 +121,16 @@
   },
 
 
+  "location_update_dialog_t": "Give the location a new name and save it.",
+  "@location_update_dialog_t": {
+    "description": "Talkback for the update location/favorite AppBar"
+  },
+  "location_update_dialog": "Update Location",
+  "@location_update_dialog": {
+    "description": "Title for location/favorite update dialog"
+  },
+
+
   "button_common_edit_t": "Edit Element",
   "@button_common_edit_t": {
     "description": "Talkback for a generic edit Button"
@@ -158,6 +168,10 @@
     "description": "Common message for an empty favorite screen"
   },
 
+  "label_favorite_saved": "Favorite saved.",
+  "@label_favorite_saved": {
+    "description": "Common message if a location has saved or updated"
+  },
 
   "button_compass_t": "Compass to North",
   "@button_compass_t": {

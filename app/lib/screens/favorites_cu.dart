@@ -11,32 +11,58 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:location/location.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-class FavoriteAddScreen extends StatefulWidget {
-  const FavoriteAddScreen({super.key});
+class FavoriteCreateUpdateScreen extends StatefulWidget {
+  final model.Location? initialLocation;
+
+  const FavoriteCreateUpdateScreen({super.key, this.initialLocation});
 
   @override
-  State<FavoriteAddScreen> createState() => _CompassScreenState();
+  State<FavoriteCreateUpdateScreen> createState() => _ScreenState();
 }
 
-class _CompassScreenState extends State<FavoriteAddScreen> {
+class _ScreenState extends State<FavoriteCreateUpdateScreen> {
   TextEditingController editingController = TextEditingController();
   late stt.SpeechToText _speech;
   bool _isListening = false;
+  bool _isUpdate = false;
+  model.Location? stateLocation;
 
   @override
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
+    stateLocation = widget.initialLocation;
+    if (stateLocation != null) {
+      _isUpdate = true;
+      editingController.text = stateLocation!.name;
+    }
   }
 
-  Future<void> _saveLocation() async {
-    LocationData? location = await LocationService.instance.location;
-    if (location != null) {
-      await DatabaseService.instance.add(model.Location(
-          lat: location.latitude!, lon: location.longitude!, name: editingController.text));
-      showSnackbarAndNavigateBack(context, "Favorit wurde gespeichert");
-    } else {
-      Navigator.pop(context);
+  Future<void> _saveLocation(BuildContext context) async {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    String name = editingController.text;
+
+    // UPDATE a new Location
+    //
+    if (_isUpdate) {
+      model.Location updatedLocation = stateLocation!.copyWith(name: name);
+      await DatabaseService.instance.update(updatedLocation);
+      if (!mounted) return;
+      showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+    }
+    // CREATE an existing one
+    //
+    else {
+      LocationData? location = await LocationService.instance.location;
+      if (location != null) {
+        await DatabaseService.instance
+            .add(model.Location(lat: location.latitude!, lon: location.longitude!, name: name));
+        if (!mounted) return;
+        showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+      } else {
+        if (!mounted) return;
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -55,7 +81,7 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
               editingController.text = val.recognizedWords;
               if (val.finalResult) {
                 // Check if the speech input is complete
-                _saveLocation(); // Call the save method
+                _saveLocation(context); // Call the save method
               }
             });
           }),
@@ -69,13 +95,15 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var mediaQueryData = MediaQuery.of(context);
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
     bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(AppLocalizations.of(context)!.location_add_dialog),
-        talkback: AppLocalizations.of(context)!.location_add_dialog_t,
+        title: Text(_isUpdate? l10n.location_update_dialog: l10n.location_add_dialog),
+        talkback: _isUpdate? l10n.location_update_dialog_t: l10n.location_add_dialog_t,
       ),
       body: Column(
         children: [
@@ -84,11 +112,10 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Semantics(
-                label: AppLocalizations.of(context)!.location_name_t,
+                label: l10n.location_name_t,
                 child: TextFormField(
                   controller: editingController,
-                  decoration:
-                      InputDecoration(labelText: AppLocalizations.of(context)!.location_name),
+                  decoration: InputDecoration(labelText: l10n.location_name),
                   autofocus: !isScreenReaderEnabled,
                 ),
               ),
@@ -102,7 +129,7 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
                 width: double.infinity, // Full width for TalkBack focus
                 child: Semantics(
                   button: true, // Explicitly mark as a button
-                  label: AppLocalizations.of(context)!.location_add_speak_t,
+                  label: l10n.location_add_speak_t,
                   child: Align(
                     alignment: Alignment.center,
                     child: BoldIconButton(
@@ -128,7 +155,7 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
                 width: double.infinity, // Full width for TalkBack focus
                 child: Semantics(
                   button: true, // Explicitly mark as a button
-                  label: AppLocalizations.of(context)!.button_close_t,
+                  label: l10n!.button_close_t,
                   child: Align(
                     alignment: Alignment.center,
                     child: BoldIconButton(
@@ -136,7 +163,7 @@ class _CompassScreenState extends State<FavoriteAddScreen> {
                       buttonWidth: buttonWidth,
                       icons: Icons.check,
                       onTab: () async {
-                        await _saveLocation();
+                        await _saveLocation(context);
                       },
                     ),
                   ),

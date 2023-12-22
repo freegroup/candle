@@ -30,6 +30,8 @@
   "label_common_loading_t": "Laden Daten...",
   "label_common_loading": "Laden...",
 
+  "label_favorite_saved": "Favorite wurde gespeichert.",
+  
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
 
@@ -37,7 +39,10 @@
   "compass_dialog": "Kompass",
 
   "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "location_add_dialog": "Standort speichern",
+  "location_add_dialog": "Standort anlegen",
+
+  "location_update_dialog_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
+  "location_update_dialog": "Standort bearbeiten",
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
 
