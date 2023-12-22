@@ -21,82 +21,47 @@
   "button_close_t": "Fenster schliessen und ins Hauptmenü",
   "button_close": "Schliessen",
 
+  "button_common_edit_t": "Eintrag bearbeiten",
+  "button_common_edit": "Bearbeiten",
+  
+  "button_common_delete_t": "Eintrag löschen",
+  "button_common_delete": "Löschen",
+
+  "label_common_loading_t": "Laden Daten...",
+  "label_common_loading": "Laden...",
+
+  "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
+  "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
+
   "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
   "compass_dialog": "Kompass",
 
+  "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
+  "location_add_dialog": "Standort speichern",
 
+  "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
+
+  "location_name_t": "Eingabefeld für den Favoritennamen",
+  "location_name": "Favoriten Name",
+
+  "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
+  "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt-",
+  
   "compassHorizonNorth": "Norden",
-  "@compassHorizonNorth": {
-    "description": "Kompassrichtung: Norden"
-  },
   "compassHorizonNorthNortheast": "Nord-Nordost",
-  "@compassHorizonNorthNortheast": {
-    "description": "Kompassrichtung: Nord-Nordost"
-  },
   "compassHorizonNortheast": "Nordost",
-  "@compassHorizonNortheast": {
-    "description": "Kompassrichtung: Nordost"
-  },
   "compassHorizonEastNortheast": "Ost-Nordost",
-  "@compassHorizonEastNortheast": {
-    "description": "Kompassrichtung: Ost-Nordost"
-  },
   "compassHorizonEast": "Osten",
-  "@compassHorizonEast": {
-    "description": "Kompassrichtung: Osten"
-  },
   "compassHorizonEastSoutheast": "Ost-Südost",
-  "@compassHorizonEastSoutheast": {
-    "description": "Kompassrichtung: Ost-Südost"
-  },
   "compassHorizonSoutheast": "Südost",
-  "@compassHorizonSoutheast": {
-    "description": "Kompassrichtung: Südost"
-  },
   "compassHorizonSouthSoutheast": "Süd-Südost",
-  "@compassHorizonSouthSoutheast": {
-    "description": "Kompassrichtung: Süd-Südost"
-  },
   "compassHorizonSouth": "Süden",
-  "@compassHorizonSouth": {
-    "description": "Kompassrichtung: Süden"
-  },
   "compassHorizonSouthSouthwest": "Süd-Südwest",
-  "@compassHorizonSouthSouthwest": {
-    "description": "Kompassrichtung: Süd-Südwest"
-  },
   "compassHorizonSouthwest": "Südwest",
-  "@compassHorizonSouthwest": {
-    "description": "Kompassrichtung: Südwest"
-  },
   "compassHorizonWestSouthwest": "West-Südwest",
-  "@compassHorizonWestSouthwest": {
-    "description": "Kompassrichtung: West-Südwest"
-  },
   "compassHorizonWest": "Westen",
-  "@compassHorizonWest": {
-    "description": "Kompassrichtung: Westen"
-  },
   "compassHorizonWestNorthwest": "West-Nordwest",
-  "@compassHorizonWestNorthwest": {
-    "description": "Kompassrichtung: West-Nordwest"
-  },
   "compassHorizonNorthwest": "Nordwest",
-  "@compassHorizonNorthwest": {
-    "description": "Kompassrichtung: Nordwest"
-  },
   "compassHorizonNorthNorthwest": "Nord-Nordwest",
-  "@compassHorizonNorthNorthwest": {
-    "description": "Kompassrichtung: Nord-Nordwest"
-  },
-  "compassDirection": "Sie halten das Handy in Richtung {direction}",
-  "@compassDirection": {
-    "description": "Nachricht, die die Richtung angibt, in die das Telefon zeigt",
-    "placeholders": {
-      "direction": {
-        "type": "String",
-        "description": "Der Name der Richtung"
-      }
-    }
-  }
+  "compassDirection": "Sie halten das Handy in Richtung {direction}"
 }

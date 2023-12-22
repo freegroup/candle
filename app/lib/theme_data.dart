@@ -18,6 +18,13 @@ class CThemeData {
         displayMedium: TextStyle(color: mySwatch),
         displayLarge: TextStyle(color: mySwatch),
       ),
+      inputDecorationTheme: const InputDecorationTheme(
+        filled: true,
+        fillColor: Color.fromRGBO(100, 100, 100, 1),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -32,7 +39,6 @@ class CThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-    
           backgroundColor: MaterialStateProperty.all(Colors.black), // Transparent background
           side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Border Color
           shape: MaterialStateProperty.all(RoundedRectangleBorder(

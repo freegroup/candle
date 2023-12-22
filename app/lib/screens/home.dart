@@ -1,6 +1,7 @@
 import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/screens/compass.dart';
+import 'package:candle/screens/screens.dart';
 import 'package:candle/widgets/appbar.dart';
 
 import 'package:candle/widgets/location_tile.dart';
@@ -52,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  CompassScreen(), // Replace with your new screen widget
+                                  FavoriteAddScreen(), // Replace with your new screen widget
                             ));
                           },
                         )

@@ -73,6 +73,91 @@
     "description": "Title for comcpass dialog"
   },
 
+  "location_name_t": "Input field for the location name",
+  "@location_name_t": {
+    "description": "Talkback for the input field for a location name"
+  },
+
+  "location_name": "Favorite name",
+  "@location_name": {
+    "description": "The label for the location name input"
+  },
+
+  "location_saved_toast": "Location '{name}' has saved as favorite.",
+  "@location_saved_toast": {
+    "description": "Information that the favorite has saved with success",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the favorite"
+      }
+    }
+  },
+  
+  "location_delete_toast": "Location '{name}' deleted.",
+  "@location_saved_toast": {
+    "description": "Information that the favorite has deleted with success",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the favorite"
+      }
+    }
+  },
+
+  "location_add_speak_t": "Press to name the location using voice input",
+  "@location_add_speak_t": {
+    "description": "Talkback for the start voice recoding button"
+  },
+
+
+  "location_add_dialog_t": "Give the location a name to save it in your favorites.",
+  "@location_add_dialog_t": {
+    "description": "Talkback for the save location AppBar"
+  },
+  "location_add_dialog": "Save Location",
+  "@location_add_dialog": {
+    "description": "Title for location add dialog"
+  },
+
+
+  "button_common_edit_t": "Edit Element",
+  "@button_common_edit_t": {
+    "description": "Talkback for a generic edit Button"
+  },
+  "button_common_edit": "Edit",
+  "@button_common_edit": {
+    "description": "Title for edit button"
+  },
+
+
+  "button_common_delete_t": "Delete Element",
+  "@button_common_delete_t": {
+    "description": "Talkback for a generic delete Button"
+  },
+  "button_common_delete": "Delete",
+  "@button_common_delete": {
+    "description": "Title for delete button"
+  },
+
+  "label_common_loading_t": "Loading data from storage..",
+  "@button_common_edit_t": {
+    "description": "Common loading message"
+  },
+  "label_common_loading": "Loading..",
+  "@button_common_edit": {
+    "description": "Common loading message"
+  },
+
+  "label_favorites_empty_t": "You have not added any favorites yet. If you have any, they will be listed in this area.",
+  "@label_favorites_empty_t": {
+    "description": "Common message for an empty fovirite area"
+  },
+  "label_favorites_empty": "You have not added any favorites yet.",
+  "@label_favorites_empty": {
+    "description": "Common message for an empty favorite screen"
+  },
+
 
   "button_compass_t": "Compass to North",
   "@button_compass_t": {
