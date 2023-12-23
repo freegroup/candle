@@ -13,6 +13,7 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/models/location.dart' as model;
 import 'package:vibration/vibration.dart';
+import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 class NavigatePoiScreen extends StatefulWidget {
   final model.Location location;
@@ -25,36 +26,42 @@ class NavigatePoiScreen extends StatefulWidget {
 
 class _ScreenState extends State<NavigatePoiScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
+  Timer? _vibrationTimer;
+  Timer? _updateLocationTimer;
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
-  late model.Location stateLocation;
-  model.Location? currentLocation;
-  Timer? _vibrationTimer;
-  bool _wasAligned = false;
+  late model.Location _stateLocation;
+  model.Location? _currentLocation;
 
-  void updateGpsLocation() async {
-    var gps = await LocationService.instance.location;
-    if (gps != null) {
-      currentLocation = model.Location(lat: gps.latitude!, lon: gps.longitude!, name: "");
-    }
-  }
+  bool _wasAligned = false;
 
   bool _isAligned(int headingDegrees) {
     return (headingDegrees.abs() <= 8) || (headingDegrees.abs() >= 352);
   }
 
+  void updateGpsLocation() async {
+    var gps = await LocationService.instance.location;
+    if (gps != null) {
+      _currentLocation = model.Location(lat: gps.latitude!, lon: gps.longitude!, name: "");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _stateLocation = widget.location;
+
+    FlutterScreenWake.keepOn(true);
+
     updateGpsLocation();
-    Timer.periodic(const Duration(seconds: 10), (Timer t) => updateGpsLocation());
+    _updateLocationTimer = Timer.periodic(const Duration(seconds: 10), (Timer t) async {
+      updateGpsLocation();
+    });
 
-    stateLocation = widget.location;
-
-    _vibrationTimer = Timer.periodic(Duration(seconds: 4), (Timer t) async {
+    _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
       bool isAligned = (_currentHeadingDegrees.abs() <= 8) || (_currentHeadingDegrees.abs() >= 352);
       if (isAligned && (await Vibration.hasVibrator() ?? false)) {
-        Vibration.vibrate(duration: 100); // Vibrate for 500 milliseconds
+        Vibration.vibrate(duration: 100);
       }
     });
 
@@ -62,10 +69,10 @@ class _ScreenState extends State<NavigatePoiScreen> {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         print(err);
       }).listen((compassEvent) async {
-        if (mounted && currentLocation != null) {
+        if (mounted && _currentLocation != null) {
           var poiHeading = calculateNorthBearing(
-            poiBase: currentLocation!,
-            poiTarget: stateLocation,
+            poiBase: _currentLocation!,
+            poiTarget: _stateLocation,
           );
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
@@ -73,10 +80,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
-              // Aligned: shorter, frequent vibration
               Vibration.vibrate(duration: 100, repeat: 2);
             } else {
-              // Misaligned: longer, one-time vibration
               Vibration.vibrate(duration: 500);
             }
             _wasAligned = currentlyAligned;
@@ -85,8 +90,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
           setState(() {
             _currentHeadingDegrees = needleHeading;
             _currentDistanceToStateLocation = calculateDistance(
-              poiBase: currentLocation!,
-              poiTarget: stateLocation,
+              poiBase: _currentLocation!,
+              poiTarget: _stateLocation,
             ).toInt();
           });
         }
@@ -96,8 +101,10 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
   @override
   void dispose() {
+    FlutterScreenWake.keepOn(false);
     _compassSubscription?.cancel();
-    _vibrationTimer?.cancel(); // Cancel the timer when disposing
+    _vibrationTimer?.cancel();
+    _updateLocationTimer?.cancel();
     super.dispose();
   }
 
@@ -107,6 +114,24 @@ class _ScreenState extends State<NavigatePoiScreen> {
     ThemeData theme = Theme.of(context);
     bool isAligned = _isAligned(_currentHeadingDegrees);
     Color? backgroundColor = isAligned ? Colors.green[800] : null;
+
+    // Show loading screen when current location is not available
+    if (_currentLocation == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title:
+              Semantics(label: l10n.label_common_loading_t, child: Text(l10n.label_common_loading)),
+        ),
+        body: Center(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              double size = constraints.maxWidth * 0.33;
+              return SizedBox(width: size, height: size, child: CircularProgressIndicator());
+            },
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -156,7 +181,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
                     child: Column(
                       children: [
                         Text(
-                          stateLocation.name,
+                          _stateLocation.name,
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                         Text(
