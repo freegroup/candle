@@ -42,8 +42,8 @@ abstract class BaseSvgIcon extends StatelessWidget {
     return SimpleShadow(
       opacity: 0.8, // Default: 0.5
       color: Colors.black, // Default: Black
-      offset: Offset(15, 25), // Default: Offset(2, 2)
-      sigma: 5, // Default: 2
+      offset: const Offset(10, 20), // Default: Offset(2, 2)
+      sigma: 3, // blur
 
       child: Transform.rotate(
         angle: rotationRadians,

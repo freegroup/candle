@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>location_dot</title>
+    <g id="location_dot" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M50.5,3 C55.1944204,3 59,6.80557963 59,11.5 C59,16.1944204 55.1944204,20 50.5,20 C45.8055796,20 42,16.1944204 42,11.5 C42,6.80557963 45.8055796,3 50.5,3 Z M50.5,6 C47.4624339,6 45,8.46243388 45,11.5 C45,14.5375661 47.4624339,17 50.5,17 C53.5375661,17 56,14.5375661 56,11.5 C56,8.46243388 53.5375661,6 50.5,6 Z" id="Combined-Shape" fill="#D8D8D8"></path>
+    </g>
+</svg>

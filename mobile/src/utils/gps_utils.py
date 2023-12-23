@@ -24,3 +24,9 @@ def calculate_north_bearing(poi_base: Poi, poi_target: Poi):
     bearing = math.degrees(math.atan2(x, y))
     bearing = (bearing + 360) % 360  # Normalisierung auf 0-360 Grad
     return int(bearing)
+
+
+if __name__ == "__main__":
+    poi1 = Poi( name="home", lat= 49.4596733, lon= 8.6032483)
+    poi2 = Poi( name="Lidl", lat= 49.45622156121109, lon= 8.596111485518252)
+    print(calculate_north_bearing(poi_base=poi1, poi_target=poi2))

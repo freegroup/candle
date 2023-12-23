@@ -102,15 +102,15 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(_isUpdate? l10n.location_update_dialog: l10n.location_add_dialog),
-        talkback: _isUpdate? l10n.location_update_dialog_t: l10n.location_add_dialog_t,
+        title: Text(_isUpdate ? l10n.location_update_dialog : l10n.location_add_dialog),
+        talkback: _isUpdate ? l10n.location_update_dialog_t : l10n.location_add_dialog_t,
       ),
       body: Column(
         children: [
           Expanded(
-            flex: 3, // 2/3 of the screen for the compass
+            flex: 1, // 2/3 of the screen for the compass
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(28.0),
               child: Semantics(
                 label: l10n.location_name_t,
                 child: TextFormField(
@@ -122,9 +122,9 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
             ),
           ),
           Expanded(
-            flex: 2, // 1/3 of the screen for the text and buttons
+            flex: 1, // 1/3 of the screen for the text and buttons
             child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
+              double buttonWidth = constraints.maxWidth / 6; // 1/3 of the parent width
               return Container(
                 width: double.infinity, // Full width for TalkBack focus
                 child: Semantics(
@@ -148,9 +148,9 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
           // über den Screen rutschen und er findet somit auf Anhieb alle Elemente
           //
           Expanded(
-            flex: 2, // 1/3 of the screen for the text and buttons
+            flex: 1, // 1/3 of the screen for the text and buttons
             child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              double buttonWidth = constraints.maxWidth / 3; // 1/3 of the parent width
+              double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
               return Container(
                 width: double.infinity, // Full width for TalkBack focus
                 child: Semantics(
@@ -165,6 +165,28 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                       onTab: () async {
                         await _saveLocation(context);
                       },
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+          Expanded(
+            flex: 1, // 1/3 of the screen for the text and buttons
+            child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+              double buttonWidth = constraints.maxWidth / 6; // 1/3 of the parent width
+              return Container(
+                width: double.infinity, // Full width for TalkBack focus
+                child: Semantics(
+                  button: true, // Explicitly mark as a button
+                  label: l10n.button_close,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: BoldIconButton(
+                      talkback: "",
+                      buttonWidth: buttonWidth,
+                      icons: Icons.close,
+                      onTab: () => {Navigator.pop(context)},
                     ),
                   ),
                 ),

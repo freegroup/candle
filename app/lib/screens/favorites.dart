@@ -1,4 +1,6 @@
 import 'package:candle/screens/favorites_cu.dart';
+import 'package:candle/screens/location_map.dart';
+import 'package:candle/screens/navigate_poi.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -85,8 +87,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                           context, l10n.location_delete_toast(location.name));
                                     });
                                   },
-                                  backgroundColor: Color.fromARGB(255, 101, 2, 2),
-                                  foregroundColor: theme.primaryColor,
+                                  backgroundColor: theme.colorScheme.error,
+                                  foregroundColor: theme.colorScheme.primary,
                                   icon: Icons.delete,
                                   label: l10n.button_common_delete,
                                 ),
@@ -100,8 +102,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         ))
                                         .then((value) => {setState(() => {})});
                                   },
-                                  backgroundColor: Color.fromARGB(255, 0, 51, 58),
-                                  foregroundColor: theme.primaryColor,
+                                  backgroundColor: theme.colorScheme.onPrimary,
+                                  foregroundColor: theme.colorScheme.primary,
                                   icon: Icons.edit,
                                   label: l10n.button_common_edit,
                                 ),
@@ -117,9 +119,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 ),
                                 tileColor: isSelected ? theme.primaryColor.withOpacity(0.1) : null,
                                 onTap: () {
-                                  setState(() {
-                                    selectedItemIndex = index;
-                                  });
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => NavigatePoiScreen(
+                                      location: location,
+                                    ),
+                                  ));
                                 }),
                           ),
                         );
