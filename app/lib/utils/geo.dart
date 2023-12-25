@@ -35,6 +35,7 @@ int calculateNorthBearing({required model.Location poiBase, required model.Locat
   return bearing.toInt();
 }
 
+
 double calculateDistance({required model.Location poiBase, required model.Location poiTarget}) {
   // Convert degrees to radians
   double radians(double degrees) => degrees * (math.pi / 180);

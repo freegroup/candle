@@ -136,7 +136,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(AppLocalizations.of(context)!.compass_dialog),
-        talkback: AppLocalizations.of(context)!.compass_dialog_t,
+        talkback: AppLocalizations.of(context)!.compass_poi_dialog_t(_stateLocation.name),
       ),
       body: Container(
         color: backgroundColor,
@@ -149,7 +149,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
                   builder: (BuildContext context, BoxConstraints constraints) {
                     double containerWidth = constraints.maxWidth * 0.9;
                     return Semantics(
-                      label: sayHorizon(context, _currentHeadingDegrees),
+                      label: sayRotate(context, _currentHeadingDegrees, isAligned,
+                          _currentDistanceToStateLocation),
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -174,7 +175,10 @@ class _ScreenState extends State<NavigatePoiScreen> {
             Container(
               width: double.infinity,
               child: Semantics(
-                label: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+                label: l10n.location_distance_t(
+                  _stateLocation.name,
+                  _currentDistanceToStateLocation,
+                ),
                 child: Align(
                   alignment: Alignment.center,
                   child: ExcludeSemantics(

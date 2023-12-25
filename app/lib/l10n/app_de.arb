@@ -35,6 +35,11 @@
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
 
+  "compass_poi_dialog_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
+  "label_rotate_left_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_right_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_no_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
+
   "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
   "compass_dialog": "Kompass",
 
@@ -49,8 +54,10 @@
   "location_name_t": "Eingabefeld für den Favoritennamen",
   "location_name": "Favoriten Name",
 
+  "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
+  
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
-  "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt-",
+  "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   
   "compassHorizonNorth": "Norden",
   "compassHorizonNorthNortheast": "Nord-Nordost",

@@ -63,6 +63,49 @@
     "description": "Title for Settings screen"
   },
 
+  "compass_poi_dialog_t": "A compass that can announce the cardinal direction to {name}",
+  "@compass_poi_dialog_t": {
+    "description": "Message indicating the direction the phone is pointing to a location/poi",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The poi name"
+      }
+    }
+  },
+
+  "label_rotate_no_t": "You are now pointing directly at the target destination. It is located {meters} meters as the crow flies.",
+  "@label_rotate_no_t": {
+    "description": "Message indicating that the user is pointiing direct to the target",
+      "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "distance to the poi in meters"
+      }
+    }
+  },
+
+  "label_rotate_left_t": "Rotate {degree} degrees to your left to directly face the target location",
+  "@label_rotate_left_t": {
+    "description": "Message indicating the amount of rotation to point direct to a poi",
+    "placeholders": {
+      "degree": {
+        "type": "int",
+        "description": "the degree to rotate"
+      }
+    }
+  },
+
+  "label_rotate_right_t": "Rotate {degree} degrees to your right to directly face the target location",
+  "@label_rotate_right_t": {
+    "description": "Message indicating the amount of rotation to point direct to a poi",
+    "placeholders": {
+      "degree": {
+        "type": "int",
+        "description": "the degree to rotate"
+      }
+    }
+  },
 
   "compass_dialog_t": "A compass that can announce the cardinal direction to you.",
   "@compass_dialog_t": {
@@ -83,6 +126,21 @@
     "description": "The label for the location name input"
   },
 
+  "location_distance_t": "{name} is {meters} meters as the crow flies from you",
+  "@location_distance_t": {
+    "description": "Information how far the poi is from you",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the favorite"
+      },
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the favorite"
+      }
+    }
+  },
+  
   "location_saved_toast": "Location '{name}' has saved as favorite.",
   "@location_saved_toast": {
     "description": "Information that the favorite has saved with success",
@@ -172,6 +230,7 @@
   "@label_favorite_saved": {
     "description": "Common message if a location has saved or updated"
   },
+
 
   "button_compass_t": "Compass to North",
   "@button_compass_t": {

@@ -25,3 +25,16 @@ String sayHorizon(BuildContext context, int angle) {
   return AppLocalizations.of(context)!
       .compassDirection(directions[segment]); // "Sie halten das Handy in Richtung {}"
 }
+
+String sayRotate(BuildContext context, int angle, bool isAligned, int distance) {
+  AppLocalizations l10n = AppLocalizations.of(context)!;
+
+  if (isAligned == true) {
+    return l10n.label_rotate_no_t(distance);
+  }
+  if (angle > 180 || angle < 0) {
+    return l10n.label_rotate_left_t(angle.abs());
+  }
+
+  return l10n.label_rotate_right_t(angle.abs());
+}
