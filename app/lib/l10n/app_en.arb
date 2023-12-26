@@ -209,11 +209,11 @@
   },
 
   "label_common_loading_t": "Loading data from storage..",
-  "@button_common_edit_t": {
+  "@label_common_loading_t": {
     "description": "Common loading message"
   },
   "label_common_loading": "Loading..",
-  "@button_common_edit": {
+  "@label_common_loading": {
     "description": "Common loading message"
   },
 

@@ -2,6 +2,7 @@ import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
 class OSMGeocodingService implements GeocodingService {
   @override
@@ -35,5 +36,13 @@ class OSMGeocodingService implements GeocodingService {
       print(error);
     }
     return null;
+  }
+
+  @override
+  Future<List<AddressSearchResult>> searchNearbyAddress({
+    required String addressFragment,
+    required Locale locale,
+  }) async {
+    return [];
   }
 }

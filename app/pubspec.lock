@@ -137,6 +137,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: "797e1e341c3dd2f69f2dad42564a6feff3bfb87187d05abb93b9609e6f1645c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
   fake_async:
     dependency: transitive
     description:
@@ -261,38 +269,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
-  geocoding:
-    dependency: "direct main"
-    description:
-      name: geocoding
-      sha256: e1dc0ac56666d9ed1d5a9ae5543ce9eb5986db6209cc7600103487d09192059c
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
-  geocoding_android:
-    dependency: transitive
-    description:
-      name: geocoding_android
-      sha256: "609db1d71bc364dd9d0616f72a41c01e0c74f3a3807efb85e0d5a67e57baf50f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.2"
-  geocoding_ios:
-    dependency: transitive
-    description:
-      name: geocoding_ios
-      sha256: "8f79e380abb640ef4d88baee8bb65390058c802601158d0813dc990b36b189d2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
-  geocoding_platform_interface:
-    dependency: transitive
-    description:
-      name: geocoding_platform_interface
-      sha256: "8848605d307d844d89937cdb4b8ad7dfa880552078f310fa24d8a460f6dddab4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   glob:
     dependency: transitive
     description:
@@ -309,6 +285,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  google_geocoding_api:
+    dependency: "direct main"
+    description:
+      name: google_geocoding_api
+      sha256: "5b01146ff8bf5dd6f59b0b38515b5b784b9e1007a3fc7929a6638c2de7d2c5d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
   http:
     dependency: "direct main"
     description:
@@ -786,6 +770,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   sqflite:
     dependency: "direct main"
     description:
@@ -826,6 +818,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  string_similarity:
+    dependency: "direct main"
+    description:
+      name: string_similarity
+      sha256: "5219d2ca048f6d3b8954747644b99b103244b5f84ef62b2577d29eb6bdeb61bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   synchronized:
     dependency: transitive
     description:
@@ -882,6 +882,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      sha256: "22c94e5ad1e75f9934b766b53c742572ee2677c56bc871d850a57dad0f82127f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
   vector_graphics:
     dependency: transitive
     description:
@@ -922,14 +930,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.4"
-  visibility_detector:
-    dependency: "direct main"
-    description:
-      name: visibility_detector
-      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:

@@ -1,14 +1,17 @@
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding_google.dart';
-import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/geo.dart';
-import 'package:flutter/foundation.dart';
 import 'package:location/location.dart';
 import 'package:candle/models/location.dart' as model;
+import 'package:flutter/material.dart';
 
 abstract class GeocodingService {
   Future<LocationAddress?> getGeolocationAddress({required double lat, required double lon});
+  Future<List<AddressSearchResult>> searchNearbyAddress({
+    required String addressFragment,
+    required Locale locale,
+  });
 }
 
 class GeoServiceProvider extends ChangeNotifier {
@@ -69,5 +72,27 @@ class GeoServiceProvider extends ChangeNotifier {
       _lastLocation = currentLocation;
       notifyListeners();
     }
+  }
+}
+
+class AddressSearchResult {
+  final String formattedAddress;
+  final double lat;
+  final double lng;
+
+  AddressSearchResult({required this.formattedAddress, required this.lat, required this.lng});
+
+  factory AddressSearchResult.fromJson(Map<String, dynamic> json) {
+    return AddressSearchResult(
+      formattedAddress:
+          json['vicinity'], // Use 'vicinity' or 'formatted_address' based on your preference
+      lat: json['geometry']['location']['lat'],
+      lng: json['geometry']['location']['lng'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'AddressSearchResult(formattedAddress: $formattedAddress, lat: $lat, lng: $lng)';
   }
 }

@@ -1,7 +1,10 @@
 import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/services/location.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
+import 'package:google_geocoding_api/google_geocoding_api.dart';
+import 'package:flutter/material.dart';
 
 class GoogleMapsGeocodingService implements GeocodingService {
   @override
@@ -53,5 +56,33 @@ class GoogleMapsGeocodingService implements GeocodingService {
       print('Error occurred during geocoding: $e');
       return null;
     }
+  }
+
+  @override
+  Future<List<AddressSearchResult>> searchNearbyAddress({
+    required String addressFragment,
+    required Locale locale,
+  }) async {
+    const bool isDebugMode = true;
+    final api = GoogleGeocodingApi(GOOGLE_API_KEY, isLogged: isDebugMode);
+    final searchResults = await api.search(
+      addressFragment,
+      language: locale.countryCode,
+    );
+    print(searchResults);
+    return _parseResults(searchResults);
+  }
+
+  List<AddressSearchResult> _parseResults(GoogleGeocodingResponse results) {
+    List<AddressSearchResult> result = [];
+    for (var address in results.results) {
+      print(address);
+      result.add(AddressSearchResult(
+        formattedAddress: address.formattedAddress,
+        lat: 0,
+        lng: 0,
+      ));
+    }
+    return result;
   }
 }

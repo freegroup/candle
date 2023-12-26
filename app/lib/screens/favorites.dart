@@ -1,5 +1,4 @@
 import 'package:candle/screens/favorites_cu.dart';
-import 'package:candle/screens/location_map.dart';
 import 'package:candle/screens/navigate_poi.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';

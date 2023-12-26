@@ -1,8 +1,6 @@
+import 'package:candle/screens/address_search.dart';
+import 'package:candle/screens/address_search2.dart';
 import 'package:candle/screens/navigator.dart';
-import 'package:candle/screens/screens.dart';
-import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/geocoding_google.dart';
-import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,10 +9,10 @@ class CandleApp extends StatefulWidget {
   const CandleApp({super.key});
 
   @override
-  State<CandleApp> createState() => _CandleAppState();
+  State<CandleApp> createState() => _AppState();
 }
 
-class _CandleAppState extends State<CandleApp> {
+class _AppState extends State<CandleApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,6 +24,7 @@ class _CandleAppState extends State<CandleApp> {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: const RootNavigatorScreen(),
+        //home: const AddressSearchScreen2(),
       );
     });
   }
