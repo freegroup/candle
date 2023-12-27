@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class LocationService {
@@ -14,9 +15,12 @@ class LocationService {
   bool _serviceEnabled = false;
   PermissionStatus? _grantedPermissions;
 
-  Future<LocationData?> get location async {
+  Future<LatLng?> get location async {
     if (await _checkPermission()) {
-      return _location.getLocation();
+      LocationData loc = await _location.getLocation();
+      if (loc.latitude != null && loc.longitude != null) {
+        return LatLng(loc.latitude!, loc.longitude!);
+      }
     }
     return null;
   }

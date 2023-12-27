@@ -1,5 +1,3 @@
-import 'package:candle/screens/address_search.dart';
-import 'package:candle/screens/address_search2.dart';
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/theme_data.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +21,7 @@ class _AppState extends State<CandleApp> {
         theme: CThemeData.darkTheme,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const RootNavigatorScreen(),
+        home: const NavigatorScreen(),
         //home: const AddressSearchScreen2(),
       );
     });

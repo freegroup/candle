@@ -1,16 +1,19 @@
 import 'package:candle/services/database.dart';
+import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
-import 'package:candle/models/location.dart' as model;
+import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class FavoriteCreateUpdateScreen extends StatefulWidget {
-  final model.Location? initialLocation;
+  final model.LocationAddress? initialLocation;
 
   const FavoriteCreateUpdateScreen({super.key, this.initialLocation});
 
@@ -22,7 +25,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
   TextEditingController editingController = TextEditingController();
 
   bool _isUpdate = false;
-  model.Location? stateLocation;
+  model.LocationAddress? stateLocation;
 
   @override
   void initState() {
@@ -41,7 +44,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
     // UPDATE a new Location
     //
     if (_isUpdate) {
-      model.Location updatedLocation = stateLocation!.copyWith(name: name);
+      model.LocationAddress updatedLocation = stateLocation!.copyWith(name: name);
       await DatabaseService.instance.update(updatedLocation);
       if (!mounted) return;
       showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
@@ -50,12 +53,16 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
     // CREATE an existing one
     //
     else {
-      LocationData? location = await LocationService.instance.location;
+      LatLng? location = await LocationService.instance.location;
       if (location != null) {
-        await DatabaseService.instance
-            .add(model.Location(lat: location.latitude!, lon: location.longitude!, name: name));
-        if (!mounted) return;
-        showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+        var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
+        var address = await geo.getGeolocationAddress(location);
+        if (address != null) {
+          address = address!.copyWith(name: name);
+          await DatabaseService.instance.add(address);
+          if (!mounted) return;
+          showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+        }
       } else {
         if (!mounted) return;
         Navigator.pop(context);
@@ -78,15 +85,28 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
       body: Column(
         children: [
           Expanded(
-            flex: 1, // 2/3 of the screen for the compass
+            flex: 2, // 2/3 of the screen for the compass
             child: Padding(
               padding: const EdgeInsets.all(28.0),
               child: AccessibleTextInput(
+                maxLines: 1,
                 talkbackInput: l10n.location_name_t,
                 talkbackIcon: l10n.location_add_speak_t,
                 controller: editingController,
                 decoration: InputDecoration(labelText: l10n.location_name),
                 autofocus: !isScreenReaderEnabled,
+              ),
+            ),
+          ),
+
+          InkWell(
+            onTap: () => {},
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                stateLocation != null ? stateLocation!.name : 'Tap to select address',
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           ),
@@ -105,7 +125,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                 width: double.infinity, // Full width for TalkBack focus
                 child: Semantics(
                   button: true, // Explicitly mark as a button
-                  label: l10n!.button_close_t,
+                  label: l10n.button_close_t,
                   child: Align(
                     alignment: Alignment.center,
                     child: BoldIconButton(

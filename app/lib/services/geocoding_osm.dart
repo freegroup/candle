@@ -3,12 +3,14 @@ import 'package:candle/services/geocoding.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 class OSMGeocodingService implements GeocodingService {
   @override
-  Future<LocationAddress?> getGeolocationAddress({required double lat, required double lon}) async {
+  Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
     try {
-      String url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=$lat&lon=$lon';
+      String url =
+          'https://nominatim.openstreetmap.org/reverse?format=json&lat=${coord.latitude}&lon=${coord.longitude}';
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         Map<String, dynamic> addressInfo = json.decode(response.body)['address'] ?? {};
@@ -20,6 +22,10 @@ class OSMGeocodingService implements GeocodingService {
         }
 
         return LocationAddress(
+          lat: coord.latitude,
+          lon: coord.longitude,
+          name: "",
+          formattedAddress: "",
           street: street,
           number: addressInfo['house_number'] ?? '',
           zip: addressInfo['postcode'] ?? '',

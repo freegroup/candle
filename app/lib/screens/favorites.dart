@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:candle/models/location.dart' as model;
+import 'package:candle/models/location_address.dart' as model;
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -29,7 +29,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           talkback: AppLocalizations.of(context)!.favorite_mainmenu_t,
         ),
         body: Center(
-            child: FutureBuilder<List<model.Location>>(
+            child: FutureBuilder<List<model.LocationAddress>>(
           future: db.all(),
           builder: (context, snapshot) {
             AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -51,7 +51,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     child: ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        model.Location location = snapshot.data![index];
+                        model.LocationAddress location = snapshot.data![index];
                         bool isSelected = selectedItemIndex == index;
                         return Semantics(
                           customSemanticsActions: {

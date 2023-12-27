@@ -14,9 +14,9 @@ class LocationAddressTile extends StatelessWidget {
 
     return Semantics(
       label: AppLocalizations.of(context)!.home_address_t(
-        geoService.address.street,
-        geoService.address.number,
-        geoService.address.city,
+        geoService.currentAddress?.street ?? "",
+        geoService.currentAddress?.number ?? "",
+        geoService.currentAddress?.city ?? "",
       ),
       child: ExcludeSemantics(
         child: Container(
@@ -37,14 +37,14 @@ class LocationAddressTile extends StatelessWidget {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.home_street(
-                        geoService.address.street,
-                        geoService.address.number,
+                        geoService.currentAddress?.street ?? "",
+                        geoService.currentAddress?.number ?? "",
                       ),
                       style: Theme.of(context).textTheme.titleLarge,
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      geoService.address.city,
+                      geoService.currentAddress?.city ?? "",
                       style: Theme.of(context).textTheme.titleLarge,
                       textAlign: TextAlign.center,
                     ),

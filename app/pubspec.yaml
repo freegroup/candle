@@ -36,6 +36,7 @@ dependencies:
   string_similarity: ^2.0.0
   google_geocoding_api: ^1.4.1
   uuid: ^4.2.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_lints: ^3.0.1

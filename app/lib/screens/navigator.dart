@@ -3,14 +3,14 @@ import 'package:candle/screens/home.dart';
 import 'package:candle/screens/settings.dart';
 import 'package:flutter/material.dart';
 
-class RootNavigatorScreen extends StatefulWidget {
-  const RootNavigatorScreen({super.key});
+class NavigatorScreen extends StatefulWidget {
+  const NavigatorScreen({super.key});
 
   @override
-  State<RootNavigatorScreen> createState() => _RootNavigatorScreenState();
+  State<NavigatorScreen> createState() => _ScreenState();
 }
 
-class _RootNavigatorScreenState extends State<RootNavigatorScreen> {
+class _ScreenState extends State<NavigatorScreen> {
   int currentIndex = 0;
   final List<Widget> pages = const [
     HomeScreen(),

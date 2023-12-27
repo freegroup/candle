@@ -1,5 +1,6 @@
 import 'dart:math' as math;
-import 'package:candle/models/location.dart' as model;
+import 'package:candle/models/location_address.dart' as model;
+import 'package:latlong2/latlong.dart';
 
 double radians(double degrees) {
   return degrees * (math.pi / 180);
@@ -9,14 +10,14 @@ double degrees(double radians) {
   return radians * (180 / math.pi);
 }
 
-int calculateNorthBearing({required model.Location poiBase, required model.Location poiTarget}) {
+int calculateNorthBearing(LatLng coord1, LatLng coord2) {
   // Current position
-  double lat1 = poiBase.lat;
-  double lon1 = poiBase.lon;
+  double lat1 = coord1.latitude;
+  double lon1 = coord1.longitude;
 
   // Target position
-  double lat2 = poiTarget.lat;
-  double lon2 = poiTarget.lon;
+  double lat2 = coord2.latitude;
+  double lon2 = coord2.longitude;
 
   // Difference in longitude
   double deltaLon = radians(lon2 - lon1);
@@ -35,21 +36,17 @@ int calculateNorthBearing({required model.Location poiBase, required model.Locat
   return bearing.toInt();
 }
 
-
-double calculateDistance({required model.Location poiBase, required model.Location poiTarget}) {
-  // Convert degrees to radians
-  double radians(double degrees) => degrees * (math.pi / 180);
-
+double calculateDistance(LatLng geo1, LatLng geo2) {
   // Earth's radius in meters
   const double earthRadius = 6371000;
 
   // Current position in radians
-  double lat1 = radians(poiBase.lat);
-  double lon1 = radians(poiBase.lon);
+  double lat1 = radians(geo1.latitude);
+  double lon1 = radians(geo1.longitude);
 
   // Target position in radians
-  double lat2 = radians(poiTarget.lat);
-  double lon2 = radians(poiTarget.lon);
+  double lat2 = radians(geo2.latitude);
+  double lon2 = radians(geo2.longitude);
 
   // Differences in coordinates
   double deltaLat = lat2 - lat1;

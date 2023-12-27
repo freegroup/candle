@@ -45,7 +45,7 @@ class _ScreenState extends State<AddressSearchScreen> {
   }
 
   void _performSearch(String query) async {
-    var geo = Provider.of<GeoServiceProvider>(context, listen: false).geo;
+    var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
     Locale locale = Localizations.localeOf(context);
     var results = await geo.searchNearbyAddress(addressFragment: query, locale: locale);
     if (mounted) {

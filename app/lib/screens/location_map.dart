@@ -4,10 +4,9 @@ import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:candle/models/location.dart' as model;
 
 class LocationMapScreen extends StatefulWidget {
-  final model.Location location;
+  final LatLng location;
 
   const LocationMapScreen({super.key, required this.location});
 
@@ -16,17 +15,16 @@ class LocationMapScreen extends StatefulWidget {
 }
 
 class _ScreenState extends State<LocationMapScreen> {
-  late model.Location stateLocation;
-  model.Location currentLocation = model.Location(lat: 40.0, lon: 8.0, name: "");
+  late LatLng stateLocation;
+  LatLng currentLocation = const LatLng(40.0, 8.0);
 
   void updateGpsLocation() async {
     var gps = await LocationService.instance.location;
     if (gps != null && mounted) {
       setState(() {
-        currentLocation = model.Location(lat: gps.latitude!, lon: gps.longitude!, name: "");
+        currentLocation = gps;
       });
     }
-    // Sie können hier auch einen Debouncer hinzufügen, um die Aktualisierungsrate zu begrenzen
   }
 
   @override
@@ -40,11 +38,11 @@ class _ScreenState extends State<LocationMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.location.name),
+        title: Text("Map"),
       ),
       body: FlutterMap(
         options: MapOptions(
-          initialCenter: LatLng(widget.location.lat, widget.location.lon),
+          initialCenter: widget.location,
           initialZoom: 18,
           initialRotation: 0,
         ),
@@ -56,7 +54,7 @@ class _ScreenState extends State<LocationMapScreen> {
           CircleLayer(
             circles: [
               CircleMarker(
-                point: LatLng(widget.location.lat, widget.location.lon), // center of 't Gooi
+                point: widget.location, // center of 't Gooi
                 radius: 5,
                 useRadiusInMeter: true,
                 color: Colors.red.withOpacity(0.3),
@@ -68,7 +66,7 @@ class _ScreenState extends State<LocationMapScreen> {
           CircleLayer(
             circles: [
               CircleMarker(
-                point: LatLng(currentLocation.lat, currentLocation.lon), // center of 't Gooi
+                point: currentLocation, // center of 't Gooi
                 radius: 5,
                 useRadiusInMeter: true,
                 color: Colors.green.withOpacity(0.5),

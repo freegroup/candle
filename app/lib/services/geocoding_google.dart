@@ -1,19 +1,21 @@
 import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/location.dart';
+
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 class GoogleMapsGeocodingService implements GeocodingService {
   @override
-  Future<LocationAddress?> getGeolocationAddress({required double lat, required double lon}) async {
+  Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
     print("$GoogleMapsGeocodingService called.....");
     final geocoding = GoogleMapsGeocoding(apiKey: GOOGLE_API_KEY);
 
     try {
-      final response = await geocoding.searchByLocation(Location(lat: lat, lng: lon));
+      final response =
+          await geocoding.searchByLocation(Location(lat: coord.latitude, lng: coord.longitude));
       if (response.status == 'OK' && response.results.isNotEmpty) {
         Map<String, String> addressParts = {};
         for (var component in response.results.first.addressComponents) {
@@ -21,7 +23,6 @@ class GoogleMapsGeocodingService implements GeocodingService {
             addressParts['streetNumber'] = component.longName;
           } else if (component.types.contains('route')) {
             addressParts['street'] = component.longName;
-            print("SETTING STREET........by street");
           } else if (component.types.contains('locality')) {
             addressParts['city'] = component.longName;
           } else if (component.types.contains('country')) {
@@ -32,22 +33,29 @@ class GoogleMapsGeocodingService implements GeocodingService {
               !addressParts.containsKey('street')) {
             // Use 'city_block' if 'street' (route) is not provided
             addressParts['street'] = component.longName;
-            print("SETTING STREET........by city_block");
           } else if (component.types.contains('man_made') && !addressParts.containsKey('street')) {
             // Use 'city_block' if 'street' (route) is not provided
             addressParts['street'] = component.longName;
-            print("SETTING STREET........by man_made");
           }
           // Add more components as needed
         }
+        // Extract the refined latitude and longitude from the response
+        double refinedLat = response.results.first.geometry.location.lat;
+        double refinedLon = response.results.first.geometry.location.lng;
+
+        // Extract formattedAddress from the response
+        String? formattedAddress = response.results.first.formattedAddress;
 
         return LocationAddress(
-          street: addressParts['street'] ?? "",
-          number: addressParts['streetNumber'] ?? "",
-          zip: addressParts['postalCode'] ?? "",
-          city: addressParts['city'] ?? "",
-          country: addressParts['country'] ?? "",
-        );
+            name: "",
+            formattedAddress: formattedAddress ?? "",
+            street: addressParts['street'] ?? "",
+            number: addressParts['streetNumber'] ?? "",
+            zip: addressParts['postalCode'] ?? "",
+            city: addressParts['city'] ?? "",
+            country: addressParts['country'] ?? "",
+            lat: refinedLat,
+            lon: refinedLon);
       } else {
         print('Geocoding failed with status: ${response.status}');
         return null;

@@ -7,6 +7,7 @@ class AccessibleTextInput extends StatefulWidget {
   final InputDecoration? decoration;
   final bool? autofocus;
   final String hintText;
+  final int maxLines;
   final Function(String)? onSubmitted;
   final String? talkbackInput; // Semantic label for the input field
   final String? talkbackIcon; // Semantic label for the icon
@@ -16,6 +17,7 @@ class AccessibleTextInput extends StatefulWidget {
     required this.controller,
     this.decoration,
     this.autofocus,
+    this.maxLines = 1,
     this.hintText = '',
     this.onSubmitted,
     this.talkbackInput,
@@ -70,6 +72,7 @@ class _InputState extends State<AccessibleTextInput> {
     ThemeData theme = Theme.of(context);
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Semantics(
@@ -80,24 +83,23 @@ class _InputState extends State<AccessibleTextInput> {
                 decoration: widget.decoration ?? InputDecoration(hintText: widget.hintText),
                 autofocus: widget.autofocus ?? false,
                 onSubmitted: widget.onSubmitted,
+                maxLines: widget.maxLines,
+                keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
               ),
             ),
           ),
         ),
-        Expanded(
-          flex: 0, // Ensures that IconButton takes minimum space
+        Align(
+          alignment: Alignment.topCenter,
           child: Semantics(
             label: widget.talkbackIcon ?? 'Speech Input',
-            child: Align(
-              alignment: Alignment.center,
-              child: ExcludeSemantics(
-                child: IconButton(
-                  color: theme.primaryColor,
-                  iconSize: 48,
-                  icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
-                  onPressed: _listen,
-                  padding: EdgeInsets.zero,
-                ),
+            child: ExcludeSemantics(
+              child: IconButton(
+                color: theme.primaryColor,
+                icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                onPressed: _listen,
+                padding: EdgeInsets.zero,
+                iconSize: 48, // Adjust icon size as needed
               ),
             ),
           ),

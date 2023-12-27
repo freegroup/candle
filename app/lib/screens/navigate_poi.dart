@@ -11,12 +11,13 @@ import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:candle/models/location.dart' as model;
+import 'package:candle/models/location_address.dart' as model;
+import 'package:latlong2/latlong.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 class NavigatePoiScreen extends StatefulWidget {
-  final model.Location location;
+  final model.LocationAddress location;
 
   const NavigatePoiScreen({super.key, required this.location});
 
@@ -30,8 +31,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
   Timer? _updateLocationTimer;
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
-  late model.Location _stateLocation;
-  model.Location? _currentLocation;
+  late model.LocationAddress _stateLocation;
+  LatLng _currentLocation = const LatLng(0, 0);
 
   bool _wasAligned = false;
 
@@ -42,7 +43,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
   void updateGpsLocation() async {
     var gps = await LocationService.instance.location;
     if (gps != null) {
-      _currentLocation = model.Location(lat: gps.latitude!, lon: gps.longitude!, name: "");
+      _currentLocation = LatLng(gps.latitude!, gps.longitude!);
     }
   }
 
@@ -70,10 +71,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
         print(err);
       }).listen((compassEvent) async {
         if (mounted && _currentLocation != null) {
-          var poiHeading = calculateNorthBearing(
-            poiBase: _currentLocation!,
-            poiTarget: _stateLocation,
-          );
+          var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation.latlng());
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
           bool currentlyAligned = _isAligned(needleHeading);
@@ -90,8 +88,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
           setState(() {
             _currentHeadingDegrees = needleHeading;
             _currentDistanceToStateLocation = calculateDistance(
-              poiBase: _currentLocation!,
-              poiTarget: _stateLocation,
+              _currentLocation,
+              _stateLocation.latlng(),
             ).toInt();
           });
         }
