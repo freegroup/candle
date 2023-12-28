@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 
 class LocationAddress {
-  final int? id;
+  int? id;
   final String name;
   final String formattedAddress;
   final String street;

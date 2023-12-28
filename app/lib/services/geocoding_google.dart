@@ -10,7 +10,6 @@ import 'package:latlong2/latlong.dart';
 class GoogleMapsGeocodingService implements GeocodingService {
   @override
   Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
-    print("$GoogleMapsGeocodingService called.....");
     final geocoding = GoogleMapsGeocoding(apiKey: GOOGLE_API_KEY);
 
     try {
@@ -67,7 +66,7 @@ class GoogleMapsGeocodingService implements GeocodingService {
   }
 
   @override
-  Future<List<AddressSearchResult>> searchNearbyAddress({
+  Future<List<LocationAddress>> searchNearbyAddress({
     required String addressFragment,
     required Locale locale,
   }) async {
@@ -77,19 +76,50 @@ class GoogleMapsGeocodingService implements GeocodingService {
       addressFragment,
       language: locale.countryCode,
     );
-    print(searchResults);
     return _parseResults(searchResults);
   }
 
-  List<AddressSearchResult> _parseResults(GoogleGeocodingResponse results) {
-    List<AddressSearchResult> result = [];
+  List<LocationAddress> _parseResults(GoogleGeocodingResponse results) {
+    List<LocationAddress> result = [];
     for (var address in results.results) {
-      print(address);
-      result.add(AddressSearchResult(
-        formattedAddress: address.formattedAddress,
-        lat: 0,
-        lng: 0,
-      ));
+      Map<String, String> addressParts = {};
+      for (var component in address.addressComponents) {
+        if (component.types.contains('street_number')) {
+          addressParts['streetNumber'] = component.longName;
+        } else if (component.types.contains('route')) {
+          addressParts['street'] = component.longName;
+        } else if (component.types.contains('locality')) {
+          addressParts['city'] = component.longName;
+        } else if (component.types.contains('country')) {
+          addressParts['country'] = component.longName;
+        } else if (component.types.contains('postal_code')) {
+          addressParts['postalCode'] = component.longName;
+        } else if (component.types.contains('city_block') && !addressParts.containsKey('street')) {
+          // Use 'city_block' if 'street' (route) is not provided
+          addressParts['street'] = component.longName;
+        } else if (component.types.contains('man_made') && !addressParts.containsKey('street')) {
+          // Use 'city_block' if 'street' (route) is not provided
+          addressParts['street'] = component.longName;
+        }
+        // Add more components as needed
+      }
+      // Extract the refined latitude and longitude from the response
+      double refinedLat = address.geometry!.location.lat;
+      double refinedLon = address.geometry!.location.lng;
+
+      var loc = LocationAddress(
+          name: "",
+          formattedAddress: address.formattedAddress ?? "",
+          street: addressParts['street'] ?? "",
+          number: addressParts['streetNumber'] ?? "",
+          zip: addressParts['postalCode'] ?? "",
+          city: addressParts['city'] ?? "",
+          country: addressParts['country'] ?? "",
+          lat: refinedLat,
+          lon: refinedLon);
+
+      print("==============================================================");
+      result.add(loc);
     }
     return result;
   }

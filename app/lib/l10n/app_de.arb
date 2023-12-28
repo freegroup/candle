@@ -59,6 +59,9 @@
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
   "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   
+  "address_search_dialog_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
+  "address_search_dialog": "Adress Suche",
+
   "compassHorizonNorth": "Norden",
   "compassHorizonNorthNortheast": "Nord-Nordost",
   "compassHorizonNortheast": "Nordost",

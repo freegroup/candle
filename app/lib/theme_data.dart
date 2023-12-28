@@ -7,6 +7,7 @@ class CThemeData {
       useMaterial3: true,
       scaffoldBackgroundColor: Color.fromRGBO(20, 20, 20, 1),
       cardColor: Colors.black,
+      primaryColorDark: _createDarkerColor(mySwatch),
       textTheme: TextTheme(
         bodySmall: TextStyle(color: mySwatch),
         bodyMedium: TextStyle(color: mySwatch),
@@ -18,9 +19,10 @@ class CThemeData {
         displayMedium: TextStyle(color: mySwatch),
         displayLarge: TextStyle(color: mySwatch),
       ),
-      inputDecorationTheme: const InputDecorationTheme(
+      inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Color.fromRGBO(100, 100, 100, 1),
+        labelStyle: TextStyle(color: mySwatch),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -56,6 +58,11 @@ class CThemeData {
         primarySwatch: mySwatch,
       ),
     );
+  }
+
+  static Color _createDarkerColor(MaterialColor color) {
+    // Create a darker shade
+    return color[900] ?? color.shade900; // Adjust the shade as needed
   }
 
   static MaterialColor _createMaterialColor(Color color) {

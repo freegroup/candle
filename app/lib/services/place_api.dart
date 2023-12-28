@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:candle/auth/secrets.dart';
+import 'package:candle/models/location_address.dart';
+import 'package:candle/services/geocoding.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 
 class Suggestion {
   final String placeId;
@@ -42,13 +45,16 @@ class PlaceApiProvider {
       final data = await response.stream.bytesToString();
       final result = json.decode(data);
 
-      print(result);
-
       if (result['status'] == 'OK') {
-        return result['predictions']
-            .map<Suggestion>((p) => Suggestion(
-                p['place_id'], p['description'], p['structured_formatting']['main_text']))
-            .toList();
+        return result['predictions'].map<Suggestion>((p) {
+          print(p);
+          print("=========================================");
+          return Suggestion(
+            p['place_id'],
+            p['description'],
+            p['structured_formatting']['main_text'],
+          );
+        }).toList();
       }
       if (result['status'] == 'ZERO_RESULTS') {
         return [];
@@ -59,7 +65,7 @@ class PlaceApiProvider {
     }
   }
 
-  Future<PlaceDetail> getPlaceDetailFromId(String placeId) async {
+  Future<LocationAddress?> getLocationAddressFromId(String placeId) async {
     final url =
         'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=formatted_address,name,geometry/location&key=$apiKey&sessiontoken=$sessionToken';
     var request = createGetRequest(url);
@@ -77,7 +83,11 @@ class PlaceApiProvider {
         place.latitude = result['result']['geometry']['location']['lat'];
         place.longitude = result['result']['geometry']['location']['lng'];
         place.name = result['result']['geometry']['name'];
-        return place;
+        LocationAddress? loc = await GeoServiceProvider()
+            .service
+            .getGeolocationAddress(LatLng(place.latitude!, place.longitude!));
+
+        return loc;
       }
       throw Exception(result['error_message']);
     } else {

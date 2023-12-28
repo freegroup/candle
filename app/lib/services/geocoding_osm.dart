@@ -45,7 +45,7 @@ class OSMGeocodingService implements GeocodingService {
   }
 
   @override
-  Future<List<AddressSearchResult>> searchNearbyAddress({
+  Future<List<LocationAddress>> searchNearbyAddress({
     required String addressFragment,
     required Locale locale,
   }) async {

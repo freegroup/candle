@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:candle/models/location_address.dart';
+import 'package:candle/screens/address_search.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -9,7 +13,6 @@ import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteCreateUpdateScreen extends StatefulWidget {
@@ -23,6 +26,7 @@ class FavoriteCreateUpdateScreen extends StatefulWidget {
 
 class _ScreenState extends State<FavoriteCreateUpdateScreen> {
   TextEditingController editingController = TextEditingController();
+  final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 
   bool _isUpdate = false;
   model.LocationAddress? stateLocation;
@@ -35,6 +39,19 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
       _isUpdate = true;
       editingController.text = stateLocation!.name;
     }
+    _addressController.stream.listen((address) {
+      // Update the state with the selected address
+      setState(() {
+        address.id = stateLocation?.id;
+        stateLocation = address;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _addressController.close();
+    super.dispose();
   }
 
   Future<void> _saveLocation(BuildContext context) async {
@@ -58,7 +75,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
         var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
         var address = await geo.getGeolocationAddress(location);
         if (address != null) {
-          address = address!.copyWith(name: name);
+          address = address.copyWith(name: name);
           await DatabaseService.instance.add(address);
           if (!mounted) return;
           showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
@@ -75,7 +92,6 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -84,85 +100,57 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
       ),
       body: Column(
         children: [
-          Expanded(
-            flex: 2, // 2/3 of the screen for the compass
-            child: Padding(
-              padding: const EdgeInsets.all(28.0),
-              child: AccessibleTextInput(
-                maxLines: 1,
-                talkbackInput: l10n.location_name_t,
-                talkbackIcon: l10n.location_add_speak_t,
-                controller: editingController,
-                decoration: InputDecoration(labelText: l10n.location_name),
-                autofocus: !isScreenReaderEnabled,
+          Padding(
+            padding: const EdgeInsets.all(28.0),
+            child: AccessibleTextInput(
+              maxLines: 1,
+              talkbackInput: l10n.location_name_t,
+              talkbackIcon: l10n.location_add_speak_t,
+              controller: editingController,
+              decoration: InputDecoration(labelText: l10n.location_name),
+              autofocus: !isScreenReaderEnabled,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddressSearchScreen(
+                  sink: _addressController.sink,
+                  addressFragment: stateLocation?.formattedAddress,
+                ),
+              ));
+            },
+            child: AbsorbPointer(
+              // Prevents the TextField from gaining focus
+              child: Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: TextField(
+                  controller: TextEditingController(text: stateLocation?.formattedAddress),
+                  decoration: InputDecoration(
+                    labelText: 'Address',
+                    // Add other decoration properties if needed
+                  ),
+                  maxLines: null, // Allows for multiline input
+                ),
               ),
             ),
           ),
-
-          InkWell(
-            onTap: () => {},
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                stateLocation != null ? stateLocation!.name : 'Tap to select address',
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-          ),
-
-          const Spacer(),
-
-          // Der ganze Aufwand mit dem Layout wird nur gemacht, dass der Buttin in der Mitte ist aber das Talkback
-          // auch den äusseren Rahmen erfassen kann. Somit kann der User einfach
-          // über den Screen rutschen und er findet somit auf Anhieb alle Elemente
-          //
           Expanded(
-            flex: 1, // 1/3 of the screen for the text and buttons
-            child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
-              return Container(
-                width: double.infinity, // Full width for TalkBack focus
-                child: Semantics(
-                  button: true, // Explicitly mark as a button
-                  label: l10n.button_close_t,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: BoldIconButton(
-                      talkback: "",
-                      buttonWidth: buttonWidth,
-                      icons: Icons.check,
-                      onTab: () async {
-                        await _saveLocation(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
-            }),
+            child: Container(), // This acts as a filler
           ),
-
-          Expanded(
-            flex: 1, // 1/3 of the screen for the text and buttons
-            child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              double buttonWidth = constraints.maxWidth / 6; // 1/3 of the parent width
-              return Container(
-                width: double.infinity, // Full width for TalkBack focus
-                child: Semantics(
-                  button: true, // Explicitly mark as a button
-                  label: l10n.button_close,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: BoldIconButton(
-                      talkback: "",
-                      buttonWidth: buttonWidth,
-                      icons: Icons.close,
-                      onTab: () => {Navigator.pop(context)},
-                    ),
-                  ),
-                ),
-              );
-            }),
+          BoldIconButton(
+            talkback: l10n.button_close_t,
+            buttonWidth: MediaQuery.of(context).size.width / 4,
+            icons: Icons.check,
+            onTab: () async {
+              await _saveLocation(context);
+            },
+          ),
+          BoldIconButton(
+            talkback: l10n.button_close,
+            buttonWidth: MediaQuery.of(context).size.width / 6,
+            icons: Icons.close,
+            onTab: () => Navigator.pop(context),
           ),
         ],
       ),

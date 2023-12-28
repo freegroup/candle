@@ -189,6 +189,16 @@
   },
 
 
+  "address_search_dialog_t": "Enter part of an address to find matches. Select the best one.",
+  "@address_search_dialog_t": {
+    "description": "Talkback for the address search AppBar"
+  },
+  "address_search_dialog": "Search Address",
+  "@address_search_dialog": {
+    "description": "Title for address search dialog"
+  },
+
+
   "button_common_edit_t": "Edit Element",
   "@button_common_edit_t": {
     "description": "Talkback for a generic edit Button"

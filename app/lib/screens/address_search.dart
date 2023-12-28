@@ -1,104 +1,129 @@
 import 'dart:async';
-
+import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/services/place_api.dart';
+import 'package:candle/widgets/accessible_text_input.dart';
+import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+//Model classes that will be used for auto complete
+
 class AddressSearchScreen extends StatefulWidget {
-  const AddressSearchScreen({super.key});
+  final StreamSink<LocationAddress?> sink;
+  final String? addressFragment;
+
+  const AddressSearchScreen({super.key, required this.sink, this.addressFragment = ""});
 
   @override
   State<AddressSearchScreen> createState() => _ScreenState();
 }
 
 class _ScreenState extends State<AddressSearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  List<AddressSearchResult> _searchResults = [];
+  final _controller = TextEditingController();
+  final provider = PlaceApiProvider(const Uuid().v4());
+  List<LocationAddress> suggestion = [];
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    _debounce?.cancel();
-
-    super.dispose();
+    _controller.addListener(_onSearchChanged);
+    _controller.text = widget.addressFragment ?? "";
   }
 
   void _onSearchChanged() {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      if (_searchController.text.isNotEmpty) {
-        print(".................=====================================");
-        _performSearch(_searchController.text);
-      } else {
-        setState(() => _searchResults = []);
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        if (_controller.text.length > 1) {
+          var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
+          Locale locale = Localizations.localeOf(context);
+          suggestion = await geo.searchNearbyAddress(
+            addressFragment: _controller.text,
+            locale: locale,
+          );
+          if (mounted) {
+            setState(() {});
+          }
+        } else {
+          setState(() {
+            suggestion.clear();
+          });
+        }
       }
     });
   }
 
-  void _performSearch(String query) async {
-    var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-    Locale locale = Localizations.localeOf(context);
-    var results = await geo.searchNearbyAddress(addressFragment: query, locale: locale);
-    if (mounted) {
-      setState(() => _searchResults = results);
-    }
+  @override
+  void dispose() {
+    _controller.removeListener(_onSearchChanged);
+    _controller.dispose();
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Address Search')),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomRight,
-            end: Alignment.centerLeft,
-            colors: [Colors.black, Color.fromARGB(255, 35, 34, 37)],
+      appBar: CandleAppBar(
+        title: Text(AppLocalizations.of(context)!.address_search_dialog),
+        talkback: AppLocalizations.of(context)!.address_search_dialog_t,
+      ),
+      body: Column(
+        children: [
+          AccessibleTextInput(
+            controller: _controller,
+            autofocus: true,
           ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(hintText: 'Search address...'),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      _searchResults[index].formattedAddress,
-                      style: TextStyle(
-                        color: theme.primaryColor,
-                        fontSize: theme.textTheme.headlineSmall?.fontSize,
+          const SizedBox(height: 18),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) => ListTile(
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 8, bottom: 4),
+                      child: Text(
+                        (suggestion[index]).formattedAddress,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: theme.primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                    onTap: () {
-                      // Handle selection
-                    },
-                  );
+                  ],
+                ),
+                leading: Container(
+                  child: Icon(
+                    Icons.place_rounded,
+                    color: Colors.amberAccent,
+                    size: 32,
+                  ),
+                ),
+                onTap: () async {
+                  final placeDetail = suggestion[index];
+                  widget.sink.add(placeDetail);
+                  onBackPressed(context);
                 },
               ),
+              itemCount: suggestion.length,
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
+}
+
+onBackPressed(BuildContext context) {
+  print("BACK BACK BACK BACK BACK BACK BACK");
+  Navigator.of(context).pop();
 }

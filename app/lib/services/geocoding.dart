@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 abstract class GeocodingService {
   Future<LocationAddress?> getGeolocationAddress(LatLng coord);
-  Future<List<AddressSearchResult>> searchNearbyAddress({
+  Future<List<LocationAddress>> searchNearbyAddress({
     required String addressFragment,
     required Locale locale,
   });
@@ -46,10 +46,7 @@ class GeoServiceProvider extends ChangeNotifier {
   }
 
   bool _shouldUpdateLocationAddress(LatLng currentLocation) {
-    if (_lastLocation == null) return true;
-
     final distance = calculateDistance(currentLocation, _lastLocation);
-
     return distance > 10; // Check if the distance is more than 10 meters
   }
 
@@ -62,27 +59,5 @@ class GeoServiceProvider extends ChangeNotifier {
       _lastLocation = currentLocation;
       notifyListeners();
     }
-  }
-}
-
-class AddressSearchResult {
-  final String formattedAddress;
-  final double lat;
-  final double lng;
-
-  AddressSearchResult({required this.formattedAddress, required this.lat, required this.lng});
-
-  factory AddressSearchResult.fromJson(Map<String, dynamic> json) {
-    return AddressSearchResult(
-      formattedAddress:
-          json['vicinity'], // Use 'vicinity' or 'formatted_address' based on your preference
-      lat: json['geometry']['location']['lat'],
-      lng: json['geometry']['location']['lng'],
-    );
-  }
-
-  @override
-  String toString() {
-    return 'AddressSearchResult(formattedAddress: $formattedAddress, lat: $lat, lng: $lng)';
   }
 }

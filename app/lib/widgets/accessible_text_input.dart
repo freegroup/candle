@@ -80,7 +80,11 @@ class _InputState extends State<AccessibleTextInput> {
             child: ExcludeSemantics(
               child: TextField(
                 controller: widget.controller,
-                decoration: widget.decoration ?? InputDecoration(hintText: widget.hintText),
+                decoration: widget.decoration ??
+                    InputDecoration(
+                      hintStyle: TextStyle(color: theme.primaryColor),
+                      hintText: widget.hintText,
+                    ),
                 autofocus: widget.autofocus ?? false,
                 onSubmitted: widget.onSubmitted,
                 maxLines: widget.maxLines,

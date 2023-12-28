@@ -21,7 +21,7 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: ExcludeSemantics(
         child: AppBar(
           title: title,
-          automaticallyImplyLeading: false,
+          //automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           actions: actions,
           bottom: PreferredSize(

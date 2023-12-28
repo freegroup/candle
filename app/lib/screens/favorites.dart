@@ -48,8 +48,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   )
                 : SlidableAutoCloseBehavior(
                     closeWhenOpened: true,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: snapshot.data!.length,
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          color: theme.primaryColorDark,
+                        );
+                      },
                       itemBuilder: (context, index) {
                         model.LocationAddress location = snapshot.data![index];
                         bool isSelected = selectedItemIndex == index;
@@ -114,6 +119,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   style: TextStyle(
                                     color: theme.primaryColor,
                                     fontSize: theme.textTheme.headlineSmall?.fontSize,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  location.formattedAddress,
+                                  style: TextStyle(
+                                    color: theme.primaryColor,
+                                    fontSize: theme.textTheme.bodyLarge?.fontSize,
                                   ),
                                 ),
                                 tileColor: isSelected ? theme.primaryColor.withOpacity(0.1) : null,
