@@ -35,7 +35,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
   void initState() {
     super.initState();
     stateLocation = widget.initialLocation;
-    if (stateLocation != null) {
+    if (stateLocation?.id != null) {
       _isUpdate = true;
       editingController.text = stateLocation!.name;
     }
