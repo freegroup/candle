@@ -18,6 +18,9 @@ class CThemeData {
         displaySmall: TextStyle(color: mySwatch),
         displayMedium: TextStyle(color: mySwatch),
         displayLarge: TextStyle(color: mySwatch),
+        headlineSmall: TextStyle(color: mySwatch),
+        headlineMedium: TextStyle(color: mySwatch),
+        headlineLarge: TextStyle(color: mySwatch),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,

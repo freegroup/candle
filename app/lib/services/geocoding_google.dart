@@ -10,9 +10,8 @@ import 'package:latlong2/latlong.dart';
 class GoogleMapsGeocodingService implements GeocodingService {
   @override
   Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
-    final geocoding = GoogleMapsGeocoding(apiKey: GOOGLE_API_KEY);
-
     try {
+      final geocoding = GoogleMapsGeocoding(apiKey: GOOGLE_API_KEY);
       final response =
           await geocoding.searchByLocation(Location(lat: coord.latitude, lng: coord.longitude));
       if (response.status == 'OK' && response.results.isNotEmpty) {
@@ -57,11 +56,11 @@ class GoogleMapsGeocodingService implements GeocodingService {
             lon: refinedLon);
       } else {
         print('Geocoding failed with status: ${response.status}');
-        return null;
+        return _getDefaultLocationAddress();
       }
     } on Exception catch (e) {
       print('Error occurred during geocoding: $e');
-      return null;
+      return _getDefaultLocationAddress();
     }
   }
 
@@ -122,5 +121,19 @@ class GoogleMapsGeocodingService implements GeocodingService {
       result.add(loc);
     }
     return result;
+  }
+
+  LocationAddress _getDefaultLocationAddress() {
+    return LocationAddress(
+      name: "Default Name",
+      formattedAddress: "Default Address",
+      street: "Default Street",
+      number: "Default Number",
+      zip: "Default Zip",
+      city: "Default City",
+      country: "Default Country",
+      lat: 0.0,
+      lon: 0.0,
+    );
   }
 }

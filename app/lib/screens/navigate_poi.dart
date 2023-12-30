@@ -117,14 +117,20 @@ class _ScreenState extends State<NavigatePoiScreen> {
     if (_currentLocation == null) {
       return Scaffold(
         appBar: AppBar(
-          title:
-              Semantics(label: l10n.label_common_loading_t, child: Text(l10n.label_common_loading)),
+          title: Semantics(
+            label: l10n.label_common_loading_t,
+            child: Text(l10n.label_common_loading),
+          ),
         ),
         body: Center(
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               double size = constraints.maxWidth * 0.33;
-              return SizedBox(width: size, height: size, child: CircularProgressIndicator());
+              return SizedBox(
+                width: size,
+                height: size,
+                child: const CircularProgressIndicator(),
+              );
             },
           ),
         ),
@@ -133,8 +139,8 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(AppLocalizations.of(context)!.compass_dialog),
-        talkback: AppLocalizations.of(context)!.compass_poi_dialog_t(_stateLocation.name),
+        title: Text(l10n.compass_dialog),
+        talkback: l10n.compass_poi_dialog_t(_stateLocation.name),
       ),
       body: Container(
         color: backgroundColor,
@@ -184,11 +190,11 @@ class _ScreenState extends State<NavigatePoiScreen> {
                       children: [
                         Text(
                           _stateLocation.name,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: theme.textTheme.displayMedium,
                         ),
                         Text(
                           '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: theme.textTheme.displaySmall,
                         ),
                       ],
                     ),
@@ -197,28 +203,18 @@ class _ScreenState extends State<NavigatePoiScreen> {
               ),
             ),
             Expanded(
-              flex: 2, // 1/3 of the screen for the text and buttons
-              child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-                double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
-                return Container(
-                  width: double.infinity, // Full width for TalkBack focus
-                  child: Semantics(
-                    button: true, // Explicitly mark as a button
-                    label: AppLocalizations.of(context)!.button_close_t,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: BoldIconButton(
-                        talkback: "",
-                        buttonWidth: buttonWidth,
-                        icons: Icons.close_rounded,
-                        onTab: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              }),
+              child: Container(),
+            ),
+            BoldIconButton(
+                talkback: l10n.button_navigate_poi_t,
+                buttonWidth: MediaQuery.of(context).size.width / 5,
+                icons: Icons.directions_walk,
+                onTab: () {}),
+            BoldIconButton(
+              talkback: l10n.button_close_t,
+              buttonWidth: MediaQuery.of(context).size.width / 7,
+              icons: Icons.close,
+              onTab: () => Navigator.pop(context),
             ),
           ],
         ),

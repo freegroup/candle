@@ -2,6 +2,7 @@ import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NavigatorScreen extends StatefulWidget {
   const NavigatorScreen({super.key});
@@ -17,6 +18,17 @@ class _ScreenState extends State<NavigatorScreen> {
     FavoriteScreen(),
     SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions(); // Request permissions on app startup
+  }
+
+  Future<void> _requestPermissions() async {
+    await Permission.location.request(); // Request location permission
+    // Add more permission requests here if needed
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +62,8 @@ class _ScreenState extends State<NavigatorScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.favorite)),
+          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.view_module)),
+          BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.bookmarks)),
           BottomNavigationBarItem(label: "Einstellungen", icon: Icon(Icons.settings))
         ],
       ),

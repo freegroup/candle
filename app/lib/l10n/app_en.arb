@@ -197,7 +197,62 @@
   "@address_search_dialog": {
     "description": "Title for address search dialog"
   },
+  "address_search_list": "Suggested Addresses",
+  "@address_search_list": {
+    "description": "Title for address search reslt list"
+  },
 
+  "address_search_doubletab_hint_t": "Double tap to change the address and search for a different one.",
+  "@address_search_doubletab_hint_t": {
+    "description": "Talkback info to tab on a address text to find a different one"
+  },
+
+
+  "accessible_text_input_t": "Text input field.",
+  "@accessible_text_input_t": {
+    "description": "Talkback for the acccisible text input field."
+  },
+  "accessible_text_suffix_t": "On the right, there's a button for speech input support",
+  "@accessible_text_suffix_t": {
+    "description": "Talkback for the acccisible text input field."
+  },
+  "accessible_text_snackbar": "Your voice input: {text}",
+  "@accessible_text_snackbar": {
+    "description": "Talkback for the voice input detection.",
+    "placeholders": {
+      "text": {
+        "type": "String",
+        "description": "The detected text"
+      }
+    }
+  },
+
+
+  "permissions_dialog_t": "Permissions Request Dialog",
+  "@permissions_dialog_t": {
+    "description": "Talkback for the permissions request AppBar"
+  },
+  "permissions_dialog": "Permissions",
+  "@permissions_dialog": {
+    "description": "Title for permissions request dialog"
+  },
+
+
+  "label_permissions_explain": "Candle needs location access for precise navigation and voice input for hands-free use, vital for visually impaired users. These permissions are essential for a safe and efficient experience.",
+  "@label_permissions_explain": {
+    "description": "Infotext for the permissions request"
+  },
+
+  "button_permissions_request": "Grant Permissions",
+  "@button_permissions_request": {
+    "description": "Button text for the permissions request"
+  },
+
+
+  "button_navigate_poi_t": "Start turn by turn navigation",
+  "@button_navigate_poi_t": {
+    "description": "Talkback for navigate to Poi"
+  },
 
   "button_common_edit_t": "Edit Element",
   "@button_common_edit_t": {
@@ -218,7 +273,12 @@
     "description": "Title for delete button"
   },
 
-  "label_common_loading_t": "Loading data from storage..",
+  "label_common_required": "Field is requried",
+  "@label_common_required": {
+    "description": "Infotext for a required input field"
+  },
+
+  "label_common_loading_t": "Loading data from storage.",
   "@label_common_loading_t": {
     "description": "Common loading message"
   },
@@ -226,6 +286,12 @@
   "@label_common_loading": {
     "description": "Common loading message"
   },
+
+  "inputhint_address": "Address",
+  "@inputhint_address": {
+    "description": "Inputhint for address field"
+  },
+
 
   "label_favorites_empty_t": "You have not added any favorites yet. If you have any, they will be listed in this area.",
   "@label_favorites_empty_t": {
@@ -240,7 +306,6 @@
   "@label_favorite_saved": {
     "description": "Common message if a location has saved or updated"
   },
-
 
   "button_compass_t": "Compass to North",
   "@button_compass_t": {
@@ -260,15 +325,23 @@
     "description": "Title for poi create button"
   },
 
-  "button_close_t": "Close Dialog and back to main screen",
-  "@button_favorite_t": {
+  "button_close_t": "Close Dialog.",
+  "@button_close_t": {
     "description": "Talkback for close button"
   },
   "button_close": "Close",
-  "@button_favorite": {
+  "@button_close": {
     "description": "Title for close button"
   },
 
+  "button_save_t": "Save data and close dialog",
+  "@button_save_t": {
+    "description": "Talkback for save button"
+  },
+  "button_save": "Close",
+  "@button_save": {
+    "description": "Title for save button"
+  },
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

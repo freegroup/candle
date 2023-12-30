@@ -18,8 +18,11 @@
   "button_favorite_t": "Aktuellen Standort speichern",
   "button_favorite": "Speichern",
 
-  "button_close_t": "Fenster schliessen und ins Hauptmenü",
+  "button_close_t": "Fenster schliessen.",
   "button_close": "Schliessen",
+
+  "button_save_t": "Speichern und Dialog schliessen.",
+  "button_save": "Speichern",
 
   "button_common_edit_t": "Eintrag bearbeiten",
   "button_common_edit": "Bearbeiten",
@@ -27,8 +30,12 @@
   "button_common_delete_t": "Eintrag löschen",
   "button_common_delete": "Löschen",
 
-  "label_common_loading_t": "Laden Daten...",
+
+  "button_navigate_poi_t": "Starte Navigation zum Ziel.",
+
+  "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
+  "label_common_required": "Pflichtfeld",
 
   "label_favorite_saved": "Favorite wurde gespeichert.",
   
@@ -51,7 +58,7 @@
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
 
-  "location_name_t": "Eingabefeld für den Favoritennamen",
+  "location_name_t": "Eingabefeld für den Favoritennamen.",
   "location_name": "Favoriten Name",
 
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
@@ -60,7 +67,23 @@
   "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   
   "address_search_dialog_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
-  "address_search_dialog": "Adress Suche",
+  "address_search_dialog": "Adresse Suchen",
+  "address_search_list": "Vorgeschlagene Adressen",
+
+  "address_search_doubletab_hint_t": "Doppeltippen, um die Adresse zu ändern und nach einer anderen zu suchen.",
+
+  "permissions_dialog_t": "App Berechtigungen erfragen",
+  "permissions_dialog": "Berechtigungen",
+
+  "label_permissions_explain": "Candle benötigt Zugriff auf Ihren Standort für die Navigation und Spracheingabe für die freihändige Bedienung. Diese Berechtigungen sind für die Nutzung von Candle unerlässlich.",
+  "button_permissions_request": "Berechtigungen Zulassen",
+  
+  "accessible_text_input_t": "Texteingabefeld.",
+  "accessible_text_suffix_t": "Rechts befindet sich eine Schaltfläche für die Spracheingabeunterstützung",
+  "accessible_text_snackbar": "Ihre Eingabe: {text}",
+
+  "inputhint_address": "Adresse",
+
 
   "compassHorizonNorth": "Norden",
   "compassHorizonNorthNortheast": "Nord-Nordost",

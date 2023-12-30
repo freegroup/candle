@@ -82,7 +82,7 @@ class _CompassScreenState extends State<CompassScreen> {
                 child: ExcludeSemantics(
                   child: Text(
                     '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-                    style: Theme.of(context).textTheme.displayLarge,
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
               ),

@@ -1,6 +1,10 @@
+import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/favorites_cu.dart';
 import 'package:candle/screens/navigate_poi.dart';
 import 'package:candle/services/database.dart';
+import 'package:candle/services/geocoding.dart';
+import 'package:candle/services/location.dart';
+import 'package:candle/utils/dialogs.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +12,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/models/location_address.dart' as model;
+import 'package:provider/provider.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -22,11 +27,46 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
+    AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.favorite_mainmenu),
           talkback: AppLocalizations.of(context)!.favorite_mainmenu_t,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            showLoadingDialog(context);
+
+            try {
+              var coord = await LocationService.instance.location;
+              if (coord != null) {
+                var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
+                LocationAddress? address = await geo.getGeolocationAddress(coord);
+                if (!mounted) return;
+                Navigator.pop(context); // Close the loading dialog
+                if (mounted) {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (context) => FavoriteCreateUpdateScreen(
+                            initialLocation: address,
+                          ),
+                        ),
+                      )
+                      .then((value) => setState(() {}));
+                }
+              } else {
+                if (!mounted) return;
+                Navigator.pop(context);
+              }
+            } catch (e) {
+              if (!mounted) return;
+              Navigator.pop(context);
+            }
+          },
+          tooltip: l10n.location_add_dialog, // Localized tooltip
+          child: const Icon(Icons.add),
         ),
         body: Center(
             child: FutureBuilder<List<model.LocationAddress>>(

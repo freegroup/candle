@@ -29,22 +29,32 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
   final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 
   bool _isUpdate = false;
+  bool canSubmit = false;
   model.LocationAddress? stateLocation;
 
   @override
   void initState() {
     super.initState();
     stateLocation = widget.initialLocation;
+
     if (stateLocation?.id != null) {
       _isUpdate = true;
       editingController.text = stateLocation!.name;
     }
+
     _addressController.stream.listen((address) {
-      // Update the state with the selected address
       setState(() {
         address.id = stateLocation?.id;
         stateLocation = address;
       });
+    });
+
+    editingController.addListener(() {
+      if (mounted) {
+        setState(() {
+          canSubmit = editingController.text.isNotEmpty;
+        });
+      }
     });
   }
 
@@ -58,33 +68,14 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     String name = editingController.text;
 
-    // UPDATE a new Location
-    //
+    model.LocationAddress locationToSave = stateLocation!.copyWith(name: name);
     if (_isUpdate) {
-      model.LocationAddress updatedLocation = stateLocation!.copyWith(name: name);
-      await DatabaseService.instance.update(updatedLocation);
-      if (!mounted) return;
-      showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+      DatabaseService.instance.update(locationToSave);
+    } else {
+      DatabaseService.instance.add(locationToSave);
     }
-
-    // CREATE an existing one
-    //
-    else {
-      LatLng? location = await LocationService.instance.location;
-      if (location != null) {
-        var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-        var address = await geo.getGeolocationAddress(location);
-        if (address != null) {
-          address = address.copyWith(name: name);
-          await DatabaseService.instance.add(address);
-          if (!mounted) return;
-          showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
-        }
-      } else {
-        if (!mounted) return;
-        Navigator.pop(context);
-      }
-    }
+    if (!mounted) return;
+    showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
   }
 
   @override
@@ -101,9 +92,11 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(28.0),
+            padding: const EdgeInsets.all(18.0),
             child: AccessibleTextInput(
               maxLines: 1,
+              mandatory: true,
+              hintText: l10n.location_name,
               talkbackInput: l10n.location_name_t,
               talkbackIcon: l10n.location_add_speak_t,
               controller: editingController,
@@ -123,14 +116,18 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
             child: AbsorbPointer(
               // Prevents the TextField from gaining focus
               child: Padding(
-                padding: const EdgeInsets.all(28.0),
-                child: TextField(
-                  controller: TextEditingController(text: stateLocation?.formattedAddress),
-                  decoration: InputDecoration(
-                    labelText: 'Address',
-                    // Add other decoration properties if needed
+                padding: const EdgeInsets.all(18.0),
+                child: MergeSemantics(
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: TextEditingController(text: stateLocation?.formattedAddress),
+                        decoration: InputDecoration(labelText: l10n.inputhint_address),
+                        maxLines: null,
+                      ),
+                      Semantics(label: l10n.address_search_doubletab_hint_t),
+                    ],
                   ),
-                  maxLines: null, // Allows for multiline input
                 ),
               ),
             ),
@@ -139,16 +136,18 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
             child: Container(), // This acts as a filler
           ),
           BoldIconButton(
-            talkback: l10n.button_close_t,
-            buttonWidth: MediaQuery.of(context).size.width / 4,
-            icons: Icons.check,
-            onTab: () async {
-              await _saveLocation(context);
-            },
-          ),
+              talkback: l10n.button_save_t,
+              buttonWidth: MediaQuery.of(context).size.width / 5,
+              icons: Icons.check,
+              onTab: canSubmit
+                  ? () {
+                      _saveLocation(context);
+                    }
+                  : () {} // Disable the button if name is empty
+              ),
           BoldIconButton(
-            talkback: l10n.button_close,
-            buttonWidth: MediaQuery.of(context).size.width / 6,
+            talkback: l10n.button_close_t,
+            buttonWidth: MediaQuery.of(context).size.width / 7,
             icons: Icons.close,
             onTab: () => Navigator.pop(context),
           ),

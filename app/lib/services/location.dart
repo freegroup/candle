@@ -1,56 +1,57 @@
 import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class LocationService {
-  // singleton Pattern
-  LocationService._privateConstructor() {
-    _location = Location();
-  }
+  LocationService._privateConstructor();
+
   static final LocationService instance = LocationService._privateConstructor();
 
-  late Location _location;
-  bool _serviceEnabled = false;
-  PermissionStatus? _grantedPermissions;
+  final Location _location = Location();
 
   Future<LatLng?> get location async {
-    if (await _checkPermission()) {
-      LocationData loc = await _location.getLocation();
-      if (loc.latitude != null && loc.longitude != null) {
-        return LatLng(loc.latitude!, loc.longitude!);
+    try {
+      print("location.get");
+      if (await _checkPermission()) {
+        LocationData loc = await _location.getLocation();
+        if (loc.latitude != null && loc.longitude != null) {
+          return LatLng(loc.latitude!, loc.longitude!);
+        }
       }
+    } catch (e) {
+      print("LocationService Error: $e");
     }
     return null;
   }
 
   Stream<LocationData> get updates {
-    return _location.onLocationChanged;
+    return _location.onLocationChanged.handleError((error) {
+      print("Location Stream Error: $error");
+    });
   }
 
   Future<bool> _checkPermission() async {
     if (await _checkService()) {
-      _grantedPermissions = await _location.hasPermission();
-      if (_grantedPermissions == PermissionStatus.denied) {
-        _grantedPermissions = await _location.requestPermission();
+      PermissionStatus permissionStatus = await _location.hasPermission();
+      if (permissionStatus == PermissionStatus.denied) {
+        permissionStatus = await _location.requestPermission();
         _location.enableBackgroundMode(enable: true);
       }
+      return permissionStatus == PermissionStatus.granted;
     }
-    return _grantedPermissions == PermissionStatus.granted;
+    return false;
   }
 
   Future<bool> _checkService() async {
     try {
-      _serviceEnabled = await _location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await _location.requestService();
+      bool serviceEnabled = await _location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await _location.requestService();
       }
-    } on PlatformException catch (error) {
-      print(error);
-      _serviceEnabled = false;
-      await _checkService();
+      return serviceEnabled;
+    } catch (error) {
+      print("Service Check Error: $error");
+      return false;
     }
-    return _serviceEnabled;
   }
 }

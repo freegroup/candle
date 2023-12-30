@@ -68,6 +68,8 @@ class _ScreenState extends State<AddressSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: CandleAppBar(
@@ -82,39 +84,58 @@ class _ScreenState extends State<AddressSearchScreen> {
           ),
           const SizedBox(height: 18),
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) => ListTile(
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 8, bottom: 4),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Semantics(
+                    header: true,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        (suggestion[index]).formattedAddress,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        l10n.address_search_list,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
-                  ],
-                ),
-                leading: Container(
-                  child: Icon(
-                    Icons.place_rounded,
-                    color: Colors.amberAccent,
-                    size: 32,
                   ),
                 ),
-                onTap: () async {
-                  final placeDetail = suggestion[index];
-                  widget.sink.add(placeDetail);
-                  onBackPressed(context);
-                },
-              ),
-              itemCount: suggestion.length,
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => ListTile(
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 8, bottom: 4),
+                            child: Text(
+                              (suggestion[index]).formattedAddress,
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: theme.primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      leading: Container(
+                        child: Icon(
+                          Icons.place_rounded,
+                          color: theme.primaryColor,
+                          size: 32,
+                        ),
+                      ),
+                      onTap: () async {
+                        final placeDetail = suggestion[index];
+                        widget.sink.add(placeDetail);
+                        onBackPressed(context);
+                      },
+                    ),
+                    itemCount: suggestion.length,
+                  ),
+                ),
+              ],
             ),
           )
         ],

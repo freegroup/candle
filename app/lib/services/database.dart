@@ -18,7 +18,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "favorites_v5.db");
+    String path = join(docDirector.path, "favorites_v6.db");
     return await openDatabase(
       path,
       version: 1,

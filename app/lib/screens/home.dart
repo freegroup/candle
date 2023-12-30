@@ -5,6 +5,7 @@ import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/utils/dialogs.dart';
 import 'package:candle/widgets/appbar.dart';
 
 import 'package:candle/widgets/location_tile.dart';
@@ -24,6 +25,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.home_mainmenu),
@@ -45,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSpacing: 10, // Spacing in between items vertically
                       children: [
                         TileButton(
-                          title: AppLocalizations.of(context)!.button_compass,
-                          talkback: AppLocalizations.of(context)!.button_compass_t,
+                          title: l10n.button_compass,
+                          talkback: l10n.button_compass_t,
                           icon: const CompassIcon(rotationDegrees: 30),
                           onPressed: () {
                             Navigator.of(context).push(
@@ -54,27 +57,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                         TileButton(
-                          title: AppLocalizations.of(context)!.button_favorite,
-                          talkback: AppLocalizations.of(context)!.button_favorite_t,
+                          title: l10n.button_favorite,
+                          talkback: l10n.button_favorite_t,
                           icon: const PoiFavoriteIcon(),
                           onPressed: () async {
-                            var coord = await LocationService.instance.location;
-                            // Check if the widget is still in the tree
-                            if (!mounted) return;
+                            showLoadingDialog(context);
 
-                            if (coord != null) {
-                              var geo =
-                                  Provider.of<GeoServiceProvider>(context, listen: false).service;
-                              LocationAddress? address = await geo.getGeolocationAddress(coord);
-                              if (mounted) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => FavoriteCreateUpdateScreen(
-                                      initialLocation: address,
+                            try {
+                              var coord = await LocationService.instance.location;
+                              if (coord != null) {
+                                var geo =
+                                    Provider.of<GeoServiceProvider>(context, listen: false).service;
+                                LocationAddress? address = await geo.getGeolocationAddress(coord);
+                                if (!mounted) return;
+                                Navigator.pop(context); // Close the loading dialog
+                                if (mounted) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => FavoriteCreateUpdateScreen(
+                                        initialLocation: address,
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
+                              } else {
+                                if (!mounted) return;
+                                Navigator.pop(context);
                               }
+                            } catch (e) {
+                              if (!mounted) return;
+                              Navigator.pop(context);
                             }
                           },
                         )
