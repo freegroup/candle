@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:candle/models/location_address.dart';
+import 'package:candle/models/route.dart';
 import "package:path/path.dart";
 
 import 'package:path_provider/path_provider.dart';
@@ -8,6 +9,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   static const String _locationTable = "location";
+  static const String _routeTable = "route";
 
   // singleton Pattern
   DatabaseService._privateConstructor();
@@ -18,7 +20,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "favorites_v6.db");
+    String path = join(docDirector.path, "favorites_v7.db");
     return await openDatabase(
       path,
       version: 1,
@@ -28,21 +30,31 @@ class DatabaseService {
 
   FutureOr<void> _onCreate(Database db, int version) async {
     await db.execute(''' 
-  CREATE TABLE $_locationTable(
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    formattedAddress TEXT,
-    street TEXT,
-    number TEXT,
-    zip TEXT,
-    city TEXT,
-    country TEXT,
-    lat REAL,
-    lon REAL
-  )
-  ''');
+    CREATE TABLE $_locationTable(
+      id INTEGER PRIMARY KEY,
+      name TEXT,
+      formattedAddress TEXT,
+      street TEXT,
+      number TEXT,
+      zip TEXT,
+      city TEXT,
+      country TEXT,
+      lat REAL,
+      lon REAL
+    )
+    ''');
 
-    add(LocationAddress(
+    // Create route table with a text field for route points
+    await db.execute(''' 
+    CREATE TABLE $_routeTable(
+      id INTEGER PRIMARY KEY,
+      name TEXT,
+      annotation TEXT,
+      points TEXT
+    )
+    ''');
+
+    addLocation(LocationAddress(
       lat: 49.45622156121109,
       lon: 8.596111485518252,
       name: "Lidl",
@@ -55,7 +67,7 @@ class DatabaseService {
     ));
   }
 
-  Future<List<LocationAddress>> all() async {
+  Future<List<LocationAddress>> allLocations() async {
     Database db = await instance.database;
     var rows = await db.query(_locationTable, orderBy: "name");
     List<LocationAddress> shopppingItems =
@@ -64,18 +76,56 @@ class DatabaseService {
     return shopppingItems;
   }
 
-  Future<int> add(LocationAddress item) async {
+  Future<int> addLocation(LocationAddress item) async {
     Database db = await instance.database;
     return await db.insert(_locationTable, item.toMap());
   }
 
-  Future<int> remove(LocationAddress item) async {
+  Future<int> removeLocation(LocationAddress item) async {
     Database db = await instance.database;
     return await db.delete(_locationTable, where: 'id = ?', whereArgs: [item.id]);
   }
 
-  Future<int> update(LocationAddress item) async {
+  Future<int> updateLocation(LocationAddress item) async {
     Database db = await instance.database;
     return await db.update(_locationTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+  }
+
+  // Create (Add) operation for Route
+  Future<int> addRoute(Route route) async {
+    Database db = await instance.database;
+    var routeMap = route.toMap();
+    routeMap['points'] = route.pointsToJson(); // Convert points to JSON string
+    return await db.insert(_routeTable, routeMap);
+  }
+
+  // Read (Get) operation for Route
+  Future<Route?> getRoute(int id) async {
+    Database db = await instance.database;
+    var maps = await db.query(_routeTable, where: 'id = ?', whereArgs: [id]);
+    if (maps.isNotEmpty) {
+      var route = Route.fromMap(maps.first);
+
+      // Explicitly cast the points field to String
+      String pointsJson = maps.first['points'] as String;
+      route.points = Route.pointsFromJson(pointsJson); // Convert JSON string back to points
+
+      return route;
+    }
+    return null;
+  }
+
+  // Update operation for Route
+  Future<int> updateRoute(Route route) async {
+    Database db = await instance.database;
+    var routeMap = route.toMap();
+    routeMap['points'] = route.pointsToJson(); // Convert points to JSON string
+    return await db.update(_routeTable, routeMap, where: 'id = ?', whereArgs: [route.id]);
+  }
+
+  // Delete operation for Route
+  Future<int> deleteRoute(int id) async {
+    Database db = await instance.database;
+    return await db.delete(_routeTable, where: 'id = ?', whereArgs: [id]);
   }
 }

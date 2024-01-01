@@ -3,19 +3,47 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class LocationService {
-  LocationService._privateConstructor();
-
   static final LocationService instance = LocationService._privateConstructor();
-
   final Location _location = Location();
+  LatLng? _currentLocation;
+
+  StreamSubscription<LocationData>? _locationSubscription;
+
+  LocationService._privateConstructor() {
+    _initLocationUpdates();
+  }
 
   Future<LatLng?> get location async {
+    return _currentLocation ?? await _fetchCurrentLocation();
+  }
+
+  // Stream of location updates
+  Stream<LocationData> get updates => _location.onLocationChanged;
+
+  void _initLocationUpdates() async {
+    _locationSubscription = _location.onLocationChanged.listen((LocationData loc) {
+      if (loc.latitude != null && loc.longitude != null) {
+        _currentLocation = LatLng(loc.latitude!, loc.longitude!);
+      }
+    }, onError: (error) {
+      print("Location Stream Error: $error");
+    });
+
+    _checkPermission().then((hasPermission) {
+      if (!hasPermission) {
+        print("Location permission not granted");
+        // Handle lack of permission as needed
+      }
+    });
+  }
+
+  Future<LatLng?> _fetchCurrentLocation() async {
     try {
-      print("location.get");
       if (await _checkPermission()) {
         LocationData loc = await _location.getLocation();
         if (loc.latitude != null && loc.longitude != null) {
-          return LatLng(loc.latitude!, loc.longitude!);
+          _currentLocation = LatLng(loc.latitude!, loc.longitude!);
+          return _currentLocation;
         }
       }
     } catch (e) {
@@ -24,18 +52,14 @@ class LocationService {
     return null;
   }
 
-  Stream<LocationData> get updates {
-    return _location.onLocationChanged.handleError((error) {
-      print("Location Stream Error: $error");
-    });
-  }
-
   Future<bool> _checkPermission() async {
     if (await _checkService()) {
       PermissionStatus permissionStatus = await _location.hasPermission();
       if (permissionStatus == PermissionStatus.denied) {
         permissionStatus = await _location.requestPermission();
-        _location.enableBackgroundMode(enable: true);
+        if (permissionStatus != PermissionStatus.granted) {
+          _location.enableBackgroundMode(enable: true);
+        }
       }
       return permissionStatus == PermissionStatus.granted;
     }
@@ -53,5 +77,10 @@ class LocationService {
       print("Service Check Error: $error");
       return false;
     }
+  }
+
+  @override
+  void dispose() {
+    _locationSubscription?.cancel();
   }
 }

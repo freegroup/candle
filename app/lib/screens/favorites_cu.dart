@@ -70,9 +70,9 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
 
     model.LocationAddress locationToSave = stateLocation!.copyWith(name: name);
     if (_isUpdate) {
-      DatabaseService.instance.update(locationToSave);
+      DatabaseService.instance.updateLocation(locationToSave);
     } else {
-      DatabaseService.instance.add(locationToSave);
+      DatabaseService.instance.addLocation(locationToSave);
     }
     if (!mounted) return;
     showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);

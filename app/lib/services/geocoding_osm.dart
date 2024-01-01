@@ -1,4 +1,8 @@
-import 'package:candle/models/location_address.dart';
+import 'package:candle/auth/secrets.dart';
+import 'package:candle/models/navigation_point.dart' as model;
+import 'package:candle/models/route.dart' as model;
+import 'package:candle/models/location_address.dart' as model;
+
 import 'package:candle/services/geocoding.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -7,7 +11,45 @@ import 'package:latlong2/latlong.dart';
 
 class OSMGeocodingService implements GeocodingService {
   @override
-  Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
+  Future<model.Route?> getPedestrianRoute(LatLng start, LatLng end) async {
+    var client = http.Client();
+
+    try {
+      var url = 'https://api.openrouteservice.org/v2/directions/foot-walking/geojson';
+      var headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $OPENSTREETMAP_API_KEY'
+      };
+      var body = json.encode({
+        'coordinates': [
+          [start.longitude, start.latitude],
+          [end.longitude, end.latitude]
+        ]
+      });
+
+      var response = await client.post(Uri.parse(url), headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        var routeLatLons = [
+          for (var coord in data['features'][0]['geometry']['coordinates'])
+            model.NavigationPoint(coordinate: LatLng(coord[1], coord[0]), annotation: '')
+        ];
+        var route = model.Route(name: "current", points: routeLatLons);
+        return route.calculateWaypointRoute();
+      } else {
+        print('Failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error occurred during fetching pedestrian route: $e');
+    } finally {
+      client.close();
+    }
+    return null;
+  }
+
+  @override
+  Future<model.LocationAddress?> getGeolocationAddress(LatLng coord) async {
     try {
       String url =
           'https://nominatim.openstreetmap.org/reverse?format=json&lat=${coord.latitude}&lon=${coord.longitude}';
@@ -21,7 +63,7 @@ class OSMGeocodingService implements GeocodingService {
           street = addressInfo['city_block'];
         }
 
-        return LocationAddress(
+        return model.LocationAddress(
           lat: coord.latitude,
           lon: coord.longitude,
           name: "",
@@ -45,7 +87,7 @@ class OSMGeocodingService implements GeocodingService {
   }
 
   @override
-  Future<List<LocationAddress>> searchNearbyAddress({
+  Future<List<model.LocationAddress>> searchNearbyAddress({
     required String addressFragment,
     required Locale locale,
   }) async {

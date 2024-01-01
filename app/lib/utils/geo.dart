@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'package:candle/models/location_address.dart' as model;
 import 'package:latlong2/latlong.dart';
 
 double radians(double degrees) {
@@ -60,4 +59,31 @@ double calculateDistance(LatLng geo1, LatLng geo2) {
 
   // Distance in meters
   return earthRadius * c;
+}
+
+double distanceToSegment({required LatLng point, required LatLng start, required LatLng end}) {
+  final double lengthSquared = math.pow(calculateDistance(start, end), 2).toDouble();
+
+  if (lengthSquared == 0) {
+    return calculateDistance(point, start);
+  }
+
+  // Consider the line extending the segment, parameterized as segmentStart + t * (segmentEnd - segmentStart).
+  // We find projection of point onto the line.
+  // It falls where t = [(point-segmentStart) . (segmentEnd-segmentStart)] / |segmentEnd-segmentStart|^2
+  final double t = ((point.longitude - start.longitude) * (end.longitude - start.longitude) +
+          (point.latitude - start.latitude) * (end.latitude - start.latitude)) /
+      lengthSquared;
+
+  if (t < 0) {
+    return calculateDistance(point, start); // Beyond the segmentStart end of the segment
+  } else if (t > 1) {
+    return calculateDistance(point, end); // Beyond the segmentEnd end of the segment
+  }
+
+  LatLng projection = LatLng(
+    start.latitude + t * (end.latitude - start.latitude),
+    start.longitude + t * (end.longitude - start.longitude),
+  );
+  return calculateDistance(point, projection);
 }

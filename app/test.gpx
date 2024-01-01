@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="YourAppName">
+  <trk>
+    <name>current</name>
+    <trkseg>
+      <trkpt lat="49.459494" lon="8.603452">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.432040</time>
+      </trkpt>
+      <trkpt lat="49.459513" lon="8.602949">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.436643</time>
+      </trkpt>
+      <trkpt lat="49.45947" lon="8.602831">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.436704</time>
+      </trkpt>
+      <trkpt lat="49.4594505" lon="8.602698">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.436739</time>
+      </trkpt>
+      <trkpt lat="49.459431" lon="8.602565">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.436800</time>
+      </trkpt>
+      <trkpt lat="49.45934262162162" lon="8.60259472972973">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.436948</time>
+      </trkpt>
+      <trkpt lat="49.458777" lon="8.602785">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437026</time>
+      </trkpt>
+      <trkpt lat="49.458267" lon="8.602944">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437118</time>
+      </trkpt>
+      <trkpt lat="49.458176" lon="8.60299">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437184</time>
+      </trkpt>
+      <trkpt lat="49.457993096774196" lon="8.603041483870967">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437249</time>
+      </trkpt>
+      <trkpt lat="49.457906" lon="8.603066">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437315</time>
+      </trkpt>
+      <trkpt lat="49.4579355049505" lon="8.602936">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437347</time>
+      </trkpt>
+      <trkpt lat="49.458174495049505" lon="8.601883">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437380</time>
+      </trkpt>
+      <trkpt lat="49.458204" lon="8.601753">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437412</time>
+      </trkpt>
+      <trkpt lat="49.45812025" lon="8.601702772727274">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437443</time>
+      </trkpt>
+      <trkpt lat="49.45673" lon="8.600869">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437475</time>
+      </trkpt>
+      <trkpt lat="49.455682" lon="8.600252">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437508</time>
+      </trkpt>
+      <trkpt lat="49.45471" lon="8.599672">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437541</time>
+      </trkpt>
+      <trkpt lat="49.454642" lon="8.599588">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437572</time>
+      </trkpt>
+      <trkpt lat="49.454673971830985" lon="8.599459971830987">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437604</time>
+      </trkpt>
+      <trkpt lat="49.454869" lon="8.598679">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437636</time>
+      </trkpt>
+      <trkpt lat="49.45554921428572" lon="8.595924705357143">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437712</time>
+      </trkpt>
+      <trkpt lat="49.455581" lon="8.595796">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437744</time>
+      </trkpt>
+      <trkpt lat="49.45566484615385" lon="8.595845743589743">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437807</time>
+      </trkpt>
+      <trkpt lat="49.455908" lon="8.59599">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437872</time>
+      </trkpt>
+      <trkpt lat="49.455998" lon="8.596044">
+        <ele>0</ele>
+        <time>2023-12-30T23:22:50.437903</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

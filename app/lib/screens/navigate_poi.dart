@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:candle/icons/location_arrow.dart';
 import 'package:candle/icons/location_dot.dart';
 import 'package:candle/l10n/helper.dart';
+import 'package:candle/screens/navigate_route.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/services/screen_wake.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
@@ -32,7 +34,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
   late model.LocationAddress _stateLocation;
-  LatLng _currentLocation = const LatLng(0, 0);
+  late LatLng _currentLocation;
 
   bool _wasAligned = false;
 
@@ -41,10 +43,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
   }
 
   void updateGpsLocation() async {
-    var gps = await LocationService.instance.location;
-    if (gps != null) {
-      _currentLocation = LatLng(gps.latitude!, gps.longitude!);
-    }
+    _currentLocation = (await LocationService.instance.location)!;
   }
 
   @override
@@ -52,13 +51,12 @@ class _ScreenState extends State<NavigatePoiScreen> {
     super.initState();
     _stateLocation = widget.location;
 
-    FlutterScreenWake.keepOn(true);
-
     updateGpsLocation();
-    _updateLocationTimer = Timer.periodic(const Duration(seconds: 10), (Timer t) async {
+    _updateLocationTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       updateGpsLocation();
     });
 
+    ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
       bool isAligned = (_currentHeadingDegrees.abs() <= 8) || (_currentHeadingDegrees.abs() >= 352);
       if (isAligned && (await Vibration.hasVibrator() ?? false)) {
@@ -70,7 +68,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         print(err);
       }).listen((compassEvent) async {
-        if (mounted && _currentLocation != null) {
+        if (mounted) {
           var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation.latlng());
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
@@ -99,7 +97,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
   @override
   void dispose() {
-    FlutterScreenWake.keepOn(false);
+    ScreenWakeService.keepOn(false);
     _compassSubscription?.cancel();
     _vibrationTimer?.cancel();
     _updateLocationTimer?.cancel();
@@ -112,30 +110,6 @@ class _ScreenState extends State<NavigatePoiScreen> {
     ThemeData theme = Theme.of(context);
     bool isAligned = _isAligned(_currentHeadingDegrees);
     Color? backgroundColor = isAligned ? Colors.green[800] : null;
-
-    // Show loading screen when current location is not available
-    if (_currentLocation == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Semantics(
-            label: l10n.label_common_loading_t,
-            child: Text(l10n.label_common_loading),
-          ),
-        ),
-        body: Center(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              double size = constraints.maxWidth * 0.33;
-              return SizedBox(
-                width: size,
-                height: size,
-                child: const CircularProgressIndicator(),
-              );
-            },
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -209,7 +183,14 @@ class _ScreenState extends State<NavigatePoiScreen> {
                 talkback: l10n.button_navigate_poi_t,
                 buttonWidth: MediaQuery.of(context).size.width / 5,
                 icons: Icons.directions_walk,
-                onTab: () {}),
+                onTab: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => NavigateRouteScreen(
+                      source: _currentLocation,
+                      target: _stateLocation,
+                    ),
+                  ));
+                }),
             BoldIconButton(
               talkback: l10n.button_close_t,
               buttonWidth: MediaQuery.of(context).size.width / 7,

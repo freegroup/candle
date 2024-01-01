@@ -1,7 +1,9 @@
 import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/settings.dart';
+import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NavigatorScreen extends StatefulWidget {
@@ -13,6 +15,8 @@ class NavigatorScreen extends StatefulWidget {
 
 class _ScreenState extends State<NavigatorScreen> {
   int currentIndex = 0;
+  late Future<LatLng?> _locationFuture;
+
   final List<Widget> pages = const [
     HomeScreen(),
     FavoriteScreen(),
@@ -22,16 +26,65 @@ class _ScreenState extends State<NavigatorScreen> {
   @override
   void initState() {
     super.initState();
-    _requestPermissions(); // Request permissions on app startup
+    _initLocationFuture();
   }
 
-  Future<void> _requestPermissions() async {
-    await Permission.location.request(); // Request location permission
-    // Add more permission requests here if needed
+  void _initLocationFuture() {
+    _locationFuture = LocationService.instance.location;
+  }
+
+  void _retryFetchingLocation() {
+    setState(() {
+      _initLocationFuture(); // Reset the future to trigger a rebuild
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<LatLng?>(
+      future: _locationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // GPS signal not obtained yet, show loading screen
+          return _buildLoadingScreen();
+        } else if (snapshot.hasData && snapshot.data != null) {
+          // GPS signal obtained, show main content
+          return _buildMainContent();
+        } else {
+          // GPS signal not found or error occurred
+          return _buildErrorScreen();
+        }
+      },
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen() {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Error obtaining GPS signal'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _retryFetchingLocation,
+              child: Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMainContent() {
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),

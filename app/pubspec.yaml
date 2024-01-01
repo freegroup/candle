@@ -27,16 +27,16 @@ dependencies:
   permission_handler: ^11.1.0
   simple_shadow: ^0.3.1
   speech_to_text: ^6.5.1
-  flutter_map: ^6.1.0
   latlong2: ^0.9.0
   vibration: ^1.8.4
   flutter_screen_wake: ^1.0.2
-  flutter_google_maps_webservices: ^1.1.1
   provider: ^6.1.1
   string_similarity: ^2.0.0
+  flutter_google_maps_webservices: ^1.1.1
+  google_maps_flutter: ^2.5.0
   google_geocoding_api: ^1.4.1
   uuid: ^4.2.2
-  shimmer: ^3.0.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_lints: ^3.0.1

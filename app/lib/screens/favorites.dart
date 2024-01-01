@@ -70,7 +70,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         ),
         body: Center(
             child: FutureBuilder<List<model.LocationAddress>>(
-          future: db.all(),
+          future: db.allLocations(),
           builder: (context, snapshot) {
             AppLocalizations l10n = AppLocalizations.of(context)!;
             ThemeData theme = Theme.of(context);
@@ -111,22 +111,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             },
                             CustomSemanticsAction(label: l10n.button_common_delete_t): () {
                               setState(() {
-                                db.remove(location);
+                                db.removeLocation(location);
                                 showSnackbar(context, l10n.location_delete_toast(location.name));
                               });
                             },
                           },
                           child: Slidable(
                             endActionPane: ActionPane(
-                              // A motion is a widget used to control how the pane animates.
                               motion: const ScrollMotion(),
-
-                              // All actions are defined in the children parameter.
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
                                     setState(() {
-                                      db.remove(location);
+                                      db.removeLocation(location);
                                       showSnackbar(
                                           context, l10n.location_delete_toast(location.name));
                                     });
