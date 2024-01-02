@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,10 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.home_mainmenu),
+          subtitle: Text("brings a little bit of light into the darkness",
+              style: theme.textTheme.bodyMedium),
           talkback: AppLocalizations.of(context)!.home_mainmenu_t,
         ),
         body: Padding(
@@ -89,7 +93,35 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.pop(context);
                             }
                           },
-                        )
+                        ),
+                        TileButton(
+                          title: l10n.button_share_location,
+                          talkback: l10n.button_share_location_t,
+                          icon: const Icon(
+                            Icons.share,
+                            size: 80,
+                          ),
+                          onPressed: () async {
+                            showLoadingDialog(context);
+
+                            try {
+                              var coord = await LocationService.instance.location;
+                              if (coord != null) {
+                                var geo =
+                                    Provider.of<GeoServiceProvider>(context, listen: false).service;
+                                LocationAddress? address = await geo.getGeolocationAddress(coord);
+
+                                String message =
+                                    l10n.location_share_message(coord.latitude, coord.longitude);
+
+                                message = "$message\n\n${address?.formattedAddress}";
+                                Share.share(message);
+                              }
+                            } finally {
+                              if (mounted) Navigator.pop(context);
+                            }
+                          },
+                        ),
                       ]),
                 )
               ],

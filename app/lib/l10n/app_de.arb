@@ -15,6 +15,9 @@
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
 
+  "button_share_location_t": "Aktuellen Standort Teilen",
+  "button_share_location": "Teilen",
+  
   "button_favorite_t": "Aktuellen Standort speichern",
   "button_favorite": "Speichern",
 
@@ -56,11 +59,8 @@
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
   
 
-  "favorites_placeholder_title": "Willkommen!",
-  "favorites_placeholder_intro": "Dies ist Ihr persönlicher Bereich für einfache Navigation zu Orten wie ZUHAUSE oder ARBEIT. Nur ein paar Klicks, und Sie verirren sich nie wieder!",
-  "favorites_placeholder_quick_start": "Schnellstart:",
-  "favorites_placeholder_quick_start_instructions": "1. Drücken Sie den Hinzufügen-Button.\n2. Benennen Sie Ihren Ort - 'Mein Zuhause' oder 'Büro.'\n3. Geben Sie die Adresse ein - tippen oder sprechen.\n4. Speichern und mühelos navigieren.",
-  "favorites_placeholder_tip_title": "Mit ZUHAUSE und ARBEIT anzufangen, ist eine gute Idee.",
+  "favorites_placeholder_intro": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
+  "favorites_placeholder_tip_title": "Warum nicht damit beginnen, ZUHAUSE oder ARBEIT als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
   "favorites_placeholder_final_message": "Fügen Sie Ihren ersten Favoriten hinzu und starten Sie mühelos in neue Abenteuer!",
 
 
@@ -83,6 +83,8 @@
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
   "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   
+  "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
+ 
   "address_search_dialog_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
   "address_search_dialog": "Adresse Suchen",
   "address_search_list": "Vorgeschlagene Adressen",

@@ -7,30 +7,22 @@ extension CustomThemeColors on ThemeData {
 class CThemeData {
   static ThemeData get darkTheme {
     MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 218, 0, 1));
+    ThemeData baseTheme = ThemeData.dark(); // Use the default dark theme as base
+
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Color.fromRGBO(20, 20, 20, 1),
       cardColor: Colors.black,
       primaryColorDark: _createDarkerColor(mySwatch),
-      textTheme: TextTheme(
-        bodySmall: TextStyle(color: mySwatch),
-        bodyMedium: TextStyle(color: mySwatch),
-        bodyLarge: TextStyle(color: mySwatch),
-        titleSmall: TextStyle(color: mySwatch),
-        titleMedium: TextStyle(color: mySwatch),
-        titleLarge: TextStyle(color: mySwatch),
-        displaySmall: TextStyle(color: mySwatch),
-        displayMedium: TextStyle(color: mySwatch),
-        displayLarge: TextStyle(color: mySwatch),
-        headlineSmall: TextStyle(color: mySwatch),
-        headlineMedium: TextStyle(color: mySwatch),
-        headlineLarge: TextStyle(color: mySwatch),
+      textTheme: baseTheme.textTheme.apply(
+        bodyColor: mySwatch,
+        displayColor: mySwatch,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Color.fromRGBO(100, 100, 100, 1),
         labelStyle: TextStyle(color: mySwatch),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),

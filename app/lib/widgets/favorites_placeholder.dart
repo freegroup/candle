@@ -17,21 +17,13 @@ class FavoritesPlaceholder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              l10n.favorites_placeholder_title,
-              style: theme.textTheme.headlineMedium,
+              l10n.favorites_placeholder_intro,
+              style: theme.textTheme.headlineLarge,
             ),
-            const SizedBox(height: 10),
-            Text(l10n.favorites_placeholder_intro),
-            const SizedBox(height: 20),
-            Text(
-              l10n.favorites_placeholder_quick_start,
-              style: theme.textTheme.headlineSmall,
-            ),
-            Text(l10n.favorites_placeholder_quick_start_instructions),
             const SizedBox(height: 20),
             Text(
               l10n.favorites_placeholder_tip_title,
-              style: theme.textTheme.headlineSmall,
+              style: theme.textTheme.bodyLarge,
             ),
             const SizedBox(height: 20),
             Text(

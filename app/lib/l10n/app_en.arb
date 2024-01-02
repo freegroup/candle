@@ -146,11 +146,8 @@
     }
   },
 
-  "favorites_placeholder_title": "Welcome to Your Favorites!",
-  "favorites_placeholder_intro": "This is your personal space for easy navigation to places like HOME or WORK. Just a few taps, and you'll never lose your way!",
-  "favorites_placeholder_quick_start": "Quick Start:",
-  "favorites_placeholder_quick_start_instructions": "1. Hit the Add button.\n2. Name your spot - 'Home Sweet Home' or 'Office.'\n3. Enter the address - type or speak.\n4. Save and navigate with ease.",
-  "favorites_placeholder_tip_title": "Begin with HOME and WORK is a good idea.",
+  "favorites_placeholder_intro": "Oh, what a pity... you haven't saved any favorites yet.",
+  "favorites_placeholder_tip_title": "Why not start by adding HOME or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
   "favorites_placeholder_final_message": "Add your first favorite and embark on new journeys effortlessly!",
 
 
@@ -219,6 +216,21 @@
       "name": {
         "type": "String",
         "description": "The name of the favorite"
+      }
+    }
+  },
+
+  "location_share_message": "Here is my current location: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
+  "@location_saved_toast": {
+    "description": "Information that the favorite has deleted with success",
+    "placeholders": {
+      "latitude": {
+        "type": "double",
+        "description": "The latitude of the current location"
+      },
+      "longitude": {
+        "type": "double",
+        "description": "The longitude of the current location"
       }
     }
   },
@@ -374,6 +386,16 @@
   "button_compass": "Compass",
   "@button_compass": {
     "description": "Title for compass button"
+  },
+
+
+  "button_share_location_t": "Share your current location",
+  "@button_share_location_t": {
+    "description": "Talkback for Location Share Button"
+  },
+  "button_share_location": "Share",
+  "@button_share_location": {
+    "description": "Title for share location button"
   },
 
   "button_favorite_t": "Save current location as favorite",
