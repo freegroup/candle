@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+extension CustomThemeColors on ThemeData {
+  Color get positiveColor => Color.fromARGB(255, 41, 122, 44);
+}
+
 class CThemeData {
   static ThemeData get darkTheme {
     MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 218, 0, 1));

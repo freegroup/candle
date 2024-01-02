@@ -31,7 +31,7 @@
   "button_common_delete": "Löschen",
 
 
-  "button_navigate_poi_t": "Starte Navigation zum Ziel.",
+  "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
 
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
@@ -56,6 +56,10 @@
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
  
+
+  "remaining_route_distance_t": "Die verbleibende Entfernung bis zu Ihrem Ziel beträgt {meters} Meter.",
+  "remaining_route_distance": "{meters} Meter",
+
   "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
   "location_add_dialog": "Standort anlegen",
 

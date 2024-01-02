@@ -146,6 +146,29 @@
     }
   },
 
+
+  "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",
+  "@remaining_route_distance_t": {
+    "description": "Information how far the next waypoint is from your position",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the waypoint"
+      }
+    }
+  },
+  "remaining_route_distance": "{meters} meter",
+  "@remaining_route_distance": {
+    "description": "Information how long the remaining route distance is",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the remaining route"
+      }
+    }
+  },
+
+
   "location_name_t": "Input field for the location name",
   "@location_name_t": {
     "description": "Talkback for the input field for a location name"

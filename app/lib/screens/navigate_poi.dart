@@ -8,6 +8,7 @@ import 'package:candle/screens/navigate_route.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
+import 'package:candle/theme_data.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -58,8 +59,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
     ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
-      bool isAligned = (_currentHeadingDegrees.abs() <= 8) || (_currentHeadingDegrees.abs() >= 352);
-      if (isAligned && (await Vibration.hasVibrator() ?? false)) {
+      if (_isAligned(_currentHeadingDegrees) && (await Vibration.hasVibrator() ?? false)) {
         Vibration.vibrate(duration: 100);
       }
     });
@@ -109,7 +109,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
     bool isAligned = _isAligned(_currentHeadingDegrees);
-    Color? backgroundColor = isAligned ? Colors.green[800] : null;
+    Color? backgroundColor = isAligned ? theme.positiveColor : null;
 
     return Scaffold(
       appBar: CandleAppBar(

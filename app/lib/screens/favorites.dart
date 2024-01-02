@@ -37,7 +37,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             showLoadingDialog(context);
-
             try {
               var coord = await LocationService.instance.location;
               if (coord != null) {
@@ -65,8 +64,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               Navigator.pop(context);
             }
           },
-          tooltip: l10n.location_add_dialog, // Localized tooltip
-          child: const Icon(Icons.add),
+          tooltip: l10n.location_add_dialog,
+          mini: false,
+          child: Icon(
+            Icons.add,
+            size: 50,
+          ),
         ),
         body: Center(
             child: FutureBuilder<List<model.LocationAddress>>(

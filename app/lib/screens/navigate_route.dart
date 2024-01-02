@@ -20,6 +20,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:vibration/vibration.dart';
+import 'package:candle/theme_data.dart';
 
 class NavigateRouteScreen extends StatefulWidget {
   final LatLng source;
@@ -35,13 +36,15 @@ class _ScreenState extends State<NavigateRouteScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<LocationData>? _locationSubscription;
 
-  int _currentHeadingDegrees = 0;
+  int _currentMapRotation = 0;
+  int _currentWaypointHeading = 0;
   int _currentDistanceToWaypoint = 0;
   int _currentDistanceToTarget = 0;
   late model.NavigationPoint _waypoint;
   late LatLng _currentLocation;
   late Future<model.Route?> _route;
   int lastVibratedIndex = -1;
+  bool _wasAligned = false;
 
   @override
   void initState() {
@@ -68,19 +71,30 @@ class _ScreenState extends State<NavigateRouteScreen> {
       }).listen((compassEvent) async {
         if (mounted) {
           var r = await _route;
-          var needleHeading = -(((compassEvent.heading ?? 0) + 360) % 360).toInt();
-          // Normalize the needle heading [0-360] range and avoid negative values
-          needleHeading = (needleHeading + 360) % 360;
+          var waypointHeading = calculateNorthBearing(_currentLocation, _waypoint.latlng());
+          var mapRotation = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
+
+          bool currentlyAligned = _isAligned(mapRotation, waypointHeading);
+
+          if (currentlyAligned != _wasAligned) {
+            if (currentlyAligned) {
+              Vibration.vibrate(duration: 100, repeat: 2);
+            } else {
+              Vibration.vibrate(duration: 500);
+            }
+            _wasAligned = currentlyAligned;
+          }
 
           var newDistance = calculateDistance(_currentLocation, _waypoint.latlng()).toInt();
           var resumeDistance =
               r!.calculateResumingLengthFromWaypoint(_waypoint).toInt() + newDistance;
-          if (needleHeading != _currentHeadingDegrees ||
+          if (mapRotation != _currentMapRotation ||
               newDistance != _currentDistanceToWaypoint ||
               resumeDistance != _currentDistanceToTarget) {
             setState(() {
-              log.d("setState regarding compass changes....");
-              _currentHeadingDegrees = needleHeading;
+              log.d("setState regarding compass changes....angle: $mapRotation : $waypointHeading");
+              _currentMapRotation = mapRotation;
+              _currentWaypointHeading = waypointHeading;
               _currentDistanceToWaypoint = newDistance;
               _currentDistanceToTarget = resumeDistance;
             });
@@ -96,6 +110,11 @@ class _ScreenState extends State<NavigateRouteScreen> {
     ScreenWakeService.keepOn(false);
     _compassSubscription?.cancel();
     _locationSubscription?.cancel();
+  }
+
+  bool _isAligned(int mapRotation, waypointHeading) {
+    var diff = mapRotation - waypointHeading;
+    return (diff.abs() <= 8) || (diff.abs() >= 352);
   }
 
   void _listenToLocationChanges() {
@@ -145,6 +164,8 @@ class _ScreenState extends State<NavigateRouteScreen> {
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
+    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
+    Color? backgroundColor = isAligned ? theme.positiveColor : null;
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -158,36 +179,51 @@ class _ScreenState extends State<NavigateRouteScreen> {
               flex: 5, // 2/3 of the screen for the compass
               child: _buildRouteMap(),
             ),
-            Expanded(child: Container()),
-            Container(
-              width: double.infinity,
-              child: Semantics(
-                label: l10n.waypoint_distance_t(_currentDistanceToWaypoint),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ExcludeSemantics(
-                    child: Column(
-                      children: [
-                        Text(
-                          '${_currentDistanceToTarget.toStringAsFixed(0)} Meter',
-                          style: theme.textTheme.displaySmall,
-                        ),
-                        Text(l10n.waypoint_distance(_currentDistanceToWaypoint),
-                            style: theme.textTheme.headlineSmall),
-                      ],
-                    ),
+            Expanded(
+              // Why use a Stack with a Container just for setting the background color?
+              // Is this an unnecessary complication? Actually, no!
+              //
+              // Here's the reason: The background color changes each time the compass
+              // aligns correctly with the direction. We want to prevent the TalkBack
+              // feature from announcing the selected element every time the background color changes.
+              // By altering the background color of a sibling widget rather than the parent,
+              // we avoid re-rendering the entire tree that includes the selected element.
+              //
+              // The result is that TalkBack no longer triggers when an element is selected
+              // and the background color changes. This results in a smoother user experience
+              // without repetitive announcements. Fantastic solution!
+              //
+              flex: 3, // Lower part with dynamic background color
+              child: Stack(
+                children: [
+                  // Background color layer
+                  Container(
+                    color: backgroundColor,
+                    height: double.infinity,
+                    width: double.infinity,
                   ),
-                ),
+                  // Content layer
+                  Column(
+                    children: [
+                      Expanded(
+                        child: DistanceDisplay(
+                          distanceToWaypoint: _currentDistanceToWaypoint,
+                          distanceToTarget: _currentDistanceToTarget,
+                        ),
+                      ),
+                      BoldIconButton(
+                        talkback: l10n.button_close_t,
+                        buttonWidth: MediaQuery.of(context).size.width / 5,
+                        icons: Icons.close,
+                        onTab: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            Expanded(child: Container()),
-            BoldIconButton(
-                talkback: l10n.button_close_t,
-                buttonWidth: MediaQuery.of(context).size.width / 5,
-                icons: Icons.close,
-                onTab: () {
-                  Navigator.pop(context);
-                }),
           ],
         ),
       ),
@@ -207,7 +243,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
         } else if (snapshot.hasData && snapshot.data != null) {
           return RouteMapWidget(
             route: snapshot.data!,
-            heading: _currentHeadingDegrees.toDouble(),
+            heading: -_currentMapRotation.toDouble(),
             currentLocation: _currentLocation,
             waypoint: _waypoint.latlng(),
           );
@@ -215,6 +251,67 @@ class _ScreenState extends State<NavigateRouteScreen> {
           return const Center(child: Text('No route found'));
         }
       },
+    );
+  }
+}
+
+class DistanceDisplay extends StatefulWidget {
+  final int distanceToTarget;
+  final int distanceToWaypoint;
+
+  const DistanceDisplay({
+    super.key,
+    required this.distanceToWaypoint,
+    required this.distanceToTarget,
+  });
+
+  @override
+  State<DistanceDisplay> createState() => _DistanceDisplayState();
+}
+
+class _DistanceDisplayState extends State<DistanceDisplay> {
+  @override
+  Widget build(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: double.infinity,
+            child: Semantics(
+              label: l10n.remaining_route_distance_t(widget.distanceToTarget),
+              child: ExcludeSemantics(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    l10n.remaining_route_distance(widget.distanceToTarget),
+                    style: theme.textTheme.displaySmall,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: Semantics(
+              label: l10n.waypoint_distance_t(widget.distanceToWaypoint),
+              child: ExcludeSemantics(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    l10n.waypoint_distance(widget.distanceToWaypoint),
+                    style: theme.textTheme.headlineSmall,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
