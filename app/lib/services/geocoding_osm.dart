@@ -4,6 +4,7 @@ import 'package:candle/models/route.dart' as model;
 import 'package:candle/models/location_address.dart' as model;
 
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -38,10 +39,10 @@ class OSMGeocodingService implements GeocodingService {
         var route = model.Route(name: "current", points: routeLatLons);
         return route.calculateWaypointRoute();
       } else {
-        print('Failed with status code: ${response.statusCode}');
+        log.e('Failed with status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error occurred during fetching pedestrian route: $e');
+      log.e('Error occurred during fetching pedestrian route: $e');
     } finally {
       client.close();
     }
@@ -81,7 +82,7 @@ class OSMGeocodingService implements GeocodingService {
         );
       }
     } on Exception catch (error) {
-      print(error);
+      log.e(error);
     }
     return null;
   }

@@ -37,6 +37,7 @@ dependencies:
   google_geocoding_api: ^1.4.1
   uuid: ^4.2.2
   collection: ^1.18.0
+  logger: ^2.0.2+1
 
 dev_dependencies:
   flutter_lints: ^3.0.1

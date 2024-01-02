@@ -9,6 +9,7 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
-        print(err);
+        log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
           var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation.latlng());

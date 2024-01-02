@@ -8,7 +8,9 @@ import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
 import 'package:candle/utils/colors.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +47,6 @@ class _ScreenState extends State<NavigateRouteScreen> {
     super.initState();
     ScreenWakeService.keepOn(true);
 
-    _currentLocation = widget.source;
-
     //var geo = GoogleMapsGeocodingService();
     var geo = OSMGeocodingService();
     _route = geo.getPedestrianRoute(
@@ -54,13 +54,16 @@ class _ScreenState extends State<NavigateRouteScreen> {
       widget.target.latlng(),
     );
 
+    _currentLocation = widget.source;
+    _updateWaypoint(_currentLocation);
+
     _waypoint = model.NavigationPoint(coordinate: widget.target.latlng(), annotation: "");
 
     _listenToLocationChanges();
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
-        print(err);
+        log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
           var needleHeading = -(((compassEvent.heading ?? 0) + 360) % 360).toInt();
@@ -70,7 +73,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
           var newDistance = calculateDistance(_currentLocation, _waypoint.latlng()).toInt();
           if (needleHeading != _currentHeadingDegrees) {
             setState(() {
-              print("setState regarding compass changes....");
+              log.d("setState regarding compass changes....");
               _currentHeadingDegrees = needleHeading;
               _currentDistanceToWaypoint = newDistance;
             });
@@ -84,55 +87,50 @@ class _ScreenState extends State<NavigateRouteScreen> {
   void dispose() {
     ScreenWakeService.keepOn(false);
     _compassSubscription?.cancel();
-    _locationSubscription?.cancel(); // Cancel the location subscription
+    _locationSubscription?.cancel();
 
     super.dispose();
   }
 
   void _listenToLocationChanges() {
     _locationSubscription = LocationService.instance.updates.handleError((dynamic err) {
-      print(err);
+      log.e(err);
     }).listen((currentLocation) async {
       if (currentLocation.latitude == null || currentLocation.longitude == null) {
         return;
       }
       _currentLocation = LatLng(currentLocation.latitude!, currentLocation.longitude!);
       _updateWaypoint(_currentLocation);
-      print("Got location update: $_currentLocation");
+      log.d("Got location update: $_currentLocation");
     });
   }
 
   void _updateWaypoint(LatLng currentLocation) async {
-    if (_route != null) {
-      final route = await _route;
-      final closestSegment = route!.findClosestSegment(_currentLocation);
-      int currentCoordinateIndex = closestSegment['start']['index'];
+    final route = await _route;
+    final closestSegment = route!.findClosestSegment(_currentLocation);
+    int currentCoordinateIndex = closestSegment['start']['index'];
 
-      const double minDistance = 3; // Minimum distance in meters
-      int nextCoordinateIndex = currentCoordinateIndex + 1;
+    int nextCoordinateIndex = currentCoordinateIndex + 1;
 
-      while (nextCoordinateIndex < route.points.length &&
-          Distance().as(
-                LengthUnit.Meter,
-                currentLocation,
-                route.points[nextCoordinateIndex].latlng(),
-              ) <
-              minDistance) {
-        currentCoordinateIndex = nextCoordinateIndex;
-        nextCoordinateIndex++;
-      }
+    while (nextCoordinateIndex < route.points.length &&
+        const Distance().as(
+              LengthUnit.Meter,
+              currentLocation,
+              route.points[nextCoordinateIndex].latlng(),
+            ) <
+            kMinDistanceForNextWaypoint) {
+      currentCoordinateIndex = nextCoordinateIndex;
+      nextCoordinateIndex++;
+    }
 
-      if (currentCoordinateIndex > lastVibratedIndex) {
-        // Vibrate and update lastVibratedIndex
-        Vibration.vibrate(duration: 100); // Assuming you have a vibration function
-        lastVibratedIndex = currentCoordinateIndex;
+    if (currentCoordinateIndex > lastVibratedIndex) {
+      // Vibrate and update lastVibratedIndex
+      Vibration.vibrate(duration: 100); // Assuming you have a vibration function
+      lastVibratedIndex = currentCoordinateIndex;
 
-        if (currentCoordinateIndex < route.points.length - 1) {
-          _waypoint = route.points[currentCoordinateIndex + 1];
-          setState(() {
-            // Update the state to reflect new waypoint
-          });
-        }
+      if (currentCoordinateIndex < route.points.length - 1) {
+        _waypoint = route.points[currentCoordinateIndex + 1];
+        setState(() {});
       }
     }
   }
@@ -219,123 +217,8 @@ class RouteMapWidget extends StatefulWidget {
   final double heading;
   final LatLng currentLocation;
   final LatLng waypoint;
+  static google.BitmapDescriptor? customCircleIcon;
 
-  final String mapStyle = '''
-[
-  {
-    "featureType": "administrative",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "stylers": [
-      {
-        "color": "#090906"
-      },
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.man_made",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.man_made",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#ffeb3b"
-      },
-      {
-        "saturation": 30
-      },
-      {
-        "lightness": -85
-      },
-      {
-        "visibility": "on"
-      },
-      {
-        "weight": 0.5
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "stylers": [
-      {
-        "color": "#39392d"
-      },
-      {
-        "visibility": "on"
-      }
-    ]
-  }
-]
-  ''';
   const RouteMapWidget({
     super.key,
     required this.route,
@@ -350,20 +233,20 @@ class RouteMapWidget extends StatefulWidget {
 
 class _RouteMapWidgetState extends State<RouteMapWidget> {
   google.GoogleMapController? _mapController;
-  google.BitmapDescriptor? customCircleIcon;
 
   @override
   void initState() {
-    _loadCustomIcon();
     super.initState();
+    if (RouteMapWidget.customCircleIcon == null) {
+      _loadCustomIcon(); // Load the icon only if it's null
+    }
   }
 
   void _loadCustomIcon() async {
-    customCircleIcon = await google.BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 1),
+    RouteMapWidget.customCircleIcon = await google.BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(devicePixelRatio: 1),
       'assets/images/location_marker.png', // Path to your circle icon
     );
-    print(customCircleIcon);
   }
 
   @override
@@ -392,20 +275,20 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("Building map...");
+    log.d("Building map...");
 
     ThemeData theme = Theme.of(context);
     final google.Marker currentLocationMarker = google.Marker(
-      markerId: google.MarkerId('current_location'),
+      markerId: const google.MarkerId('current_location'),
       position: google.LatLng(widget.currentLocation.latitude, widget.currentLocation.longitude),
-      icon: customCircleIcon ?? google.BitmapDescriptor.defaultMarker,
-      anchor: Offset(0.5, 0), // Set anchor to top center
+      icon: RouteMapWidget.customCircleIcon ?? google.BitmapDescriptor.defaultMarker,
+      anchor: const Offset(0.5, 0), // Set anchor to top center
     );
 
     Set<google.Circle> circles = {};
     // Create a circle for the waypoint
     circles.add(google.Circle(
-      circleId: google.CircleId('waypoint'),
+      circleId: const google.CircleId('waypoint'),
       center: google.LatLng(widget.waypoint.latitude, widget.waypoint.longitude),
       radius: 10, // Adjust the size as needed
       fillColor: Colors.red.withOpacity(0.8),
@@ -430,7 +313,10 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
     google.Polyline routePolyline = google.Polyline(
       polylineId: const google.PolylineId('route'),
       points: widget.route.points
-          .map((point) => google.LatLng(point.coordinate.latitude, point.coordinate.longitude))
+          .map((point) => google.LatLng(
+                point.coordinate.latitude,
+                point.coordinate.longitude,
+              ))
           .toList(),
       color: theme.primaryColor,
       width: 10,
@@ -440,7 +326,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
       onMapCreated: (google.GoogleMapController controller) {
         _mapController = controller;
         centerMapOnCurrentLocation(); // Ensure map is centered on current location with correct heading
-        controller.setMapStyle(widget.mapStyle);
+        controller.setMapStyle(kMapStyle);
       },
       initialCameraPosition: google.CameraPosition(
         target: google.LatLng(

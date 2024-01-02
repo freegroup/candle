@@ -5,6 +5,7 @@ import 'package:candle/models/location_address.dart';
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
@@ -18,7 +19,7 @@ class GoogleMapsGeocodingService implements GeocodingService {
     final String url =
         '$baseUrl?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&mode=$mode&key=$GOOGLE_API_KEY';
 
-    print(url);
+    log.d(url);
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -96,11 +97,11 @@ class GoogleMapsGeocodingService implements GeocodingService {
             lat: refinedLat,
             lon: refinedLon);
       } else {
-        print('Geocoding failed with status: ${response.status}');
+        log.e('Geocoding failed with status: ${response.status}');
         return _getDefaultLocationAddress();
       }
     } on Exception catch (e) {
-      print('Error occurred during geocoding: $e');
+      log.e('Error occurred during geocoding: $e');
       return _getDefaultLocationAddress();
     }
   }
@@ -157,8 +158,6 @@ class GoogleMapsGeocodingService implements GeocodingService {
           country: addressParts['country'] ?? "",
           lat: refinedLat,
           lon: refinedLon);
-
-      print("==============================================================");
       result.add(loc);
     }
     return result;

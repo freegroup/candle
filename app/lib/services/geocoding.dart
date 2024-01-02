@@ -3,6 +3,7 @@ import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/services/geocoding_google.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class GeoServiceProvider extends ChangeNotifier {
 
   void _listenToLocationChanges() {
     LocationService.instance.updates.handleError((dynamic err) {
-      print(err);
+      log.e(err);
     }).listen((currentLocation) async {
       if (currentLocation.latitude == null || currentLocation.longitude == null) {
         return;
@@ -53,7 +54,7 @@ class GeoServiceProvider extends ChangeNotifier {
   }
 
   Future<void> _updateLocationAddress(LatLng currentLocation) async {
-    print("UPDATE ADDRESS........$_service");
+    log.d("UPDATE ADDRESS........$_service");
     final newAddress = await _service.getGeolocationAddress(currentLocation);
 
     if (newAddress != null) {

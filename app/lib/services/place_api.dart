@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
@@ -47,8 +48,6 @@ class PlaceApiProvider {
 
       if (result['status'] == 'OK') {
         return result['predictions'].map<Suggestion>((p) {
-          print(p);
-          print("=========================================");
           return Suggestion(
             p['place_id'],
             p['description'],
@@ -74,7 +73,7 @@ class PlaceApiProvider {
     if (response.statusCode == 200) {
       final data = await response.stream.bytesToString();
       final result = json.decode(data);
-      print(result);
+      log.d(result);
 
       if (result['status'] == 'OK') {
         // build result

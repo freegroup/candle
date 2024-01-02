@@ -1,7 +1,8 @@
+import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
 
 void showSnackbar(BuildContext context, String message) {
-  print(message);
+  log.d(message);
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),

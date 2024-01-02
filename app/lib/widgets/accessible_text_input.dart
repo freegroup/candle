@@ -1,3 +1,4 @@
+import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -57,12 +58,12 @@ class _InputState extends State<AccessibleTextInput> {
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
-          print('onStatus: $val');
+          log.d('onStatus: $val');
           if (val == 'done' || val == 'notListening') {
             setState(() => _isListening = false);
           }
         },
-        onError: (val) => print('onError: $val'),
+        onError: (val) => log.e('onError: $val'),
       );
       if (available) {
         setState(() => _isListening = true);

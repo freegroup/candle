@@ -116,6 +116,15 @@
     "description": "Title for comcpass dialog"
   },
 
+  "navigation_poi_dialog_t": "Pedestrian Navigation to your Target",
+  "@navigation_poi_dialog_t": {
+    "description": "Talkback for the CompassDialog AppBar"
+  },
+  "navigation_poi_dialog": "Pedestrian Navigation",
+  "@navigation_poi_dialog": {
+    "description": "Title for navigation dialog"
+  },
+
   "location_name_t": "Input field for the location name",
   "@location_name_t": {
     "description": "Talkback for the input field for a location name"

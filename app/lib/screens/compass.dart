@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/services/compass.dart';
+import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _CompassScreenState extends State<CompassScreen> {
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
-        print(err);
+        log.e(err);
       }).listen((compassEvent) {
         if (mounted) {
           setState(() {

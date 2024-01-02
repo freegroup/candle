@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:candle/utils/global_logger.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
@@ -37,12 +38,12 @@ class LocationService {
         _currentLocation = LatLng(loc.latitude!, loc.longitude!);
       }
     }, onError: (error) {
-      print("Location Stream Error: $error");
+      log.e("Location Stream Error: $error");
     });
 
     _checkPermission().then((hasPermission) {
       if (!hasPermission) {
-        print("Location permission not granted");
+        log.e("Location permission not granted");
         // Handle lack of permission as needed
       }
     });
@@ -58,7 +59,7 @@ class LocationService {
         }
       }
     } catch (e) {
-      print("LocationService Error: $e");
+      log.e("LocationService Error: $e");
     }
     return null;
   }
@@ -85,7 +86,7 @@ class LocationService {
       }
       return serviceEnabled;
     } catch (error) {
-      print("Service Check Error: $error");
+      log.e("Service Check Error: $error");
       return false;
     }
   }
