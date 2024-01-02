@@ -11,33 +11,35 @@ class FavoritesPlaceholder extends StatelessWidget {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Align content to the start
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.favorites_placeholder_title,
-            style: theme.textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 10),
-          Text(l10n.favorites_placeholder_intro),
-          const SizedBox(height: 20),
-          Text(
-            l10n.favorites_placeholder_quick_start,
-            style: theme.textTheme.headlineSmall,
-          ),
-          Text(l10n.favorites_placeholder_quick_start_instructions),
-          const SizedBox(height: 20),
-          Text(
-            l10n.favorites_placeholder_tip_title,
-            style: theme.textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            l10n.favorites_placeholder_final_message,
-            style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ],
+      child: MergeSemantics(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start, // Align content to the start
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.favorites_placeholder_title,
+              style: theme.textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 10),
+            Text(l10n.favorites_placeholder_intro),
+            const SizedBox(height: 20),
+            Text(
+              l10n.favorites_placeholder_quick_start,
+              style: theme.textTheme.headlineSmall,
+            ),
+            Text(l10n.favorites_placeholder_quick_start_instructions),
+            const SizedBox(height: 20),
+            Text(
+              l10n.favorites_placeholder_tip_title,
+              style: theme.textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              l10n.favorites_placeholder_final_message,
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
       ),
     );
   }

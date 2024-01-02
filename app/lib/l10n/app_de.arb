@@ -92,7 +92,7 @@
   "permissions_dialog_t": "App Berechtigungen erfragen",
   "permissions_dialog": "Berechtigungen",
 
-  "label_permissions_explain": "Candle benötigt Zugriff auf Ihren Standort für die Navigation und Spracheingabe für die freihändige Bedienung. Diese Berechtigungen sind für die Nutzung von Candle unerlässlich.",
+  "label_permissions_explain": "Herzlich willkommen bei Candle!\n\nUm eine reibungslose und sichere Nutzung zu gewährleisten, benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für die Bedienung ohne Hände, was besonders für sehbehinderte Nutzer hilfreich ist. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um Ihre Candle-Erfahrung optimal zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",
   
   "accessible_text_input_t": "Texteingabefeld.",

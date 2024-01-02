@@ -51,60 +51,61 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         talkback: l10n.permissions_dialog_t,
         title: Text(l10n.permissions_dialog),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Information Text
-          Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
-            child: Text(
-              l10n.label_permissions_explain,
-              style: theme.textTheme.headlineMedium!
-                  .copyWith(color: theme.primaryColor), // Larger text style
-              textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                l10n.label_permissions_explain,
+                style: theme.textTheme.headlineMedium,
+              ),
             ),
-          ),
-          Spacer(), // Spacer to position the button in the desired area
-          // Icon Button
-          Container(
-            width: screenWidth * 0.8, // 80% of screen width
-            decoration: BoxDecoration(
-              color: Colors.black, // Black background
-              borderRadius: BorderRadius.circular(8), // 8 unit rounded borders
-            ),
-            padding: EdgeInsets.all(16),
-
-            child: Column(
-              children: [
-                // Icon Button
-                InkWell(
-                  onTap: _requestPermissions,
-                  child: Container(
-                    width: screenWidth / 3,
-                    height: screenWidth / 3,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: theme.primaryColor,
-                    ),
-                    child: Icon(
-                      Icons.verified, // Example icon
-                      size: screenWidth / 4, // Icon size
-                      color: Colors.black,
-                    ),
+            const SizedBox(height: 20),
+            Semantics(
+              label: l10n.button_permissions_request,
+              child: Center(
+                child: Container(
+                  width: screenWidth * 0.8,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: _requestPermissions,
+                        child: Container(
+                          width: screenWidth / 3,
+                          height: screenWidth / 3,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: theme.primaryColor,
+                          ),
+                          child: Icon(
+                            Icons.verified,
+                            size: screenWidth / 4,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ExcludeSemantics(
+                        child: Text(
+                          l10n.button_permissions_request,
+                          style: theme.textTheme.headlineSmall!.copyWith(color: theme.primaryColor),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 20), // Spacing between icon and text
-                // Button Text
-                Text(
-                  l10n.button_permissions_request,
-                  style: theme.textTheme.headlineSmall!
-                      .copyWith(color: theme.primaryColor), // Larger text style, white color
-                ),
-              ],
+              ),
             ),
-          ),
-          Spacer(), // Spacer for bottom padding
-        ],
+            const SizedBox(height: 40),
+          ],
+        ),
       ),
     );
   }

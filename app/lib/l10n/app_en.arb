@@ -298,7 +298,7 @@
   },
 
 
-  "label_permissions_explain": "Candle needs location access for precise navigation and voice input for hands-free use, vital for visually impaired users. These permissions are essential for a safe and efficient experience.",
+  "label_permissions_explain": "Welcome to Candle!\n\nTo ensure a smooth and safe experience, we require location access for precise navigation and voice input for hands-free operation, especially helpful for visually impaired users. Thank you for enabling these permissions to make the most out of your Candle experience.",
   "@label_permissions_explain": {
     "description": "Infotext for the permissions request"
   },

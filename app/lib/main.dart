@@ -4,17 +4,24 @@ import 'package:provider/provider.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/theme_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => GeoServiceProvider())],
-    child: MaterialApp(
-      title: 'Candle Navigation',
-      debugShowCheckedModeBanner: false,
-      theme: CThemeData.darkTheme,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const PermissionsCheckWidget(),
-    ),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => GeoServiceProvider())],
+      child: MaterialApp(
+        title: 'Candle Navigation',
+        debugShowCheckedModeBanner: false,
+        theme: CThemeData.darkTheme,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const PermissionsCheckWidget(),
+      ),
+    ));
+  });
 }
