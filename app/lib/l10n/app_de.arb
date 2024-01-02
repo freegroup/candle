@@ -30,7 +30,6 @@
   "button_common_delete_t": "Eintrag löschen",
   "button_common_delete": "Löschen",
 
-
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
 
   "label_common_loading_t": "Lade Daten.",
@@ -55,7 +54,15 @@
 
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
- 
+  
+
+  "favorites_placeholder_title": "Willkommen!",
+  "favorites_placeholder_intro": "Dies ist Ihr persönlicher Bereich für einfache Navigation zu Orten wie ZUHAUSE oder ARBEIT. Nur ein paar Klicks, und Sie verirren sich nie wieder!",
+  "favorites_placeholder_quick_start": "Schnellstart:",
+  "favorites_placeholder_quick_start_instructions": "1. Drücken Sie den Hinzufügen-Button.\n2. Benennen Sie Ihren Ort - 'Mein Zuhause' oder 'Büro.'\n3. Geben Sie die Adresse ein - tippen oder sprechen.\n4. Speichern und mühelos navigieren.",
+  "favorites_placeholder_tip_title": "Mit ZUHAUSE und ARBEIT anzufangen, ist eine gute Idee.",
+  "favorites_placeholder_final_message": "Fügen Sie Ihren ersten Favoriten hinzu und starten Sie mühelos in neue Abenteuer!",
+
 
   "remaining_route_distance_t": "Die verbleibende Entfernung bis zu Ihrem Ziel beträgt {meters} Meter.",
   "remaining_route_distance": "{meters} Meter",

@@ -146,6 +146,13 @@
     }
   },
 
+  "favorites_placeholder_title": "Welcome to Your Favorites!",
+  "favorites_placeholder_intro": "This is your personal space for easy navigation to places like HOME or WORK. Just a few taps, and you'll never lose your way!",
+  "favorites_placeholder_quick_start": "Quick Start:",
+  "favorites_placeholder_quick_start_instructions": "1. Hit the Add button.\n2. Name your spot - 'Home Sweet Home' or 'Office.'\n3. Enter the address - type or speak.\n4. Save and navigate with ease.",
+  "favorites_placeholder_tip_title": "Begin with HOME and WORK is a good idea.",
+  "favorites_placeholder_final_message": "Add your first favorite and embark on new journeys effortlessly!",
+
 
   "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",
   "@remaining_route_distance_t": {

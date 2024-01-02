@@ -20,7 +20,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "favorites_v8.db");
+    String path = join(docDirector.path, "favorites.db");
     return await openDatabase(
       path,
       version: 1,
@@ -53,18 +53,6 @@ class DatabaseService {
       points TEXT
     )
     ''');
-
-    addLocation(LocationAddress(
-      lat: 49.45622156121109,
-      lon: 8.596111485518252,
-      name: "Lidl",
-      city: "",
-      country: "",
-      number: "",
-      street: "",
-      zip: "",
-      formattedAddress: "Irgendwo in Edingen",
-    ));
   }
 
   Future<List<LocationAddress>> allLocations() async {
