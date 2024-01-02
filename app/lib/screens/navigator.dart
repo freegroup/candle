@@ -115,7 +115,7 @@ class _ScreenState extends State<NavigatorScreen> {
         },
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.view_module)),
-          BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.bookmarks)),
+          BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.location_on)),
           BottomNavigationBarItem(label: "Einstellungen", icon: Icon(Icons.settings))
         ],
       ),

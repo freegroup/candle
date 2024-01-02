@@ -53,6 +53,9 @@
   "navigation_poi_dialog_t": "Schrit für Schritt Navigation zu ihrem Ziel",
   "navigation_poi_dialog": "Wegführung",
 
+  "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
+  "waypoint_distance": "Nächster Wegpunkt: {meters} m",
+ 
   "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
   "location_add_dialog": "Standort anlegen",
 

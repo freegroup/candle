@@ -182,7 +182,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
             BoldIconButton(
                 talkback: l10n.button_navigate_poi_t,
                 buttonWidth: MediaQuery.of(context).size.width / 5,
-                icons: Icons.directions_walk,
+                icons: Icons.near_me,
                 onTab: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => NavigateRouteScreen(

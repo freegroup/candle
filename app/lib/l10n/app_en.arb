@@ -125,6 +125,27 @@
     "description": "Title for navigation dialog"
   },
 
+  "waypoint_distance_t": "The next waypoint is {meters} meters away from your current location.",
+  "@waypoint_distance_t": {
+    "description": "Information how far the next waypoint is from your position",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the waypoint"
+      }
+    }
+  },
+  "waypoint_distance": "Next waypoint: {meters} meter",
+  "@waypoint_distance": {
+    "description": "Information how far the next waypoint is from your position",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the waypoint"
+      }
+    }
+  },
+
   "location_name_t": "Input field for the location name",
   "@location_name_t": {
     "description": "Talkback for the input field for a location name"

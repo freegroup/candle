@@ -113,6 +113,21 @@ class Route {
     return totalLength;
   }
 
+  double calculateResumingLengthFromWaypoint(NavigationPoint currentWaypoint) {
+    int waypointIndex = points.indexOf(currentWaypoint);
+    if (waypointIndex == -1 || waypointIndex == points.length - 1) {
+      // If the current waypoint is not in the list or it is the last point
+      return 0.0;
+    }
+
+    double totalDistance = 0.0;
+    for (int i = waypointIndex; i < points.length - 1; i++) {
+      totalDistance += calculateDistance(points[i].coordinate, points[i + 1].coordinate);
+    }
+
+    return totalDistance;
+  }
+
   double calculateAngle(NavigationPoint p2) {
     List<NavigationPoint?> adjacentPoints = findAdjacentPoint(p2);
 

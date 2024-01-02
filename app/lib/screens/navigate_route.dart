@@ -37,6 +37,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
 
   int _currentHeadingDegrees = 0;
   int _currentDistanceToWaypoint = 0;
+  int _currentDistanceToTarget = 0;
   late model.NavigationPoint _waypoint;
   late LatLng _currentLocation;
   late Future<model.Route?> _route;
@@ -66,16 +67,22 @@ class _ScreenState extends State<NavigateRouteScreen> {
         log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
+          var r = await _route;
           var needleHeading = -(((compassEvent.heading ?? 0) + 360) % 360).toInt();
           // Normalize the needle heading [0-360] range and avoid negative values
           needleHeading = (needleHeading + 360) % 360;
 
           var newDistance = calculateDistance(_currentLocation, _waypoint.latlng()).toInt();
-          if (needleHeading != _currentHeadingDegrees) {
+          var resumeDistance =
+              r!.calculateResumingLengthFromWaypoint(_waypoint).toInt() + newDistance;
+          if (needleHeading != _currentHeadingDegrees ||
+              newDistance != _currentDistanceToWaypoint ||
+              resumeDistance != _currentDistanceToTarget) {
             setState(() {
               log.d("setState regarding compass changes....");
               _currentHeadingDegrees = needleHeading;
               _currentDistanceToWaypoint = newDistance;
+              _currentDistanceToTarget = resumeDistance;
             });
           }
         }
@@ -85,11 +92,10 @@ class _ScreenState extends State<NavigateRouteScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     ScreenWakeService.keepOn(false);
     _compassSubscription?.cancel();
     _locationSubscription?.cancel();
-
-    super.dispose();
   }
 
   void _listenToLocationChanges() {
@@ -142,8 +148,8 @@ class _ScreenState extends State<NavigateRouteScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.compass_dialog),
-        talkback: l10n.compass_poi_dialog_t("Wegpunkt"),
+        title: Text(l10n.navigation_poi_dialog),
+        talkback: l10n.navigation_poi_dialog_t,
       ),
       body: Container(
         child: Column(
@@ -156,17 +162,18 @@ class _ScreenState extends State<NavigateRouteScreen> {
             Container(
               width: double.infinity,
               child: Semantics(
-                label: l10n.location_distance_t("wegpunkt", _currentDistanceToWaypoint),
+                label: l10n.waypoint_distance_t(_currentDistanceToWaypoint),
                 child: Align(
                   alignment: Alignment.center,
                   child: ExcludeSemantics(
                     child: Column(
                       children: [
-                        Text("Wegpunkt", style: theme.textTheme.displayMedium),
                         Text(
-                          '${_currentDistanceToWaypoint.toStringAsFixed(0)} Meter',
+                          '${_currentDistanceToTarget.toStringAsFixed(0)} Meter',
                           style: theme.textTheme.displaySmall,
                         ),
+                        Text(l10n.waypoint_distance(_currentDistanceToWaypoint),
+                            style: theme.textTheme.headlineSmall),
                       ],
                     ),
                   ),
