@@ -63,9 +63,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
         print(err);
       }).listen((compassEvent) async {
         if (mounted) {
-          var poiHeading = 0; //calculateNorthBearing(_currentLocation, _waypoint.latlng());
-          var deviceHeading = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
-          var needleHeading = -(deviceHeading - poiHeading);
+          var needleHeading = -(((compassEvent.heading ?? 0) + 360) % 360).toInt();
           // Normalize the needle heading [0-360] range and avoid negative values
           needleHeading = (needleHeading + 360) % 360;
 
