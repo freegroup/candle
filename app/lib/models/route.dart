@@ -68,7 +68,7 @@ class Route {
     return Route(name: name, points: modifiedPoints);
   }
 
-  Map<String, dynamic> findClosestSegment(NavigationPoint poi) {
+  Map<String, dynamic> findClosestSegment(LatLng coord) {
     double minDistance = double.infinity;
     int? closestSegmentStartIndex;
 
@@ -78,7 +78,7 @@ class Route {
 
       // Calculate the distance from the poi to the line segment
       double currentDistance = distanceToSegment(
-        point: poi.coordinate,
+        point: coord,
         start: startCoord.coordinate,
         end: endCoord.coordinate,
       );
@@ -158,8 +158,12 @@ class Route {
     return [prevPoi, nextPoi]; // Return as a list
   }
 
-  NavigationPoint interpolate(
-      {required NavigationPoint start, required NavigationPoint end, required double distance}) {
+  NavigationPoint interpolate({
+    required NavigationPoint start,
+    required NavigationPoint end,
+    required double distance,
+    NavigationPointType type = NavigationPointType.syntetic, // Default to synthetic
+  }) {
     var from = start.coordinate;
     var to = end.coordinate;
     const Distance calculator = Distance();
@@ -175,6 +179,7 @@ class Route {
     return NavigationPoint(
       coordinate: LatLng(from.latitude + latOffset, from.longitude + lonOffset),
       annotation: "",
+      type: type, // Set the type
     );
   }
 

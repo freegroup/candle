@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/services/compass.dart';
-import 'package:candle/utils/shadow.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';

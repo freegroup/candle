@@ -1,19 +1,15 @@
 import 'dart:async';
 
+import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/address_search.dart';
 import 'package:candle/services/database.dart';
-import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/location.dart';
-import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:provider/provider.dart';
 
 class FavoriteCreateUpdateScreen extends StatefulWidget {
   final model.LocationAddress? initialLocation;

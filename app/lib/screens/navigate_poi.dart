@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:candle/icons/location_arrow.dart';
 import 'package:candle/icons/location_dot.dart';
 import 'package:candle/l10n/helper.dart';
+import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/screens/navigate_route.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
@@ -13,10 +14,8 @@ import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:candle/models/location_address.dart' as model;
 import 'package:latlong2/latlong.dart';
 import 'package:vibration/vibration.dart';
-import 'package:flutter_screen_wake/flutter_screen_wake.dart';
 
 class NavigatePoiScreen extends StatefulWidget {
   final model.LocationAddress location;

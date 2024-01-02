@@ -186,10 +186,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: c4b25ca6bf232bda4919e656179221aabeceb8271476b641ac59ae8aad085329
+      sha256: f9d546a09009650f4d2918f50cc76d39d8e84f74314a7c87dce197253e292c3a
       url: "https://pub.dev"
     source: hosted
-    version: "1.31.2"
+    version: "1.31.4"
   flutter_compass:
     dependency: "direct main"
     description:
@@ -561,10 +561,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: e595b98692943b4881b219f0a9e3945118d3c16bd7e2813f98ec6e532d905f72
+      sha256: "477184d672607c0a3bf68fbbf601805f92ef79c82b64b4d6eb318cbca4c48668"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   path_provider_foundation:
     dependency: transitive
     description:

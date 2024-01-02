@@ -4,7 +4,6 @@ import 'package:candle/screens/settings.dart';
 import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class NavigatorScreen extends StatefulWidget {
   const NavigatorScreen({super.key});

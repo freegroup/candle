@@ -1,17 +1,14 @@
 import 'dart:convert';
 
-import 'package:candle/models/navigation_point.dart' as model;
-import 'package:candle/models/route.dart' as model;
-import 'package:candle/models/location_address.dart' as model;
-import 'package:http/http.dart' as http;
 import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/location_address.dart';
-
+import 'package:candle/models/navigation_point.dart' as model;
+import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/geocoding.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
-import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class GoogleMapsGeocodingService implements GeocodingService {

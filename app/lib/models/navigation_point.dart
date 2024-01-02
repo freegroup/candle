@@ -4,15 +4,22 @@ import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 
+enum NavigationPointType {
+  syntetic,
+  routing,
+}
+
 class NavigationPoint {
   int? id;
   LatLng coordinate;
   String annotation;
+  NavigationPointType type;
 
   NavigationPoint({
     this.id,
     required this.coordinate,
     required this.annotation,
+    this.type = NavigationPointType.routing,
   });
 
   NavigationPoint copyWith({
