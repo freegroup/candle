@@ -6,14 +6,20 @@
   "home_mainmenu_t": "Hauptmenü",
   "home_mainmenu": "Candle",
 
+  "about_mainmenu_t": "Information über die App",
+  "about_mainmenu": "Information",
+  "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",
+
   "favorite_mainmenu_t": "Verwalten von Favoriten",
   "favorite_mainmenu": "Favoriten",
  
   "settings_mainmenu_t": "Einstellungen der App vornehmen",
-  "settings_mainmenu": "Einstellungen",
+  "settings_mainmenu": "Eifnstellungen",
 
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
+
+  "button_contact_me": "Schick mir eine E-Mail",
 
   "button_share_location_t": "Aktuellen Standort Teilen",
   "button_share_location": "Teilen",
@@ -120,5 +126,11 @@
   "compassHorizonWestNorthwest": "West-Nordwest",
   "compassHorizonNorthwest": "Nordwest",
   "compassHorizonNorthNorthwest": "Nord-Nordwest",
-  "compassDirection": "Sie halten das Handy in Richtung {direction}"
+  "compassDirection": "Sie halten das Handy in Richtung {direction}",
+
+  "appbar_slogan": "Bringt ein wenig Licht ins Dunkel",
+
+  "email_contact_subject": "Candle Benutzer Anfrage",
+  "error_no_email_launch": "E-Mail Programm kann nicht gestartet werden"
+
 }

@@ -18,7 +18,7 @@ abstract class GeocodingService {
 
 class GeoServiceProvider extends ChangeNotifier {
   GeoServiceProvider() {
-    _listenToLocationChanges();
+    _initialize();
   }
   LatLng _lastLocation = const LatLng(0, 0);
 
@@ -32,6 +32,27 @@ class GeoServiceProvider extends ChangeNotifier {
   void set(GeocodingService service) {
     _service = service;
     notifyListeners();
+  }
+
+  void _initialize() async {
+    // Get the initial location
+    LatLng initialCoord = await _fetchInitialLocation();
+    if (initialCoord.latitude != 0 && initialCoord.longitude != 0) {
+      // Update the address for the initial location
+      await _updateLocationAddress(initialCoord);
+    }
+    // Start listening to location changes
+    _listenToLocationChanges();
+  }
+
+  Future<LatLng> _fetchInitialLocation() async {
+    try {
+      var currentLocation = await LocationService.instance.location;
+      return currentLocation ?? const LatLng(0, 0);
+    } catch (e) {
+      log.e("Error fetching initial location: $e");
+      return const LatLng(0, 0); // Return a default location in case of error
+    }
   }
 
   void _listenToLocationChanges() {

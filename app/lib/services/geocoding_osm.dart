@@ -32,11 +32,12 @@ class OSMGeocodingService implements GeocodingService {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        var routeLatLons = [
+        var routeLatLng = [
           for (var coord in data['features'][0]['geometry']['coordinates'])
             model.NavigationPoint(coordinate: LatLng(coord[1], coord[0]), annotation: '')
         ];
-        var route = model.Route(name: "current", points: routeLatLons);
+        routeLatLng.insert(0, model.NavigationPoint(annotation: "", coordinate: start));
+        var route = model.Route(name: "current", points: routeLatLng);
         return route.calculateWaypointRoute();
       } else {
         log.e('Failed with status code: ${response.statusCode}');

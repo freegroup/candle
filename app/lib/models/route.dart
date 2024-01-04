@@ -82,7 +82,6 @@ class Route {
         start: startCoord.coordinate,
         end: endCoord.coordinate,
       );
-
       if (currentDistance < minDistance) {
         minDistance = currentDistance;
         closestSegmentStartIndex = i;
@@ -95,6 +94,7 @@ class Route {
 
     int closestSegmentEndIndex = closestSegmentStartIndex + 1;
     return {
+      "distance": minDistance,
       "start": {"index": closestSegmentStartIndex, "coord": points[closestSegmentStartIndex]},
       "end": {"index": closestSegmentEndIndex, "coord": points[closestSegmentEndIndex]},
     };

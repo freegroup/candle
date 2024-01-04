@@ -7,6 +7,7 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
+import 'package:candle/theme_data.dart';
 import 'package:candle/utils/colors.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
@@ -20,7 +21,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:vibration/vibration.dart';
-import 'package:candle/theme_data.dart';
 
 class NavigateRouteScreen extends StatefulWidget {
   final LatLng source;
@@ -51,18 +51,9 @@ class _ScreenState extends State<NavigateRouteScreen> {
     super.initState();
     ScreenWakeService.keepOn(true);
 
-    //var geo = GoogleMapsGeocodingService();
-    var geo = OSMGeocodingService();
-    _route = geo.getPedestrianRoute(
-      widget.source,
-      widget.target.latlng(),
-    );
-
+    _route = _updateRoute(widget.source, widget.target.latlng());
     _currentLocation = widget.source;
     _updateWaypoint(_currentLocation);
-
-    _waypoint = model.NavigationPoint(coordinate: widget.target.latlng(), annotation: "");
-
     _listenToLocationChanges();
 
     CompassService.instance.initialize().then((_) {
@@ -70,7 +61,8 @@ class _ScreenState extends State<NavigateRouteScreen> {
         log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
-          var r = await _route;
+          var route = await _route;
+          if (route == null) return;
           var waypointHeading = calculateNorthBearing(_currentLocation, _waypoint.latlng());
           var mapRotation = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
 
@@ -87,7 +79,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
 
           var newDistance = calculateDistance(_currentLocation, _waypoint.latlng()).toInt();
           var resumeDistance =
-              r!.calculateResumingLengthFromWaypoint(_waypoint).toInt() + newDistance;
+              route.calculateResumingLengthFromWaypoint(_waypoint).toInt() + newDistance;
           if (mapRotation != _currentMapRotation ||
               newDistance != _currentDistanceToWaypoint ||
               resumeDistance != _currentDistanceToTarget) {
@@ -112,6 +104,13 @@ class _ScreenState extends State<NavigateRouteScreen> {
     _locationSubscription?.cancel();
   }
 
+  Future<model.Route?> _updateRoute(LatLng start, LatLng target) {
+    //var geo = GoogleMapsGeocodingService();
+    var geo = OSMGeocodingService();
+    lastVibratedIndex = -1;
+    return geo.getPedestrianRoute(start, target);
+  }
+
   bool _isAligned(int mapRotation, waypointHeading) {
     var diff = mapRotation - waypointHeading;
     return (diff.abs() <= 8) || (diff.abs() >= 352);
@@ -120,41 +119,59 @@ class _ScreenState extends State<NavigateRouteScreen> {
   void _listenToLocationChanges() {
     _locationSubscription = LocationService.instance.updates.handleError((dynamic err) {
       log.e(err);
-    }).listen((currentLocation) async {
-      if (currentLocation.latitude == null || currentLocation.longitude == null) {
+    }).listen((newLocation) async {
+      if (newLocation.latitude == null || newLocation.longitude == null) {
         return;
       }
-      _currentLocation = LatLng(currentLocation.latitude!, currentLocation.longitude!);
+      _currentLocation = LatLng(newLocation.latitude!, newLocation.longitude!);
       _updateWaypoint(_currentLocation);
       log.d("Got location update: $_currentLocation");
     });
   }
 
-  void _updateWaypoint(LatLng currentLocation) async {
+  void _updateWaypoint(LatLng location) async {
     final route = await _route;
-    final closestSegment = route!.findClosestSegment(_currentLocation);
-    int currentCoordinateIndex = closestSegment['start']['index'];
+    if (route == null) return;
+    final closestSegment = route.findClosestSegment(location);
 
-    int nextCoordinateIndex = currentCoordinateIndex + 1;
+    // If the closest segment far away from my current location, we calculate
+    // a new route. Because the pedestrian is to far from the next segment of the route.
+    //
+    var distance = closestSegment["distance"];
+    if (distance > 15) {
+      log.d("Closest Segment is to far ($distance)- recalculate route....");
+      var newRoute = _updateRoute(location, widget.target.latlng());
+      newRoute.then((value) {
+        _route = newRoute;
+      });
+    }
+
+    int startCoordinateIndex = closestSegment['start']['index'];
+    int endCoordinateIndex = closestSegment['end']['index'];
+
+    int nextCoordinateIndex = endCoordinateIndex;
+    log.d("Found closest startCoordinateIndex: $startCoordinateIndex");
 
     while (nextCoordinateIndex < route.points.length &&
         const Distance().as(
               LengthUnit.Meter,
-              currentLocation,
+              location,
               route.points[nextCoordinateIndex].latlng(),
             ) <
             kMinDistanceForNextWaypoint) {
-      currentCoordinateIndex = nextCoordinateIndex;
+      startCoordinateIndex = nextCoordinateIndex;
       nextCoordinateIndex++;
+      log.d(
+          "Coordinate index changed because of closer segment startCoordinateIndex:$startCoordinateIndex");
     }
 
-    if (currentCoordinateIndex > lastVibratedIndex) {
+    if (startCoordinateIndex > lastVibratedIndex) {
       // Vibrate and update lastVibratedIndex
       Vibration.vibrate(duration: 100); // Assuming you have a vibration function
-      lastVibratedIndex = currentCoordinateIndex;
+      lastVibratedIndex = startCoordinateIndex;
 
-      if (currentCoordinateIndex < route.points.length - 1) {
-        _waypoint = route.points[currentCoordinateIndex + 1];
+      if (startCoordinateIndex < route.points.length - 1) {
+        _waypoint = route.points[startCoordinateIndex + 1];
         setState(() {});
       }
     }

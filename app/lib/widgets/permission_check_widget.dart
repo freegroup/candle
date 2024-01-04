@@ -1,3 +1,4 @@
+import 'package:candle/screens/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:candle/screens/navigator.dart';
@@ -9,7 +10,8 @@ class PermissionsCheckWidget extends StatelessWidget {
   Future<bool> _checkPermissions() async {
     bool locationGranted = await Permission.location.isGranted;
     bool microphoneGranted = await Permission.microphone.isGranted;
-    return locationGranted && microphoneGranted;
+    bool cameraGranted = await Permission.camera.isGranted;
+    return locationGranted && microphoneGranted && cameraGranted;
   }
 
   @override
@@ -20,6 +22,7 @@ class PermissionsCheckWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
             return const NavigatorScreen(); // If both permissions are granted, go to main app
+            //return const CameraScreen(); // If both permissions are granted, go to main app
           } else {
             return const PermissionsScreen(); // Otherwise, show permissions request screen
           }

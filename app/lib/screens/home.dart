@@ -1,6 +1,7 @@
 import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
+import 'package:candle/screens/camera.dart';
 import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/services/geocoding.dart';
@@ -32,8 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.home_mainmenu),
-          subtitle: Text("brings a little bit of light into the darkness",
-              style: theme.textTheme.bodyMedium),
+          subtitle: Text(l10n.appbar_slogan, style: theme.textTheme.bodyMedium),
           talkback: AppLocalizations.of(context)!.home_mainmenu_t,
         ),
         body: Padding(
@@ -110,10 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 var geo =
                                     Provider.of<GeoServiceProvider>(context, listen: false).service;
                                 LocationAddress? address = await geo.getGeolocationAddress(coord);
-
                                 String message =
                                     l10n.location_share_message(coord.latitude, coord.longitude);
-
                                 message = "$message\n\n${address?.formattedAddress}";
                                 Share.share(message);
                               }
@@ -122,6 +120,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             }
                           },
                         ),
+                        /*
+                        TileButton(
+                          title: l10n.button_favorite,
+                          talkback: l10n.button_favorite_t,
+                          icon: const Icon(Icons.local_see, size: 80),
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CameraScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        */
                       ]),
                 )
               ],

@@ -43,6 +43,19 @@
     "description": "Title for MainMenu"
   },
 
+  "about_mainmenu_t": "About this App",
+  "@about_mainmenu_t": {
+    "description": "Talkback for AboutScreen"
+  },
+  "about_mainmenu": "About",
+  "@about_mainmenu": {
+    "description": "Title for About Screen"
+  },
+
+  "about_app_description": "Welcome to Candle, a navigation app tailored for the visually impaired and blind. It's more than just a tool; it's a companion for exploring the world with confidence. Our focus on simplicity and accessibility, enhanced with full TalkBack support, makes navigation intuitive and user-friendly.\n\nEasily store and navigate to your favorite places.",
+  "@about_app_description": {
+    "description": "Description text on the About screen for the Candle app"
+  },
 
   "favorite_mainmenu_t": "Favorites Screen",
   "@favorite_mainmenu_t": {
@@ -321,6 +334,11 @@
   },
 
 
+  "button_contact_me": "Contact Me",
+  "@button_contact_me": {
+    "description": "Button text for the contactMe button"
+  },
+
   "button_navigate_poi_t": "Start turn by turn navigation",
   "@button_navigate_poi_t": {
     "description": "Talkback for navigate to Poi"
@@ -498,6 +516,21 @@
         "description": "The direction name"
       }
     }
+  },
+
+  "appbar_slogan": "brings a little bit of light into the darkness",
+  "@appbar_slogan": {
+    "description": "The slogan of the cnadle app"
+  },
+
+  "email_contact_subject": "Candle Support Request",
+  "@email_contact_subject": {
+    "description": "eMail subject if a user contact us via eMail"
+  },
+
+  "error_no_email_launch": "Could not launch the email client",
+  "@error_no_email_launch": {
+    "description": "Error message if we are unable to lanch an email client"
   }
 }
 

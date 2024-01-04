@@ -36,54 +36,42 @@ int calculateNorthBearing(LatLng coord1, LatLng coord2) {
 }
 
 double calculateDistance(LatLng geo1, LatLng geo2) {
-  // Earth's radius in meters
-  const double earthRadius = 6371000;
-
-  // Current position in radians
-  double lat1 = radians(geo1.latitude);
-  double lon1 = radians(geo1.longitude);
-
-  // Target position in radians
-  double lat2 = radians(geo2.latitude);
-  double lon2 = radians(geo2.longitude);
-
-  // Differences in coordinates
-  double deltaLat = lat2 - lat1;
-  double deltaLon = lon2 - lon1;
-
-  // Haversine formula
-  double a = math.pow(math.sin(deltaLat / 2), 2) +
-      math.cos(lat1) * math.cos(lat2) * math.pow(math.sin(deltaLon / 2), 2);
-
-  double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-
-  // Distance in meters
-  return earthRadius * c;
+  const Distance distance = Distance();
+  return distance(geo1, geo2);
 }
 
 double distanceToSegment({required LatLng point, required LatLng start, required LatLng end}) {
-  final double lengthSquared = math.pow(calculateDistance(start, end), 2).toDouble();
-
-  if (lengthSquared == 0) {
-    return calculateDistance(point, start);
+  // Check if start and end points are the same
+  if (start.latitude == end.latitude && start.longitude == end.longitude) {
+    double oneMeterInDegreesLat = 1 / 111000; // Approximation
+    double oneMeterInDegreesLon = 1 / (111000 * math.cos(start.latitude * pi / 180));
+    // New coordinates, adjusted by approx. 1 meter
+    start = LatLng(
+        start.latitude + oneMeterInDegreesLat, // Adjust latitude by 1 meter
+        start.longitude + oneMeterInDegreesLon // Adjust longitude by 1 meter
+        );
   }
 
-  // Consider the line extending the segment, parameterized as segmentStart + t * (segmentEnd - segmentStart).
-  // We find projection of point onto the line.
-  // It falls where t = [(point-segmentStart) . (segmentEnd-segmentStart)] / |segmentEnd-segmentStart|^2
-  final double t = ((point.longitude - start.longitude) * (end.longitude - start.longitude) +
-          (point.latitude - start.latitude) * (end.latitude - start.latitude)) /
-      lengthSquared;
+  // Calculate U
+  double u = ((point.longitude - start.longitude) * (end.longitude - start.longitude)) +
+      ((point.latitude - start.latitude) * (end.latitude - start.latitude));
 
-  if (t < 0) {
+  double uDenom = math.pow(end.longitude - start.longitude, 2) +
+      math.pow(end.latitude - start.latitude, 2).toDouble();
+  u /= uDenom;
+
+  var factor = u;
+
+  if (factor < 0) {
     return calculateDistance(point, start); // Beyond the segmentStart end of the segment
-  } else if (t > 1) {
+  } else if (factor > 1) {
     return calculateDistance(point, end); // Beyond the segmentEnd end of the segment
   }
 
   LatLng projection = LatLng(
-    start.latitude + t * (end.latitude - start.latitude),
-    start.longitude + t * (end.longitude - start.longitude),
+    start.latitude + factor * (end.latitude - start.latitude),
+    start.longitude + factor * (end.longitude - start.longitude),
   );
+
   return calculateDistance(point, projection);
 }

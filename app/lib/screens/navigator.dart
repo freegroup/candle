@@ -1,3 +1,4 @@
+import 'package:candle/screens/about.dart';
 import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/settings.dart';
@@ -19,7 +20,8 @@ class _ScreenState extends State<NavigatorScreen> {
   final List<Widget> pages = const [
     HomeScreen(),
     FavoriteScreen(),
-    SettingsScreen(),
+    //SettingsScreen(),
+    AboutScreen(),
   ];
 
   @override
@@ -106,8 +108,9 @@ class _ScreenState extends State<NavigatorScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
-        iconSize: 50,
+        iconSize: 40,
         selectedItemColor: Colors.black,
+        //unselectedItemColor: Colors.grey,
         onTap: (newIndex) {
           setState(() {
             currentIndex = newIndex;
@@ -116,7 +119,8 @@ class _ScreenState extends State<NavigatorScreen> {
         items: const [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.view_module)),
           BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.location_on)),
-          BottomNavigationBarItem(label: "Einstellungen", icon: Icon(Icons.settings))
+          //BottomNavigationBarItem(label: "Einstellungen", icon: Icon(Icons.settings)),
+          BottomNavigationBarItem(label: "About", icon: Icon(Icons.contact_support))
         ],
       ),
     );

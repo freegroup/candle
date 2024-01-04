@@ -1,3 +1,4 @@
+import 'package:candle/screens/camera.dart';
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _requestPermissions() async {
     final locationStatus = await Permission.location.request();
     final microphoneStatus = await Permission.microphone.request();
-    if (locationStatus.isGranted && microphoneStatus.isGranted) {
+    final cameraStatus = await Permission.camera.request();
+    if (locationStatus.isGranted && microphoneStatus.isGranted && cameraStatus.isGranted) {
       _navigateToMainApp();
     } else {
       // Handle the case when one or both permissions are denied
@@ -37,6 +39,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   void _navigateToMainApp() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => const NavigatorScreen(),
+      //builder: (context) => const CameraScreen(),
     ));
   }
 
