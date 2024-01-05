@@ -110,10 +110,7 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(width: 80),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Text(
-                l10n.about_app_description,
-                style: theme.textTheme.headlineMedium,
-              ),
+              child: Text(l10n.about_app_description, style: theme.textTheme.headlineMedium),
             ),
             Semantics(
               label: l10n.button_contact_me,

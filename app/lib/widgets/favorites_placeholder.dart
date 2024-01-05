@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class FavoritesPlaceholder extends StatelessWidget {
   const FavoritesPlaceholder({super.key});
@@ -21,10 +22,7 @@ class FavoritesPlaceholder extends StatelessWidget {
               style: theme.textTheme.headlineLarge,
             ),
             const SizedBox(height: 20),
-            Text(
-              l10n.favorites_placeholder_tip_title,
-              style: theme.textTheme.bodyLarge,
-            ),
+            MarkdownBody(data: l10n.favorites_placeholder_tip_title),
             const SizedBox(height: 20),
             Text(
               l10n.favorites_placeholder_final_message,

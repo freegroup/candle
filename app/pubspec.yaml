@@ -17,6 +17,7 @@ dependencies:
   flutter_google_maps_webservices: ^1.1.1
   flutter_localizations:
     sdk: flutter
+  flutter_markdown: ^0.6.18+3
   flutter_screen_wake: ^1.0.2
   flutter_slidable: ^3.0.1
   flutter_svg: ^2.0.9
