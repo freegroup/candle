@@ -1,7 +1,6 @@
 import 'package:candle/screens/about.dart';
 import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
-import 'package:candle/screens/settings.dart';
 import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';

@@ -1,9 +1,8 @@
-import 'package:candle/screens/camera.dart';
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsScreen extends StatefulWidget {
   const PermissionsScreen({super.key});
@@ -79,7 +78,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: _requestPermissions,
+                        onTap: () => _requestPermissions(),
                         child: Container(
                           width: screenWidth / 3,
                           height: screenWidth / 3,
@@ -98,7 +97,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       ExcludeSemantics(
                         child: Text(
                           l10n.button_permissions_request,
-                          style: theme.textTheme.headlineSmall!.copyWith(color: theme.primaryColor),
+                          style: theme.textTheme.headlineSmall,
                         ),
                       ),
                     ],

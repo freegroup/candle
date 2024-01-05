@@ -1,18 +1,15 @@
 import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/camera.dart';
 import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
 import 'package:candle/widgets/appbar.dart';
-
 import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';

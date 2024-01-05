@@ -196,6 +196,11 @@
     "description": "The label for the location name input"
   },
 
+  "location_name_required_snackbar": "Favorite name is required",
+  "@location_name_required_snackbar": {
+    "description": "The requried message for the location name input"
+  },
+
   "location_distance_t": "{name} is {meters} meters as the crow flies from you",
   "@location_distance_t": {
     "description": "Information how far the poi is from you",

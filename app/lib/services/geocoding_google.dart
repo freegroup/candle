@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class GoogleMapsGeocodingService implements GeocodingService {
+  @override
   Future<model.Route?> getPedestrianRoute(LatLng start, LatLng end) async {
     const String baseUrl = 'https://maps.googleapis.com/maps/api/directions/json';
     const String mode = 'walking';
@@ -150,7 +151,7 @@ class GoogleMapsGeocodingService implements GeocodingService {
 
       var loc = LocationAddress(
           name: "",
-          formattedAddress: address.formattedAddress ?? "",
+          formattedAddress: address.formattedAddress,
           street: addressParts['street'] ?? "",
           number: addressParts['streetNumber'] ?? "",
           zip: addressParts['postalCode'] ?? "",

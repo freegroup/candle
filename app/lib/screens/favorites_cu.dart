@@ -85,69 +85,71 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
         title: Text(_isUpdate ? l10n.location_update_dialog : l10n.location_add_dialog),
         talkback: _isUpdate ? l10n.location_update_dialog_t : l10n.location_add_dialog_t,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: AccessibleTextInput(
-              maxLines: 1,
-              mandatory: true,
-              hintText: l10n.location_name,
-              talkbackInput: l10n.location_name_t,
-              talkbackIcon: l10n.location_add_speak_t,
-              controller: editingController,
-              decoration: InputDecoration(labelText: l10n.location_name),
-              autofocus: !isScreenReaderEnabled,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: AccessibleTextInput(
+                maxLines: 1,
+                mandatory: true,
+                hintText: l10n.location_name,
+                talkbackInput: l10n.location_name_t,
+                talkbackIcon: l10n.location_add_speak_t,
+                controller: editingController,
+                decoration: InputDecoration(labelText: l10n.location_name),
+                autofocus: !isScreenReaderEnabled,
+              ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddressSearchScreen(
-                  sink: _addressController.sink,
-                  addressFragment: stateLocation?.formattedAddress,
-                ),
-              ));
-            },
-            child: AbsorbPointer(
-              // Prevents the TextField from gaining focus
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: MergeSemantics(
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: TextEditingController(text: stateLocation?.formattedAddress),
-                        decoration: InputDecoration(labelText: l10n.inputhint_address),
-                        maxLines: null,
-                      ),
-                      Semantics(label: l10n.address_search_doubletab_hint_t),
-                    ],
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AddressSearchScreen(
+                    sink: _addressController.sink,
+                    addressFragment: stateLocation?.formattedAddress,
+                  ),
+                ));
+              },
+              child: AbsorbPointer(
+                // Prevents the TextField from gaining focus
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: MergeSemantics(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: TextEditingController(text: stateLocation?.formattedAddress),
+                          decoration: InputDecoration(labelText: l10n.inputhint_address),
+                          maxLines: null,
+                        ),
+                        Semantics(label: l10n.address_search_doubletab_hint_t),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(), // This acts as a filler
-          ),
-          BoldIconButton(
-              talkback: l10n.button_save_t,
-              buttonWidth: MediaQuery.of(context).size.width / 5,
-              icons: Icons.check,
-              onTab: canSubmit
-                  ? () {
-                      _saveLocation(context);
-                    }
-                  : () {} // Disable the button if name is empty
-              ),
-          BoldIconButton(
-            talkback: l10n.button_close_t,
-            buttonWidth: MediaQuery.of(context).size.width / 7,
-            icons: Icons.close,
-            onTab: () => Navigator.pop(context),
-          ),
-        ],
+            const SizedBox(height: 100),
+            BoldIconButton(
+                talkback: l10n.button_save_t,
+                buttonWidth: MediaQuery.of(context).size.width / 5,
+                icons: Icons.check,
+                onTab: canSubmit
+                    ? () {
+                        _saveLocation(context);
+                      }
+                    : () {
+                        showSnackbar(context, l10n.location_name_required_snackbar);
+                      } // Disable the button if name is empty
+                ),
+            BoldIconButton(
+              talkback: l10n.button_close_t,
+              buttonWidth: MediaQuery.of(context).size.width / 7,
+              icons: Icons.close,
+              onTab: () => Navigator.pop(context),
+            ),
+          ],
+        ),
       ),
     );
   }

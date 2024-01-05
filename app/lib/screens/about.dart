@@ -46,6 +46,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     AppLocalizations l10n = AppLocalizations.of(context)!;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -114,14 +115,47 @@ class AboutScreen extends StatelessWidget {
                 style: theme.textTheme.headlineMedium,
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _sendEmail(context);
-              },
-              child: Text(l10n.button_contact_me, style: theme.textTheme.headlineSmall),
+            Semantics(
+              label: l10n.button_contact_me,
+              child: Center(
+                child: Container(
+                  width: screenWidth * 0.8,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () => _sendEmail(context),
+                        child: Container(
+                          width: screenWidth / 3,
+                          height: screenWidth / 3,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: theme.primaryColor,
+                          ),
+                          child: Icon(
+                            Icons.email_outlined,
+                            size: screenWidth / 4,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ExcludeSemantics(
+                        child: Text(
+                          l10n.button_contact_me,
+                          style: theme.textTheme.headlineSmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(width: 200),
-            Text(""),
+            const SizedBox(height: 100),
           ],
         ),
       ),
