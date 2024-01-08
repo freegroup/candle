@@ -26,7 +26,7 @@ class FavoritesPlaceholder extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               l10n.favorites_placeholder_final_message,
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style: const TextStyle(fontStyle: FontStyle.italic),
             ),
           ],
         ),

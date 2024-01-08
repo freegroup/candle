@@ -19,7 +19,6 @@ class BoldIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
     return Semantics(

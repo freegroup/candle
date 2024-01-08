@@ -11,8 +11,7 @@ class PoiProviderOverpass {
 
   Future<List<PoiDetail>> fetchPoi(List<String> categories, int radiusInMeter, LatLng coord) async {
     String nodes = categories
-        .map((category) =>
-            'node["amenity"="$category"](around:$radiusInMeter,${coord.latitude},${coord.longitude});')
+        .map((category) => '$category(around:$radiusInMeter,${coord.latitude},${coord.longitude});')
         .join('\n  ');
 
     String overpassQuery = '[out:json];\n($nodes\n);\nout center;';

@@ -40,52 +40,56 @@ class _ScreenState extends State<PoiCategoriesScreen> {
       PoiCategory(
         icon: Icons.local_drink,
         title: l10n.poi_category_bars,
-        categories: ['bar'],
+        categories: ['node["amenity"="bar"]'],
       ),
       PoiCategory(
         icon: Icons.local_atm,
         title: l10n.poi_category_atms,
-        categories: ['atm'],
+        categories: ['node["amenity"="atm"]'],
       ),
       PoiCategory(
         icon: Icons.restaurant,
         title: l10n.poi_category_restaurants,
-        categories: ['restaurant'],
+        categories: ['node["amenity"="restaurant"]'],
       ),
       PoiCategory(
         icon: Icons.local_hospital,
         title: l10n.poi_category_hospitals,
-        categories: ['hospital'],
+        categories: ['node["amenity"="hospital"]'],
       ),
       PoiCategory(
         icon: Icons.local_cafe,
         title: l10n.poi_category_cafes,
-        categories: ['cafe'],
+        categories: ['node["amenity"="cafe"]'],
       ),
       PoiCategory(
         icon: Icons.directions_bus,
         title: l10n.poi_category_bus_stations,
-        categories: ['bus_station', 'station'],
+        categories: [
+          'node["amenity"="bus_station"]',
+          'node["amenity"="station"]',
+          'node["highway"="bus_stop"]'
+        ],
       ),
       PoiCategory(
         icon: Icons.local_taxi,
         title: l10n.poi_category_taxis,
-        categories: ['taxi'],
+        categories: ['node["amenity"="taxi"]'],
       ),
       PoiCategory(
         icon: Icons.local_pharmacy,
         title: l10n.poi_category_pharmacies,
-        categories: ['pharmacy'],
+        categories: ['node["amenity"="pharmacy"]'],
       ),
       PoiCategory(
         icon: Icons.hearing,
         title: l10n.poi_category_audible_signals,
-        categories: ['traffic_signals'],
+        categories: ['node["amenity"="traffic_sginals"]'],
       ),
       PoiCategory(
         icon: Icons.wc,
         title: l10n.poi_category_public_toilets,
-        categories: ['toilet'],
+        categories: ['node["amenity"="toilet"]'],
       ),
       // Add more categories if needed
     ];
