@@ -174,6 +174,7 @@
   "favorites_placeholder_tip_title": "Why not start by adding **HOME** or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
   "favorites_placeholder_final_message": "Add your first favorite and embark on new journeys effortlessly!",
 
+  "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
 
   "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",
   "@remaining_route_distance_t": {

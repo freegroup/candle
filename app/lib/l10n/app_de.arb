@@ -72,6 +72,8 @@
   "favorites_placeholder_tip_title": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
   "favorites_placeholder_final_message": "Fügen Sie Ihren ersten Favoriten hinzu und starten Sie mühelos in neue Abenteuer!",
 
+  "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
+
 
   "remaining_route_distance_t": "Die verbleibende Entfernung bis zu Ihrem Ziel beträgt {meters} Meter.",
   "remaining_route_distance": "{meters} Meter",

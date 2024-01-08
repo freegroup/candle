@@ -4,6 +4,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/category_placeholder.dart';
 import 'package:candle/widgets/favorites_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -58,7 +59,7 @@ class _ScreenState extends State<PoiCategoryScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator()) // Wrapped in Center
           : pois == null || pois!.isEmpty
-              ? const FavoritesPlaceholder()
+              ? const CategoryPlaceholder()
               : ListView.separated(
                   itemCount: pois!.length,
                   separatorBuilder: (context, index) => Divider(color: theme.primaryColorDark),
