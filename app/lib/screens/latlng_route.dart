@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/compass.dart';
@@ -22,17 +21,17 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:vibration/vibration.dart';
 
-class NavigateRouteScreen extends StatefulWidget {
+class LatLngRouteScreen extends StatefulWidget {
   final LatLng source;
-  final model.LocationAddress target;
+  final LatLng target;
 
-  const NavigateRouteScreen({super.key, required this.source, required this.target});
+  const LatLngRouteScreen({super.key, required this.source, required this.target});
 
   @override
-  State<NavigateRouteScreen> createState() => _ScreenState();
+  State<LatLngRouteScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<NavigateRouteScreen> {
+class _ScreenState extends State<LatLngRouteScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<LocationData>? _locationSubscription;
 
@@ -51,7 +50,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
     super.initState();
     ScreenWakeService.keepOn(true);
 
-    _route = _updateRoute(widget.source, widget.target.latlng());
+    _route = _updateRoute(widget.source, widget.target);
     _currentLocation = widget.source;
     _updateWaypoint(_currentLocation);
     _listenToLocationChanges();
@@ -140,7 +139,7 @@ class _ScreenState extends State<NavigateRouteScreen> {
     var distance = closestSegment["distance"];
     if (distance > 15) {
       log.d("Closest Segment is to far ($distance)- recalculate route....");
-      var newRoute = _updateRoute(location, widget.target.latlng());
+      var newRoute = _updateRoute(location, widget.target);
       newRoute.then((value) {
         _route = newRoute;
       });

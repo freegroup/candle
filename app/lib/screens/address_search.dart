@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/place_api.dart';
+import 'package:candle/services/address_lookup.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class AddressSearchScreen extends StatefulWidget {
 
 class _ScreenState extends State<AddressSearchScreen> {
   final _controller = TextEditingController();
-  final provider = PlaceApiProvider(const Uuid().v4());
+  final provider = AddressLookupProvider(const Uuid().v4());
   List<LocationAddress> suggestion = [];
   Timer? _debounce;
 
@@ -70,7 +70,7 @@ class _ScreenState extends State<AddressSearchScreen> {
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(AppLocalizations.of(context)!.address_search_dialog),

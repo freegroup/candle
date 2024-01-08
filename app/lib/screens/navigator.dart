@@ -1,8 +1,10 @@
 import 'package:candle/screens/about.dart';
 import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
+import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 
 class NavigatorScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class _ScreenState extends State<NavigatorScreen> {
   final List<Widget> pages = const [
     HomeScreen(),
     FavoriteScreen(),
+    PoiCategoriesScreen(),
     //SettingsScreen(),
     AboutScreen(),
   ];
@@ -46,19 +49,19 @@ class _ScreenState extends State<NavigatorScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // GPS signal not obtained yet, show loading screen
-          return _buildLoadingScreen();
+          return _buildLoadingScreen(context);
         } else if (snapshot.hasData && snapshot.data != null) {
           // GPS signal obtained, show main content
-          return _buildMainContent();
+          return _buildMainContent(context);
         } else {
           // GPS signal not found or error occurred
-          return _buildErrorScreen();
+          return _buildErrorScreen(context);
         }
       },
     );
   }
 
-  Widget _buildLoadingScreen() {
+  Widget _buildLoadingScreen(context) {
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
@@ -66,17 +69,17 @@ class _ScreenState extends State<NavigatorScreen> {
     );
   }
 
-  Widget _buildErrorScreen() {
+  Widget _buildErrorScreen(context) {
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Error obtaining GPS signal'),
-            SizedBox(height: 20),
+            const Text('Error obtaining GPS signal'),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _retryFetchingLocation,
-              child: Text('Retry'),
+              child: const Text('Retry'),
             ),
           ],
         ),
@@ -84,7 +87,17 @@ class _ScreenState extends State<NavigatorScreen> {
     );
   }
 
-  Widget _buildMainContent() {
+  Widget _buildMainContent(context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    List<BottomNavigationBarItem> navBarItems = [
+      BottomNavigationBarItem(label: l10n.home_mainmenu, icon: const Icon(Icons.view_module)),
+      BottomNavigationBarItem(label: l10n.favorite_mainmenu, icon: const Icon(Icons.location_on)),
+      BottomNavigationBarItem(label: l10n.explore_mainmenu, icon: const Icon(Icons.travel_explore)),
+      BottomNavigationBarItem(label: l10n.about_mainmenu, icon: const Icon(Icons.contact_support)),
+    ];
+
     return Scaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
@@ -105,22 +118,44 @@ class _ScreenState extends State<NavigatorScreen> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        iconSize: 40,
-        selectedItemColor: Colors.black,
-        //unselectedItemColor: Colors.grey,
-        onTap: (newIndex) {
-          setState(() {
-            currentIndex = newIndex;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.view_module)),
-          BottomNavigationBarItem(label: "Favoriten", icon: Icon(Icons.location_on)),
-          //BottomNavigationBarItem(label: "Einstellungen", icon: Icon(Icons.settings)),
-          BottomNavigationBarItem(label: "About", icon: Icon(Icons.contact_support))
-        ],
+      bottomNavigationBar: BottomAppBar(
+        color: theme.primaryColor,
+        padding: EdgeInsets.zero,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(navBarItems.length, (index) {
+            bool isSelected = currentIndex == index;
+            return Expanded(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                child: Container(
+                  color: isSelected ? theme.cardColor : Colors.transparent,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        (navBarItems[index].icon as Icon).icon,
+                        color: isSelected ? theme.primaryColor : theme.cardColor,
+                        size: 40, // Icon size can be adjusted as needed
+                      ),
+                      Text(
+                        navBarItems[index].label!,
+                        style: TextStyle(
+                          color: isSelected ? theme.primaryColor : theme.cardColor,
+                          fontSize: 12, // Font size can be adjusted as needed
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

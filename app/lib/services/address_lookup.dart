@@ -28,8 +28,8 @@ class PlaceDetail {
 }
 
 // We will use this util class to fetch the auto complete result and get the details of the place.
-class PlaceApiProvider {
-  PlaceApiProvider(this.sessionToken);
+class AddressLookupProvider {
+  AddressLookupProvider(this.sessionToken);
 
   final String sessionToken;
   final apiKey = GOOGLE_API_KEY;

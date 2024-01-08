@@ -39,7 +39,7 @@ class TileButton extends StatelessWidget {
                     child: ExcludeSemantics(
                         child: Text(
                       title,
-                      textScaleFactor: 1.5,
+                      textScaleFactor: 1.3,
                     ))),
               ],
             );

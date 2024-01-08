@@ -1,3 +1,4 @@
+import 'package:candle/services/poi_provider.dart';
 import 'package:candle/widgets/permission_check_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,10 @@ void main() {
     DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => GeoServiceProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => GeoServiceProvider()),
+        ChangeNotifierProvider(create: (_) => PoiProvider()),
+      ],
       child: MaterialApp(
         title: 'Candle Navigation',
         debugShowCheckedModeBanner: false,

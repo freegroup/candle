@@ -11,20 +11,22 @@
 </body>
 <script>
     var myCharacteristic;
+    var SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+    var CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 
     document.querySelector('#connect').addEventListener('click', function() {
       navigator.bluetooth.requestDevice({ 
         acceptAllDevices: true,
-        optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b'] // Set the service UUID you want to connect with
+        optionalServices: [SERVICE_UUID] // Set the service UUID you want to connect with
       })
       .then(device => {
         return device.gatt.connect();
       })
       .then(server => {
-        return server.getPrimaryService('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
+        return server.getPrimaryService(SERVICE_UUID);
       })
       .then(service => {
-        return service.getCharacteristic('beb5483e-36e1-4688-b7f5-ea07361b26a8');
+        return service.getCharacteristic(CHARACTERISTIC_UUID);
       })
       .then(characteristic => {
         myCharacteristic = characteristic;

@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:candle/icons/location_arrow.dart';
 import 'package:candle/icons/location_dot.dart';
 import 'package:candle/l10n/helper.dart';
-import 'package:candle/models/location_address.dart' as model;
-import 'package:candle/screens/navigate_route.dart';
+import 'package:candle/screens/latlng_route.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
@@ -19,22 +18,23 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vibration/vibration.dart';
 
-class NavigatePoiScreen extends StatefulWidget {
-  final model.LocationAddress location;
+class LatLngCompassScreen extends StatefulWidget {
+  final LatLng target;
+  final String targetName;
 
-  const NavigatePoiScreen({super.key, required this.location});
+  const LatLngCompassScreen({super.key, required this.target, required this.targetName});
 
   @override
-  State<NavigatePoiScreen> createState() => _ScreenState();
+  State<LatLngCompassScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<NavigatePoiScreen> {
+class _ScreenState extends State<LatLngCompassScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
   Timer? _vibrationTimer;
   Timer? _updateLocationTimer;
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
-  late model.LocationAddress _stateLocation;
+  late LatLng _stateLocation;
   late LatLng _currentLocation;
 
   bool _wasAligned = false;
@@ -50,7 +50,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
   @override
   void initState() {
     super.initState();
-    _stateLocation = widget.location;
+    _stateLocation = widget.target;
 
     updateGpsLocation();
     _updateLocationTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
@@ -69,7 +69,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
         log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
-          var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation.latlng());
+          var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation);
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
           bool currentlyAligned = _isAligned(needleHeading);
@@ -87,7 +87,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
             _currentHeadingDegrees = needleHeading;
             _currentDistanceToStateLocation = calculateDistance(
               _currentLocation,
-              _stateLocation.latlng(),
+              _stateLocation,
             ).toInt();
           });
         }
@@ -114,7 +114,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.compass_dialog),
-        talkback: l10n.compass_poi_dialog_t(_stateLocation.name),
+        talkback: l10n.compass_poi_dialog_t(widget.targetName),
       ),
       body: Container(
         color: backgroundColor,
@@ -154,7 +154,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
               width: double.infinity,
               child: Semantics(
                 label: l10n.location_distance_t(
-                  _stateLocation.name,
+                  widget.targetName,
                   _currentDistanceToStateLocation,
                 ),
                 child: Align(
@@ -163,7 +163,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
                     child: Column(
                       children: [
                         Text(
-                          _stateLocation.name,
+                          widget.targetName,
                           style: theme.textTheme.displayMedium,
                         ),
                         Text(
@@ -185,7 +185,7 @@ class _ScreenState extends State<NavigatePoiScreen> {
                 icons: Icons.near_me,
                 onTab: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => NavigateRouteScreen(
+                    builder: (context) => LatLngRouteScreen(
                       source: _currentLocation,
                       target: _stateLocation,
                     ),

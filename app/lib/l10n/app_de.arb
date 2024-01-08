@@ -16,6 +16,9 @@
   "settings_mainmenu_t": "Einstellungen der App vornehmen",
   "settings_mainmenu": "Eifnstellungen",
 
+  "explore_mainmenu_t": "Öffentliche Orte",
+  "explore_mainmenu": "Erkunden",
+
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
 
@@ -132,6 +135,17 @@
   "appbar_slogan": "Bringt ein wenig Licht ins Dunkel",
 
   "email_contact_subject": "Candle Benutzer Anfrage",
-  "error_no_email_launch": "E-Mail Programm kann nicht gestartet werden"
+  "error_no_email_launch": "E-Mail Programm kann nicht gestartet werden",
+
+  "poi_category_bars": "Bars",
+  "poi_category_atms": "Geldautomaten",
+  "poi_category_restaurants": "Restaurants",
+  "poi_category_hospitals": "Krankenhäuser",
+  "poi_category_cafes": "Cafés",
+  "poi_category_bus_stations": "Bushaltestellen",
+  "poi_category_taxis": "Taxistände",
+  "poi_category_pharmacies": "Apotheken",
+  "poi_category_audible_signals": "Akustische Signale",
+  "poi_category_public_toilets": "Öffentliche Toiletten"
 
 }

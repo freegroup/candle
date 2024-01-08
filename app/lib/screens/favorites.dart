@@ -1,6 +1,6 @@
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/favorites_cu.dart';
-import 'package:candle/screens/navigate_poi.dart';
+import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -169,8 +169,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         isSelected ? theme.primaryColor.withOpacity(0.1) : null,
                                     onTap: () {
                                       Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => NavigatePoiScreen(
-                                          location: location,
+                                        builder: (context) => LatLngCompassScreen(
+                                          target: location.latlng(),
+                                          targetName: location.name,
                                         ),
                                       ));
                                     }),

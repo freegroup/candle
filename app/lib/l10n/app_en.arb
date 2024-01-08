@@ -67,6 +67,17 @@
   },
 
 
+  "explore_mainmenu_t": "Point of Interest Screen",
+  "@explore_mainmenu_t": {
+    "description": "Talkback for POI Category screens"
+  },
+  "explore_mainmenu": "Explore",
+  "@explore_mainmenu": {
+    "description": "Title for POI Category screen"
+  },
+
+
+
   "settings_mainmenu_t": "Settings Screen",
   "@settings_mainmenu_t": {
     "description": "Talkback for Settings"
@@ -536,6 +547,18 @@
   "error_no_email_launch": "Could not launch the email client",
   "@error_no_email_launch": {
     "description": "Error message if we are unable to lanch an email client"
-  }
+  },
+
+
+  "poi_category_bars": "Bars",
+  "poi_category_atms": "ATMs",
+  "poi_category_restaurants": "Restaurants",
+  "poi_category_hospitals": "Hospitals",
+  "poi_category_cafes": "Cafes",
+  "poi_category_bus_stations": "Bus Stations",
+  "poi_category_taxis": "Taxis",
+  "poi_category_pharmacies": "Pharmacies",
+  "poi_category_audible_signals": "Audible Signals",
+  "poi_category_public_toilets": "Public Toilets"
 }
 
