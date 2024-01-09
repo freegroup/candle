@@ -36,16 +36,24 @@ class _ScreenState extends State<PoiCategoriesScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final l10n = AppLocalizations.of(context)!;
+    // https://wiki.openstreetmap.org/wiki/DE:Key:amenity
     categories = [
       PoiCategory(
         icon: Icons.local_drink,
         title: l10n.poi_category_bars,
-        categories: ['node["amenity"="bar"]'],
+        categories: [
+          'node["amenity"="bar"]',
+          'node["amenity"="nightclub"]',
+        ],
       ),
       PoiCategory(
         icon: Icons.local_atm,
         title: l10n.poi_category_atms,
-        categories: ['node["amenity"="atm"]'],
+        categories: [
+          'node["amenity"="atm"]',
+          'node["amenity"="payment"]',
+          'node["amenity"="bank"]',
+        ],
       ),
       PoiCategory(
         icon: Icons.restaurant,
