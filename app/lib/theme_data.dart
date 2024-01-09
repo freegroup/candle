@@ -6,7 +6,7 @@ extension CustomThemeColors on ThemeData {
 
 class CThemeData {
   static ThemeData get darkTheme {
-    MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 218, 0, 1));
+    MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 192, 4, 1));
     ThemeData baseTheme = ThemeData.dark(); // Use the default dark theme as base
 
     return ThemeData(

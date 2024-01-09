@@ -139,6 +139,8 @@
   "@compass_dialog": {
     "description": "Title for comcpass dialog"
   },
+  "compass_hint_horizontal": "For optimal compass performance, please hold your phone horizontally.",
+
 
   "navigation_poi_dialog_t": "Pedestrian Navigation to your Target",
   "@navigation_poi_dialog_t": {

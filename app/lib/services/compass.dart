@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sensors/sensors.dart';
 
 class CompassService {
   // Singleton Pattern
@@ -10,6 +12,7 @@ class CompassService {
   Stream<CompassEvent>? _compassStream;
   StreamController<CompassEvent>? _streamController;
   bool _hasPermissions = false;
+  bool _isHorizontal = false;
 
   // Initialize the compass stream with permission check
   Future<void> initialize() async {
@@ -20,7 +23,14 @@ class CompassService {
       _compassStream?.listen((event) {
         _streamController?.add(event);
       });
+      accelerometerEvents.listen(_onAccelerometerChanged);
     }
+  }
+
+  // Handler for accelerometer updates
+  void _onAccelerometerChanged(AccelerometerEvent event) {
+    double angle = atan(sqrt(event.x * event.x + event.y * event.y) / event.z) * (180 / pi);
+    _isHorizontal = (angle < 20.0 && angle > -20.0);
   }
 
   // Stream of compass updates
@@ -39,6 +49,9 @@ class CompassService {
     }
     return status.isGranted;
   }
+
+  // Get horizontal state
+  bool get isHorizontal => _isHorizontal;
 
   // Dispose resources
   void dispose() {

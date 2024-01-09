@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String talkback;
   final Widget? title;
+
   final Widget? subtitle;
   final List<Widget>? actions;
-  final double height;
 
   const CandleAppBar({
     super.key,
@@ -13,7 +13,6 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.subtitle,
     this.actions,
-    this.height = kToolbarHeight * 1.2,
   });
 
   @override
@@ -48,5 +47,5 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 1.4);
 }

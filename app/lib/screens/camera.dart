@@ -121,7 +121,7 @@ class _CameraScreenState extends State<CameraScreen> {
             controller,
           ),
         ),
-        ...displayBoxesAroundRecognizedObjects(size, appBar.height),
+        ...displayBoxesAroundRecognizedObjects(size, appBar.preferredSize.height),
       ]),
     );
   }

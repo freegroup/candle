@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/utils/shadow.dart';
 
-class LocationAddressTile extends StatelessWidget {
+class LocationAddressTile extends StatelessWidget implements PreferredSizeWidget {
   const LocationAddressTile({super.key});
 
   @override
@@ -66,4 +66,7 @@ class LocationAddressTile extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(150);
 }
