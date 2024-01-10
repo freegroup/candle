@@ -1,6 +1,7 @@
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/favorites_cu.dart';
 import 'package:candle/screens/latlng_compass.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -16,8 +17,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/models/location_address.dart' as model;
 import 'package:provider/provider.dart';
 
-class FavoriteScreen extends StatefulWidget {
+class FavoriteScreen extends TalkbackScreen {
   const FavoriteScreen({super.key});
+
+  @override
+  String getTalkback(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    return l10n.favorite_mainmenu_t;
+  }
 
   @override
   State<FavoriteScreen> createState() => _FavoriteScreenState();
@@ -33,8 +40,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(AppLocalizations.of(context)!.favorite_mainmenu),
-          talkback: AppLocalizations.of(context)!.favorite_mainmenu_t,
+          title: Text(l10n.favorite_mainmenu),
+          talkback: widget.getTalkback(context),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {

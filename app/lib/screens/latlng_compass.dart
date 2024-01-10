@@ -171,7 +171,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
         ),
         Column(
           children: [
-            TwoLineDisplay(
+            TwolinerWidget(
               headline: widget.targetName,
               headlineTalkback: l10n.location_distance_t(
                 widget.targetName,

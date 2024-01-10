@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String talkback;
   final Widget? title;
 
@@ -16,9 +16,17 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
+  State<CandleAppBar> createState() => _CandleAppBarState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 1.4);
+}
+
+class _CandleAppBarState extends State<CandleAppBar> {
+  @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: talkback,
+      label: widget.talkback,
       child: ExcludeSemantics(
         child: AppBar(
           title: Padding(
@@ -27,13 +35,13 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (title != null) title!,
-                if (subtitle != null) subtitle!,
+                if (widget.title != null) widget.title!,
+                if (widget.subtitle != null) widget.subtitle!,
               ],
             ),
           ),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          actions: actions,
+          actions: widget.actions,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(1.0),
             child: Container(
@@ -45,7 +53,4 @@ class CandleAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight * 1.4);
 }

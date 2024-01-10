@@ -1,12 +1,18 @@
 import 'package:camera/camera.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vision/flutter_vision.dart';
 
 late List<CameraDescription> cameras;
 
-class CameraScreen extends StatefulWidget {
+class CameraScreen extends TalkbackScreen {
   const CameraScreen({super.key});
+
+  @override
+  String getTalkback(BuildContext context) {
+    throw "Camera Preview";
+  }
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -110,7 +116,7 @@ class _CameraScreenState extends State<CameraScreen> {
     }
     var appBar = CandleAppBar(
       title: Text("Camera Preview"), // Replace with your app bar title
-      talkback: "Camera Preview", // Replace with your talkback text
+      talkback: widget.getTalkback(context), // Replace with your talkback text
     );
     return Scaffold(
       appBar: appBar,

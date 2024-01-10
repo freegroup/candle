@@ -1,5 +1,6 @@
 import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/poi_categories.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/geo.dart';

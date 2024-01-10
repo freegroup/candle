@@ -1,19 +1,10 @@
-import 'package:candle/icons/compass.dart';
-import 'package:candle/icons/poi_favorite.dart';
-import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/poi_category.dart';
-import 'package:candle/screens/screens.dart';
-import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/location.dart';
-import 'package:candle/utils/dialogs.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
 
 class PoiCategory {
   final IconData icon;
@@ -23,8 +14,14 @@ class PoiCategory {
   PoiCategory({required this.icon, required this.title, required this.categories});
 }
 
-class PoiCategoriesScreen extends StatefulWidget {
+class PoiCategoriesScreen extends TalkbackScreen {
   const PoiCategoriesScreen({super.key});
+
+  @override
+  String getTalkback(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    return l10n.explore_mainmenu_t;
+  }
 
   @override
   State<PoiCategoriesScreen> createState() => _ScreenState();
@@ -106,11 +103,11 @@ class _ScreenState extends State<PoiCategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(AppLocalizations.of(context)!.explore_mainmenu),
-          talkback: AppLocalizations.of(context)!.explore_mainmenu_t,
+          title: Text(l10n.explore_mainmenu),
+          talkback: widget.getTalkback(context),
         ),
         body: BackgroundWidget(
           child: Padding(
@@ -121,14 +118,14 @@ class _ScreenState extends State<PoiCategoriesScreen> {
                 children: [
                   Expanded(
                     child: GridView.count(
-                      crossAxisCount: 2, // Two columns
-                      childAspectRatio: 0.95, // Aspect ratio of 1.0 (width == height)
-                      crossAxisSpacing: 20, // Spacing in between items horizontally
-                      mainAxisSpacing: 20, // Spacing in between items vertically
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.95,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
                       children: categories.map((category) {
                         return TileButton(
                           title: category.title,
-                          talkback: '${category.title} button',
+                          talkback: category.title,
                           icon: Icon(
                             category.icon,
                             size: 50,

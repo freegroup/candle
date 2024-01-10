@@ -215,7 +215,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
         // Content layer
         Column(
           children: [
-            TwoLineDisplay(
+            TwolinerWidget(
               headline: l10n.remaining_route_distance(_currentDistanceToTarget),
               headlineTalkback: l10n.remaining_route_distance_t(_currentDistanceToTarget),
               subtitle: l10n.waypoint_distance(_currentDistanceToWaypoint),

@@ -35,7 +35,7 @@ class TileButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           )),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),

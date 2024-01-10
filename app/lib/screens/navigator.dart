@@ -2,10 +2,12 @@ import 'package:candle/screens/about.dart';
 import 'package:candle/screens/favorites.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/poi_categories.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter/semantics.dart';
 
 class NavigatorScreen extends StatefulWidget {
   const NavigatorScreen({super.key});
@@ -18,7 +20,7 @@ class _ScreenState extends State<NavigatorScreen> {
   int currentIndex = 0;
   late Future<LatLng?> _locationFuture;
 
-  final List<Widget> pages = const [
+  final List<TalkbackScreen> pages = const [
     HomeScreen(),
     FavoriteScreen(),
     PoiCategoriesScreen(),
@@ -128,6 +130,7 @@ class _ScreenState extends State<NavigatorScreen> {
             return Expanded(
               child: InkWell(
                 onTap: () {
+                  SemanticsService.announce(pages[index].getTalkback(context), TextDirection.ltr);
                   setState(() {
                     currentIndex = index;
                   });

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
@@ -16,11 +17,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CompassScreen extends StatefulWidget {
+class CompassScreen extends TalkbackScreen {
   const CompassScreen({super.key});
 
   @override
   State<CompassScreen> createState() => _CompassScreenState();
+
+  @override
+  String getTalkback(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    return l10n.compass_dialog_t;
+  }
 }
 
 class _CompassScreenState extends State<CompassScreen> {
@@ -103,7 +110,7 @@ class _CompassScreenState extends State<CompassScreen> {
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.compass_dialog),
-        talkback: l10n.compass_dialog_t,
+        talkback: widget.getTalkback(context),
       ),
       body: BackgroundWidget(
         child: DividedWidget(
@@ -137,10 +144,11 @@ class _CompassScreenState extends State<CompassScreen> {
   Widget _buildBottomPane() {
     ThemeData theme = Theme.of(context);
     AppLocalizations l10n = AppLocalizations.of(context)!;
-
+    Color color = _isCompassHorizontal ? theme.primaryColor : theme.negativeColor;
     return Column(
       children: [
-        TwoLineDisplay(
+        TwolinerWidget(
+          color: color,
           headline: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
           headlineTalkback: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
           subtitle: getHorizon(context, _currentHeadingDegrees),

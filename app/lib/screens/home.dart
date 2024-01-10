@@ -3,6 +3,7 @@ import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/screens.dart';
+import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
@@ -15,8 +16,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends TalkbackScreen {
   const HomeScreen({super.key});
+
+  @override
+  String getTalkback(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    return l10n.home_mainmenu_t;
+  }
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -32,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.home_mainmenu),
           subtitle: Text(l10n.appbar_slogan, style: theme.textTheme.bodyMedium),
-          talkback: AppLocalizations.of(context)!.home_mainmenu_t,
+          talkback: widget.getTalkback(context),
         ),
         body: BackgroundWidget(
           child: Padding(
