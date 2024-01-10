@@ -76,6 +76,35 @@
     "description": "Title for POI Category screen"
   },
 
+  "explore_category_header": "Categories",
+  "@explore_category_header": {
+    "description": "Heaeer for the category list"
+  },
+  "explore_category_header_t": "There are {count} categories in the list below available",
+  "@explore_category_header_t": {
+    "description": "Header for the category list",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "The category count"
+      }
+    }
+  },
+
+  "explore_poi_header": "Gefundene Orte",
+  "@explore_poi_header": {
+    "description": "Header for the category poi list"
+  },
+  "explore_poi_header_t": "There are {count} locations in the list below available",
+  "@explore_poi_header_t": {
+    "description": "Header for the category location list",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "The location count"
+      }
+    }
+  },
 
 
   "settings_mainmenu_t": "Settings Screen",
@@ -142,7 +171,7 @@
   "compass_hint_horizontal": "For optimal compass performance, please hold your phone horizontally.",
 
 
-  "navigation_poi_dialog_t": "Pedestrian Navigation to your Target",
+  "navigation_poi_dialog_t": "Pedestrian Navigation to your Target has started.",
   "@navigation_poi_dialog_t": {
     "description": "Talkback for the CompassDialog AppBar"
   },

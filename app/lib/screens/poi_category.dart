@@ -1,13 +1,12 @@
 import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/poi_categories.dart';
-import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/category_placeholder.dart';
-import 'package:candle/widgets/favorites_placeholder.dart';
+import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
@@ -63,36 +62,46 @@ class _ScreenState extends State<PoiCategoryScreen> {
             ? const Center(child: CircularProgressIndicator()) // Wrapped in Center
             : pois == null || pois!.isEmpty
                 ? const CategoryPlaceholder()
-                : ListView.separated(
-                    itemCount: pois!.length,
-                    separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
-                    itemBuilder: (context, index) {
-                      var location = pois![index];
-                      return ListTile(
-                        title: Text(
-                          location.name,
-                          style: TextStyle(
-                            color: theme.primaryColor,
-                            fontSize: theme.textTheme.headlineSmall?.fontSize,
-                          ),
+                : Column(
+                    children: [
+                      SemanticHeader(
+                        title: l10n.explore_poi_header,
+                        talkback: l10n.explore_poi_header_t(pois!.length),
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: pois!.length,
+                          separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
+                          itemBuilder: (context, index) {
+                            var location = pois![index];
+                            return ListTile(
+                              title: Text(
+                                location.name,
+                                style: TextStyle(
+                                  color: theme.primaryColor,
+                                  fontSize: theme.textTheme.headlineSmall?.fontSize,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "${calculateDistance(location.latlng, coord!).toInt()} m",
+                                style: TextStyle(
+                                  color: theme.primaryColor,
+                                  fontSize: theme.textTheme.bodyLarge?.fontSize,
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LatLngCompassScreen(
+                                    target: location.latlng,
+                                    targetName: location.name,
+                                  ),
+                                ));
+                              },
+                            );
+                          },
                         ),
-                        subtitle: Text(
-                          "${calculateDistance(location.latlng, coord!).toInt()} m",
-                          style: TextStyle(
-                            color: theme.primaryColor,
-                            fontSize: theme.textTheme.bodyLarge?.fontSize,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LatLngCompassScreen(
-                              target: location.latlng,
-                              targetName: location.name,
-                            ),
-                          ));
-                        },
-                      );
-                    },
+                      ),
+                    ],
                   ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:candle/screens/poi_category.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
+import 'package:candle/widgets/semantic_header.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -116,6 +117,10 @@ class _ScreenState extends State<PoiCategoriesScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SemanticHeader(
+                    title: l10n.explore_category_header,
+                    talkback: l10n.explore_category_header_t(categories.length),
+                  ),
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 2,

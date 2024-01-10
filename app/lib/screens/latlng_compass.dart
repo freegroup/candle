@@ -192,12 +192,6 @@ class _ScreenState extends State<LatLngCompassScreen> {
                     ),
                   ));
                 }),
-            BoldIconButton(
-              talkback: l10n.button_close_t,
-              buttonWidth: MediaQuery.of(context).size.width / 7,
-              icons: Icons.close,
-              onTab: () => Navigator.pop(context),
-            ),
           ],
         ),
       ],

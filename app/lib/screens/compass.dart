@@ -142,43 +142,33 @@ class _CompassScreenState extends State<CompassScreen> {
   }
 
   Widget _buildBottomPane() {
-    ThemeData theme = Theme.of(context);
     AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
     Color color = _isCompassHorizontal ? theme.primaryColor : theme.negativeColor;
-    return Column(
-      children: [
-        TwolinerWidget(
-          color: color,
-          headline: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-          headlineTalkback: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-          subtitle: getHorizon(context, _currentHeadingDegrees),
-          subtitleTalkback: getHorizon(context, _currentHeadingDegrees),
+    return Column(children: [
+      TwolinerWidget(
+        color: color,
+        headline: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+        headlineTalkback: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+        subtitle: getHorizon(context, _currentHeadingDegrees),
+        subtitleTalkback: getHorizon(context, _currentHeadingDegrees),
+      ),
+      Container(
+        width: double.infinity, // Full width for TalkBack focus
+        child: Semantics(
+          button: true, // Explicitly mark as a button
+          label: l10n.button_close_t,
+          child: BoldIconButton(
+            talkback: "",
+            buttonWidth: MediaQuery.of(context).size.width / 5,
+            icons: Icons.close_rounded,
+            onTab: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-        Expanded(
-          flex: 2, // 1/3 of the screen for the text and buttons
-          child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-            double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
-            return Container(
-              width: double.infinity, // Full width for TalkBack focus
-              child: Semantics(
-                button: true, // Explicitly mark as a button
-                label: AppLocalizations.of(context)!.button_close_t,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: BoldIconButton(
-                    talkback: "",
-                    buttonWidth: buttonWidth,
-                    icons: Icons.close_rounded,
-                    onTab: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
+      )
+    ]);
   }
 }

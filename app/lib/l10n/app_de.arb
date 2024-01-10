@@ -19,6 +19,12 @@
   "explore_mainmenu_t": "Öffentliche Orte",
   "explore_mainmenu": "Erkunden",
 
+  "explore_category_header": "Kategorien",
+  "explore_category_header_t": "Es sind {count} Kategorien in der Liste verfügbar",
+
+  "explore_poi_header": "Gefundene Orte",
+  "explore_poi_header_t": "Es sind {count} Orte in der Liste verfügbar",
+
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
 
@@ -62,7 +68,7 @@
   "compass_dialog": "Kompass",
   "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Telefon horizontal halten",
 
-  "navigation_poi_dialog_t": "Schrit für Schritt Navigation zu ihrem Ziel",
+  "navigation_poi_dialog_t": "Schrit für Schritt Navigation zu ihrem Ziel wurde gestartet.",
   "navigation_poi_dialog": "Wegführung",
 
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
