@@ -12,6 +12,8 @@ import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/divided_widget.dart';
+import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -107,77 +109,76 @@ class _ScreenState extends State<LatLngCompassScreen> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-    bool isAligned = _isAligned(_currentHeadingDegrees);
-    Color? backgroundColor = isAligned ? theme.positiveColor : null;
+    double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
+    double screenDividerFraction = screenHeight * (5 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.compass_dialog),
         talkback: l10n.compass_poi_dialog_t(widget.targetName),
       ),
-      body: Container(
-        color: backgroundColor,
-        child: Column(
+      body: DividedWidget(
+        fraction: screenDividerFraction,
+        top: _buildTopPanel(),
+        bottom: _buildBottomPanel(),
+      ),
+    );
+  }
+
+  Widget _buildTopPanel() {
+    bool isAligned = _isAligned(_currentHeadingDegrees);
+
+    return Center(
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          double containerWidth = constraints.maxWidth * 0.7;
+          return Semantics(
+            label: sayRotate(
+                context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                LocationArrowIcon(
+                  shadow: true,
+                  rotationDegrees: isAligned ? 0 : _currentHeadingDegrees,
+                  height: containerWidth,
+                  width: containerWidth,
+                ),
+                LocationDotIcon(
+                  shadow: false,
+                  height: containerWidth,
+                  width: containerWidth,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottomPanel() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+    Color? backgroundColor = _wasAligned ? theme.positiveColor : null;
+
+    return Stack(
+      children: [
+        Container(
+          color: backgroundColor,
+          height: double.infinity,
+          width: double.infinity,
+        ),
+        Column(
           children: [
-            Expanded(
-              flex: 3, // 2/3 of the screen for the compass
-              child: Center(
-                child: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    double containerWidth = constraints.maxWidth * 0.9;
-                    return Semantics(
-                      label: sayRotate(context, _currentHeadingDegrees, isAligned,
-                          _currentDistanceToStateLocation),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          LocationArrowIcon(
-                            shadow: true,
-                            rotationDegrees: isAligned ? 0 : _currentHeadingDegrees,
-                            height: containerWidth,
-                            width: containerWidth,
-                          ),
-                          LocationDotIcon(
-                            shadow: false,
-                            height: containerWidth,
-                            width: containerWidth,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+            TwoLineDisplay(
+              headline: widget.targetName,
+              headlineTalkback: l10n.location_distance_t(
+                widget.targetName,
+                _currentDistanceToStateLocation,
               ),
-            ),
-            Container(
-              width: double.infinity,
-              child: Semantics(
-                label: l10n.location_distance_t(
-                  widget.targetName,
-                  _currentDistanceToStateLocation,
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ExcludeSemantics(
-                    child: Column(
-                      children: [
-                        Text(
-                          widget.targetName,
-                          style: theme.textTheme.displayMedium,
-                        ),
-                        Text(
-                          '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
-                          style: theme.textTheme.displaySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(),
+              subtitle: '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
+              subtitleTalkback: '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
             ),
             BoldIconButton(
                 talkback: l10n.button_navigate_poi_t,
@@ -199,7 +200,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

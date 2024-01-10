@@ -22,7 +22,9 @@ class FavoritesPlaceholder extends StatelessWidget {
               style: theme.textTheme.headlineLarge,
             ),
             const SizedBox(height: 20),
-            MarkdownBody(data: l10n.favorites_placeholder_tip_title),
+            MarkdownBody(data: l10n.favorites_placeholder_tip_title
+            
+            ),
             const SizedBox(height: 20),
             Text(
               l10n.favorites_placeholder_final_message,

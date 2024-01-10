@@ -13,6 +13,8 @@ import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/divided_widget.dart';
+import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -179,70 +181,57 @@ class _ScreenState extends State<LatLngRouteScreen> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
-    Color? backgroundColor = isAligned ? theme.positiveColor : null;
+    double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
+    double screenDividerFraction = screenHeight * (5 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.navigation_poi_dialog),
         talkback: l10n.navigation_poi_dialog_t,
       ),
-      body: Container(
-        child: Column(
+      body: DividedWidget(
+        fraction: screenDividerFraction,
+        top: _buildRouteMap(),
+        bottom: _buildBottomPanel(),
+      ),
+    );
+  }
+
+  Widget _buildBottomPanel() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
+    Color? backgroundColor = isAligned ? theme.positiveColor : null;
+
+    return Stack(
+      children: [
+        // Background color layer
+        Container(
+          color: backgroundColor,
+          height: double.infinity,
+          width: double.infinity,
+        ),
+        // Content layer
+        Column(
           children: [
-            Expanded(
-              flex: 5, // 2/3 of the screen for the compass
-              child: _buildRouteMap(),
+            TwoLineDisplay(
+              headline: l10n.remaining_route_distance(_currentDistanceToTarget),
+              headlineTalkback: l10n.remaining_route_distance_t(_currentDistanceToTarget),
+              subtitle: l10n.waypoint_distance(_currentDistanceToWaypoint),
+              subtitleTalkback: l10n.waypoint_distance_t(_currentDistanceToWaypoint),
             ),
-            Expanded(
-              // Why use a Stack with a Container just for setting the background color?
-              // Is this an unnecessary complication? Actually, no!
-              //
-              // Here's the reason: The background color changes each time the compass
-              // aligns correctly with the direction. We want to prevent the TalkBack
-              // feature from announcing the selected element every time the background color changes.
-              // By altering the background color of a sibling widget rather than the parent,
-              // we avoid re-rendering the entire tree that includes the selected element.
-              //
-              // The result is that TalkBack no longer triggers when an element is selected
-              // and the background color changes. This results in a smoother user experience
-              // without repetitive announcements. Fantastic solution!
-              //
-              flex: 3, // Lower part with dynamic background color
-              child: Stack(
-                children: [
-                  // Background color layer
-                  Container(
-                    color: backgroundColor,
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                  // Content layer
-                  Column(
-                    children: [
-                      Expanded(
-                        child: DistanceDisplay(
-                          distanceToWaypoint: _currentDistanceToWaypoint,
-                          distanceToTarget: _currentDistanceToTarget,
-                        ),
-                      ),
-                      BoldIconButton(
-                        talkback: l10n.button_close_t,
-                        buttonWidth: MediaQuery.of(context).size.width / 5,
-                        icons: Icons.close,
-                        onTab: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            BoldIconButton(
+              talkback: l10n.button_close_t,
+              buttonWidth: MediaQuery.of(context).size.width / 5,
+              icons: Icons.close,
+              onTab: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 
@@ -267,67 +256,6 @@ class _ScreenState extends State<LatLngRouteScreen> {
           return const Center(child: Text('No route found'));
         }
       },
-    );
-  }
-}
-
-class DistanceDisplay extends StatefulWidget {
-  final int distanceToTarget;
-  final int distanceToWaypoint;
-
-  const DistanceDisplay({
-    super.key,
-    required this.distanceToWaypoint,
-    required this.distanceToTarget,
-  });
-
-  @override
-  State<DistanceDisplay> createState() => _DistanceDisplayState();
-}
-
-class _DistanceDisplayState extends State<DistanceDisplay> {
-  @override
-  Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-
-    return Container(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: double.infinity,
-            child: Semantics(
-              label: l10n.remaining_route_distance_t(widget.distanceToTarget),
-              child: ExcludeSemantics(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    l10n.remaining_route_distance(widget.distanceToTarget),
-                    style: theme.textTheme.displaySmall,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            child: Semantics(
-              label: l10n.waypoint_distance_t(widget.distanceToWaypoint),
-              child: ExcludeSemantics(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    l10n.waypoint_distance(widget.distanceToWaypoint),
-                    style: theme.textTheme.headlineSmall,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

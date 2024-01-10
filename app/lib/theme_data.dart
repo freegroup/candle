@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 extension CustomThemeColors on ThemeData {
-  Color get positiveColor => Color.fromARGB(255, 41, 122, 44);
+  Color get positiveColor => const Color.fromARGB(255, 41, 122, 44);
+  Color get negativeColor => const Color.fromARGB(255, 192, 0, 0);
 }
 
 class CThemeData {
@@ -13,6 +14,7 @@ class CThemeData {
       useMaterial3: true,
       scaffoldBackgroundColor: Color.fromRGBO(20, 20, 20, 1),
       cardColor: Colors.black,
+      dividerColor: Color.fromRGBO(60, 60, 60, 1),
       primaryColorDark: _createDarkerColor(mySwatch),
       textTheme: baseTheme.textTheme.apply(
         bodyColor: mySwatch,

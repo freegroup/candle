@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-String sayHorizon(BuildContext context, int angle) {
+String getHorizon(BuildContext context, int angle) {
   List<String> directions = [
     AppLocalizations.of(context)!.compassHorizonNorth, // "Norden"
     AppLocalizations.of(context)!.compassHorizonNorthNortheast, // "Nord-Nordost"
@@ -22,8 +22,12 @@ String sayHorizon(BuildContext context, int angle) {
   ];
 
   int segment = (angle / 22.5).round() % 16;
+  return directions[segment]; // "Sie halten das Handy in Richtung {}"
+}
+
+String sayHorizon(BuildContext context, int angle) {
   return AppLocalizations.of(context)!
-      .compassDirection(directions[segment]); // "Sie halten das Handy in Richtung {}"
+      .compassDirection(getHorizon(context, angle)); // "Sie halten das Handy in Richtung {}"
 }
 
 String sayRotate(BuildContext context, int angle, bool isAligned, int distance) {

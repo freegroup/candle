@@ -8,6 +8,7 @@ import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -105,50 +106,50 @@ class _ScreenState extends State<PoiCategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Scaffold(
         appBar: CandleAppBar(
           title: Text(AppLocalizations.of(context)!.explore_mainmenu),
           talkback: AppLocalizations.of(context)!.explore_mainmenu_t,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2, // Two columns
-                    childAspectRatio: 0.95, // Aspect ratio of 1.0 (width == height)
-                    crossAxisSpacing: 20, // Spacing in between items horizontally
-                    mainAxisSpacing: 20, // Spacing in between items vertically
-                    children: categories.map((category) {
-                      return TileButton(
-                        title: category.title,
-                        talkback: '${category.title} button',
-                        icon: Icon(
-                          category.icon,
-                          size: 50,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(
-                                MaterialPageRoute(
-                                  builder: (context) => PoiCategoryScreen(
-                                    category: category,
+        body: BackgroundWidget(
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2, // Two columns
+                      childAspectRatio: 0.95, // Aspect ratio of 1.0 (width == height)
+                      crossAxisSpacing: 20, // Spacing in between items horizontally
+                      mainAxisSpacing: 20, // Spacing in between items vertically
+                      children: categories.map((category) {
+                        return TileButton(
+                          title: category.title,
+                          talkback: '${category.title} button',
+                          icon: Icon(
+                            category.icon,
+                            size: 50,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PoiCategoryScreen(
+                                      category: category,
+                                    ),
                                   ),
-                                ),
-                              )
-                              .then((value) => setState(() {}));
-                        },
-                      );
-                    }).toList(),
-                  ),
-                )
-              ],
+                                )
+                                .then((value) => setState(() {}));
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ));

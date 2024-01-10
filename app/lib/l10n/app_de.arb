@@ -60,7 +60,7 @@
 
   "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
   "compass_dialog": "Kompass",
-  "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Handy horizontal halten",
+  "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Telefon horizontal halten",
 
   "navigation_poi_dialog_t": "Schrit für Schritt Navigation zu ihrem Ziel",
   "navigation_poi_dialog": "Wegführung",

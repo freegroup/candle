@@ -1,3 +1,4 @@
+import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,18 +10,16 @@ class CategoryPlaceholder extends StatelessWidget {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: MergeSemantics(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // Align content to the start
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
+    return SizedBox.expand(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: MergeSemantics(
+            child: Text(
               l10n.no_location_for_category,
               style: theme.textTheme.headlineLarge,
             ),
-          ],
+          ),
         ),
       ),
     );

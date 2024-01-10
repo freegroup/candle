@@ -16,7 +16,8 @@ void showSnackbar(BuildContext context, String message) {
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: theme.textTheme.bodyLarge?.copyWith(color: theme.cardColor),
+          style: theme.textTheme.bodyLarge
+              ?.copyWith(fontWeight: FontWeight.bold, color: theme.cardColor),
         ),
       ),
       duration: kDuration,

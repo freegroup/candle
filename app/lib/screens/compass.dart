@@ -6,7 +6,12 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/theme_data.dart';
+import 'package:candle/widgets/divided_widget.dart';
+import 'package:candle/widgets/twoliner.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -91,79 +96,81 @@ class _CompassScreenState extends State<CompassScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
+    double screenDividerFraction = screenHeight * (5 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(AppLocalizations.of(context)!.compass_dialog),
-        talkback: AppLocalizations.of(context)!.compass_dialog_t,
+        title: Text(l10n.compass_dialog),
+        talkback: l10n.compass_dialog_t,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 3, // 2/3 of the screen for the compass
-            child: Center(
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  double containerWidth = constraints.maxWidth * 0.9;
-                  return Semantics(
-                    label: sayHorizon(context, _currentHeadingDegrees),
-                    child: CompassIcon(
-                      shadow: true,
-                      rotationDegrees: _currentHeadingDegrees,
-                      height: containerWidth,
-                      width: containerWidth,
-                    ),
-                  );
-                },
-              ),
+      body: BackgroundWidget(
+        child: DividedWidget(
+          fraction: screenDividerFraction,
+          top: _buildTopPanel(),
+          bottom: _buildBottomPane(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopPanel() {
+    return Center(
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          double containerWidth = constraints.maxWidth * 0.7;
+          return Semantics(
+            label: sayHorizon(context, _currentHeadingDegrees),
+            child: CompassIcon(
+              shadow: true,
+              rotationDegrees: _currentHeadingDegrees,
+              height: containerWidth,
+              width: containerWidth,
             ),
-          ),
-          SizedBox(
-            height: 70,
-            width: double.infinity,
-            child: Semantics(
-              label: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-              child: Align(
-                alignment: Alignment.center,
-                child: ExcludeSemantics(
-                  child: Text(
-                    '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(color: _isCompassHorizontal ? theme.primaryColor : Colors.red),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottomPane() {
+    ThemeData theme = Theme.of(context);
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      children: [
+        TwoLineDisplay(
+          headline: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+          headlineTalkback: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
+          subtitle: getHorizon(context, _currentHeadingDegrees),
+          subtitleTalkback: getHorizon(context, _currentHeadingDegrees),
+        ),
+        Expanded(
+          flex: 2, // 1/3 of the screen for the text and buttons
+          child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+            double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
+            return Container(
+              width: double.infinity, // Full width for TalkBack focus
+              child: Semantics(
+                button: true, // Explicitly mark as a button
+                label: AppLocalizations.of(context)!.button_close_t,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: BoldIconButton(
+                    talkback: "",
+                    buttonWidth: buttonWidth,
+                    icons: Icons.close_rounded,
+                    onTab: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 2, // 1/3 of the screen for the text and buttons
-            child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              double buttonWidth = constraints.maxWidth / 4; // 1/3 of the parent width
-              return Container(
-                width: double.infinity, // Full width for TalkBack focus
-                child: Semantics(
-                  button: true, // Explicitly mark as a button
-                  label: AppLocalizations.of(context)!.button_close_t,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: BoldIconButton(
-                      talkback: "",
-                      buttonWidth: buttonWidth,
-                      icons: Icons.close_rounded,
-                      onTab: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ),
-        ],
-      ),
+            );
+          }),
+        ),
+      ],
     );
   }
 }

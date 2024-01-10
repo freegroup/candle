@@ -7,6 +7,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/favorites_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -69,118 +70,120 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           mini: false,
           child: const Icon(Icons.add, size: 50),
         ),
-        body: Align(
-            alignment: Alignment.topCenter,
-            child: FutureBuilder<List<model.LocationAddress>>(
-              future: db.allLocations(),
-              builder: (context, snapshot) {
-                AppLocalizations l10n = AppLocalizations.of(context)!;
-                ThemeData theme = Theme.of(context);
+        body: BackgroundWidget(
+          child: Align(
+              alignment: Alignment.topCenter,
+              child: FutureBuilder<List<model.LocationAddress>>(
+                future: db.allLocations(),
+                builder: (context, snapshot) {
+                  AppLocalizations l10n = AppLocalizations.of(context)!;
+                  ThemeData theme = Theme.of(context);
 
-                if (!snapshot.hasData) {
-                  return Semantics(
-                    label: l10n.label_common_loading_t,
-                    child: Text(l10n.label_common_loading),
-                  );
-                }
-                return snapshot.data!.isEmpty
-                    ? const FavoritesPlaceholder()
-                    : SlidableAutoCloseBehavior(
-                        closeWhenOpened: true,
-                        child: ListView.separated(
-                          itemCount: snapshot.data!.length,
-                          separatorBuilder: (context, index) {
-                            return Divider(
-                              color: theme.primaryColorDark,
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            model.LocationAddress location = snapshot.data![index];
-                            bool isSelected = selectedItemIndex == index;
-                            return Semantics(
-                              customSemanticsActions: {
-                                CustomSemanticsAction(label: l10n.button_common_edit_t): () {
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                        builder: (context) => FavoriteCreateUpdateScreen(
-                                          initialLocation: location,
+                  if (!snapshot.hasData) {
+                    return Semantics(
+                      label: l10n.label_common_loading_t,
+                      child: Text(l10n.label_common_loading),
+                    );
+                  }
+                  return snapshot.data!.isEmpty
+                      ? const FavoritesPlaceholder()
+                      : SlidableAutoCloseBehavior(
+                          closeWhenOpened: true,
+                          child: ListView.separated(
+                            itemCount: snapshot.data!.length,
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                color: theme.primaryColorDark,
+                              );
+                            },
+                            itemBuilder: (context, index) {
+                              model.LocationAddress location = snapshot.data![index];
+                              bool isSelected = selectedItemIndex == index;
+                              return Semantics(
+                                customSemanticsActions: {
+                                  CustomSemanticsAction(label: l10n.button_common_edit_t): () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                          builder: (context) => FavoriteCreateUpdateScreen(
+                                            initialLocation: location,
+                                          ),
+                                        ))
+                                        .then((value) => {setState(() => {})});
+                                  },
+                                  CustomSemanticsAction(label: l10n.button_common_delete_t): () {
+                                    setState(() {
+                                      db.removeLocation(location);
+                                      showSnackbar(
+                                          context, l10n.location_delete_toast(location.name));
+                                    });
+                                  },
+                                },
+                                child: Slidable(
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (context) {
+                                          setState(() {
+                                            db.removeLocation(location);
+                                            showSnackbar(
+                                                context, l10n.location_delete_toast(location.name));
+                                          });
+                                        },
+                                        backgroundColor: theme.colorScheme.error,
+                                        foregroundColor: theme.colorScheme.primary,
+                                        icon: Icons.delete,
+                                        label: l10n.button_common_delete,
+                                      ),
+                                      SlidableAction(
+                                        onPressed: (context) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                builder: (context) => FavoriteCreateUpdateScreen(
+                                                  initialLocation: location,
+                                                ),
+                                              ))
+                                              .then((value) => {setState(() => {})});
+                                        },
+                                        backgroundColor: theme.colorScheme.onPrimary,
+                                        foregroundColor: theme.colorScheme.primary,
+                                        icon: Icons.edit,
+                                        label: l10n.button_common_edit,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                      title: Text(
+                                        location.name,
+                                        style: TextStyle(
+                                          color: theme.primaryColor,
+                                          fontSize: theme.textTheme.headlineSmall?.fontSize,
                                         ),
-                                      ))
-                                      .then((value) => {setState(() => {})});
-                                },
-                                CustomSemanticsAction(label: l10n.button_common_delete_t): () {
-                                  setState(() {
-                                    db.removeLocation(location);
-                                    showSnackbar(
-                                        context, l10n.location_delete_toast(location.name));
-                                  });
-                                },
-                              },
-                              child: Slidable(
-                                endActionPane: ActionPane(
-                                  motion: const ScrollMotion(),
-                                  children: [
-                                    SlidableAction(
-                                      onPressed: (context) {
-                                        setState(() {
-                                          db.removeLocation(location);
-                                          showSnackbar(
-                                              context, l10n.location_delete_toast(location.name));
-                                        });
-                                      },
-                                      backgroundColor: theme.colorScheme.error,
-                                      foregroundColor: theme.colorScheme.primary,
-                                      icon: Icons.delete,
-                                      label: l10n.button_common_delete,
-                                    ),
-                                    SlidableAction(
-                                      onPressed: (context) {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                              builder: (context) => FavoriteCreateUpdateScreen(
-                                                initialLocation: location,
-                                              ),
-                                            ))
-                                            .then((value) => {setState(() => {})});
-                                      },
-                                      backgroundColor: theme.colorScheme.onPrimary,
-                                      foregroundColor: theme.colorScheme.primary,
-                                      icon: Icons.edit,
-                                      label: l10n.button_common_edit,
-                                    ),
-                                  ],
+                                      ),
+                                      subtitle: Text(
+                                        location.formattedAddress,
+                                        style: TextStyle(
+                                          color: theme.primaryColor,
+                                          fontSize: theme.textTheme.bodyLarge?.fontSize,
+                                        ),
+                                      ),
+                                      tileColor:
+                                          isSelected ? theme.primaryColor.withOpacity(0.1) : null,
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => LatLngCompassScreen(
+                                            target: location.latlng(),
+                                            targetName: location.name,
+                                          ),
+                                        ));
+                                      }),
                                 ),
-                                child: ListTile(
-                                    title: Text(
-                                      location.name,
-                                      style: TextStyle(
-                                        color: theme.primaryColor,
-                                        fontSize: theme.textTheme.headlineSmall?.fontSize,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      location.formattedAddress,
-                                      style: TextStyle(
-                                        color: theme.primaryColor,
-                                        fontSize: theme.textTheme.bodyLarge?.fontSize,
-                                      ),
-                                    ),
-                                    tileColor:
-                                        isSelected ? theme.primaryColor.withOpacity(0.1) : null,
-                                    onTap: () {
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => LatLngCompassScreen(
-                                          target: location.latlng(),
-                                          targetName: location.name,
-                                        ),
-                                      ));
-                                    }),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-              },
-            )));
+                              );
+                            },
+                          ),
+                        );
+                },
+              )),
+        ));
   }
 }
