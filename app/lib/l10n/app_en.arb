@@ -228,6 +228,16 @@
     }
   },
 
+  "remaining_waypoint_distance": "{meters} meter",
+  "@remaining_waypoint_distance": {
+    "description": "Information how long the remaining distance is to the next waypoint",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters the next waypoint"
+      }
+    }
+  },
 
   "location_name_t": "Input field for the location name",
   "@location_name_t": {
@@ -237,6 +247,12 @@
   "location_name": "Favorite name",
   "@location_name": {
     "description": "The label for the location name input"
+  },
+
+
+  "location_reached": "You've arrived. Welcome!",
+  "@location_name": {
+    "description": "The label if the user has reached the location"
   },
 
   "location_name_required_snackbar": "Favorite name is required",
@@ -591,6 +607,30 @@
   "poi_category_taxis": "Taxis",
   "poi_category_pharmacies": "Pharmacies",
   "poi_category_audible_signals": "Audible Signals",
-  "poi_category_public_toilets": "Public Toilets"
+  "poi_category_public_toilets": "Public Toilets",
+
+
+  "turnInstruction": "After {distance} meters, {turn}.",
+  "@turnInstruction": {
+    "description": "Message indicating the direction the phone is pointing",
+    "placeholders": {
+      "distance": {
+        "type": "int",
+        "description": "The distance to walk"
+      },
+      "turn": {
+        "type": "String",
+        "description": "The direction name"
+      }
+    }
+  },
+  "turnHardLeft": "turn hard left",
+  "turnLeft": "turn left",
+  "turnSlightlyLeft": "turn slightly left",
+  "turnSlightlyRight": "turn slightly right",
+  "turnRight": "turn right",
+  "turnHardRight": "turn hard right",
+  "straightAhead": "go straight"
+
 }
 

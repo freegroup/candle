@@ -3,24 +3,26 @@ import 'dart:async';
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/compass.dart';
+import 'package:candle/services/geocoding_google.dart';
 import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/services/router.dart';
 import 'package:candle/services/screen_wake.dart';
 import 'package:candle/theme_data.dart';
-import 'package:candle/utils/colors.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
-import 'package:candle/widgets/twoliner.dart';
+import 'package:candle/widgets/route_map_osm.dart';
+import 'package:candle/widgets/target_reached.dart';
+import 'package:candle/widgets/turn_by_turn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class LatLngRouteScreen extends StatefulWidget {
@@ -37,13 +39,27 @@ class _ScreenState extends State<LatLngRouteScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<LocationData>? _locationSubscription;
 
+  late Future<model.Route?> _route;
+
   int _currentMapRotation = 0;
   int _currentWaypointHeading = 0;
-  int _currentDistanceToWaypoint = 0;
-  int _currentDistanceToTarget = 0;
-  late model.NavigationPoint _waypoint;
+  int _distanceToTurnByTurnWaypoint = 0;
+
+  int _distanceToTarget = 0;
+  // it is a oneTime toggle. Once the target is reached, it never gets back to "false"
+  bool targetReached = false;
+
+  // the current location of the user given by the GPS signal
   late LatLng _currentLocation;
-  late Future<model.Route?> _route;
+  // this is the waypoint where the compas is pointing
+  model.NavigationPoint? _currentHeadingWaypoint;
+  // this is the next routing waypoint for the turn-by-turn instruction
+  model.NavigationPoint? _currentTurnByTurnWaypoint;
+  // this is the successor routing waypoint for the turn-by-turn instruction
+  model.NavigationPoint? _nextTurnByTurnWaypoint;
+
+  // vibration handlnig
+  //
   int lastVibratedIndex = -1;
   bool _wasAligned = false;
 
@@ -52,19 +68,20 @@ class _ScreenState extends State<LatLngRouteScreen> {
     super.initState();
     ScreenWakeService.keepOn(true);
 
-    _route = _updateRoute(widget.source, widget.target);
+    _route = _calculateRoute(widget.source, widget.target);
     _currentLocation = widget.source;
-    _updateWaypoint(_currentLocation);
+    _updateWaypoints(_currentLocation);
     _listenToLocationChanges();
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         log.e(err);
       }).listen((compassEvent) async {
-        if (mounted) {
+        if (mounted && _currentHeadingWaypoint != null) {
           var route = await _route;
           if (route == null) return;
-          var waypointHeading = calculateNorthBearing(_currentLocation, _waypoint.latlng());
+          var waypointHeading =
+              calculateNorthBearing(_currentLocation, _currentHeadingWaypoint!.latlng());
           var mapRotation = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
 
           bool currentlyAligned = _isAligned(mapRotation, waypointHeading);
@@ -78,18 +95,21 @@ class _ScreenState extends State<LatLngRouteScreen> {
             _wasAligned = currentlyAligned;
           }
 
-          var newDistance = calculateDistance(_currentLocation, _waypoint.latlng()).toInt();
+          var newDistance =
+              calculateDistance(_currentLocation, _currentTurnByTurnWaypoint!.latlng()).toInt();
           var resumeDistance =
-              route.calculateResumingLengthFromWaypoint(_waypoint).toInt() + newDistance;
-          if (mapRotation != _currentMapRotation ||
-              newDistance != _currentDistanceToWaypoint ||
-              resumeDistance != _currentDistanceToTarget) {
+              route.calculateResumingLengthFromWaypoint(_currentHeadingWaypoint!).toInt() +
+                  newDistance;
+          if (mounted &&
+              (mapRotation != _currentMapRotation ||
+                  newDistance != _distanceToTurnByTurnWaypoint ||
+                  resumeDistance != _distanceToTarget)) {
             setState(() {
-              log.d("setState regarding compass changes....angle: $mapRotation : $waypointHeading");
+              log.d("setState regarding compass,distance, waypoint changes....");
               _currentMapRotation = mapRotation;
               _currentWaypointHeading = waypointHeading;
-              _currentDistanceToWaypoint = newDistance;
-              _currentDistanceToTarget = resumeDistance;
+              _distanceToTurnByTurnWaypoint = newDistance;
+              _distanceToTarget = resumeDistance;
             });
           }
         }
@@ -105,11 +125,15 @@ class _ScreenState extends State<LatLngRouteScreen> {
     _locationSubscription?.cancel();
   }
 
-  Future<model.Route?> _updateRoute(LatLng start, LatLng target) {
-    //var geo = GoogleMapsGeocodingService();
-    var geo = OSMGeocodingService();
-    lastVibratedIndex = -1;
-    return geo.getPedestrianRoute(start, target);
+  Future<model.Route?> _calculateRoute(LatLng start, LatLng target) async {
+    try {
+      var geo = Provider.of<RoutingProvider>(context, listen: false).service;
+      lastVibratedIndex = -1;
+      return await geo.getPedestrianRoute(start, target);
+    } catch (e) {
+      log.e("Error fetching route: $e");
+      return null; // Or handle the error as needed
+    }
   }
 
   bool _isAligned(int mapRotation, waypointHeading) {
@@ -125,14 +149,24 @@ class _ScreenState extends State<LatLngRouteScreen> {
         return;
       }
       _currentLocation = LatLng(newLocation.latitude!, newLocation.longitude!);
-      _updateWaypoint(_currentLocation);
+      _updateWaypoints(_currentLocation);
       log.d("Got location update: $_currentLocation");
     });
   }
 
-  void _updateWaypoint(LatLng location) async {
+  void _updateWaypoints(LatLng location) async {
+    print(targetReached);
+    if (targetReached == true) {
+      return;
+    }
+
     final route = await _route;
-    if (route == null) return;
+    if (route == null) {
+      _route = _calculateRoute(location, widget.target);
+      // try to find a wayoint in the next iteration
+      return;
+    }
+
     final closestSegment = route.findClosestSegment(location);
 
     // If the closest segment far away from my current location, we calculate
@@ -141,10 +175,9 @@ class _ScreenState extends State<LatLngRouteScreen> {
     var distance = closestSegment["distance"];
     if (distance > 15) {
       log.d("Closest Segment is to far ($distance)- recalculate route....");
-      var newRoute = _updateRoute(location, widget.target);
-      newRoute.then((value) {
-        _route = newRoute;
-      });
+      _route = _calculateRoute(location, widget.target);
+      // try to find a wayoint in the next iteration
+      return;
     }
 
     int startCoordinateIndex = closestSegment['start']['index'];
@@ -172,8 +205,44 @@ class _ScreenState extends State<LatLngRouteScreen> {
       lastVibratedIndex = startCoordinateIndex;
 
       if (startCoordinateIndex < route.points.length - 1) {
-        _waypoint = route.points[startCoordinateIndex + 1];
-        setState(() {});
+        // index the next point of the first segment
+        startCoordinateIndex++;
+        _currentHeadingWaypoint = route.points[startCoordinateIndex];
+
+        // set some good default
+        _currentTurnByTurnWaypoint = _currentHeadingWaypoint;
+        _nextTurnByTurnWaypoint = _currentHeadingWaypoint;
+
+        // try to find the current "real" navigation waypoint for turn-by-turn instruction
+        //
+        startCoordinateIndex++;
+        if ((startCoordinateIndex < route.points.length)) {
+          _currentTurnByTurnWaypoint = route.points[startCoordinateIndex];
+          _nextTurnByTurnWaypoint = _currentTurnByTurnWaypoint;
+        }
+
+        print("ddddd");
+        startCoordinateIndex++;
+        if ((startCoordinateIndex < route.points.length)) {
+          _nextTurnByTurnWaypoint = route.points[startCoordinateIndex];
+        } else if (_currentHeadingWaypoint == _nextTurnByTurnWaypoint &&
+            (calculateDistance(_currentLocation, _currentHeadingWaypoint!.latlng()) <
+                (kMinDistanceForNextWaypoint * 2))) {
+          // it seems that we have "almost" reached the target because
+          // the next target points are pointing to the last rote points.
+          targetReached = true;
+        }
+
+        // Now we have three wayoints we can calculate the values for the turn-by-turn
+        // instruction for the user:
+        // - how far the next waypoint is.
+        // - what the angle to turn if we reach this waypoint.
+
+        // update the UI
+        if (mounted) setState(() {});
+      } else {
+        print("TARGET REACHED......");
+        targetReached = true;
       }
     }
   }
@@ -182,61 +251,25 @@ class _ScreenState extends State<LatLngRouteScreen> {
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
-    double screenDividerFraction = screenHeight * (5 / 9);
+    double screenDividerFraction = screenHeight * (6 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.navigation_poi_dialog),
         talkback: l10n.navigation_poi_dialog_t,
       ),
-      body: DividedWidget(
-        fraction: screenDividerFraction,
-        top: _buildRouteMap(),
-        bottom: _buildBottomPanel(),
+      body: MergeSemantics(
+        child: DividedWidget(
+          fraction: screenDividerFraction,
+          top: ExcludeSemantics(child: _buildTopPanel()),
+          bottom: _buildBottomPanel(),
+        ),
       ),
     );
   }
 
-  Widget _buildBottomPanel() {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-
-    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
-    Color? backgroundColor = isAligned ? theme.positiveColor : null;
-
-    return Stack(
-      children: [
-        // Background color layer
-        Container(
-          color: backgroundColor,
-          height: double.infinity,
-          width: double.infinity,
-        ),
-        // Content layer
-        Column(
-          children: [
-            TwolinerWidget(
-              headline: l10n.remaining_route_distance(_currentDistanceToTarget),
-              headlineTalkback: l10n.remaining_route_distance_t(_currentDistanceToTarget),
-              subtitle: l10n.waypoint_distance(_currentDistanceToWaypoint),
-              subtitleTalkback: l10n.waypoint_distance_t(_currentDistanceToWaypoint),
-            ),
-            BoldIconButton(
-              talkback: l10n.button_close_t,
-              buttonWidth: MediaQuery.of(context).size.width / 5,
-              icons: Icons.close,
-              onTab: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   // Separate method to build the map, isolated from other state changes.
-  Widget _buildRouteMap() {
+  Widget _buildTopPanel() {
     return FutureBuilder<model.Route?>(
       future: _route,
       builder: (context, snapshot) {
@@ -248,9 +281,11 @@ class _ScreenState extends State<LatLngRouteScreen> {
         } else if (snapshot.hasData && snapshot.data != null) {
           return RouteMapWidget(
             route: snapshot.data!,
-            heading: -_currentMapRotation.toDouble(),
+            mapRotation: -_currentMapRotation.toDouble(),
             currentLocation: _currentLocation,
-            waypoint: _waypoint.latlng(),
+            currentWaypoint: _currentHeadingWaypoint?.latlng(),
+            marker1: _currentTurnByTurnWaypoint?.latlng(),
+            marker2: _nextTurnByTurnWaypoint?.latlng(),
           );
         } else {
           return const Center(child: Text('No route found'));
@@ -258,141 +293,35 @@ class _ScreenState extends State<LatLngRouteScreen> {
       },
     );
   }
-}
 
-class RouteMapWidget extends StatefulWidget {
-  final model.Route route;
-  final double heading;
-  final LatLng currentLocation;
-  final LatLng waypoint;
-  static google.BitmapDescriptor? customCircleIcon;
-
-  const RouteMapWidget({
-    super.key,
-    required this.route,
-    required this.heading,
-    required this.currentLocation,
-    required this.waypoint,
-  });
-
-  @override
-  State<RouteMapWidget> createState() => _RouteMapWidgetState();
-}
-
-class _RouteMapWidgetState extends State<RouteMapWidget> {
-  google.GoogleMapController? _mapController;
-
-  @override
-  void initState() {
-    super.initState();
-    if (RouteMapWidget.customCircleIcon == null) {
-      _loadCustomIcon(); // Load the icon only if it's null
-    }
-  }
-
-  void _loadCustomIcon() async {
-    RouteMapWidget.customCircleIcon = await google.BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(devicePixelRatio: 1),
-      'assets/images/location_marker.png', // Path to your circle icon
-    );
-  }
-
-  @override
-  void didUpdateWidget(RouteMapWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.heading != oldWidget.heading ||
-        widget.currentLocation != oldWidget.currentLocation) {
-      centerMapOnCurrentLocation();
-    }
-  }
-
-  void centerMapOnCurrentLocation() {
-    _mapController?.moveCamera(
-      google.CameraUpdate.newCameraPosition(
-        google.CameraPosition(
-          target: google.LatLng(
-            widget.currentLocation.latitude,
-            widget.currentLocation.longitude,
-          ),
-          bearing: (360) - widget.heading.toDouble(),
-          zoom: 17,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    log.d("Building map...");
-
+  Widget _buildBottomPanel() {
     ThemeData theme = Theme.of(context);
-    final google.Marker currentLocationMarker = google.Marker(
-      markerId: const google.MarkerId('current_location'),
-      position: google.LatLng(widget.currentLocation.latitude, widget.currentLocation.longitude),
-      icon: RouteMapWidget.customCircleIcon ?? google.BitmapDescriptor.defaultMarker,
-      anchor: const Offset(0.5, 0), // Set anchor to top center
-    );
 
-    Set<google.Circle> circles = {};
-    // Create a circle for the waypoint
-    circles.add(google.Circle(
-      circleId: const google.CircleId('waypoint'),
-      center: google.LatLng(widget.waypoint.latitude, widget.waypoint.longitude),
-      radius: 10, // Adjust the size as needed
-      fillColor: Colors.red.withOpacity(0.8),
-      strokeColor: Colors.red,
-      strokeWidth: 2,
-    ));
+    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
+    Color? backgroundColor = isAligned ? theme.positiveColor : null;
 
-    circles.addAll(widget.route.points.map((point) {
-      return google.Circle(
-        circleId: google.CircleId(point.toString()),
-        center: google.LatLng(point.coordinate.latitude, point.coordinate.longitude),
-        radius: 4,
-        fillColor: point.type == model.NavigationPointType.syntetic
-            ? theme.primaryColor.withOpacity(0.5)
-            : darken(theme.primaryColor, 0.15),
-        strokeWidth: 1,
-        strokeColor: darken(theme.primaryColor, 0.15),
-      );
-    }).toSet());
-
-    // Create a polyline for the route
-    google.Polyline routePolyline = google.Polyline(
-      polylineId: const google.PolylineId('route'),
-      points: widget.route.points
-          .map((point) => google.LatLng(
-                point.coordinate.latitude,
-                point.coordinate.longitude,
-              ))
-          .toList(),
-      color: theme.primaryColor,
-      width: 10,
-    );
-
-    return google.GoogleMap(
-      onMapCreated: (google.GoogleMapController controller) {
-        _mapController = controller;
-        centerMapOnCurrentLocation(); // Ensure map is centered on current location with correct heading
-        controller.setMapStyle(kMapStyle);
-      },
-      initialCameraPosition: google.CameraPosition(
-        target: google.LatLng(
-          widget.currentLocation.latitude,
-          widget.currentLocation.longitude,
+    // The "Background color layer" is required to avoid a complete TalkBack
+    // announcement if the background color is changed. IF the user has select
+    // one text element, e.g. the direction part, then everytime the color is
+    // changing, the Talkback of selected element is activated...anoying.
+    //
+    return Stack(
+      children: [
+        // Background color layer
+        Container(
+          color: backgroundColor,
+          height: double.infinity,
+          width: double.infinity,
         ),
-        zoom: 17.0,
-        bearing: widget.heading,
-      ),
-      markers: {currentLocationMarker},
-      polylines: {routePolyline},
-      circles: circles,
-      scrollGesturesEnabled: false, // Disable scroll gestures
-      zoomGesturesEnabled: false, // Disable zoom gestures
-      tiltGesturesEnabled: false, // Disable tilt gestures
-      rotateGesturesEnabled: false, // Disable rotate gestures
-      zoomControlsEnabled: false,
-      compassEnabled: false,
+        // Content layer
+        targetReached
+            ? TargetReachedWidget()
+            : TurnByTurnInstructionWidget(
+                currentCoord: _currentLocation,
+                waypoint1: _currentTurnByTurnWaypoint,
+                waypoint2: _nextTurnByTurnWaypoint,
+              ),
+      ],
     );
   }
 }

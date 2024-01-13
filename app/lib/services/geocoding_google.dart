@@ -1,56 +1,13 @@
-import 'dart:convert';
-
 import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/location_address.dart';
-import 'package:candle/models/navigation_point.dart' as model;
-import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class GoogleMapsGeocodingService implements GeocodingService {
-  @override
-  Future<model.Route?> getPedestrianRoute(LatLng start, LatLng end) async {
-    const String baseUrl = 'https://maps.googleapis.com/maps/api/directions/json';
-    const String mode = 'walking';
-    final String url =
-        '$baseUrl?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&mode=$mode&key=$GOOGLE_API_KEY';
-
-    log.d(url);
-    try {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-
-        if (data['status'] == 'OK') {
-          // Parse the steps of the route
-          List<model.NavigationPoint> routePoints = [];
-          var steps = data['routes'][0]['legs'][0]['steps'];
-
-          routePoints.add(model.NavigationPoint(coordinate: start, annotation: 'Start'));
-          for (var step in steps) {
-            double lat = step['end_location']['lat'];
-            double lng = step['end_location']['lng'];
-            routePoints.add(model.NavigationPoint(coordinate: LatLng(lat, lng), annotation: ''));
-          }
-
-          return model.Route(name: 'Pedestrian Route', points: routePoints);
-        } else {
-          throw Exception('Failed to load pedestrian route data: ${data['status']}');
-        }
-      } else {
-        throw Exception('Failed to fetch data from Google Maps Directions API');
-      }
-    } catch (e) {
-      throw Exception('Error occurred during fetching pedestrian route: $e');
-    }
-  }
-
   @override
   Future<LocationAddress?> getGeolocationAddress(LatLng coord) async {
     try {

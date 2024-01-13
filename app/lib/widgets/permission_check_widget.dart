@@ -1,8 +1,7 @@
-import 'package:candle/screens/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/screens/permissions_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsCheckWidget extends StatelessWidget {
   const PermissionsCheckWidget({super.key});

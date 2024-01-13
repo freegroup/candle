@@ -1,14 +1,13 @@
 import 'dart:async';
+
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/address_lookup.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:uuid/uuid.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 //Model classes that will be used for auto complete
 
@@ -24,7 +23,6 @@ class AddressSearchScreen extends StatefulWidget {
 
 class _ScreenState extends State<AddressSearchScreen> {
   final _controller = TextEditingController();
-  final provider = AddressLookupProvider(const Uuid().v4());
   List<LocationAddress> suggestion = [];
   Timer? _debounce;
 

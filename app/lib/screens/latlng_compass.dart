@@ -128,14 +128,13 @@ class _ScreenState extends State<LatLngCompassScreen> {
   Widget _buildTopPanel() {
     bool isAligned = _isAligned(_currentHeadingDegrees);
 
-    return Center(
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          double containerWidth = constraints.maxWidth * 0.7;
-          return Semantics(
-            label: sayRotate(
-                context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
-            child: Stack(
+    return Semantics(
+      label: sayRotate(context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
+      child: Center(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            double containerWidth = constraints.maxWidth * 0.7;
+            return Stack(
               alignment: Alignment.center,
               children: [
                 LocationArrowIcon(
@@ -150,9 +149,9 @@ class _ScreenState extends State<LatLngCompassScreen> {
                   width: containerWidth,
                 ),
               ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

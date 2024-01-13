@@ -1,6 +1,7 @@
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/services/geocoding_google.dart';
+import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
@@ -8,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 
 abstract class GeocodingService {
-  Future<model.Route?> getPedestrianRoute(LatLng start, LatLng end);
   Future<model.LocationAddress?> getGeolocationAddress(LatLng coord);
   Future<List<model.LocationAddress>> searchNearbyAddress({
     required String addressFragment,
@@ -23,7 +23,7 @@ class GeoServiceProvider extends ChangeNotifier {
   LatLng _lastLocation = const LatLng(0, 0);
 
   GeocodingService _service = GoogleMapsGeocodingService();
-  //GeocodingService _geo = OSMGeocodingService();
+  //GeocodingService _service = OSMGeocodingService();
   model.LocationAddress? _currentAddress;
 
   GeocodingService get service => _service;

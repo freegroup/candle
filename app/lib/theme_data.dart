@@ -12,8 +12,8 @@ class CThemeData {
 
     return ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: Color.fromRGBO(20, 20, 20, 1),
-      cardColor: Colors.black,
+      scaffoldBackgroundColor: Colors.black,
+      cardColor: Color.fromRGBO(20, 20, 20, 1),
       dividerColor: Color.fromRGBO(60, 60, 60, 1),
       primaryColorDark: _createDarkerColor(mySwatch),
       textTheme: baseTheme.textTheme.apply(
@@ -34,9 +34,8 @@ class CThemeData {
         shadowColor: Colors.black,
         titleTextStyle: TextStyle(
           color: mySwatch,
-          letterSpacing: 5,
           fontSize: 30,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w600,
         ),
         iconTheme: IconThemeData(color: mySwatch),
       ),

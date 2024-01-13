@@ -68,7 +68,7 @@
   "compass_dialog": "Kompass",
   "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Telefon horizontal halten",
 
-  "navigation_poi_dialog_t": "Schrit für Schritt Navigation zu ihrem Ziel wurde gestartet.",
+  "navigation_poi_dialog_t": "Die Weg Führung zu ihrem Ziel wurde gestartet.",
   "navigation_poi_dialog": "Wegführung",
 
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
@@ -84,6 +84,7 @@
 
   "remaining_route_distance_t": "Die verbleibende Entfernung bis zu Ihrem Ziel beträgt {meters} Meter.",
   "remaining_route_distance": "{meters} Meter",
+  "remaining_waypoint_distance": "{meters} Meter",
 
   "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
   "location_add_dialog": "Standort anlegen",
@@ -96,7 +97,8 @@
   "location_name_t": "Eingabefeld für den Favoritennamen.",
   "location_name": "Favoriten Name",
   "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
-
+  "location_reached": "Sie sind da. Willkommen!",
+  
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
   
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
@@ -155,6 +157,15 @@
   "poi_category_taxis": "Taxistände",
   "poi_category_pharmacies": "Apotheken",
   "poi_category_audible_signals": "Akustische Signale",
-  "poi_category_public_toilets": "Öffentliche Toiletten"
+  "poi_category_public_toilets": "Öffentliche Toiletten",
 
+
+  "turnInstruction": "Nach {distance} Metern, {turn}.",
+  "turnHardLeft": "scharf links abbiegen",
+  "turnLeft": "links abbiegen",
+  "turnSlightlyLeft": "leicht links abbiegen",
+  "turnSlightlyRight": "leicht rechts abbiegen",
+  "turnRight": "rechts abbiegen",
+  "turnHardRight": "scharf rechts abbiegen",
+  "straightAhead": "weiter geradeaus gehen"
 }

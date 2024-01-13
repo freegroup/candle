@@ -1,11 +1,10 @@
 import 'package:candle/models/route.dart';
-import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/geocoding_osm.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:test/test.dart';
 
 void main() {
-  GeocodingService geo = OSMGeocodingService();
+  OSMGeocodingService geo = OSMGeocodingService();
   //GeocodingService geo = GoogleMapsGeocodingService();
   test('Geolocation address lookup', () async {
     LatLng start = const LatLng(49.459669845037425, 8.603467947203);

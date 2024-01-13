@@ -6,13 +6,48 @@ class DividedWidget extends StatelessWidget {
   final Widget bottom;
   final double fraction;
   final double corner = 60;
-  final double topBorder = 1;
+  final int topBorder = 15;
 
   const DividedWidget({required this.top, required this.bottom, required this.fraction, super.key});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
+    // Generate Positioned elements for the shadow effect
+    List<Widget> generateShadowElements(int topBorder) {
+      return [
+        ...List.generate(topBorder, (index) {
+          double opacity = (topBorder - index) * 0.001; // Adjust opacity for each layer
+          return Positioned(
+            left: -(index).toDouble(),
+            right: -(index).toDouble(),
+            bottom: 0,
+            top: fraction - corner - index,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(corner + index),
+                topRight: Radius.circular(corner + index),
+              ),
+              child: Container(color: theme.primaryColor.withOpacity(opacity)),
+            ),
+          );
+        }),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: fraction - corner - 1,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(corner),
+              topRight: Radius.circular(corner),
+            ),
+            child: Container(color: Colors.black),
+          ),
+        )
+      ];
+    }
 
     return BackgroundWidget(
       child: Stack(
@@ -25,20 +60,7 @@ class DividedWidget extends StatelessWidget {
             height: fraction,
             child: top,
           ),
-          // Bottom panel occupies the bottom 1/3 of the screen
-          Positioned(
-            left: -(topBorder - 1),
-            right: -(topBorder - 1),
-            bottom: 0,
-            top: fraction - corner - topBorder,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(corner),
-                topRight: Radius.circular(corner),
-              ),
-              child: Container(color: theme.primaryColor.withOpacity(0.1)),
-            ),
-          ),
+          ...generateShadowElements(topBorder),
           // Bottom panel occupies the bottom 1/3 of the screen
           Positioned(
             left: 0,
@@ -51,14 +73,14 @@ class DividedWidget extends StatelessWidget {
                 topRight: Radius.circular(corner),
               ),
               child: Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     stops: [0.0, 1.0],
                     colors: [
                       Color.fromARGB(255, 2, 2, 2),
-                      Color.fromARGB(255, 10, 10, 10),
+                      Color.fromARGB(255, 9, 9, 9),
                     ],
                   ),
                 ),

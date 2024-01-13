@@ -37,13 +37,15 @@ class _ScreenState extends State<PoiCategoryScreen> {
       coord = await LocationService.instance.location; // Fetch location
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
       var fetchedPois = await poiProvider.fetchPois(widget.category.categories, 2000, coord!);
-      setState(() {
-        pois = fetchedPois;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          pois = fetchedPois;
+          isLoading = false;
+        });
+      }
     } catch (e) {
       // Handle error
-      setState(() => isLoading = false);
+      if (mounted) setState(() => isLoading = false);
     }
   }
 

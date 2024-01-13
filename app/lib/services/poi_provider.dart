@@ -17,12 +17,12 @@ class PoiProvider extends ChangeNotifier {
   final PoiProviderOverpass _poiLookupProvider = PoiProviderOverpass();
 
   Future<List<PoiDetail>> fetchPois(
-      List<String> categories, int radiusInMeter, LatLng nearby_coords) async {
+      List<String> categories, int radiusInMeter, LatLng nearbyCoords) async {
     try {
       List<PoiDetail> pois =
-          await _poiLookupProvider.fetchPoi(categories, radiusInMeter, nearby_coords);
-      pois.sort((a, b) => calculateDistance(a.latlng, nearby_coords)
-          .compareTo(calculateDistance(b.latlng, nearby_coords)));
+          await _poiLookupProvider.fetchPoi(categories, radiusInMeter, nearbyCoords);
+      pois.sort((a, b) => calculateDistance(a.latlng, nearbyCoords)
+          .compareTo(calculateDistance(b.latlng, nearbyCoords)));
 
       // because sometimes be get a poi twice with differnet distances....we keep
       // only one.
@@ -32,9 +32,9 @@ class PoiProvider extends ChangeNotifier {
 
       // Populate the map with the closest pois
       for (final poi in pois) {
-        double distance = calculateDistance(poi.latlng, nearby_coords);
+        double distance = calculateDistance(poi.latlng, nearbyCoords);
         if (!closestPoisByName.containsKey(poi.name) ||
-            distance < calculateDistance(closestPoisByName[poi.name]!.latlng, nearby_coords)) {
+            distance < calculateDistance(closestPoisByName[poi.name]!.latlng, nearbyCoords)) {
           closestPoisByName[poi.name] = poi;
         }
       }
@@ -43,8 +43,8 @@ class PoiProvider extends ChangeNotifier {
       List<PoiDetail> uniquePois = [];
       for (final poi in pois) {
         PoiDetail closestPoi = closestPoisByName[poi.name]!;
-        double distanceToClosestPoi = calculateDistance(closestPoi.latlng, nearby_coords);
-        double distanceToCurrentPoi = calculateDistance(poi.latlng, nearby_coords);
+        double distanceToClosestPoi = calculateDistance(closestPoi.latlng, nearbyCoords);
+        double distanceToCurrentPoi = calculateDistance(poi.latlng, nearbyCoords);
 
         if (distanceToCurrentPoi == distanceToClosestPoi) {
           uniquePois.add(poi);

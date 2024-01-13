@@ -1,4 +1,5 @@
 import 'package:candle/services/poi_provider.dart';
+import 'package:candle/services/router.dart';
 import 'package:candle/widgets/permission_check_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => GeoServiceProvider()),
         ChangeNotifierProvider(create: (_) => PoiProvider()),
+        ChangeNotifierProvider(create: (_) => RoutingProvider()),
       ],
       child: MaterialApp(
         title: 'Candle Navigation',
