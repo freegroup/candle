@@ -39,6 +39,7 @@ class TileButton extends StatelessWidget {
           )),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
           shadowColor: MaterialStateProperty.all(Colors.transparent),
+          textStyle: MaterialStateProperty.all(theme.textTheme.labelSmall),
         ),
         onPressed: onPressed,
         child: LayoutBuilder(

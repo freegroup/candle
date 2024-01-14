@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,10 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   }
 
   Future<void> _checkPermissions() async {
-    if (await Permission.location.isGranted && await Permission.microphone.isGranted) {
+    if (await Permission.location.isGranted &&
+        await Permission.microphone.isGranted &&
+        await Permission.camera.isGranted &&
+        (Platform.isIOS || await Permission.locationAlways.isGranted)) {
       _navigateToMainApp();
     }
   }
@@ -28,17 +33,47 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     final locationStatus = await Permission.location.request();
     final microphoneStatus = await Permission.microphone.request();
     final cameraStatus = await Permission.camera.request();
+
     if (locationStatus.isGranted && microphoneStatus.isGranted && cameraStatus.isGranted) {
-      _navigateToMainApp();
+      if (Platform.isAndroid) {
+        final backgroundLocationStatus = await Permission.locationAlways.request();
+        if (backgroundLocationStatus.isGranted) {
+          _navigateToMainApp();
+        } else {
+          _showPermissionsDeniedDialog();
+        }
+      } else {
+        _navigateToMainApp();
+      }
     } else {
-      // Handle the case when one or both permissions are denied
+      _showPermissionsDeniedDialog();
     }
+  }
+
+  void _showPermissionsDeniedDialog() {
+    ThemeData theme = Theme.of(context);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        AppLocalizations l10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(l10n.permissions_denied_title),
+          content: Text(l10n.permissions_denied_description, style: theme.textTheme.bodyLarge),
+          backgroundColor: theme.cardColor,
+          actions: <Widget>[
+            TextButton(
+              child: Text(l10n.button_common_close),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _navigateToMainApp() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => const NavigatorScreen(),
-      //builder: (context) => const CameraScreen(),
     ));
   }
 
@@ -47,7 +82,6 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: CandleAppBar(
         talkback: l10n.permissions_dialog_t,
@@ -78,7 +112,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () => _requestPermissions(),
+                        onTap: _requestPermissions,
                         child: Container(
                           width: screenWidth / 3,
                           height: screenWidth / 3,

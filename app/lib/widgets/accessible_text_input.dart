@@ -94,47 +94,59 @@ class _InputState extends State<AccessibleTextInput> {
     ThemeData theme = Theme.of(context);
     bool showError = widget.mandatory && widget.controller.text.isEmpty;
 
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Semantics(
-            label: widget.talkbackInput == null
-                ? "${l10n.accessible_text_input_t} ${l10n.accessible_text_suffix_t}"
-                : "${widget.talkbackInput} ${l10n.accessible_text_suffix_t}",
-            child: ExcludeSemantics(
-              child: TextField(
-                controller: widget.controller,
-                decoration: widget.decoration?.copyWith(
-                      errorText: showError ? l10n.label_common_required : null, // Error message
-                      labelText: widget.mandatory ? "${widget.hintText} *" : widget.hintText,
-                    ) ??
-                    InputDecoration(
-                      hintStyle: TextStyle(color: theme.primaryColor),
-                      hintText: widget.hintText,
-                    ),
-                autofocus: widget.autofocus ?? false,
-                onSubmitted: widget.onSubmitted,
-                maxLines: widget.maxLines,
-                keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
-              ),
-            ),
+        // Label in der ersten Zeile
+        ExcludeSemantics(
+          child: Text(
+            widget.mandatory ? "${widget.hintText} *" : widget.hintText,
+            style: theme.textTheme.labelMedium, // Passen Sie den Stil nach Bedarf an
           ),
         ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Semantics(
-            label: widget.talkbackIcon ?? 'Speech Input',
-            child: ExcludeSemantics(
-              child: IconButton(
-                color: theme.primaryColor,
-                icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
-                onPressed: _listen,
-                padding: EdgeInsets.zero,
-                iconSize: 48, // Adjust icon size as needed
+        // Textfeld und Icon in der zweiten Zeile
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Semantics(
+                label: widget.talkbackInput == null
+                    ? "${l10n.accessible_text_input_t} ${l10n.accessible_text_suffix_t}"
+                    : "${widget.talkbackInput} ${l10n.accessible_text_suffix_t}",
+                child: ExcludeSemantics(
+                  child: TextField(
+                    controller: widget.controller,
+                    decoration: widget.decoration?.copyWith(
+                          errorText: showError ? l10n.label_common_required : null,
+                        ) ??
+                        InputDecoration(
+                          hintStyle: TextStyle(color: theme.primaryColor),
+                        ),
+                    autofocus: widget.autofocus ?? false,
+                    onSubmitted: widget.onSubmitted,
+                    maxLines: widget.maxLines,
+                    keyboardType:
+                        widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
+                  ),
+                ),
               ),
             ),
-          ),
+            Align(
+              alignment: Alignment.center,
+              child: Semantics(
+                label: widget.talkbackIcon ?? 'Speech Input',
+                child: ExcludeSemantics(
+                  child: IconButton(
+                    color: theme.primaryColor,
+                    icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                    onPressed: _listen,
+                    padding: EdgeInsets.zero,
+                    iconSize: 48, // Icon-Größe
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

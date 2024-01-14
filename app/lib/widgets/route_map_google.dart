@@ -1,12 +1,10 @@
 import 'package:candle/models/navigation_point.dart' as model;
-import 'package:candle/models/route.dart' as model;
 import 'package:candle/utils/colors.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/route_map.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
-import 'package:latlong2/latlong.dart';
 
 class RouteMapWidget extends BaseRouteMapWidget {
   static google.BitmapDescriptor? customCircleIcon;

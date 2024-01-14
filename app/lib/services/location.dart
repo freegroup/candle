@@ -16,7 +16,7 @@ class LocationService {
   }
 
   Future<LatLng?> get location async {
-    return _currentLocation ?? await _fetchCurrentLocation();
+    return _currentLocation ?? await _lazyInitCurrentLocation();
   }
 
   // Stream of location updates
@@ -33,6 +33,9 @@ class LocationService {
   void _initLocationUpdates() async {
     await _configureLocationSettings();
 
+    // Enable background mode
+    await _location.enableBackgroundMode(enable: true);
+
     _locationSubscription = _location.onLocationChanged.listen((LocationData loc) {
       if (loc.latitude != null && loc.longitude != null) {
         _currentLocation = LatLng(loc.latitude!, loc.longitude!);
@@ -40,55 +43,19 @@ class LocationService {
     }, onError: (error) {
       log.e("Location Stream Error: $error");
     });
-
-    _checkPermission().then((hasPermission) {
-      if (!hasPermission) {
-        log.e("Location permission not granted");
-        // Handle lack of permission as needed
-      }
-    });
   }
 
-  Future<LatLng?> _fetchCurrentLocation() async {
+  Future<LatLng?> _lazyInitCurrentLocation() async {
     try {
-      if (await _checkPermission()) {
-        LocationData loc = await _location.getLocation();
-        if (loc.latitude != null && loc.longitude != null) {
-          _currentLocation = LatLng(loc.latitude!, loc.longitude!);
-          return _currentLocation;
-        }
+      LocationData loc = await _location.getLocation();
+      if (loc.latitude != null && loc.longitude != null) {
+        _currentLocation = LatLng(loc.latitude!, loc.longitude!);
+        return _currentLocation;
       }
     } catch (e) {
       log.e("LocationService Error: $e");
     }
     return null;
-  }
-
-  Future<bool> _checkPermission() async {
-    if (await _checkService()) {
-      PermissionStatus permissionStatus = await _location.hasPermission();
-      if (permissionStatus == PermissionStatus.denied) {
-        permissionStatus = await _location.requestPermission();
-        if (permissionStatus != PermissionStatus.granted) {
-          _location.enableBackgroundMode(enable: true);
-        }
-      }
-      return permissionStatus == PermissionStatus.granted;
-    }
-    return false;
-  }
-
-  Future<bool> _checkService() async {
-    try {
-      bool serviceEnabled = await _location.serviceEnabled();
-      if (!serviceEnabled) {
-        serviceEnabled = await _location.requestService();
-      }
-      return serviceEnabled;
-    } catch (error) {
-      log.e("Service Check Error: $error");
-      return false;
-    }
   }
 
   void dispose() {

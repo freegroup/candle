@@ -35,7 +35,7 @@ class _ScreenState extends State<AddressSearchScreen> {
 
   void _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
       if (mounted) {
         if (_controller.text.length > 1) {
           var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;

@@ -7,8 +7,6 @@ import 'dart:convert';
 class PoiProviderOverpass {
   PoiProviderOverpass();
 
-  http.Request createGetRequest(String url) => http.Request('GET', Uri.parse(url));
-
   Future<List<PoiDetail>> fetchPoi(List<String> categories, int radiusInMeter, LatLng coord) async {
     String nodes = categories
         .map((category) => '$category(around:$radiusInMeter,${coord.latitude},${coord.longitude});')

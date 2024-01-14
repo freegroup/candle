@@ -2,6 +2,7 @@ import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/compass.dart';
+import 'package:candle/screens/recorder.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/geocoding.dart';
@@ -98,6 +99,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if (!mounted) return;
                                 Navigator.pop(context);
                               }
+                            },
+                          ),
+                          TileButton(
+                            title: l10n.button_recording,
+                            talkback: l10n.button_recording_t,
+                            icon: const Icon(
+                              Icons.route,
+                              size: 80,
+                            ),
+                            onPressed: () async {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => const RecorderScreen()));
                             },
                           ),
                           TileButton(

@@ -10,13 +10,23 @@ class CThemeData {
     MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 192, 4, 1));
     ThemeData baseTheme = ThemeData.dark(); // Use the default dark theme as base
 
+    // Kopieren Sie das existierende TextTheme und ändern Sie nur das labelLarge-Attribut
+    TextTheme customTextTheme = baseTheme.textTheme.copyWith(
+      labelMedium: baseTheme.textTheme.labelLarge?.copyWith(
+        fontSize: 14,
+      ),
+      labelLarge: baseTheme.textTheme.labelLarge?.copyWith(
+        fontSize: 16,
+      ),
+    );
+
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
       cardColor: Color.fromRGBO(20, 20, 20, 1),
       dividerColor: Color.fromRGBO(60, 60, 60, 1),
       primaryColorDark: _createDarkerColor(mySwatch),
-      textTheme: baseTheme.textTheme.apply(
+      textTheme: customTextTheme.apply(
         bodyColor: mySwatch,
         displayColor: mySwatch,
       ),

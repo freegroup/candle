@@ -129,7 +129,8 @@ class _ScreenState extends State<LatLngCompassScreen> {
     bool isAligned = _isAligned(_currentHeadingDegrees);
 
     return Semantics(
-      label: sayRotate(context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
+      label: sayRotateToTarget(
+          context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
       child: Center(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {

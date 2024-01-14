@@ -48,7 +48,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             showLoadingDialog(context);
             try {
               var coord = await LocationService.instance.location;
-              if (coord != null) {
+              if (mounted == true && coord != null) {
                 var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
                 LocationAddress? address = await geo.getGeolocationAddress(coord);
                 if (!mounted) return;

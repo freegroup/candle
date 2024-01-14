@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/compass.dart';
-import 'package:candle/services/geocoding_google.dart';
-import 'package:candle/services/geocoding_osm.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/router.dart';
 import 'package:candle/services/screen_wake.dart';
@@ -62,6 +60,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
   //
   int lastVibratedIndex = -1;
   bool _wasAligned = false;
+  int _needleHeading = 0;
 
   @override
   void initState() {
@@ -82,9 +81,9 @@ class _ScreenState extends State<LatLngRouteScreen> {
           if (route == null) return;
           var waypointHeading =
               calculateNorthBearing(_currentLocation, _currentHeadingWaypoint!.latlng());
-          var mapRotation = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
-
-          bool currentlyAligned = _isAligned(mapRotation, waypointHeading);
+          var deviceHeading = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
+          var needleHeading = -(deviceHeading - waypointHeading);
+          bool currentlyAligned = _isAligned(deviceHeading, waypointHeading);
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
@@ -100,16 +99,17 @@ class _ScreenState extends State<LatLngRouteScreen> {
           var resumeDistance =
               route.calculateResumingLengthFromWaypoint(_currentHeadingWaypoint!).toInt() +
                   newDistance;
+
           if (mounted &&
-              (mapRotation != _currentMapRotation ||
+              (deviceHeading != _currentMapRotation ||
                   newDistance != _distanceToTurnByTurnWaypoint ||
                   resumeDistance != _distanceToTarget)) {
             setState(() {
-              log.d("setState regarding compass,distance, waypoint changes....");
-              _currentMapRotation = mapRotation;
+              _currentMapRotation = deviceHeading;
               _currentWaypointHeading = waypointHeading;
               _distanceToTurnByTurnWaypoint = newDistance;
               _distanceToTarget = resumeDistance;
+              _needleHeading = needleHeading;
             });
           }
         }
@@ -150,7 +150,6 @@ class _ScreenState extends State<LatLngRouteScreen> {
       }
       _currentLocation = LatLng(newLocation.latitude!, newLocation.longitude!);
       _updateWaypoints(_currentLocation);
-      log.d("Got location update: $_currentLocation");
     });
   }
 
@@ -221,7 +220,6 @@ class _ScreenState extends State<LatLngRouteScreen> {
           _nextTurnByTurnWaypoint = _currentTurnByTurnWaypoint;
         }
 
-        print("ddddd");
         startCoordinateIndex++;
         if ((startCoordinateIndex < route.points.length)) {
           _nextTurnByTurnWaypoint = route.points[startCoordinateIndex];
@@ -241,7 +239,6 @@ class _ScreenState extends State<LatLngRouteScreen> {
         // update the UI
         if (mounted) setState(() {});
       } else {
-        print("TARGET REACHED......");
         targetReached = true;
       }
     }
@@ -315,11 +312,13 @@ class _ScreenState extends State<LatLngRouteScreen> {
         ),
         // Content layer
         targetReached
-            ? TargetReachedWidget()
+            ? const TargetReachedWidget()
             : TurnByTurnInstructionWidget(
                 currentCoord: _currentLocation,
-                waypoint1: _currentTurnByTurnWaypoint,
-                waypoint2: _nextTurnByTurnWaypoint,
+                waypoint1: _currentHeadingWaypoint,
+                waypoint2: _currentTurnByTurnWaypoint,
+                isAligned: isAligned,
+                bearing: _needleHeading,
               ),
       ],
     );

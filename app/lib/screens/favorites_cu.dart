@@ -79,6 +79,7 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
     AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -97,7 +98,6 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                 talkbackInput: l10n.location_name_t,
                 talkbackIcon: l10n.location_add_speak_t,
                 controller: editingController,
-                decoration: InputDecoration(labelText: l10n.location_name),
                 autofocus: !isScreenReaderEnabled,
               ),
             ),
@@ -116,10 +116,14 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                   padding: const EdgeInsets.all(18.0),
                   child: MergeSemantics(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          l10n.inputhint_address,
+                          style: theme.textTheme.labelMedium,
+                        ),
                         TextField(
                           controller: TextEditingController(text: stateLocation?.formattedAddress),
-                          decoration: InputDecoration(labelText: l10n.inputhint_address),
                           maxLines: null,
                         ),
                         Semantics(label: l10n.address_search_doubletab_hint_t),
@@ -129,10 +133,10 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             BoldIconButton(
                 talkback: l10n.button_save_t,
-                buttonWidth: MediaQuery.of(context).size.width / 5,
+                buttonWidth: MediaQuery.of(context).size.width / 7,
                 icons: Icons.check,
                 onTab: canSubmit
                     ? () {
@@ -142,12 +146,6 @@ class _ScreenState extends State<FavoriteCreateUpdateScreen> {
                         showSnackbar(context, l10n.location_name_required_snackbar);
                       } // Disable the button if name is empty
                 ),
-            BoldIconButton(
-              talkback: l10n.button_close_t,
-              buttonWidth: MediaQuery.of(context).size.width / 7,
-              icons: Icons.close,
-              onTab: () => Navigator.pop(context),
-            ),
           ],
         ),
       ),

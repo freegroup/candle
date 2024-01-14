@@ -1,6 +1,25 @@
 {
-  "home_address_t": "You are at {number} {street} in {city}",
-  "@home_address_t": {
+  "current_address_t": "You are at {number} {street} in {city}",
+  "@current_address_t": {
+    "description": "Talkback announcement for an address with street, number, and city",
+    "placeholders": {
+      "street": {
+        "description": "The name of the street",
+        "example": "Main Street"
+      },
+      "number": {
+        "description": "The house or building number",
+        "example": "123"
+      },
+      "city": {
+        "description": "The name of the city",
+        "example": "Springfield"
+      }
+    }
+  },
+
+  "last_known_address_t": "Last known address, {number} {street} in {city}",
+  "@last_known_address_t": {
     "description": "Talkback announcement for an address with street, number, and city",
     "placeholders": {
       "street": {
@@ -127,8 +146,8 @@
     }
   },
 
-  "label_rotate_no_t": "You are now pointing directly at the target destination. It is located {meters} meters as the crow flies.",
-  "@label_rotate_no_t": {
+  "label_rotate_no_target_t": "You are now pointing directly at the target destination. It is located {meters} meters as the crow flies.",
+  "@label_rotate_no_target_t": {
     "description": "Message indicating that the user is pointiing direct to the target",
       "placeholders": {
       "meters": {
@@ -138,8 +157,8 @@
     }
   },
 
-  "label_rotate_left_t": "Rotate {degree} degrees to your left to directly face the target location",
-  "@label_rotate_left_t": {
+  "label_rotate_left_target_t": "Rotate {degree} degrees to your left to directly face the target location",
+  "@label_rotate_left_target_t": {
     "description": "Message indicating the amount of rotation to point direct to a poi",
     "placeholders": {
       "degree": {
@@ -149,8 +168,8 @@
     }
   },
 
-  "label_rotate_right_t": "Rotate {degree} degrees to your right to directly face the target location",
-  "@label_rotate_right_t": {
+  "label_rotate_right_target_t": "Rotate {degree} degrees to your right to directly face the target location",
+  "@label_rotate_right_target_t": {
     "description": "Message indicating the amount of rotation to point direct to a poi",
     "placeholders": {
       "degree": {
@@ -159,6 +178,36 @@
       }
     }
   },
+
+
+
+  "label_rotate_no_waypoint_t": "You are now pointing directly at the next waypoint.",
+  "@label_rotate_no_waypoint_t": {
+    "description": "Message indicating that the user is pointing direct to the waypoint"
+  },
+
+  "label_rotate_left_waypoint_t": "Rotate {degree} degrees to your left to directly face the next waypoint.",
+  "@label_rotate_left_waypoint_t": {
+    "description": "Message indicating the amount of rotation to point direct to a waypoint",
+    "placeholders": {
+      "degree": {
+        "type": "int",
+        "description": "the degree to rotate"
+      }
+    }
+  },
+
+  "label_rotate_right_waypoint_t": "Rotate {degree} degrees to your right to directly face the next waypoint.",
+  "@label_rotate_right_waypoint_t": {
+    "description": "Message indicating the amount of rotation to point direct to a waypoint",
+    "placeholders": {
+      "degree": {
+        "type": "int",
+        "description": "the degree to rotate"
+      }
+    }
+  },
+
 
   "compass_dialog_t": "A compass that can announce the cardinal direction to you.",
   "@compass_dialog_t": {
@@ -397,6 +446,8 @@
     "description": "Button text for the permissions request"
   },
 
+  "permissions_denied_title": "Permissions Denied",
+  "permissions_denied_description": "To fully utilize the features of our app, it needs access to your location, microphone, and camera. Without these permissions, certain features may not work properly. Please enable these permissions in your device settings to continue.",
 
   "button_contact_me": "Contact Me",
   "@button_contact_me": {
@@ -414,6 +465,15 @@
   },
   "button_common_edit": "Edit",
   "@button_common_edit": {
+    "description": "Title for edit button"
+  },
+
+  "button_common_close_t": "Close Dialog Window",
+  "@button_common_close_t": {
+    "description": "Title for edit button"
+  },
+  "button_common_close": "Close",
+  "@button_common_close": {
     "description": "Title for edit button"
   },
 
@@ -488,6 +548,17 @@
   "@button_favorite": {
     "description": "Title for poi create button"
   },
+
+
+  "button_recording_t": "Record a Track for later use.",
+  "@button_recording_t": {
+    "description": "Talkback for record track Button"
+  },
+  "button_recording": "Record Track",
+  "@button_recording": {
+    "description": "Title for record track button"
+  },
+
 
   "button_close_t": "Close Dialog.",
   "@button_close_t": {
@@ -612,6 +683,20 @@
 
   "turnInstruction": "After {distance} meters, {turn}.",
   "@turnInstruction": {
+    "description": "Message indicating the direction the phone is pointing",
+    "placeholders": {
+      "distance": {
+        "type": "int",
+        "description": "The distance to walk"
+      },
+      "turn": {
+        "type": "String",
+        "description": "The direction name"
+      }
+    }
+  },
+  "turnInstruction_t": "After {distance} meters, {turn}.",
+  "@turnInstruction_t": {
     "description": "Message indicating the direction the phone is pointing",
     "placeholders": {
       "distance": {

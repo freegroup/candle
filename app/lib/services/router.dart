@@ -1,4 +1,3 @@
-import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/services/router_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';

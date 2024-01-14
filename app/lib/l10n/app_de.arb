@@ -1,7 +1,8 @@
 {
-  "home_address_t": "Sie befinden sich in der {street} {number} in {city}",
-  "home_street": "{street} {number}",
+  "current_address_t": "Sie befinden sich in der {street} {number} in {city}.",
+  "last_known_address_t": "Letztbekannte Adresse, {street} {number} in {city}.",
 
+  "home_street": "{street} {number}",
 
   "home_mainmenu_t": "Hauptmenü",
   "home_mainmenu": "Candle",
@@ -36,6 +37,10 @@
   "button_favorite_t": "Aktuellen Standort speichern",
   "button_favorite": "Speichern",
 
+
+  "button_recording_t": "Strecke aufzeichnen.",
+  "button_recording": "Aufzeichnen",
+
   "button_close_t": "Fenster schliessen.",
   "button_close": "Schliessen",
 
@@ -47,6 +52,10 @@
   
   "button_common_delete_t": "Eintrag löschen",
   "button_common_delete": "Löschen",
+
+
+  "button_common_close_t": "Dialog schliessen",
+  "button_common_close": "Schliessen",
 
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
 
@@ -60,9 +69,13 @@
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
 
   "compass_poi_dialog_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
-  "label_rotate_left_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
-  "label_rotate_right_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
-  "label_rotate_no_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
+  "label_rotate_left_target_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_right_target_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
+
+  "label_rotate_left_waypoint_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_right_waypoint_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_no_waypoint_t": "Sie zeigen jetzt direkt auf den nächsten Wegpunkt.",
 
   "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
   "compass_dialog": "Kompass",
@@ -118,6 +131,9 @@
   "label_permissions_explain": "Herzlich willkommen bei Candle!\n\nUm eine reibungslose und sichere Nutzung zu gewährleisten, benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für die Bedienung ohne Hände, was besonders für sehbehinderte Nutzer hilfreich ist. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um Ihre Candle-Erfahrung optimal zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",
   
+  "permissions_denied_title": "Berechtigungen Verweigert",
+  "permissions_denied_description": "Um alle Funktionen unserer App nutzen zu können, benötigt sie Zugriff auf Ihren Standort, Ihr Mikrofon und Ihre Kamera. Ohne diese Berechtigungen funktionieren bestimmte Funktionen möglicherweise nicht richtig. Bitte aktivieren Sie diese Berechtigungen in Ihren Geräteeinstellungen, um fortzufahren.",
+
   "accessible_text_input_t": "Texteingabefeld.",
   "accessible_text_suffix_t": "Rechts befindet sich eine Schaltfläche für die Spracheingabeunterstützung",
   "accessible_text_snackbar": "Ihre Eingabe: {text}",

@@ -11,8 +11,16 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
   final LatLng? currentCoord;
   final NavigationPoint? waypoint1;
   final NavigationPoint? waypoint2;
+  final bool isAligned;
+  final int bearing;
 
-  const TurnByTurnInstructionWidget({this.currentCoord, this.waypoint1, this.waypoint2, super.key});
+  const TurnByTurnInstructionWidget(
+      {this.currentCoord,
+      this.waypoint1,
+      this.waypoint2,
+      super.key,
+      required this.isAligned,
+      required this.bearing});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     String instruction = "";
-    int angle = 0;
+    int mapRotation = 0;
     int distance = 0;
     if (currentCoord != null && waypoint1 != null) {
       distance = calculateDistance(currentCoord!, waypoint1!.latlng()).toInt();
@@ -28,14 +36,14 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
       if (waypoint2 != null && waypoint1 != waypoint2) {
         int angle2 = calculateNorthBearing(waypoint1!.latlng(), waypoint2!.latlng());
         instruction = sayNavigationInstruction(context, distance, angle1 - angle2);
-        angle = angle1 - angle2;
+        mapRotation = angle1 - angle2;
       } else {
         instruction = sayNavigationInstruction(context, distance, 0);
       }
     }
 
     return Semantics(
-      label: instruction,
+      label: "${sayRotateToWaypoint(context, bearing, isAligned)} $instruction",
       child: ExcludeSemantics(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +60,7 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
                       width: 80,
                     ),
                     DirectionArrowIcon(
-                      rotationDegrees: -angle,
+                      rotationDegrees: -mapRotation,
                       height: 80,
                       width: 80,
                     ),

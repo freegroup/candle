@@ -1,3 +1,5 @@
+import 'dart:io'; 
+
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/screens/permissions_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +9,21 @@ class PermissionsCheckWidget extends StatelessWidget {
   const PermissionsCheckWidget({super.key});
 
   Future<bool> _checkPermissions() async {
-    bool locationGranted = await Permission.location.isGranted;
-    bool microphoneGranted = await Permission.microphone.isGranted;
-    bool cameraGranted = await Permission.camera.isGranted;
-    return locationGranted && microphoneGranted && cameraGranted;
+    var locationStatus = await Permission.location.status;
+    var microphoneStatus = await Permission.microphone.status;
+    var cameraStatus = await Permission.camera.status;
+    var backgroundLocationStatus = PermissionStatus.granted;
+
+    // Only check for background location on Android if foreground permission is granted
+    if (Platform.isAndroid && locationStatus.isGranted) {
+      backgroundLocationStatus = await Permission.locationAlways.status;
+    }
+
+    // Ensure all required permissions are granted
+    return locationStatus.isGranted &&
+        microphoneStatus.isGranted &&
+        cameraStatus.isGranted &&
+        backgroundLocationStatus.isGranted;
   }
 
   @override
@@ -20,13 +33,15 @@ class PermissionsCheckWidget extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == true) {
-            return const NavigatorScreen(); // If both permissions are granted, go to main app
-            //return const CameraScreen(); // If both permissions are granted, go to main app
+            // If all required permissions are granted, navigate to the main app
+            return const NavigatorScreen();
           } else {
-            return const PermissionsScreen(); // Otherwise, show permissions request screen
+            // If not all permissions are granted, navigate to the Permissions Screen
+            return const PermissionsScreen();
           }
         }
-        return const Center(child: CircularProgressIndicator()); // Show loading indicator
+        // While checking the permissions, show a loading indicator
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
