@@ -18,8 +18,8 @@ import 'package:candle/widgets/turn_by_turn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
@@ -35,7 +35,7 @@ class LatLngRouteScreen extends StatefulWidget {
 
 class _ScreenState extends State<LatLngRouteScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
-  StreamSubscription<LocationData>? _locationSubscription;
+  StreamSubscription<Position>? _locationSubscription;
 
   late Future<model.Route?> _route;
 
@@ -142,19 +142,15 @@ class _ScreenState extends State<LatLngRouteScreen> {
   }
 
   void _listenToLocationChanges() {
-    _locationSubscription = LocationService.instance.updates.handleError((dynamic err) {
+    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
       log.e(err);
     }).listen((newLocation) async {
-      if (newLocation.latitude == null || newLocation.longitude == null) {
-        return;
-      }
-      _currentLocation = LatLng(newLocation.latitude!, newLocation.longitude!);
+      _currentLocation = LatLng(newLocation.latitude, newLocation.longitude);
       _updateWaypoints(_currentLocation);
     });
   }
 
   void _updateWaypoints(LatLng location) async {
-    print(targetReached);
     if (targetReached == true) {
       return;
     }

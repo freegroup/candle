@@ -7,25 +7,23 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
-  camera: ^0.10.5+7
-  cloud_firestore: ^4.14.0
-  collection: ^1.18.0
-  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  collection: ^1.18.0
+  cupertino_icons: ^1.0.2
+  flutter_background_service: ^5.0.5
+  flutter_background_service_android: ^6.2.2
   flutter_blue_plus: ^1.30.5
   flutter_compass: ^0.8.0
   flutter_google_maps_webservices: ^1.1.1
-  flutter_localizations:
-    sdk: flutter
   flutter_map: ^6.1.0
   flutter_markdown: ^0.6.18+3
   flutter_screen_wake: ^1.0.2
   flutter_slidable: ^3.0.1
   flutter_svg: ^2.0.9
-  flutter_vision: ^1.1.4
   get: ^4.6.6
-  google_fonts: ^6.1.0
   google_geocoding_api: ^1.4.1
   google_maps_flutter: ^2.5.0
   http: ^1.1.2
@@ -47,16 +45,19 @@ dependencies:
   url_launcher: ^6.2.2
   uuid: ^4.2.2
   vibration: ^1.8.4
+  geolocator: ^10.1.0
+  rxdart: ^0.27.7
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
-  flutter_launcher_icons: "^0.11.0" # Use the latest version
+  flutter_launcher_icons: "^0.11.0"
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter
   test: ^1.24.9
 
 flutter:
-  generate: true # Add this line
+  generate: true
   uses-material-design: true
   assets:
     - pubspec.yaml

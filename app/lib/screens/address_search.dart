@@ -6,7 +6,7 @@ import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:provider/provider.dart';
 
 //Model classes that will be used for auto complete
@@ -108,11 +108,7 @@ class _ScreenState extends State<AddressSearchScreen> {
                             margin: const EdgeInsets.only(top: 8, bottom: 4),
                             child: Text(
                               (suggestion[index]).formattedAddress,
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: theme.primaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: theme.textTheme.bodyLarge,
                             ),
                           ),
                         ],

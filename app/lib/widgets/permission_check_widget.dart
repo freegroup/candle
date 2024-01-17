@@ -1,4 +1,4 @@
-import 'dart:io'; 
+import 'dart:io';
 
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/screens/permissions_screen.dart';
@@ -11,7 +11,6 @@ class PermissionsCheckWidget extends StatelessWidget {
   Future<bool> _checkPermissions() async {
     var locationStatus = await Permission.location.status;
     var microphoneStatus = await Permission.microphone.status;
-    var cameraStatus = await Permission.camera.status;
     var backgroundLocationStatus = PermissionStatus.granted;
 
     // Only check for background location on Android if foreground permission is granted
@@ -22,7 +21,6 @@ class PermissionsCheckWidget extends StatelessWidget {
     // Ensure all required permissions are granted
     return locationStatus.isGranted &&
         microphoneStatus.isGranted &&
-        cameraStatus.isGranted &&
         backgroundLocationStatus.isGranted;
   }
 

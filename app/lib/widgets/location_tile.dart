@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -6,6 +8,7 @@ import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
@@ -23,11 +26,19 @@ class _WidgetState extends State<LocationAddressTile> {
   model.LocationAddress? _lastReadAddress;
   LatLng _currentLocation = const LatLng(0, 0);
   bool _currentAddressOutdated = true;
+  StreamSubscription<Position>? _locationStream;
 
   @override
   void initState() {
     super.initState();
     _initialize();
+  }
+
+  @override
+  void dispose() {
+    _locationStream?.cancel();
+
+    super.dispose();
   }
 
   void _initialize() async {
@@ -37,13 +48,10 @@ class _WidgetState extends State<LocationAddressTile> {
       _updateLocationAddress();
     }
 
-    LocationService.instance.updates.handleError((dynamic err) {
+    LocationService.instance.listen.handleError((dynamic err) {
       log.e(err);
     }).listen((newLocation) async {
-      if (newLocation.latitude == null || newLocation.longitude == null) {
-        return;
-      }
-      _currentLocation = LatLng(newLocation.latitude!, newLocation.longitude!);
+      _currentLocation = LatLng(newLocation.latitude, newLocation.longitude);
 
       // The address is only outdated if we have already read one and if the differnece
       // of the position is at least 10 meters.

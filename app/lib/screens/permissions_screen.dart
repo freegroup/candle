@@ -23,7 +23,6 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _checkPermissions() async {
     if (await Permission.location.isGranted &&
         await Permission.microphone.isGranted &&
-        await Permission.camera.isGranted &&
         (Platform.isIOS || await Permission.locationAlways.isGranted)) {
       _navigateToMainApp();
     }
@@ -32,9 +31,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _requestPermissions() async {
     final locationStatus = await Permission.location.request();
     final microphoneStatus = await Permission.microphone.request();
-    final cameraStatus = await Permission.camera.request();
 
-    if (locationStatus.isGranted && microphoneStatus.isGranted && cameraStatus.isGranted) {
+    if (locationStatus.isGranted && microphoneStatus.isGranted) {
       if (Platform.isAndroid) {
         final backgroundLocationStatus = await Permission.locationAlways.request();
         if (backgroundLocationStatus.isGranted) {

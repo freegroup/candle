@@ -13,6 +13,7 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -27,10 +28,31 @@ class HomeScreen extends TalkbackScreen {
   }
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _ScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ScreenState extends State<HomeScreen> {
+  bool isRecordingServiceRunning = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkServiceStatus();
+  }
+
+  void checkServiceStatus() async {
+    final service = FlutterBackgroundService();
+    bool isRunning = await service.isRunning();
+    setState(() {
+      isRecordingServiceRunning = isRunning;
+    });
+    if (isRunning) {
+      if (mounted) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecorderScreen()));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -139,20 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                             },
                           ),
-                          /*
-                          TileButton(
-                            title: l10n.button_favorite,
-                            talkback: l10n.button_favorite_t,
-                            icon: const Icon(Icons.local_see, size: 80),
-                            onPressed: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => CameraScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          */
                         ]),
                   )
                 ],
