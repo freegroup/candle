@@ -103,7 +103,9 @@ class _ScreenState extends State<RecorderScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               onPressed: () async {
-                RecorderService.start();
+                RecorderService.start().then((value) {
+                  Navigator.pop(context);
+                });
               },
               child: Text('Start'),
             ),

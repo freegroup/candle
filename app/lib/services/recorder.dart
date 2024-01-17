@@ -32,7 +32,7 @@ class RecorderService {
     _recordingController.add(_state); // Update the stream with the initial state
   }
 
-  static void start() async {
+  static Future<void> start() async {
     final service = FlutterBackgroundService();
     if (_state == RecordingState.recording) {
       print("service already in 'recording' state....'start' ignored");
@@ -42,9 +42,11 @@ class RecorderService {
     }
     _state = RecordingState.recording;
     _recordingController.add(_state);
+
+    return;
   }
 
-  static void pause() async {
+  static Future<void> pause() async {
     final service = FlutterBackgroundService();
     if (_state == RecordingState.recording) {
       service.invoke("pauseService");
@@ -57,7 +59,7 @@ class RecorderService {
     _recordingController.add(_state);
   }
 
-  static void resume() async {
+  static Future<void> resume() async {
     final service = FlutterBackgroundService();
     if (_state == RecordingState.paused) {
       service.invoke("resumeService");
@@ -70,7 +72,7 @@ class RecorderService {
     _recordingController.add(_state);
   }
 
-  static void stop() async {
+  static Future<void> stop() async {
     final service = FlutterBackgroundService();
     if (_state == RecordingState.recording) {
       service.invoke("stopService");
