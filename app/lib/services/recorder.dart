@@ -17,23 +17,25 @@ class RecorderService {
 
   static Future<void> initialize() async {
     final service = FlutterBackgroundService();
-    _state = (await service.isRunning()) ? RecordingState.recording : RecordingState.stopped;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool backgroundServicePaused = prefs.getBool('backgroundServicePaused') ?? false;
+    final isRunning = await service.isRunning();
+    _state = isRunning ? RecordingState.recording : RecordingState.stopped;
+
     // If the background job is running and the "paused" flag is set...we
     // set the correct state of the RecordingService
     //
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool backgroundServicePaused = prefs.getBool('backgroundServicePaused') ?? false;
     if (_state == RecordingState.recording && backgroundServicePaused == true) {
       _state = RecordingState.paused;
     }
+    print("RECORDING_STATE: $_state");
     _recordingController.add(_state); // Update the stream with the initial state
   }
 
   static void start() async {
     final service = FlutterBackgroundService();
-    final running = await service.isRunning();
-    if (running) {
-      print("service already running....ignroed");
+    if (_state == RecordingState.recording) {
+      print("service already in 'recording' state....'start' ignored");
     } else {
       print("startService");
       service.startService();
@@ -44,12 +46,11 @@ class RecorderService {
 
   static void pause() async {
     final service = FlutterBackgroundService();
-    final running = await service.isRunning();
-    if (running) {
+    if (_state == RecordingState.recording) {
       service.invoke("pauseService");
       print("pauseService");
     } else {
-      print("Service paused...ignored.");
+      print("Service not in 'recording' state...unable to pause");
     }
 
     _state = RecordingState.paused;
@@ -58,12 +59,11 @@ class RecorderService {
 
   static void resume() async {
     final service = FlutterBackgroundService();
-    final running = await service.isRunning();
-    if (running) {
-      print("Service already resumed...ignored.");
-    } else {
+    if (_state == RecordingState.paused) {
       service.invoke("resumeService");
       print("resumeService");
+    } else {
+      print("Service not in 'paused' state.... resume  ignored.");
     }
 
     _state = RecordingState.recording;
@@ -72,12 +72,11 @@ class RecorderService {
 
   static void stop() async {
     final service = FlutterBackgroundService();
-    final running = await service.isRunning();
-    if (running) {
+    if (_state == RecordingState.recording) {
       service.invoke("stopService");
       print("stopService");
     } else {
-      print("Service already stopped...ignored.");
+      print("Service not 'recording' state.....stop ignored.");
     }
 
     _state = RecordingState.stopped;
