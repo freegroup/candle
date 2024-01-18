@@ -1,5 +1,5 @@
 import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/favorites_cu.dart';
+import 'package:candle/screens/locations_cu.dart';
 import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/database.dart';
@@ -17,8 +17,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/models/location_address.dart' as model;
 import 'package:provider/provider.dart';
 
-class FavoriteScreen extends TalkbackScreen {
-  const FavoriteScreen({super.key});
+class LocationsScreen extends TalkbackScreen {
+  const LocationsScreen({super.key});
 
   @override
   String getTalkback(BuildContext context) {
@@ -27,10 +27,10 @@ class FavoriteScreen extends TalkbackScreen {
   }
 
   @override
-  State<FavoriteScreen> createState() => _FavoriteScreenState();
+  State<LocationsScreen> createState() => _ScreenState();
 }
 
-class _FavoriteScreenState extends State<FavoriteScreen> {
+class _ScreenState extends State<LocationsScreen> {
   int? selectedItemIndex;
 
   @override
@@ -57,7 +57,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   Navigator.of(context)
                       .push(
                         MaterialPageRoute(
-                          builder: (context) => FavoriteCreateUpdateScreen(
+                          builder: (context) => LocationCreateUpdateScreen(
                             initialLocation: address,
                           ),
                         ),
@@ -111,7 +111,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   CustomSemanticsAction(label: l10n.button_common_edit_t): () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                          builder: (context) => FavoriteCreateUpdateScreen(
+                                          builder: (context) => LocationCreateUpdateScreen(
                                             initialLocation: location,
                                           ),
                                         ))
@@ -146,7 +146,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         onPressed: (context) {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
-                                                builder: (context) => FavoriteCreateUpdateScreen(
+                                                builder: (context) => LocationCreateUpdateScreen(
                                                   initialLocation: location,
                                                 ),
                                               ))

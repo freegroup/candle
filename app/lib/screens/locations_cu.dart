@@ -11,16 +11,16 @@ import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class FavoriteCreateUpdateScreen extends StatefulWidget {
+class LocationCreateUpdateScreen extends StatefulWidget {
   final model.LocationAddress? initialLocation;
 
-  const FavoriteCreateUpdateScreen({super.key, this.initialLocation});
+  const LocationCreateUpdateScreen({super.key, this.initialLocation});
 
   @override
-  State<FavoriteCreateUpdateScreen> createState() => _ScreenState();
+  State<LocationCreateUpdateScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<FavoriteCreateUpdateScreen> {
+class _ScreenState extends State<LocationCreateUpdateScreen> {
   TextEditingController editingController = TextEditingController();
   final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 

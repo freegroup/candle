@@ -1,7 +1,7 @@
 
 export 'home.dart';
-export 'favorites.dart';
+export 'locations.dart';
 export 'settings.dart';
-export 'favorites_cu.dart';
+export 'locations_cu.dart';
 export 'latlng_compass.dart';
 export 'latlng_route.dart';

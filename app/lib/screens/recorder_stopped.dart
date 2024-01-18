@@ -1,4 +1,6 @@
 import 'package:candle/services/recorder.dart';
+import 'package:candle/utils/snackbar.dart';
+import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
@@ -10,10 +12,18 @@ class RecorderStoppedScreen extends StatefulWidget {
   const RecorderStoppedScreen({super.key});
 
   @override
-  State<RecorderStoppedScreen> createState() => _StoppedScreenState();
+  State<RecorderStoppedScreen> createState() => _ScreenState();
 }
 
-class _StoppedScreenState extends State<RecorderStoppedScreen> {
+class _ScreenState extends State<RecorderStoppedScreen> {
+  final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -39,17 +49,30 @@ class _StoppedScreenState extends State<RecorderStoppedScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double imageWidth = screenWidth * (3 / 7);
 
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          AccessibleTextInput(
+            controller: _nameController,
+            hintText: "Enter Name", // Replace with your hint text
+            mandatory: true,
+            onSubmitted: (value) {
+              // Handle the submitted value
+            },
+            talkbackInput: "Enter Name", // Accessibility label for the input field
+            talkbackIcon: "Start Voice Input", // Accessibility label for the voice input icon
+          ),
+          SizedBox(height: 50), // Spacing between text input and image
           Container(
-            width: imageWidth, // Set the width to 4/7 of the screen width
+            width: imageWidth,
             child: Image.asset(
               'assets/images/recording_splash.png', // Replace with your image path
-              fit: BoxFit.cover, // This can be changed to fit your design needs
+              fit: BoxFit.cover,
             ),
           ),
+          // ... other widgets if needed ...
         ],
       ),
     );
@@ -74,7 +97,11 @@ class _StoppedScreenState extends State<RecorderStoppedScreen> {
                 buttonWidth: MediaQuery.of(context).size.width / 4,
                 icons: Icons.arrow_right,
                 onTab: () async {
-                  RecorderService.start();
+                  if (_nameController.text.trim().isNotEmpty) {
+                    RecorderService.start(_nameController.text.trim());
+                  } else {
+                    showSnackbar(context, "Please enter a name of the route to start recording.");
+                  }
                 },
               ),
             ),

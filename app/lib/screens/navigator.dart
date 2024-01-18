@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:candle/screens/about.dart';
-import 'package:candle/screens/favorites.dart';
+import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/screens/recorder_controller.dart';
@@ -28,7 +28,7 @@ class _ScreenState extends State<NavigatorScreen> {
 
   final List<TalkbackScreen> pages = const [
     HomeScreen(),
-    FavoriteScreen(),
+    LocationsScreen(),
     PoiCategoriesScreen(),
     //SettingsScreen(),
     AboutScreen(),

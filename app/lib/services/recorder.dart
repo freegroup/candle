@@ -1,6 +1,8 @@
 import 'dart:async';
 
-import 'package:candle/utils/geo.dart';
+import 'package:candle/models/route.dart' as model;
+import 'package:candle/models/navigation_point.dart' as model;
+import 'package:candle/services/database.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,6 +23,8 @@ class RecorderService {
 
   static RecordingState _state = RecordingState.stopped;
   static late StreamSubscription<Map<String, dynamic>?> _backgroundStreamSubscription;
+
+  static String _currentRecordingRouteName = "unknown";
 
   static Future<void> initialize() async {
     final service = FlutterBackgroundService();
@@ -58,7 +62,7 @@ class RecorderService {
     _locationListController.close();
   }
 
-  static void start() async {
+  static void start(String routeName) async {
     try {
       final service = FlutterBackgroundService();
       if (_state == RecordingState.stopped) {
@@ -66,6 +70,7 @@ class RecorderService {
 
         await service.startService();
         service.invoke("startedService");
+        _currentRecordingRouteName = routeName;
       }
     } finally {
       _setState(RecordingState.recording);
@@ -93,11 +98,21 @@ class RecorderService {
     _setState(RecordingState.recording);
   }
 
-  static Future<void> stop() async {
+  static Future<void> stop(bool saveRoute) async {
     final service = FlutterBackgroundService();
     if (_state == RecordingState.recording || _state == RecordingState.paused) {
       service.invoke("stopService");
       print("stopService");
+      List<LatLng> locations = _locationListController.value;
+      List<model.NavigationPoint> routePoints = locations.map((latLng) {
+        return model.NavigationPoint(coordinate: latLng, annotation: "");
+      }).toList();
+      model.Route route = model.Route(
+        name: _currentRecordingRouteName,
+        points: routePoints,
+        annotation: "",
+      );
+      DatabaseService.instance.addRoute(route);
     } else {
       print("Service not 'recording' or 'paused' state.....stop ignored.");
     }

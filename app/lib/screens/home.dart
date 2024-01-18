@@ -93,7 +93,7 @@ class _ScreenState extends State<HomeScreen> {
                                   if (mounted) {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => FavoriteCreateUpdateScreen(
+                                        builder: (context) => LocationCreateUpdateScreen(
                                           initialLocation: address,
                                         ),
                                       ),

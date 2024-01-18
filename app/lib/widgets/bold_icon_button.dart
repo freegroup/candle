@@ -5,6 +5,7 @@ class BoldIconButton extends StatelessWidget {
   final GestureTapCallback onTab;
   final IconData icons;
   final String talkback;
+  final bool circle;
 
   const BoldIconButton({
     super.key,
@@ -12,6 +13,7 @@ class BoldIconButton extends StatelessWidget {
     required this.onTab,
     required this.icons,
     required this.talkback,
+    this.circle = true,
   });
 
   final double buttonWidth;
@@ -31,12 +33,14 @@ class BoldIconButton extends StatelessWidget {
           child: Container(
             width: buttonWidth,
             height: buttonWidth,
-            decoration: BoxDecoration(
-              color: theme.cardColor,
-              boxShadow: createShadow(),
-              shape: BoxShape.circle,
-              border: Border.all(color: theme.primaryColor, width: 4.0),
-            ),
+            decoration: circle
+                ? BoxDecoration(
+                    color: theme.cardColor,
+                    boxShadow: createShadow(),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: theme.primaryColor, width: 4.0),
+                  )
+                : null,
             child: Icon(
               icons,
               size: buttonWidth * 0.7,
