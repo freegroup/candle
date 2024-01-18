@@ -7,6 +7,9 @@
   "home_mainmenu_t": "Hauptmenü",
   "home_mainmenu": "Candle",
 
+  "recorder_dialog_t": "Strecke aufzeichnen",
+  "recorder_dialog": "Tour aufzeichnen",
+
   "about_mainmenu_t": "Information über die App",
   "about_mainmenu": "Information",
   "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",

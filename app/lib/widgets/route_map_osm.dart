@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 class RouteMapWidget extends BaseRouteMapWidget {
   const RouteMapWidget({
     super.key,
-    required super.route,
+    super.route,
     required super.mapRotation,
     required super.currentLocation,
     super.currentWaypoint,
@@ -42,10 +42,12 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    List<LatLng> routePoints = widget.route.points
-        .map((navPoint) =>
-            navPoint.latlng()) // Konvertieren Sie jeden NavigationPoint in ein LatLng-Objekt
-        .toList();
+    List<LatLng> routePoints = widget.route == null
+        ? []
+        : widget.route!.points
+            .map((navPoint) =>
+                navPoint.latlng()) // Konvertieren Sie jeden NavigationPoint in ein LatLng-Objekt
+            .toList();
 
     var polylines = <Polyline>[
       Polyline(

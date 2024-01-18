@@ -62,6 +62,15 @@
     "description": "Title for MainMenu"
   },
 
+  "recorder_dialog_t": "Route Recording",
+  "@recorder_dialog_t": {
+    "description": "Talkback for route recording screen"
+  },
+  "recorder_dialog": "Recorder",
+  "@recorder_dialog": {
+    "description": "Title for the GPS Recorder Screen"
+  },
+
   "about_mainmenu_t": "About this App",
   "@about_mainmenu_t": {
     "description": "Talkback for AboutScreen"

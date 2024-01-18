@@ -8,6 +8,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/services/router.dart';
+import 'package:candle/utils/geo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -40,8 +41,6 @@ void main() async {
 
 Future<void> initialService() async {
   final service = FlutterBackgroundService();
-
-  // Configure background service
   await service.configure(
     iosConfiguration: IosConfiguration(),
     androidConfiguration: AndroidConfiguration(
@@ -58,14 +57,22 @@ void onStart(ServiceInstance service) async {
   if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       print('setAsForeground');
-      //service.setAsForegroundService();
+      service.setAsForegroundService();
     });
 
     service.on('setAsBackground').listen((event) async {
       print('setAsBackground');
-      //service.setAsBackgroundService();
+      service.setAsBackgroundService();
     });
   }
+
+  service.on('startedService').listen((event) async {
+    print('startedService');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('backgroundServicePaused', false);
+    Vibration.vibrate(duration: 100);
+  });
+
   service.on('pauseService').listen((event) async {
     print('pauseService');
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -94,10 +101,14 @@ void onStart(ServiceInstance service) async {
 
     if (service is AndroidServiceInstance && await service.isForegroundService()) {
       LatLng? loc = await LocationService.instance.location;
-      if (loc == null) {
-        print("LOCATION IS NULL");
-      } else {
-        print("called...${DateTime.now().millisecondsSinceEpoch} $loc");
+      if (loc != null) {
+        service.invoke('location', {
+          "current_date": DateTime.now().toIso8601String(),
+          "location": {
+            "latitude": loc.latitude,
+            "longitude": loc.longitude,
+          },
+        });
       }
       Vibration.vibrate(duration: 100);
     }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
 abstract class BaseRouteMapWidget extends StatefulWidget {
-  final model.Route route;
+  final model.Route? route;
   final double mapRotation;
   final LatLng currentLocation;
   final LatLng? currentWaypoint;
@@ -15,7 +15,7 @@ abstract class BaseRouteMapWidget extends StatefulWidget {
 
   const BaseRouteMapWidget({
     super.key,
-    required this.route,
+    this.route,
     required this.mapRotation,
     required this.currentLocation,
     this.currentWaypoint,

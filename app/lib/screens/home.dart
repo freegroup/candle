@@ -2,7 +2,8 @@ import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/compass.dart';
-import 'package:candle/screens/recorder.dart';
+import 'package:candle/screens/recorder_controller.dart';
+import 'package:candle/screens/recorder_stopped.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/geocoding.dart';
@@ -13,7 +14,6 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -37,20 +37,6 @@ class _ScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    checkServiceStatus();
-  }
-
-  void checkServiceStatus() async {
-    final service = FlutterBackgroundService();
-    bool isRunning = await service.isRunning();
-    setState(() {
-      isRecordingServiceRunning = isRunning;
-    });
-    if (isRunning) {
-      if (mounted) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RecorderScreen()));
-      }
-    }
   }
 
   @override
@@ -131,8 +117,8 @@ class _ScreenState extends State<HomeScreen> {
                               size: 80,
                             ),
                             onPressed: () async {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => const RecorderScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const RecorderControllerScreen()));
                             },
                           ),
                           TileButton(

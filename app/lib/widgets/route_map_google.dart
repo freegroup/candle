@@ -11,7 +11,7 @@ class RouteMapWidget extends BaseRouteMapWidget {
 
   const RouteMapWidget({
     super.key,
-    required super.route,
+    super.route,
     required super.mapRotation,
     required super.currentLocation,
     super.currentWaypoint,
@@ -79,6 +79,7 @@ class _WidgetState extends State<RouteMapWidget> {
     );
 
     Set<google.Circle> circles = {};
+    google.Polyline? routePolyline;
     // Create a circle for the waypoint
     if (widget.currentWaypoint != null) {
       circles.add(google.Circle(
@@ -111,31 +112,32 @@ class _WidgetState extends State<RouteMapWidget> {
       }
     }
 
-    circles.addAll(widget.route.points.map((point) {
-      return google.Circle(
-        circleId: google.CircleId(point.toString()),
-        center: google.LatLng(point.coordinate.latitude, point.coordinate.longitude),
-        radius: 4,
-        fillColor: point.type == model.NavigationPointType.syntetic
-            ? theme.primaryColor.withOpacity(0.5)
-            : darken(theme.primaryColor, 0.15),
-        strokeWidth: 1,
-        strokeColor: darken(theme.primaryColor, 0.15),
+    if (widget.route != null) {
+      circles.addAll(widget.route!.points.map((point) {
+        return google.Circle(
+          circleId: google.CircleId(point.toString()),
+          center: google.LatLng(point.coordinate.latitude, point.coordinate.longitude),
+          radius: 4,
+          fillColor: point.type == model.NavigationPointType.syntetic
+              ? theme.primaryColor.withOpacity(0.5)
+              : darken(theme.primaryColor, 0.15),
+          strokeWidth: 1,
+          strokeColor: darken(theme.primaryColor, 0.15),
+        );
+      }).toSet());
+      // Create a polyline for the route
+      routePolyline = google.Polyline(
+        polylineId: const google.PolylineId('route'),
+        points: widget.route!.points
+            .map((point) => google.LatLng(
+                  point.coordinate.latitude,
+                  point.coordinate.longitude,
+                ))
+            .toList(),
+        color: theme.primaryColor,
+        width: 10,
       );
-    }).toSet());
-
-    // Create a polyline for the route
-    google.Polyline routePolyline = google.Polyline(
-      polylineId: const google.PolylineId('route'),
-      points: widget.route.points
-          .map((point) => google.LatLng(
-                point.coordinate.latitude,
-                point.coordinate.longitude,
-              ))
-          .toList(),
-      color: theme.primaryColor,
-      width: 10,
-    );
+    }
 
     return google.GoogleMap(
       onMapCreated: (google.GoogleMapController controller) {
@@ -152,7 +154,7 @@ class _WidgetState extends State<RouteMapWidget> {
         bearing: widget.mapRotation,
       ),
       markers: {currentLocationMarker},
-      polylines: {routePolyline},
+      polylines: routePolyline != null ? {routePolyline} : {},
       circles: circles,
       scrollGesturesEnabled: false, // Disable scroll gestures
       zoomGesturesEnabled: false, // Disable zoom gestures
