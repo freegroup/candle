@@ -103,16 +103,19 @@ class RecorderService {
     if (_state == RecordingState.recording || _state == RecordingState.paused) {
       service.invoke("stopService");
       print("stopService");
-      List<LatLng> locations = _locationListController.value;
-      List<model.NavigationPoint> routePoints = locations.map((latLng) {
-        return model.NavigationPoint(coordinate: latLng, annotation: "");
-      }).toList();
-      model.Route route = model.Route(
-        name: _currentRecordingRouteName,
-        points: routePoints,
-        annotation: "",
-      );
-      DatabaseService.instance.addRoute(route);
+
+      if (saveRoute) {
+        List<LatLng> locations = _locationListController.value;
+        List<model.NavigationPoint> routePoints = locations.map((latLng) {
+          return model.NavigationPoint(coordinate: latLng, annotation: "");
+        }).toList();
+        model.Route route = model.Route(
+          name: _currentRecordingRouteName,
+          points: routePoints,
+          annotation: "",
+        );
+        DatabaseService.instance.addRoute(route);
+      }
     } else {
       print("Service not 'recording' or 'paused' state.....stop ignored.");
     }

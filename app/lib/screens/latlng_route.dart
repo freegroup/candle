@@ -26,8 +26,9 @@ import 'package:vibration/vibration.dart';
 class LatLngRouteScreen extends StatefulWidget {
   final LatLng source;
   final LatLng target;
+  final model.Route? route;
 
-  const LatLngRouteScreen({super.key, required this.source, required this.target});
+  const LatLngRouteScreen({super.key, required this.source, required this.target, this.route});
 
   @override
   State<LatLngRouteScreen> createState() => _ScreenState();
@@ -37,7 +38,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<Position>? _locationSubscription;
 
-  late Future<model.Route?> _route;
+  late Future<model.Route?> _stateRoute;
 
   int _currentMapRotation = 0;
   int _currentWaypointHeading = 0;
@@ -67,7 +68,9 @@ class _ScreenState extends State<LatLngRouteScreen> {
     super.initState();
     ScreenWakeService.keepOn(true);
 
-    _route = _calculateRoute(widget.source, widget.target);
+    _stateRoute = widget.route != null
+        ? Future(() => widget.route)
+        : _calculateRoute(widget.source, widget.target);
     _currentLocation = widget.source;
     _updateWaypoints(_currentLocation);
     _listenToLocationChanges();
@@ -77,7 +80,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
         log.e(err);
       }).listen((compassEvent) async {
         if (mounted && _currentHeadingWaypoint != null) {
-          var route = await _route;
+          var route = await _stateRoute;
           if (route == null) return;
           var waypointHeading =
               calculateNorthBearing(_currentLocation, _currentHeadingWaypoint!.latlng());
@@ -155,9 +158,9 @@ class _ScreenState extends State<LatLngRouteScreen> {
       return;
     }
 
-    final route = await _route;
+    final route = await _stateRoute;
     if (route == null) {
-      _route = _calculateRoute(location, widget.target);
+      _stateRoute = _calculateRoute(location, widget.target);
       // try to find a wayoint in the next iteration
       return;
     }
@@ -170,7 +173,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
     var distance = closestSegment["distance"];
     if (distance > 15) {
       log.d("Closest Segment is to far ($distance)- recalculate route....");
-      _route = _calculateRoute(location, widget.target);
+      _stateRoute = _calculateRoute(location, widget.target);
       // try to find a wayoint in the next iteration
       return;
     }
@@ -264,7 +267,7 @@ class _ScreenState extends State<LatLngRouteScreen> {
   // Separate method to build the map, isolated from other state changes.
   Widget _buildTopPanel() {
     return FutureBuilder<model.Route?>(
-      future: _route,
+      future: _stateRoute,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

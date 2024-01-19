@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:candle/screens/about.dart';
-import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/home.dart';
+import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/screens/recorder_controller.dart';
+import 'package:candle/screens/routes.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/recorder.dart';
@@ -29,9 +29,10 @@ class _ScreenState extends State<NavigatorScreen> {
   final List<TalkbackScreen> pages = const [
     HomeScreen(),
     LocationsScreen(),
+    RoutesScreen(),
     PoiCategoriesScreen(),
     //SettingsScreen(),
-    AboutScreen(),
+    //AboutScreen(),
   ];
 
   @override
@@ -102,9 +103,9 @@ class _ScreenState extends State<NavigatorScreen> {
 
     List<BottomNavigationBarItem> navBarItems = [
       BottomNavigationBarItem(label: l10n.home_mainmenu, icon: const Icon(Icons.view_module)),
-      BottomNavigationBarItem(label: l10n.favorite_mainmenu, icon: const Icon(Icons.location_on)),
+      BottomNavigationBarItem(label: l10n.locations_mainmenu, icon: const Icon(Icons.location_on)),
+      BottomNavigationBarItem(label: l10n.routes_mainmenu, icon: const Icon(Icons.route)),
       BottomNavigationBarItem(label: l10n.explore_mainmenu, icon: const Icon(Icons.travel_explore)),
-      BottomNavigationBarItem(label: l10n.about_mainmenu, icon: const Icon(Icons.contact_support)),
     ];
     if (isRecordingMode) {
       WidgetsBinding.instance.addPostFrameCallback((_) {

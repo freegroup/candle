@@ -85,15 +85,23 @@
     "description": "Description text on the About screen for the Candle app"
   },
 
-  "favorite_mainmenu_t": "Favorites Screen",
-  "@favorite_mainmenu_t": {
+  "locations_mainmenu_t": "Location Screen",
+  "@locations_mainmenu_t": {
     "description": "Talkback for Favorites"
   },
-  "favorite_mainmenu": "Favoriten",
-  "@favorite_mainmenu": {
+  "locations_mainmenu": "Locations",
+  "@locations_mainmenu": {
     "description": "Title for Favorites screen"
   },
 
+  "routes_mainmenu_t": "Routes Screen",
+  "@routes_mainmenu_t": {
+    "description": "Talkback for Routes"
+  },
+  "routes_mainmenu": "Routes",
+  "@routes_mainmenu": {
+    "description": "Title for Routes Screen"
+  },
 
   "explore_mainmenu_t": "Point of Interest Screen",
   "@explore_mainmenu_t": {
@@ -259,10 +267,12 @@
     }
   },
 
-  "favorites_placeholder_intro": "Oh, what a pity... you haven't saved any favorites yet.",
-  "favorites_placeholder_tip_title": "Why not start by adding **HOME** or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
-  "favorites_placeholder_final_message": "Add your first favorite and embark on new journeys effortlessly!",
-
+  "locations_placeholder_header": "Oh, what a pity... you haven't saved any favorites yet.",
+  "locations_placeholder_body": "Why not start by adding **HOME** or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
+ 
+  "routes_recording_placeholder_header": "Looks like you haven't recorded any routes yet.",
+  "routes_recording_placeholder_body": "Imagine retracing your steps with ease and confidence, no matter where your adventures take you. That's the power of Candle's route recording feature! Begin by recording your journey from your hotel to a new destination, and Candle will safely guide you back whenever you need. Whether it's exploring unfamiliar streets or finding your way back to comfort, start recording your routes today. With Candle, every journey is an opportunity to navigate with certainty and ease. Record your first route and embrace the freedom of reliable, reverse navigation at your fingertips!",
+  
   "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
 
   "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",
@@ -302,10 +312,55 @@
     "description": "Talkback for the input field for a location name"
   },
 
-  "location_name": "Favorite name",
+  "location_name": "Location name",
   "@location_name": {
     "description": "The label for the location name input"
   },
+
+
+  "route_name_t": "Input field for the route name",
+  "@route_name_t": {
+    "description": "Talkback for the input field for a route name"
+  },
+
+  "route_name": "Route Name",
+  "@route_name": {
+    "description": "The label for the route name input"
+  },
+
+  "route_name_required_snackbar": "Route name is required",
+  "@route_name_required_snackbar": {
+    "description": "The required message for the route name input"
+  },
+
+
+  "route_saved_toast": "Route '{name}' has saved.",
+  "@route_saved_toast": {
+    "description": "Information that the route has saved with success",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the route"
+      }
+    }
+  },
+  
+  "route_delete_toast": "Route '{name}' deleted.",
+  "@route_delete_toast": {
+    "description": "Information that the route has deleted with success",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the route"
+      }
+    }
+  },
+
+  "route_add_speak_t": "Press to name the route using voice input",
+  "@route_add_speak_t": {
+    "description": "Talkback for the start voice recoding button"
+  },
+
 
 
   "location_reached": "You've arrived. Welcome!",
@@ -315,7 +370,7 @@
 
   "location_name_required_snackbar": "Favorite name is required",
   "@location_name_required_snackbar": {
-    "description": "The requried message for the location name input"
+    "description": "The required message for the location name input"
   },
 
   "location_distance_t": "{name} is {meters} meters as the crow flies from you",
@@ -393,6 +448,16 @@
   "location_update_dialog": "Update Location",
   "@location_update_dialog": {
     "description": "Title for location/favorite update dialog"
+  },
+
+
+  "route_update_dialog_t": "Give the route a new name and save it.",
+  "@route_update_dialog_t": {
+    "description": "Talkback for the update route AppBar"
+  },
+  "route_update_dialog": "Rename Route",
+  "@route_update_dialog": {
+    "description": "Title for route update dialog"
   },
 
 

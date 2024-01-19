@@ -1,38 +1,31 @@
-import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/location_cu.dart';
+import 'package:candle/models/route.dart' as model;
 import 'package:candle/screens/latlng_compass.dart';
+import 'package:candle/screens/route_u.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/database.dart';
-import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/location.dart';
-import 'package:candle/utils/dialogs.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:candle/models/location_address.dart' as model;
-import 'package:provider/provider.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
-class LocationsScreen extends TalkbackScreen {
-  const LocationsScreen({super.key});
+class RoutesScreen extends TalkbackScreen {
+  const RoutesScreen({super.key});
 
   @override
   String getTalkback(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.locations_mainmenu_t;
+    return l10n.routes_mainmenu_t;
   }
 
   @override
-  State<LocationsScreen> createState() => _ScreenState();
+  State<RoutesScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<LocationsScreen> {
-  int? selectedItemIndex;
-
+class _ScreenState extends State<RoutesScreen> {
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
@@ -40,48 +33,14 @@ class _ScreenState extends State<LocationsScreen> {
 
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(l10n.locations_mainmenu_t),
+          title: Text(l10n.routes_mainmenu),
           talkback: widget.getTalkback(context),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            showLoadingDialog(context);
-            try {
-              var coord = await LocationService.instance.location;
-              if (mounted == true && coord != null) {
-                var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-                LocationAddress? address = await geo.getGeolocationAddress(coord);
-                if (!mounted) return;
-                Navigator.pop(context); // Close the loading dialog
-                if (mounted) {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (context) => LocationCreateUpdateScreen(
-                            initialLocation: address,
-                          ),
-                        ),
-                      )
-                      .then((value) => setState(() {}));
-                }
-              } else {
-                if (!mounted) return;
-                Navigator.pop(context);
-              }
-            } catch (e) {
-              if (!mounted) return;
-              Navigator.pop(context);
-            }
-          },
-          tooltip: l10n.location_add_dialog,
-          mini: false,
-          child: const Icon(Icons.add, size: 50),
         ),
         body: BackgroundWidget(
           child: Align(
               alignment: Alignment.topCenter,
-              child: FutureBuilder<List<model.LocationAddress>>(
-                future: db.allLocations(),
+              child: FutureBuilder<List<model.Route>>(
+                future: db.allRoutes(),
                 builder: (context, snapshot) {
                   AppLocalizations l10n = AppLocalizations.of(context)!;
                   ThemeData theme = Theme.of(context);
@@ -94,8 +53,8 @@ class _ScreenState extends State<LocationsScreen> {
                   }
                   return snapshot.data!.isEmpty
                       ? ScrollingInfoPage(
-                          header: l10n.locations_placeholder_header,
-                          body: l10n.locations_placeholder_body,
+                          header: l10n.routes_recording_placeholder_header,
+                          body: l10n.routes_recording_placeholder_body,
                         )
                       : SlidableAutoCloseBehavior(
                           closeWhenOpened: true,
@@ -107,24 +66,23 @@ class _ScreenState extends State<LocationsScreen> {
                               );
                             },
                             itemBuilder: (context, index) {
-                              model.LocationAddress location = snapshot.data![index];
-                              bool isSelected = selectedItemIndex == index;
+                              model.Route route = snapshot.data![index];
+
                               return Semantics(
                                 customSemanticsActions: {
                                   CustomSemanticsAction(label: l10n.button_common_edit_t): () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                          builder: (context) => LocationCreateUpdateScreen(
-                                            initialLocation: location,
+                                          builder: (context) => RouteUpdateScreen(
+                                            route: route,
                                           ),
                                         ))
                                         .then((value) => {setState(() => {})});
                                   },
                                   CustomSemanticsAction(label: l10n.button_common_delete_t): () {
                                     setState(() {
-                                      db.removeLocation(location);
-                                      showSnackbar(
-                                          context, l10n.location_delete_toast(location.name));
+                                      db.removeRoute(route);
+                                      showSnackbar(context, l10n.route_delete_toast(route.name));
                                     });
                                   },
                                 },
@@ -135,9 +93,9 @@ class _ScreenState extends State<LocationsScreen> {
                                       SlidableAction(
                                         onPressed: (context) {
                                           setState(() {
-                                            db.removeLocation(location);
+                                            db.removeRoute(route);
                                             showSnackbar(
-                                                context, l10n.location_delete_toast(location.name));
+                                                context, l10n.route_delete_toast(route.name));
                                           });
                                         },
                                         backgroundColor: theme.colorScheme.error,
@@ -149,8 +107,8 @@ class _ScreenState extends State<LocationsScreen> {
                                         onPressed: (context) {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
-                                                builder: (context) => LocationCreateUpdateScreen(
-                                                  initialLocation: location,
+                                                builder: (context) => RouteUpdateScreen(
+                                                  route: route,
                                                 ),
                                               ))
                                               .then((value) => {setState(() => {})});
@@ -164,26 +122,25 @@ class _ScreenState extends State<LocationsScreen> {
                                   ),
                                   child: ListTile(
                                       title: Text(
-                                        location.name,
+                                        route.name,
                                         style: TextStyle(
                                           color: theme.primaryColor,
                                           fontSize: theme.textTheme.headlineSmall?.fontSize,
                                         ),
                                       ),
                                       subtitle: Text(
-                                        location.formattedAddress,
+                                        route.points.length.toString(),
                                         style: TextStyle(
                                           color: theme.primaryColor,
                                           fontSize: theme.textTheme.bodyLarge?.fontSize,
                                         ),
                                       ),
-                                      tileColor:
-                                          isSelected ? theme.primaryColor.withOpacity(0.1) : null,
                                       onTap: () {
                                         Navigator.of(context).push(MaterialPageRoute(
                                           builder: (context) => LatLngCompassScreen(
-                                            target: location.latlng(),
-                                            targetName: location.name,
+                                            target: route.points.last.latlng(),
+                                            targetName: route.name,
+                                            route: route,
                                           ),
                                         ));
                                       }),

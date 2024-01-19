@@ -259,7 +259,7 @@ class Route {
       id: map['id']?.toInt(),
       name: map['name'] ?? '',
       annotation: map['annotation'] ?? '',
-      points: List<NavigationPoint>.from(map['points']?.map((x) => NavigationPoint.fromMap(x))),
+      points: map['points'] != null ? Route.pointsFromJson(map['points']) : [],
     );
   }
 

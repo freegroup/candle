@@ -1,5 +1,8 @@
 {
   "de": [
+    "locations_mainmenu_t",
+    "locations_mainmenu",
+    "locations_placeholder_header",
     "turnInstruction_t"
   ]
 }

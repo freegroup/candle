@@ -14,9 +14,12 @@
   "about_mainmenu": "Information",
   "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",
 
-  "favorite_mainmenu_t": "Verwalten von Favoriten",
-  "favorite_mainmenu": "Favoriten",
- 
+  "location_mainmenu_t": "Orte verwalten",
+  "location_mainmenu": "Orte",
+
+  "routes_mainmenu_t": "Strecken verwalten",
+  "routes_mainmenu": "Strecken",
+
   "settings_mainmenu_t": "Einstellungen der App vornehmen",
   "settings_mainmenu": "Eifnstellungen",
 
@@ -91,9 +94,12 @@
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
   
 
-  "favorites_placeholder_intro": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
-  "favorites_placeholder_tip_title": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
-  "favorites_placeholder_final_message": "Fügen Sie Ihren ersten Favoriten hinzu und starten Sie mühelos in neue Abenteuer!",
+  "locations_placeholder_headeer": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
+  "locations_placeholder_body": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
+
+  "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
+  "routes_recording_placeholder_body": "Stellen Sie sich vor, Ihre Schritte mühelos und mit Zuversicht zurückzuverfolgen, egal wohin Ihre Abenteuer Sie führen. Das ist die Kraft von Candles Routenaufzeichnungsfunktion! Beginnen Sie damit, Ihre Reise vom Hotel zu einem neuen Ziel aufzuzeichnen, und Candle wird Sie sicher zurückführen, wann immer Sie es benötigen. Ob beim Erkunden unbekannter Straßen oder beim Finden des Wegs zurück zum Komfort – starten Sie heute damit, Ihre Routen aufzuzeichnen. Mit Candle wird jede Reise zu einer Gelegenheit, mit Gewissheit und Leichtigkeit zu navigieren. Zeichnen Sie Ihre erste Route auf und genießen Sie die Freiheit einer zuverlässigen, umkehrbaren Navigation direkt zur Hand!",
+
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
 
@@ -108,6 +114,18 @@
   "location_update_dialog_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
   "location_update_dialog": "Standort bearbeiten",
 
+
+  "route_update_dialog_t": "Strecken Name umbenennen",
+  "route_update_dialog": "Name andern",
+
+  "route_name_t": "Eingabefeld für den Streckennamen",
+  "route_name": "Name",
+  "route_name_required_snackbar": "Naem der Strecke ist ein Pflichtfeld.",
+
+  "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
+  "route_delete_toast": "Strecke '{name}' wurde gelöscht.",
+  "route_add_speak_t": "Drücken Sie, um die Stecke mittels Spracheingabe zu benennen.",
+
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
 
   "location_name_t": "Eingabefeld für den Favoritennamen.",
@@ -115,6 +133,7 @@
   "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
   "location_reached": "Sie sind da. Willkommen!",
   
+
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
   
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",

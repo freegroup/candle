@@ -3,7 +3,6 @@ import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/recorder_controller.dart';
-import 'package:candle/screens/recorder_stopped.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/geocoding.dart';

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:candle/models/route.dart' as model;
 import 'package:candle/icons/location_arrow.dart';
 import 'package:candle/icons/location_dot.dart';
 import 'package:candle/l10n/helper.dart';
@@ -23,8 +24,10 @@ import 'package:vibration/vibration.dart';
 class LatLngCompassScreen extends StatefulWidget {
   final LatLng target;
   final String targetName;
+  final model.Route? route;
 
-  const LatLngCompassScreen({super.key, required this.target, required this.targetName});
+  const LatLngCompassScreen(
+      {super.key, required this.target, required this.targetName, this.route});
 
   @override
   State<LatLngCompassScreen> createState() => _ScreenState();
@@ -36,7 +39,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
   Timer? _updateLocationTimer;
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
-  late LatLng _stateLocation;
+
   late LatLng _currentLocation;
 
   bool _wasAligned = false;
@@ -52,7 +55,6 @@ class _ScreenState extends State<LatLngCompassScreen> {
   @override
   void initState() {
     super.initState();
-    _stateLocation = widget.target;
 
     updateGpsLocation();
     _updateLocationTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
@@ -71,7 +73,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
         log.e(err);
       }).listen((compassEvent) async {
         if (mounted) {
-          var poiHeading = calculateNorthBearing(_currentLocation, _stateLocation);
+          var poiHeading = calculateNorthBearing(_currentLocation, widget.target);
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
           bool currentlyAligned = _isAligned(needleHeading);
@@ -89,7 +91,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
             _currentHeadingDegrees = needleHeading;
             _currentDistanceToStateLocation = calculateDistance(
               _currentLocation,
-              _stateLocation,
+              widget.target,
             ).toInt();
           });
         }
@@ -188,7 +190,8 @@ class _ScreenState extends State<LatLngCompassScreen> {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => LatLngRouteScreen(
                       source: _currentLocation,
-                      target: _stateLocation,
+                      target: widget.target,
+                      route: widget.route,
                     ),
                   ));
                 }),

@@ -30,7 +30,6 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
   @override
   void initState() {
     super.initState();
-    print("initState: $runtimeType");
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {

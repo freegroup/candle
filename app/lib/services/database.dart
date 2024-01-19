@@ -79,11 +79,38 @@ class DatabaseService {
     return await db.update(_locationTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
   }
 
+  Future<List<Route>> allRoutes() async {
+    Database db = await instance.database;
+    var rows = await db.query(_routeTable, orderBy: "name");
+    print(rows.length);
+    List<Route> routes = rows.isNotEmpty
+        ? rows.map((e) {
+            try {
+              String pointsJson = e['points'] as String;
+              print(".............");
+              print(pointsJson);
+              print(".............");
+              var route = Route.fromMap(e);
+              // Explicitly cast the points field to String
+
+              route.points = Route.pointsFromJson(pointsJson); // Convert JSON string back to points
+
+              return route;
+            } catch (e) {
+              print(e);
+              throw e;
+            }
+          }).toList()
+        : [];
+
+    return routes;
+  }
+
   // Create (Add) operation for Route
   Future<int> addRoute(Route route) async {
     Database db = await instance.database;
     var routeMap = route.toMap();
-    routeMap['points'] = route.pointsToJson(); // Convert points to JSON string
+    routeMap['points'] = route.pointsToJson();
     return await db.insert(_routeTable, routeMap);
   }
 
@@ -112,8 +139,8 @@ class DatabaseService {
   }
 
   // Delete operation for Route
-  Future<int> deleteRoute(int id) async {
+  Future<int> removeRoute(Route route) async {
     Database db = await instance.database;
-    return await db.delete(_routeTable, where: 'id = ?', whereArgs: [id]);
+    return await db.delete(_routeTable, where: 'id = ?', whereArgs: [route.id]);
   }
 }
