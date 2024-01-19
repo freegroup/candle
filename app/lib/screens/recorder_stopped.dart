@@ -7,6 +7,7 @@ import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class RecorderStoppedScreen extends StatefulWidget {
   const RecorderStoppedScreen({super.key});
@@ -46,34 +47,34 @@ class _ScreenState extends State<RecorderStoppedScreen> {
   }
 
   Widget _buildTopPanel() {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double imageWidth = screenWidth * (3 / 7);
+    AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AccessibleTextInput(
-            controller: _nameController,
-            hintText: "Enter Name", // Replace with your hint text
-            mandatory: true,
-            onSubmitted: (value) {
-              // Handle the submitted value
-            },
-            talkbackInput: "Enter Name", // Accessibility label for the input field
-            talkbackIcon: "Start Voice Input", // Accessibility label for the voice input icon
-          ),
-          SizedBox(height: 50), // Spacing between text input and image
-          Container(
-            width: imageWidth,
-            child: Image.asset(
-              'assets/images/recording_splash.png', // Replace with your image path
-              fit: BoxFit.cover,
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageWidth = screenWidth * (2 / 7);
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AccessibleTextInput(
+              controller: _nameController,
+              hintText: l10n.route_name,
+              mandatory: true,
+              onSubmitted: (value) {},
+              talkbackInput: l10n.route_name_t,
+              talkbackIcon: l10n.route_add_speak_t,
             ),
-          ),
-          // ... other widgets if needed ...
-        ],
+            const SizedBox(height: 50),
+            MarkdownBody(data: l10n.route_recording_intro),
+            const SizedBox(height: 50),
+            Container(
+              width: imageWidth,
+              child: Image.asset('assets/images/recording_splash.png', fit: BoxFit.cover),
+            ),
+          ],
+        ),
       ),
     );
   }

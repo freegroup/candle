@@ -61,7 +61,10 @@ class _ScreenState extends State<PoiCategoryScreen> {
       ),
       body: BackgroundWidget(
         child: isLoading
-            ? const Center(child: CircularProgressIndicator()) // Wrapped in Center
+            ? Semantics(
+                label: l10n.label_common_loading_t,
+                child: const Center(child: CircularProgressIndicator()),
+              )
             : pois == null || pois!.isEmpty
                 ? const CategoryPlaceholder()
                 : Column(

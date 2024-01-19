@@ -361,6 +361,11 @@
     "description": "Talkback for the start voice recoding button"
   },
 
+  "route_recording_intro": "Enter a name for your route and press **Record** to begin tracking. Once you reach your destination, select **Save** to keep the route, or **Skip** to discard it. Your saved routes assist in guiding you back to your starting point or forward to your destination, depending on your current location.",
+  "@route_recording_intro": {
+    "description": "Intro message for the route recording screen"
+  },
+
 
 
   "location_reached": "You've arrived. Welcome!",

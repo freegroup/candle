@@ -75,6 +75,7 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
 
   Widget _buildTopPanel() {
     ThemeData theme = Theme.of(context);
+    AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return StreamBuilder<List<LatLng>>(
       stream: RecorderService.locationListStream,
@@ -93,15 +94,18 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
                 mapRotation: -_currentMapRotation.toDouble(),
                 currentLocation: locations.last,
               ),
-              Positioned(
-                top: 10, // Adjust these values as needed
+              const Positioned(
+                top: 10,
                 right: 10,
                 child: PulsingRecordIcon(),
               ),
             ],
           );
         } else {
-          return const Text("Waiting for locations...");
+          return Semantics(
+            label: l10n.label_common_loading_t,
+            child: const Center(child: CircularProgressIndicator()),
+          );
         }
       },
     );

@@ -88,13 +88,8 @@ class _ScreenState extends State<RouteUpdateScreen> {
                 buttonWidth: MediaQuery.of(context).size.width / 7,
                 icons: Icons.check,
                 onTab: canSubmit
-                    ? () {
-                        _save(context);
-                      }
-                    : () {
-                        showSnackbar(context, l10n.route_name_required_snackbar);
-                      } // Disable the button if name is empty
-                ),
+                    ? () => _save(context)
+                    : () => showSnackbar(context, l10n.route_name_required_snackbar)),
           ],
         ),
       ),

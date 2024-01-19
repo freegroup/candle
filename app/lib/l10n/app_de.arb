@@ -125,6 +125,7 @@
   "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
   "route_delete_toast": "Strecke '{name}' wurde gelöscht.",
   "route_add_speak_t": "Drücken Sie, um die Stecke mittels Spracheingabe zu benennen.",
+  "route_recording_intro": "Geben Sie Ihrer Route einen Namen und drücken Sie **Aufnehmen**, um die Aufzeichnung zu starten. Wenn Sie Ihr Ziel erreicht haben, wählen Sie **Speichern**, um die Route zu behalten, oder **Überspringen**, um sie zu verwerfen. Ihre gespeicherten Routen helfen Ihnen, je nach Ihrem aktuellen Standort, zurück zu Ihrem Ausgangspunkt oder vorwärts zu Ihrem Ziel zu navigieren.",
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
 

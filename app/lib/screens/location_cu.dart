@@ -60,7 +60,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     super.dispose();
   }
 
-  Future<void> _saveLocation(BuildContext context) async {
+  Future<void> _save(BuildContext context) async {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     String name = editingController.text;
 
@@ -140,7 +140,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
                 icons: Icons.check,
                 onTab: canSubmit
                     ? () {
-                        _saveLocation(context);
+                        _save(context);
                       }
                     : () {
                         showSnackbar(context, l10n.location_name_required_snackbar);
