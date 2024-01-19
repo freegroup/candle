@@ -75,8 +75,8 @@ class _ScreenState extends State<HomeScreen> {
                             },
                           ),
                           TileButton(
-                            title: l10n.button_favorite,
-                            talkback: l10n.button_favorite_t,
+                            title: l10n.button_location_create,
+                            talkback: l10n.button_location_create_t,
                             icon: const PoiFavoriteIcon(),
                             onPressed: () async {
                               showLoadingDialog(context);

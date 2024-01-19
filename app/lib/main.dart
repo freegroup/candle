@@ -2,13 +2,15 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:candle/app.dart';
+import 'package:candle/models/navigation_point.dart';
+import 'package:candle/models/route.dart' as model;
+import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
-
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/services/router.dart';
-import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -51,6 +53,9 @@ Future<void> initialService() async {
   );
 }
 
+const String kDefaultRouteToIgnore = "___ignore___";
+var _currentRouteName = kDefaultRouteToIgnore;
+
 @pragma('vm:entry-point')
 void onStart(ServiceInstance service) async {
   DartPluginRegistrant.ensureInitialized();
@@ -71,6 +76,17 @@ void onStart(ServiceInstance service) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('backgroundServicePaused', false);
     Vibration.vibrate(duration: 100);
+
+    _currentRouteName = event?['routeName'] as String;
+    print(_currentRouteName);
+    var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
+    if (route == null) {
+      route = model.Route(name: _currentRouteName, points: []);
+      await DatabaseService.instance.addRoute(route);
+    } else {
+      route.points = [];
+      await DatabaseService.instance.updateRoute(route);
+    }
   });
 
   service.on('pauseService').listen((event) async {
@@ -88,27 +104,27 @@ void onStart(ServiceInstance service) async {
   service.on('stopService').listen((event) async {
     print('stopService');
     service.stopSelf();
+    _currentRouteName = kDefaultRouteToIgnore;
   });
 
   // Setup notification periodically
   Timer.periodic(const Duration(seconds: 5), (timer) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool backgroundServicePaused = prefs.getBool('backgroundServicePaused') ?? false;
-    if (backgroundServicePaused) {
-      print("paused");
+    if (backgroundServicePaused || _currentRouteName == kDefaultRouteToIgnore) {
+      print("paused or ignored due to missing correct routeName");
       return;
     }
 
     if (service is AndroidServiceInstance && await service.isForegroundService()) {
       LatLng? loc = await LocationService.instance.location;
       if (loc != null) {
-        service.invoke('location', {
-          "current_date": DateTime.now().toIso8601String(),
-          "location": {
-            "latitude": loc.latitude,
-            "longitude": loc.longitude,
-          },
-        });
+        var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
+        if (route != null) {
+          route.points.add(NavigationPoint(coordinate: loc, annotation: ""));
+          await DatabaseService.instance.updateRoute(route);
+        }
+        service.invoke('route_updated', {"routeName": _currentRouteName});
       }
       Vibration.vibrate(duration: 100);
     }

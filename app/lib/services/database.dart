@@ -82,24 +82,32 @@ class DatabaseService {
   Future<List<Route>> allRoutes() async {
     Database db = await instance.database;
     var rows = await db.query(_routeTable, orderBy: "name");
-    print(rows.length);
     List<Route> routes = rows.isNotEmpty
         ? rows.map((e) {
-            try {
-              String pointsJson = e['points'] as String;
-              print(".............");
-              print(pointsJson);
-              print(".............");
-              var route = Route.fromMap(e);
-              // Explicitly cast the points field to String
+            String pointsJson = e['points'] as String;
+            var route = Route.fromMap(e);
+            route.points = Route.pointsFromJson(pointsJson);
+            return route;
+          }).toList()
+        : [];
 
-              route.points = Route.pointsFromJson(pointsJson); // Convert JSON string back to points
+    return routes;
+  }
 
-              return route;
-            } catch (e) {
-              print(e);
-              throw e;
-            }
+  Future<List<Route>> allRoutesExcept(String excludedRouteName) async {
+    Database db = await instance.database;
+    var rows = await db.query(
+      _routeTable,
+      where: 'name != ?',
+      whereArgs: [excludedRouteName],
+      orderBy: "name",
+    );
+    List<Route> routes = rows.isNotEmpty
+        ? rows.map((e) {
+            String pointsJson = e['points'] as String;
+            var route = Route.fromMap(e);
+            route.points = Route.pointsFromJson(pointsJson); // Convert JSON string back to points
+            return route;
           }).toList()
         : [];
 
@@ -115,9 +123,25 @@ class DatabaseService {
   }
 
   // Read (Get) operation for Route
-  Future<Route?> getRoute(int id) async {
+  Future<Route?> getRouteById(int id) async {
     Database db = await instance.database;
     var maps = await db.query(_routeTable, where: 'id = ?', whereArgs: [id]);
+    if (maps.isNotEmpty) {
+      var route = Route.fromMap(maps.first);
+
+      // Explicitly cast the points field to String
+      String pointsJson = maps.first['points'] as String;
+      route.points = Route.pointsFromJson(pointsJson); // Convert JSON string back to points
+
+      return route;
+    }
+    return null;
+  }
+
+  // Read (Get) operation for Route by name
+  Future<Route?> getRouteByName(String name) async {
+    Database db = await instance.database;
+    var maps = await db.query(_routeTable, where: 'name = ?', whereArgs: [name]);
     if (maps.isNotEmpty) {
       var route = Route.fromMap(maps.first);
 

@@ -5,11 +5,9 @@ import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/routes.dart';
-import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -21,12 +19,10 @@ class NavigatorScreen extends StatefulWidget {
 }
 
 class _ScreenState extends State<NavigatorScreen> {
-  bool isRecordingMode = RecorderService.isRecordingMode;
-
   int currentIndex = 0;
   late Future<LatLng?> _locationFuture;
 
-  final List<TalkbackScreen> pages = const [
+  final List<Widget> pages = const [
     HomeScreen(),
     LocationsScreen(),
     RoutesScreen(),
@@ -51,9 +47,7 @@ class _ScreenState extends State<NavigatorScreen> {
   }
 
   void _retryFetchingLocation() {
-    setState(() {
-      _initLocationFuture(); // Reset the future to trigger a rebuild
-    });
+    setState(() => _initLocationFuture());
   }
 
   @override
@@ -62,24 +56,21 @@ class _ScreenState extends State<NavigatorScreen> {
       future: _locationFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // GPS signal not obtained yet, show loading screen
           return _buildLoadingScreen(context);
         } else if (snapshot.hasData && snapshot.data != null) {
-          // GPS signal obtained, show main content
           return _buildMainContent(context);
         } else {
-          // GPS signal not found or error occurred
           return _buildErrorScreen(context);
         }
       },
     );
   }
 
-  Widget _buildLoadingScreen(context) {
+  Widget _buildLoadingScreen(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _buildErrorScreen(context) {
+  Widget _buildErrorScreen(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -97,9 +88,16 @@ class _ScreenState extends State<NavigatorScreen> {
     );
   }
 
-  Widget _buildMainContent(context) {
+  Widget _buildMainContent(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
+
+    if (RecorderService.isRecordingMode) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const RecorderControllerScreen()));
+      });
+    }
 
     List<BottomNavigationBarItem> navBarItems = [
       BottomNavigationBarItem(label: l10n.home_mainmenu, icon: const Icon(Icons.view_module)),
@@ -107,32 +105,11 @@ class _ScreenState extends State<NavigatorScreen> {
       BottomNavigationBarItem(label: l10n.routes_mainmenu, icon: const Icon(Icons.route)),
       BottomNavigationBarItem(label: l10n.explore_mainmenu, icon: const Icon(Icons.travel_explore)),
     ];
-    if (isRecordingMode) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const RecorderControllerScreen()));
-      });
-    }
 
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.easeInOut;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        },
-        child: IndexedStack(
-          key: ValueKey<int>(currentIndex),
-          index: currentIndex,
-          children: pages,
-        ),
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
       ),
       bottomNavigationBar: BottomAppBar(
         color: theme.primaryColor,
@@ -144,7 +121,7 @@ class _ScreenState extends State<NavigatorScreen> {
             return Expanded(
               child: InkWell(
                 onTap: () {
-                  SemanticsService.announce(pages[index].getTalkback(context), TextDirection.ltr);
+                  //SemanticsService.announce(pages[index].getTalkback(context), TextDirection.ltr);
                   setState(() {
                     currentIndex = index;
                   });

@@ -60,8 +60,8 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.recorder_dialog),
-        talkback: l10n.recorder_dialog_t,
+        title: Text(l10n.recorder_recording_dialog),
+        talkback: l10n.recorder_recording_dialog_t,
       ),
       body: BackgroundWidget(
         child: DividedWidget(
@@ -77,22 +77,18 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
     ThemeData theme = Theme.of(context);
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    return StreamBuilder<List<LatLng>>(
-      stream: RecorderService.locationListStream,
+    return StreamBuilder<model.Route>(
+      stream: RecorderService.routeStream,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          List<LatLng> locations = snapshot.data!;
-          List<model.NavigationPoint> routePoints = locations.map((latLng) {
-            return model.NavigationPoint(coordinate: latLng, annotation: "");
-          }).toList();
-          model.Route route = model.Route(name: "Recorder", points: routePoints, annotation: "");
+        if (snapshot.hasData && snapshot.data != null && snapshot.data!.points.isNotEmpty) {
+          model.Route route = snapshot.data!;
 
           return Stack(
             children: [
               RouteMapWidget(
                 route: route,
                 mapRotation: -_currentMapRotation.toDouble(),
-                currentLocation: locations.last,
+                currentLocation: route.points.last.latlng(),
               ),
               const Positioned(
                 top: 10,

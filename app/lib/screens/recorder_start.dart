@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-class RecorderStoppedScreen extends StatefulWidget {
-  const RecorderStoppedScreen({super.key});
+class RecorderStartScreen extends StatefulWidget {
+  const RecorderStartScreen({super.key});
 
   @override
-  State<RecorderStoppedScreen> createState() => _ScreenState();
+  State<RecorderStartScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RecorderStoppedScreen> {
+class _ScreenState extends State<RecorderStartScreen> {
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -33,8 +33,8 @@ class _ScreenState extends State<RecorderStoppedScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.recorder_dialog),
-        talkback: l10n.recorder_dialog_t,
+        title: Text(l10n.recorder_start_dialog),
+        talkback: l10n.recorder_start_dialog_t,
       ),
       body: BackgroundWidget(
         child: DividedWidget(

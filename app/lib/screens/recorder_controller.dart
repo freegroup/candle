@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:candle/screens/recorder_pause.dart';
 import 'package:candle/screens/recorder_recording.dart';
-import 'package:candle/screens/recorder_stopped.dart';
+import 'package:candle/screens/recorder_start.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,7 @@ class _ScreenState extends State<RecorderControllerScreen> {
       case RecordingState.paused:
         return const RecorderPauseScreen();
       default:
-        return const RecorderStoppedScreen();
+        return const RecorderStartScreen();
     }
   }
 }

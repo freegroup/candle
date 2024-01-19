@@ -35,8 +35,8 @@ class _PauseScreenState extends State<RecorderPauseScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.recorder_dialog),
-        talkback: l10n.recorder_dialog_t,
+        title: Text(l10n.recorder_start_dialog),
+        talkback: l10n.recorder_recording_dialog_t,
       ),
       body: BackgroundWidget(
         child: DividedWidget(

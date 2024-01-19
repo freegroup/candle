@@ -62,13 +62,22 @@
     "description": "Title for MainMenu"
   },
 
-  "recorder_dialog_t": "Route Recording",
-  "@recorder_dialog_t": {
+  "recorder_start_dialog_t": "Start to record a route",
+  "@recorder_start_dialog_t": {
+    "description": "Talkback for route recording start screen"
+  },
+  "recorder_start_dialog": "Record a Route",
+  "@recorder_start_dialog_t": {
+    "description": "Title for the GPS Recorder Screen before recording"
+  },
+
+  "recorder_recording_dialog_t": "Route gets recorded.",
+  "@recorder_recording_dialog_t": {
     "description": "Talkback for route recording screen"
   },
-  "recorder_dialog": "Recorder",
-  "@recorder_dialog": {
-    "description": "Title for the GPS Recorder Screen"
+  "recorder_recording_dialog": "Recording...",
+  "@recorder_recording_dialog": {
+    "description": "Title for the GPS Recorder Screen during recording"
   },
 
   "about_mainmenu_t": "About this App",
@@ -619,13 +628,14 @@
     "description": "Title for share location button"
   },
 
-  "button_favorite_t": "Save current location as favorite",
-  "@button_favorite_t": {
-    "description": "Talkback for Poi Create Button"
+
+  "button_location_create_t": "Save current location in your favorites",
+  "@button_location_create_t": {
+    "description": "Talkback for Location Create Button"
   },
-  "button_favorite": "Save as",
-  "@button_favorite": {
-    "description": "Title for poi create button"
+  "button_location_create": "Save Location",
+  "@button_location_create": {
+    "description": "Title for Location create button"
   },
 
 
