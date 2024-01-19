@@ -37,6 +37,25 @@
     }
   },
 
+  "formated_address_short": "{number}, {street}, {city}",
+  "@formated_address_short": {
+    "description": "rendering of street, number",
+    "placeholders": {
+      "street": {
+        "description": "The name of the street",
+        "example": "Main Street"
+      },
+      "number": {
+        "description": "The house or building number",
+        "example": "123"
+      },
+      "city": {
+        "description": "The city name",
+        "example": "Mannheim"
+      }
+    }
+  },
+
 
   "home_street": "{number}, {street}",
   "@home_street": {

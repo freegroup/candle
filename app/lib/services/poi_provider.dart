@@ -1,16 +1,33 @@
 import 'package:candle/services/poi_provider_overpass.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 
 class PoiDetail {
   String name;
   LatLng latlng;
-
+  String street;
+  String number;
+  String city;
+  String zip;
   PoiDetail({
     required this.name,
     required this.latlng,
+    this.street = "",
+    this.number = "",
+    this.city = "",
+    this.zip = "",
   });
+
+  String formattedAddress(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return (street.isEmpty || number.isEmpty || city.isEmpty)
+        ? ""
+        : l10n.formated_address_short(street, number, city);
+  }
 }
 
 class PoiProvider extends ChangeNotifier {

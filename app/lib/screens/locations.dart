@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/location_cu.dart';
 import 'package:candle/screens/latlng_compass.dart';
@@ -6,15 +8,19 @@ import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
+import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
+import 'package:candle/widgets/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:candle/models/location_address.dart' as model;
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class LocationsScreen extends TalkbackScreen {
@@ -31,169 +37,219 @@ class LocationsScreen extends TalkbackScreen {
 }
 
 class _ScreenState extends State<LocationsScreen> {
-  int? selectedItemIndex;
+  // the current location of the user given by the GPS signal
+  LatLng? _currentLocation;
+  bool _isLoading = true;
+
+  List<LocationAddress> _locations = [];
+  StreamSubscription<Position>? _locationSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenToLocationChanges().then((value) {
+      _loadLocations();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _locationSubscription?.cancel();
+  }
+
+  Future<void> _listenToLocationChanges() async {
+    _currentLocation = await LocationService.instance.location;
+
+    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
+      print(err);
+    }).listen((newLocation) async {
+      var latlng = LatLng(newLocation.latitude, newLocation.longitude);
+      // reload the Locations and sort and update them related to the current user location
+      //
+      if (_currentLocation != null && calculateDistance(latlng, _currentLocation!) > 20) {
+        _currentLocation = latlng;
+        _loadLocations();
+      }
+    });
+  }
+
+  void _loadLocations() async {
+    try {
+      _locations = await DatabaseService.instance.allLocations();
+
+      // Sort locations by distance to _coord
+      if (_currentLocation != null) {
+        _locations.sort((a, b) {
+          var distA = calculateDistance(a.latlng(), _currentLocation!);
+          var distB = calculateDistance(b.latlng(), _currentLocation!);
+          return distA.compareTo(distB);
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    DatabaseService db = DatabaseService.instance;
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-        appBar: CandleAppBar(
-          title: Text(l10n.locations_mainmenu_t),
-          talkback: widget.getTalkback(context),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            showLoadingDialog(context);
-            try {
-              var coord = await LocationService.instance.location;
-              if (mounted == true && coord != null) {
-                var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-                LocationAddress? address = await geo.getGeolocationAddress(coord);
-                if (!mounted) return;
-                Navigator.pop(context); // Close the loading dialog
-                if (mounted) {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (context) => LocationCreateUpdateScreen(
-                            initialLocation: address,
-                          ),
-                        ),
-                      )
-                      .then((value) => setState(() {}));
-                }
-              } else {
-                if (!mounted) return;
-                Navigator.pop(context);
-              }
-            } catch (e) {
-              if (!mounted) return;
-              Navigator.pop(context);
-            }
-          },
-          tooltip: l10n.location_add_dialog,
-          mini: false,
-          child: const Icon(Icons.add, size: 50),
-        ),
-        body: BackgroundWidget(
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: FutureBuilder<List<model.LocationAddress>>(
-                future: db.allLocations(),
-                builder: (context, snapshot) {
-                  AppLocalizations l10n = AppLocalizations.of(context)!;
-                  ThemeData theme = Theme.of(context);
+      appBar: CandleAppBar(
+        title: Text(l10n.locations_mainmenu_t),
+        talkback: widget.getTalkback(context),
+      ),
+      floatingActionButton: _buildFloatingAtion(context),
+      body: BackgroundWidget(
+        child: Align(
+            alignment: Alignment.topCenter,
+            child: _isLoading
+                ? _buildLoading(context)
+                : _locations.isEmpty
+                    ? _buildNoLocations(context)
+                    : _buildLocations(context)),
+      ),
+    );
+  }
 
-                  if (!snapshot.hasData) {
-                    return Semantics(
-                      label: l10n.label_common_loading_t,
-                      child: Text(l10n.label_common_loading),
-                    );
-                  }
-                  return snapshot.data!.isEmpty
-                      ? ScrollingInfoPage(
-                          header: l10n.locations_placeholder_header,
-                          body: l10n.locations_placeholder_body,
-                        )
-                      : SlidableAutoCloseBehavior(
-                          closeWhenOpened: true,
-                          child: ListView.separated(
-                            itemCount: snapshot.data!.length,
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                color: theme.primaryColorDark,
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              model.LocationAddress location = snapshot.data![index];
-                              bool isSelected = selectedItemIndex == index;
-                              return Semantics(
-                                customSemanticsActions: {
-                                  CustomSemanticsAction(label: l10n.button_common_edit_t): () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                          builder: (context) => LocationCreateUpdateScreen(
-                                            initialLocation: location,
-                                          ),
-                                        ))
-                                        .then((value) => {setState(() => {})});
-                                  },
-                                  CustomSemanticsAction(label: l10n.button_common_delete_t): () {
-                                    setState(() {
-                                      db.removeLocation(location);
-                                      showSnackbar(
-                                          context, l10n.location_delete_toast(location.name));
-                                    });
-                                  },
-                                },
-                                child: Slidable(
-                                  endActionPane: ActionPane(
-                                    motion: const ScrollMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (context) {
-                                          setState(() {
-                                            db.removeLocation(location);
-                                            showSnackbar(
-                                                context, l10n.location_delete_toast(location.name));
-                                          });
-                                        },
-                                        backgroundColor: theme.colorScheme.error,
-                                        foregroundColor: theme.colorScheme.primary,
-                                        icon: Icons.delete,
-                                        label: l10n.button_common_delete,
-                                      ),
-                                      SlidableAction(
-                                        onPressed: (context) {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                builder: (context) => LocationCreateUpdateScreen(
-                                                  initialLocation: location,
-                                                ),
-                                              ))
-                                              .then((value) => {setState(() => {})});
-                                        },
-                                        backgroundColor: theme.colorScheme.onPrimary,
-                                        foregroundColor: theme.colorScheme.primary,
-                                        icon: Icons.edit,
-                                        label: l10n.button_common_edit,
-                                      ),
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                      title: Text(
-                                        location.name,
-                                        style: TextStyle(
-                                          color: theme.primaryColor,
-                                          fontSize: theme.textTheme.headlineSmall?.fontSize,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        location.formattedAddress,
-                                        style: TextStyle(
-                                          color: theme.primaryColor,
-                                          fontSize: theme.textTheme.bodyLarge?.fontSize,
-                                        ),
-                                      ),
-                                      tileColor:
-                                          isSelected ? theme.primaryColor.withOpacity(0.1) : null,
-                                      onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => LatLngCompassScreen(
-                                            target: location.latlng(),
-                                            targetName: location.name,
-                                          ),
-                                        ));
-                                      }),
-                                ),
-                              );
-                            },
-                          ),
-                        );
+  Widget _buildLocations(BuildContext context) {
+    DatabaseService db = DatabaseService.instance;
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return SlidableAutoCloseBehavior(
+      closeWhenOpened: true,
+      child: ListView.builder(
+        itemCount: _locations.length,
+        itemBuilder: (context, index) {
+          model.LocationAddress loc = _locations[index];
+
+          return Semantics(
+              customSemanticsActions: {
+                CustomSemanticsAction(label: l10n.button_common_edit_t): () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                        builder: (context) => LocationCreateUpdateScreen(
+                          initialLocation: loc,
+                        ),
+                      ))
+                      .then((value) => {setState(() => {})});
                 },
-              )),
-        ));
+                CustomSemanticsAction(label: l10n.button_common_delete_t): () {
+                  setState(() {
+                    db.removeLocation(loc);
+                    showSnackbar(context, l10n.location_delete_toast(loc.name));
+                  });
+                },
+              },
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) async {
+                        db.removeLocation(loc);
+                        _loadLocations();
+                        if (mounted) {
+                          showSnackbar(context, l10n.location_delete_toast(loc.name));
+                        }
+                      },
+                      backgroundColor: theme.colorScheme.error,
+                      foregroundColor: theme.colorScheme.primary,
+                      icon: Icons.delete,
+                      label: l10n.button_common_delete,
+                    ),
+                    SlidableAction(
+                      onPressed: (context) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                          builder: (context) => LocationCreateUpdateScreen(
+                            initialLocation: loc,
+                          ),
+                        ))
+                            .then((value) async {
+                          _loadLocations();
+                        });
+                      },
+                      backgroundColor: theme.colorScheme.onPrimary,
+                      foregroundColor: theme.colorScheme.primary,
+                      icon: Icons.edit,
+                      label: l10n.button_common_edit,
+                    ),
+                  ],
+                ),
+                child: CandleListTile(
+                    title: loc.name,
+                    subtitle: loc.formattedAddress,
+                    trailing: "${calculateDistance(loc.latlng(), _currentLocation!).toInt()} m",
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => LatLngCompassScreen(
+                          target: loc.latlng(),
+                          targetName: loc.name,
+                        ),
+                      ));
+                    }),
+              ));
+        },
+      ),
+    );
+  }
+
+  Widget _buildFloatingAtion(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return FloatingActionButton(
+      onPressed: () async {
+        showLoadingDialog(context);
+        try {
+          if (mounted == true && _currentLocation != null) {
+            var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
+            LocationAddress? address = await geo.getGeolocationAddress(_currentLocation!);
+            if (!mounted) return;
+            Navigator.pop(context); // Close the loading dialog
+            if (mounted) {
+              Navigator.of(context)
+                  .push(
+                MaterialPageRoute(
+                  builder: (context) => LocationCreateUpdateScreen(initialLocation: address),
+                ),
+              )
+                  .then((value) async {
+                _loadLocations();
+              });
+            }
+          } else {
+            if (!mounted) return;
+            Navigator.pop(context);
+          }
+        } catch (e) {
+          if (!mounted) return;
+          Navigator.pop(context);
+        }
+      },
+      tooltip: l10n.location_add_dialog,
+      mini: false,
+      child: const Icon(Icons.add, size: 50),
+    );
+  }
+
+  Widget _buildNoLocations(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return ScrollingInfoPage(
+      header: l10n.locations_placeholder_header,
+      body: l10n.locations_placeholder_body,
+    );
+  }
+
+  Widget _buildLoading(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Semantics(
+      label: l10n.label_common_loading_t,
+      child: Text(l10n.label_common_loading),
+    );
   }
 }

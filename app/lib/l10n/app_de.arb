@@ -2,6 +2,8 @@
   "current_address_t": "Sie befinden sich in der {street} {number} in {city}.",
   "last_known_address_t": "Letztbekannte Adresse, {street} {number} in {city}.",
 
+  "formated_address_short": "{street} {number}, {city}",
+
   "home_street": "{street} {number}",
 
   "home_mainmenu_t": "Hauptmenü",
