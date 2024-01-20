@@ -24,7 +24,7 @@ class CThemeData {
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
       cardColor: Color.fromRGBO(20, 20, 20, 1),
-      dividerColor: Color.fromRGBO(60, 60, 60, 1),
+      dividerColor: Color.fromARGB(255, 40, 40, 40),
       primaryColorDark: _createDarkerColor(mySwatch),
       textTheme: customTextTheme.apply(
         bodyColor: mySwatch,

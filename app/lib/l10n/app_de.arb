@@ -19,8 +19,8 @@
   "about_mainmenu": "Information",
   "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",
 
-  "location_mainmenu_t": "Orte verwalten",
-  "location_mainmenu": "Orte",
+  "locations_mainmenu_t": "Orte verwalten",
+  "locations_mainmenu": "Orte",
 
   "routes_mainmenu_t": "Strecken verwalten",
   "routes_mainmenu": "Strecken",
@@ -99,7 +99,7 @@
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
   
 
-  "locations_placeholder_headeer": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
+  "locations_placeholder_header": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
   "locations_placeholder_body": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
 
   "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
@@ -205,6 +205,7 @@
 
 
   "turnInstruction": "Nach {distance} Metern, {turn}.",
+  "turnInstruction_t": "Nach {distance} Metern, {turn}.",
   "turnHardLeft": "scharf links abbiegen",
   "turnLeft": "links abbiegen",
   "turnSlightlyLeft": "leicht links abbiegen",
