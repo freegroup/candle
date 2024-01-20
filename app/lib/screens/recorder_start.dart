@@ -33,8 +33,8 @@ class _ScreenState extends State<RecorderStartScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.recorder_start_dialog),
-        talkback: l10n.recorder_start_dialog_t,
+        title: Text(l10n.screen_header_recorder_start),
+        talkback: l10n.screen_header_recorder_start_t,
       ),
       body: BackgroundWidget(
         child: DividedWidget(

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/location_cu.dart';
 import 'package:candle/screens/latlng_compass.dart';
-import 'package:candle/screens/talkback.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -23,14 +22,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
-class LocationsScreen extends TalkbackScreen {
+class LocationsScreen extends StatefulWidget {
   const LocationsScreen({super.key});
-
-  @override
-  String getTalkback(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.locations_mainmenu_t;
-  }
 
   @override
   State<LocationsScreen> createState() => _ScreenState();
@@ -97,8 +90,8 @@ class _ScreenState extends State<LocationsScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.locations_mainmenu_t),
-        talkback: widget.getTalkback(context),
+        title: Text(l10n.screen_header_locations),
+        talkback: l10n.screen_header_locations_t,
       ),
       floatingActionButton: _buildFloatingAtion(context),
       body: BackgroundWidget(
@@ -229,7 +222,7 @@ class _ScreenState extends State<LocationsScreen> {
           Navigator.pop(context);
         }
       },
-      tooltip: l10n.location_add_dialog,
+      tooltip: l10n.screen_header_location_add_t,
       mini: false,
       child: const Icon(Icons.add, size: 50),
     );

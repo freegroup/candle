@@ -1,5 +1,5 @@
 import 'package:candle/screens/poi_category.dart';
-import 'package:candle/screens/talkback.dart';
+
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/semantic_header.dart';
@@ -15,14 +15,8 @@ class PoiCategory {
   PoiCategory({required this.icon, required this.title, required this.categories});
 }
 
-class PoiCategoriesScreen extends TalkbackScreen {
+class PoiCategoriesScreen extends StatefulWidget {
   const PoiCategoriesScreen({super.key});
-
-  @override
-  String getTalkback(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.explore_mainmenu_t;
-  }
 
   @override
   State<PoiCategoriesScreen> createState() => _ScreenState();
@@ -107,8 +101,8 @@ class _ScreenState extends State<PoiCategoriesScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(l10n.explore_mainmenu),
-          talkback: widget.getTalkback(context),
+          title: Text(l10n.screen_header_explore),
+          talkback: l10n.screen_header_explore_t,
         ),
         body: BackgroundWidget(
           child: Padding(

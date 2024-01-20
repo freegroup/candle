@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
-import 'package:candle/screens/talkback.dart';
+
 import 'package:candle/services/compass.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
@@ -17,17 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CompassScreen extends TalkbackScreen {
+class CompassScreen extends StatefulWidget {
   const CompassScreen({super.key});
 
   @override
   State<CompassScreen> createState() => _CompassScreenState();
-
-  @override
-  String getTalkback(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.compass_dialog_t;
-  }
 }
 
 class _CompassScreenState extends State<CompassScreen> {
@@ -109,8 +103,8 @@ class _CompassScreenState extends State<CompassScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.compass_dialog),
-        talkback: widget.getTalkback(context),
+        title: Text(l10n.screen_header_compass_t),
+        talkback: l10n.screen_header_compass_t,
       ),
       body: BackgroundWidget(
         child: DividedWidget(

@@ -8,10 +8,12 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(AppLocalizations.of(context)!.settings_mainmenu),
-          talkback: AppLocalizations.of(context)!.settings_mainmenu_t,
+          title: Text(l10n.screen_header_settings),
+          talkback: l10n.screen_header_settings_t,
         ),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [

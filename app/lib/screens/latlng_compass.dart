@@ -116,8 +116,8 @@ class _ScreenState extends State<LatLngCompassScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.compass_dialog),
-        talkback: l10n.compass_poi_dialog_t(widget.targetName),
+        title: Text(l10n.screen_header_compass_poi),
+        talkback: l10n.screen_header_compass_poi_t(widget.targetName),
       ),
       body: DividedWidget(
         fraction: screenDividerFraction,

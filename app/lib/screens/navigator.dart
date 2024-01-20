@@ -11,6 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 
+class ButtonBarEntry {
+  final Icon icon;
+  final String label;
+  final String talkback;
+
+  ButtonBarEntry({required this.icon, required this.label, required this.talkback});
+}
+
 class NavigatorScreen extends StatefulWidget {
   const NavigatorScreen({super.key});
 
@@ -99,11 +107,27 @@ class _ScreenState extends State<NavigatorScreen> {
       });
     }
 
-    List<BottomNavigationBarItem> navBarItems = [
-      BottomNavigationBarItem(label: l10n.home_mainmenu, icon: const Icon(Icons.view_module)),
-      BottomNavigationBarItem(label: l10n.locations_mainmenu, icon: const Icon(Icons.location_on)),
-      BottomNavigationBarItem(label: l10n.routes_mainmenu, icon: const Icon(Icons.route)),
-      BottomNavigationBarItem(label: l10n.explore_mainmenu, icon: const Icon(Icons.travel_explore)),
+    List<ButtonBarEntry> navBarItems = [
+      ButtonBarEntry(
+        label: l10n.buttonbar_home,
+        talkback: l10n.buttonbar_home_t,
+        icon: const Icon(Icons.view_module),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_locations,
+        talkback: l10n.buttonbar_locations_t,
+        icon: const Icon(Icons.location_on),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_routes,
+        talkback: l10n.buttonbar_routes_t,
+        icon: const Icon(Icons.route),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_explore,
+        talkback: l10n.buttonbar_explore_t,
+        icon: const Icon(Icons.travel_explore),
+      ),
     ];
 
     return Scaffold(
@@ -126,24 +150,27 @@ class _ScreenState extends State<NavigatorScreen> {
                     currentIndex = index;
                   });
                 },
-                child: Container(
-                  color: isSelected ? theme.cardColor : Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        (navBarItems[index].icon as Icon).icon,
-                        color: isSelected ? theme.primaryColor : theme.cardColor,
-                        size: 40, // Icon size can be adjusted as needed
-                      ),
-                      Text(
-                        navBarItems[index].label!,
-                        style: TextStyle(
+                child: Semantics(
+                  label: navBarItems[index].talkback,
+                  child: Container(
+                    color: isSelected ? theme.cardColor : Colors.transparent,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          navBarItems[index].icon.icon,
                           color: isSelected ? theme.primaryColor : theme.cardColor,
-                          fontSize: 12, // Font size can be adjusted as needed
+                          size: 40, // Icon size can be adjusted as needed
                         ),
-                      ),
-                    ],
+                        Text(
+                          navBarItems[index].label,
+                          style: TextStyle(
+                            color: isSelected ? theme.primaryColor : theme.cardColor,
+                            fontSize: 12, // Font size can be adjusted as needed
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

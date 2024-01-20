@@ -6,36 +6,51 @@
 
   "home_street": "{street} {number}",
 
-  "home_mainmenu_t": "Hauptmenü",
-  "home_mainmenu": "Candle",
+  "screen_header_home_t": "Hauptmenü",
+  "screen_header_home": "Candle",
 
-  "recorder_start_dialog_t": "Strecke aufzeichnen",
-  "recorder_start_dialog": "Strecke aufzeichnen",
+  "screen_header_recorder_start_t": "Strecke aufzeichnen",
+  "screen_header_recorder_start": "Strecke aufzeichnen",
 
-  "recorder_recording_dialog_t": "Strecke wird aufgezeichnet",
-  "recorder_recording_dialog": "Aufzeichnen...",
+  "screen_header_recorder_recording_t": "Strecke wird aufgezeichnet",
+  "screen_header_recorder_recording": "Aufzeichnen...",
 
-  "about_mainmenu_t": "Information über die App",
-  "about_mainmenu": "Information",
+  "screen_header_about_t": "Information über die App",
+  "screen_header_about": "Information",
   "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",
 
-  "locations_mainmenu_t": "Orte verwalten",
-  "locations_mainmenu": "Orte",
+  "screen_header_locations_t": "Orte verwalten",
+  "screen_header_locations": "Orte",
 
-  "routes_mainmenu_t": "Strecken verwalten",
-  "routes_mainmenu": "Strecken",
+  "screen_header_routes_t": "Strecken verwalten",
+  "screen_header_routes": "Strecken",
 
-  "settings_mainmenu_t": "Einstellungen der App vornehmen",
-  "settings_mainmenu": "Eifnstellungen",
+  "screen_header_settings_t": "Einstellungen der App vornehmen",
+  "screen_header_settings": "Einstellungen",
 
-  "explore_mainmenu_t": "Öffentliche Orte",
-  "explore_mainmenu": "Erkunden",
+  "screen_header_explore_t": "Öffentliche Orte",
+  "screen_header_explore": "Erkunden",
 
   "explore_category_header": "Kategorien",
   "explore_category_header_t": "Es sind {count} Kategorien in der Liste verfügbar",
 
   "explore_poi_header": "Gefundene Orte",
   "explore_poi_header_t": "Es sind {count} Orte in der Liste verfügbar",
+
+
+
+  "buttonbar_home_t": "Übersicht",
+  "buttonbar_home": "Übersicht",
+
+  "buttonbar_locations_t": "Eigene Orte",
+  "buttonbar_locations": "Orte",
+
+  "buttonbar_routes_t": "Aufgezeichnete Strecken",
+  "buttonbar_routes": "Strecken",
+
+  "buttonbar_explore_t": "Interessante Orte in deiner Umgebung",
+  "buttonbar_explore": "Erkunden",
+
 
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
@@ -79,7 +94,8 @@
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
 
-  "compass_poi_dialog_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
+  "screen_header_compass_poi": "Kompass",
+  "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
   "label_rotate_left_target_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
   "label_rotate_right_target_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
   "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
@@ -88,12 +104,12 @@
   "label_rotate_right_waypoint_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
   "label_rotate_no_waypoint_t": "Sie zeigen jetzt direkt auf den nächsten Wegpunkt.",
 
-  "compass_dialog_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
-  "compass_dialog": "Kompass",
+  "screen_header_compass_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
+  "screen_header_compass": "Kompass",
   "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Telefon horizontal halten",
 
-  "navigation_poi_dialog_t": "Die Weg Führung zu ihrem Ziel wurde gestartet.",
-  "navigation_poi_dialog": "Wegführung",
+  "screen_header_navigation_poi_t": "Die Weg Führung zu ihrem Ziel wurde gestartet.",
+  "screen_header_navigation_poi": "Wegführung",
 
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
@@ -113,15 +129,15 @@
   "remaining_route_distance": "{meters} Meter",
   "remaining_waypoint_distance": "{meters} Meter",
 
-  "location_add_dialog_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "location_add_dialog": "Standort anlegen",
+  "screen_header_location_add_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
+  "screen_header_location_add_t": "Standort anlegen",
 
-  "location_update_dialog_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "location_update_dialog": "Standort bearbeiten",
+  "screen_header_location_update_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
+  "screen_header_location_update": "Standort bearbeiten",
 
 
-  "route_update_dialog_t": "Strecken Name umbenennen",
-  "route_update_dialog": "Name andern",
+  "screen_header_route_update_t": "Strecken Name umbenennen",
+  "screen_header_route_update": "Name andern",
 
   "route_name_t": "Eingabefeld für den Streckennamen",
   "route_name": "Name",
@@ -147,14 +163,14 @@
   
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  
-  "address_search_dialog_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
-  "address_search_dialog": "Adresse Suchen",
+  "screen_header_address_search_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
+  "screen_header_address_search": "Adresse Suchen",
   "address_search_list": "Vorgeschlagene Adressen",
 
   "address_search_doubletab_hint_t": "Doppeltippen, um die Adresse zu ändern und nach einer anderen zu suchen.",
 
-  "permissions_dialog_t": "App Berechtigungen erfragen",
-  "permissions_dialog": "Berechtigungen",
+  "screen_header_permissions_t": "App Berechtigungen erfragen",
+  "screen_header_permissions": "Berechtigungen",
 
   "label_permissions_explain": "Herzlich willkommen bei Candle!\n\nUm eine reibungslose und sichere Nutzung zu gewährleisten, benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für die Bedienung ohne Hände, was besonders für sehbehinderte Nutzer hilfreich ist. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um Ihre Candle-Erfahrung optimal zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",

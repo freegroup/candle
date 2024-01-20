@@ -72,39 +72,39 @@
     }
   },
 
-  "home_mainmenu_t": "Main Menu",
-  "@home_mainmenu_t": {
+  "screen_header_home_t": "Main Menu",
+  "@screen_header_home_t": {
     "description": "Talkback for MainMenu"
   },
-  "home_mainmenu": "Candle",
-  "@home_mainmenu": {
+  "screen_header_home": "Candle",
+  "@screen_header_home": {
     "description": "Title for MainMenu"
   },
 
-  "recorder_start_dialog_t": "Start to record a route",
-  "@recorder_start_dialog_t": {
+  "screen_header_recorder_start_t": "Start to record a route",
+  "@screen_header_recorder_start_t": {
     "description": "Talkback for route recording start screen"
   },
-  "recorder_start_dialog": "Record a Route",
-  "@recorder_start_dialog_t": {
+  "screen_header_recorder_start": "Record a Route",
+  "@screen_header_recorder_start": {
     "description": "Title for the GPS Recorder Screen before recording"
   },
 
-  "recorder_recording_dialog_t": "Route gets recorded.",
-  "@recorder_recording_dialog_t": {
+  "screen_header_recorder_recording_t": "Route gets recorded.",
+  "@screen_header_recorder_recording_t": {
     "description": "Talkback for route recording screen"
   },
-  "recorder_recording_dialog": "Recording...",
-  "@recorder_recording_dialog": {
+  "screen_header_recorder_recording": "Recording...",
+  "@screen_header_recorder_recording": {
     "description": "Title for the GPS Recorder Screen during recording"
   },
 
-  "about_mainmenu_t": "About this App",
-  "@about_mainmenu_t": {
+  "screen_header_about_t": "About this App",
+  "@screen_header_about_t": {
     "description": "Talkback for AboutScreen"
   },
-  "about_mainmenu": "About",
-  "@about_mainmenu": {
+  "screen_header_about": "About",
+  "@screen_header_about": {
     "description": "Title for About Screen"
   },
 
@@ -113,30 +113,30 @@
     "description": "Description text on the About screen for the Candle app"
   },
 
-  "locations_mainmenu_t": "Location Screen",
-  "@locations_mainmenu_t": {
+  "screen_header_locations_t": "Location Screen",
+  "@screen_header_locations_t": {
     "description": "Talkback for Favorites"
   },
-  "locations_mainmenu": "Locations",
-  "@locations_mainmenu": {
+  "screen_header_locations": "Locations",
+  "@screen_header_locations": {
     "description": "Title for Favorites screen"
   },
 
-  "routes_mainmenu_t": "Routes Screen",
-  "@routes_mainmenu_t": {
+  "screen_header_routes_t": "Routes Screen",
+  "@screen_header_routes_t": {
     "description": "Talkback for Routes"
   },
-  "routes_mainmenu": "Routes",
-  "@routes_mainmenu": {
+  "screen_header_routes": "Routes",
+  "@screen_header_routes": {
     "description": "Title for Routes Screen"
   },
 
-  "explore_mainmenu_t": "Point of Interest Screen",
-  "@explore_mainmenu_t": {
+  "screen_header_explore_t": "Point of Interest Screen",
+  "@screen_header_explore_t": {
     "description": "Talkback for POI Category screens"
   },
-  "explore_mainmenu": "Explore",
-  "@explore_mainmenu": {
+  "screen_header_explore": "Explore",
+  "@screen_header_explore": {
     "description": "Title for POI Category screen"
   },
 
@@ -171,17 +171,22 @@
   },
 
 
-  "settings_mainmenu_t": "Settings Screen",
-  "@settings_mainmenu_t": {
+  "screen_header_settings_t": "Settings Screen",
+  "@screen_header_settings_t": {
     "description": "Talkback for Settings"
   },
-  "settings_mainmenu": "Settings",
-  "@settings_mainmenu": {
+  "screen_header_settings": "Settings",
+  "@screen_header_settings": {
     "description": "Title for Settings screen"
   },
 
-  "compass_poi_dialog_t": "A compass that can announce the cardinal direction to {name}",
-  "@compass_poi_dialog_t": {
+  "screen_header_compass_poi": "Compass",
+  "@screen_header_compass_poi": {
+    "description": "Message indicating the direction the phone is pointing to a location/poi"
+  },
+
+  "screen_header_compass_poi_t": "A compass that can announce the cardinal direction to {name}",
+  "@screen_header_compass_poi_t": {
     "description": "Message indicating the direction the phone is pointing to a location/poi",
     "placeholders": {
       "name": {
@@ -190,6 +195,45 @@
       }
     }
   },
+
+
+  "buttonbar_home_t": "Overview Screen",
+  "@buttonbar_home_t": {
+    "description": "Talkback for Overview ButtonBar Entry"
+  },
+  "buttonbar_home": "Overview",
+  "@buttonbar_home": {
+    "description": "Title for Overview ButtonBar Entry"
+  },
+
+  "buttonbar_locations_t": "Locations Screen",
+  "@buttonbar_locations_t": {
+    "description": "Talkback for Locations ButtonBar Entry"
+  },
+  "buttonbar_locations": "Locations",
+  "@buttonbar_locations": {
+    "description": "Title for Locations ButtonBar Entry"
+  },
+
+  "buttonbar_routes_t": "Routes Screen",
+  "@buttonbar_routes_t": {
+    "description": "Talkback for Routes ButtonBar Entry"
+  },
+  "buttonbar_routes": "Routes",
+  "@buttonbar_routes": {
+    "description": "Title for Routes ButtonBar Entry"
+  },
+
+
+  "buttonbar_explore_t": "Point of Interest Screen",
+  "@buttonbar_explore_t": {
+    "description": "Talkback for POI ButtonBar Entry"
+  },
+  "buttonbar_explore": "Explore",
+  "@buttonbar_explore": {
+    "description": "Title for POI ButtonBar Entry"
+  },
+
 
   "label_rotate_no_target_t": "You are now pointing directly at the target destination. It is located {meters} meters as the crow flies.",
   "@label_rotate_no_target_t": {
@@ -254,23 +298,23 @@
   },
 
 
-  "compass_dialog_t": "A compass that can announce the cardinal direction to you.",
-  "@compass_dialog_t": {
+  "screen_header_compass_t": "A compass that can announce the cardinal direction to you.",
+  "@screen_header_compass_t": {
     "description": "Talkback for the CompassDialog AppBar"
   },
-  "compass_dialog": "Compass",
-  "@compass_dialog": {
+  "screen_header_compass": "Compass",
+  "@screen_header_compass": {
     "description": "Title for comcpass dialog"
   },
   "compass_hint_horizontal": "For optimal compass performance, please hold your phone horizontally.",
 
 
-  "navigation_poi_dialog_t": "Pedestrian Navigation to your Target has started.",
-  "@navigation_poi_dialog_t": {
+  "screen_header_navigation_poi_t": "Pedestrian Navigation to your Target has started.",
+  "@screen_header_navigation_poi_t": {
     "description": "Talkback for the CompassDialog AppBar"
   },
-  "navigation_poi_dialog": "Pedestrian Navigation",
-  "@navigation_poi_dialog": {
+  "screen_header_navigation_poi": "Pedestrian Navigation",
+  "@screen_header_navigation_poi": {
     "description": "Title for navigation dialog"
   },
 
@@ -464,42 +508,42 @@
   },
 
 
-  "location_add_dialog_t": "Give the location a name to save it in your favorites.",
-  "@location_add_dialog_t": {
+  "screen_header_location_add_t": "Give the location a name to save it in your favorites.",
+  "@screen_header_location_add_t": {
     "description": "Talkback for the save location AppBar"
   },
-  "location_add_dialog": "Save Location",
-  "@location_add_dialog": {
+  "screen_header_location_add": "Save Location",
+  "@screen_header_location_add": {
     "description": "Title for location add dialog"
   },
 
 
-  "location_update_dialog_t": "Give the location a new name and save it.",
-  "@location_update_dialog_t": {
+  "screen_header_location_update_t": "Give the location a new name and save it.",
+  "@screen_header_location_update_t": {
     "description": "Talkback for the update location/favorite AppBar"
   },
-  "location_update_dialog": "Update Location",
-  "@location_update_dialog": {
+  "screen_header_location_update": "Update Location",
+  "@screen_header_location_update": {
     "description": "Title for location/favorite update dialog"
   },
 
 
-  "route_update_dialog_t": "Give the route a new name and save it.",
-  "@route_update_dialog_t": {
+  "screen_header_route_update_t": "Give the route a new name and save it.",
+  "@screen_header_route_update_t": {
     "description": "Talkback for the update route AppBar"
   },
-  "route_update_dialog": "Rename Route",
-  "@route_update_dialog": {
+  "screen_header_route_update": "Rename Route",
+  "@screen_header_route_update": {
     "description": "Title for route update dialog"
   },
 
 
-  "address_search_dialog_t": "Enter part of an address to find matches. Select the best one.",
-  "@address_search_dialog_t": {
+  "screen_header_address_search_t": "Enter part of an address to find matches. Select the best one.",
+  "@screen_header_address_search_t": {
     "description": "Talkback for the address search AppBar"
   },
-  "address_search_dialog": "Search Address",
-  "@address_search_dialog": {
+  "screen_header_address_search": "Search Address",
+  "@screen_header_address_search": {
     "description": "Title for address search dialog"
   },
   "address_search_list": "Suggested Addresses",
@@ -533,12 +577,12 @@
   },
 
 
-  "permissions_dialog_t": "Permissions Request Dialog",
-  "@permissions_dialog_t": {
+  "screen_header_permissions_t": "Permissions Request Dialog",
+  "@screen_header_permissions_t": {
     "description": "Talkback for the permissions request AppBar"
   },
-  "permissions_dialog": "Permissions",
-  "@permissions_dialog": {
+  "screen_header_permissions": "Permissions",
+  "@screen_header_permissions": {
     "description": "Title for permissions request dialog"
   },
 

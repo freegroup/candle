@@ -251,8 +251,8 @@ class _ScreenState extends State<LatLngRouteScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.navigation_poi_dialog),
-        talkback: l10n.navigation_poi_dialog_t,
+        title: Text(l10n.screen_header_navigation_poi),
+        talkback: l10n.screen_header_navigation_poi_t,
       ),
       body: MergeSemantics(
         child: DividedWidget(

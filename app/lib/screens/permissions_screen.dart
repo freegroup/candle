@@ -82,8 +82,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: CandleAppBar(
-        talkback: l10n.permissions_dialog_t,
-        title: Text(l10n.permissions_dialog),
+        talkback: l10n.screen_header_permissions_t,
+        title: Text(l10n.screen_header_permissions),
       ),
       body: SingleChildScrollView(
         child: Column(

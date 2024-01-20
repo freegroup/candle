@@ -64,8 +64,8 @@ class _ScreenState extends State<RouteUpdateScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.route_update_dialog),
-        talkback: l10n.route_update_dialog_t,
+        title: Text(l10n.screen_header_route_update),
+        talkback: l10n.screen_header_route_update_t,
       ),
       body: SingleChildScrollView(
         child: Column(

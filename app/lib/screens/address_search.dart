@@ -71,8 +71,8 @@ class _ScreenState extends State<AddressSearchScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(AppLocalizations.of(context)!.address_search_dialog),
-        talkback: AppLocalizations.of(context)!.address_search_dialog_t,
+        title: Text(l10n.screen_header_address_search),
+        talkback: l10n.screen_header_address_search_t,
       ),
       body: Column(
         children: [

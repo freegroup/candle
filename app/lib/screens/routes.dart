@@ -1,7 +1,7 @@
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/route_u.dart';
-import 'package:candle/screens/talkback.dart';
+
 import 'package:candle/services/database.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/snackbar.dart';
@@ -13,14 +13,8 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class RoutesScreen extends TalkbackScreen {
+class RoutesScreen extends StatefulWidget {
   const RoutesScreen({super.key});
-
-  @override
-  String getTalkback(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.routes_mainmenu_t;
-  }
 
   @override
   State<RoutesScreen> createState() => _ScreenState();
@@ -34,8 +28,8 @@ class _ScreenState extends State<RoutesScreen> {
 
     return Scaffold(
         appBar: CandleAppBar(
-          title: Text(l10n.routes_mainmenu),
-          talkback: widget.getTalkback(context),
+          title: Text(l10n.screen_header_routes),
+          talkback: l10n.screen_header_routes_t,
         ),
         body: BackgroundWidget(
           child: Align(

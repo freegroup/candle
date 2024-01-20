@@ -1,4 +1,3 @@
-import 'package:candle/screens/talkback.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
@@ -7,14 +6,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AboutScreen extends TalkbackScreen {
+class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
-
-  @override
-  String getTalkback(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    return l10n.about_mainmenu_t;
-  }
 
   @override
   State<AboutScreen> createState() => _AboutScreenState();
@@ -63,8 +56,8 @@ class _AboutScreenState extends State<AboutScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.about_mainmenu),
-        talkback: widget.getTalkback(context),
+        title: Text(l10n.screen_header_about),
+        talkback: l10n.screen_header_about_t,
       ),
       body: BackgroundWidget(
         child: SingleChildScrollView(

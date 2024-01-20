@@ -1,1 +1,5 @@
-{}
+{
+  "de": [
+    "screen_header_location_add"
+  ]
+}

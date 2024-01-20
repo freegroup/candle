@@ -83,8 +83,10 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(_isUpdate ? l10n.location_update_dialog : l10n.location_add_dialog),
-        talkback: _isUpdate ? l10n.location_update_dialog_t : l10n.location_add_dialog_t,
+        title:
+            Text(_isUpdate ? l10n.screen_header_location_update : l10n.screen_header_location_add),
+        talkback:
+            _isUpdate ? l10n.screen_header_location_update_t : l10n.screen_header_location_add_t,
       ),
       body: SingleChildScrollView(
         child: Column(
