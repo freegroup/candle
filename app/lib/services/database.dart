@@ -22,7 +22,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "storage.db");
+    String path = join(docDirector.path, "storage_v1.db");
     return await openDatabase(
       path,
       version: 1,
@@ -37,7 +37,8 @@ class DatabaseService {
       name TEXT,
       memo TEXT,
       lat REAL,
-      lon REAL
+      lon REAL,
+      created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''');
 

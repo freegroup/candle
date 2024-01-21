@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -85,60 +86,62 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
         talkback: l10n.screen_header_permissions_t,
         title: Text(l10n.screen_header_permissions),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                l10n.label_permissions_explain,
-                style: theme.textTheme.headlineMedium,
+      body: BackgroundWidget(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  l10n.label_permissions_explain,
+                  style: theme.textTheme.headlineMedium,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Semantics(
-              label: l10n.button_permissions_request,
-              child: Center(
-                child: Container(
-                  width: screenWidth * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: _requestPermissions,
-                        child: Container(
-                          width: screenWidth / 3,
-                          height: screenWidth / 3,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: theme.primaryColor,
-                          ),
-                          child: Icon(
-                            Icons.verified,
-                            size: screenWidth / 4,
-                            color: Colors.black,
+              const SizedBox(height: 20),
+              Semantics(
+                label: l10n.button_permissions_request,
+                child: Center(
+                  child: Container(
+                    width: screenWidth * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: _requestPermissions,
+                          child: Container(
+                            width: screenWidth / 3,
+                            height: screenWidth / 3,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: theme.primaryColor,
+                            ),
+                            child: Icon(
+                              Icons.verified,
+                              size: screenWidth / 4,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      ExcludeSemantics(
-                        child: Text(
-                          l10n.button_permissions_request,
-                          style: theme.textTheme.headlineSmall,
+                        const SizedBox(height: 20),
+                        ExcludeSemantics(
+                          child: Text(
+                            l10n.button_permissions_request,
+                            style: theme.textTheme.headlineSmall,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 40),
-          ],
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );

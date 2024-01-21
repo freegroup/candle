@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:candle/models/voicepin.dart';
 import 'package:candle/screens/fab.dart';
+import 'package:candle/screens/textoverlay.dart';
+import 'package:candle/screens/voicepin_cu.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/geo.dart';
@@ -44,47 +46,6 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
   void dispose() {
     super.dispose();
     _locationSubscription?.cancel();
-  }
-
-  @override
-  Widget floatingActionButton(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-
-    return FloatingActionButton(
-      onPressed: () async {
-        /*
-        showLoadingDialog(context);
-        try {
-          if (mounted == true && _currentLocation != null) {
-            var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-            LocationAddress? address = await geo.getGeolocationAddress(_currentLocation!);
-            if (!mounted) return;
-            Navigator.pop(context); // Close the loading dialog
-            if (mounted) {
-              Navigator.of(context)
-                  .push(
-                MaterialPageRoute(
-                  builder: (context) => LocationCreateUpdateScreen(initialLocation: address),
-                ),
-              )
-                  .then((value) async {
-                _load();
-              });
-            }
-          } else {
-            if (!mounted) return;
-            Navigator.pop(context);
-          }
-        } catch (e) {
-          if (!mounted) return;
-          Navigator.pop(context);
-        }
-        */
-      },
-      tooltip: l10n.screen_header_location_add_t,
-      mini: false,
-      child: const Icon(Icons.add, size: 50),
-    );
   }
 
   Future<void> _listenToLocationChanges() async {
@@ -156,23 +117,19 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
           return Semantics(
               customSemanticsActions: {
                 CustomSemanticsAction(label: l10n.button_common_edit_t): () {
-                  /*
                   Navigator.of(context)
                       .push(MaterialPageRoute(
-                        builder: (context) => LocationCreateUpdateScreen(
-                          initialLocation: loc,
+                        builder: (context) => VoicePinCreateUpdateScreen(
+                          voicepin: voicepin,
                         ),
                       ))
                       .then((value) => {setState(() => {})});
-                  */
                 },
                 CustomSemanticsAction(label: l10n.button_common_delete_t): () {
-                  /*
                   setState(() {
-                    db.removeLocation(loc);
-                    showSnackbar(context, l10n.location_delete_toast(loc.name));
+                    db.removeVoicePin(voicepin);
+                    showSnackbar(context, l10n.voicepin_delete_toast);
                   });
-                  */
                 },
               },
               child: Slidable(
@@ -194,17 +151,15 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
                     ),
                     SlidableAction(
                       onPressed: (context) {
-                        /*
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                          builder: (context) => LocationCreateUpdateScreen(
-                            initialLocation: loc,
+                          builder: (context) => VoicePinCreateUpdateScreen(
+                            voicepin: voicepin,
                           ),
                         ))
                             .then((value) async {
                           _load();
                         });
-                        */
                       },
                       backgroundColor: theme.colorScheme.onPrimary,
                       foregroundColor: theme.colorScheme.primary,
@@ -213,19 +168,33 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
                     ),
                   ],
                 ),
-                child: CandleListTile(
-                    title: voicepin.name,
-                    subtitle: voicepin.memo,
-                    onTap: () {
-                      /*
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LatLngCompassScreen(
-                          target: loc.latlng(),
-                          targetName: loc.name,
-                        ),
-                      ));
-                      */
-                    }),
+                child: Semantics(
+                  label: l10n.voicepin_readout(voicepin.distance(_currentLocation!), voicepin.memo),
+                  child: ExcludeSemantics(
+                    child: CandleListTile(
+                        title: voicepin.name,
+                        subtitle: voicepin.memo,
+                        trailing: "${voicepin.distance(_currentLocation!)} m",
+                        onTap: () {
+                          MediaQueryData mediaQueryData = MediaQuery.of(context);
+                          bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
+                          if (isScreenReaderEnabled) {
+                            //SemanticsService.announce(voicepin.memo, TextDirection.ltr);
+                            showSnackbar(
+                                context,
+                                l10n.voicepin_readout(
+                                  voicepin.distance(_currentLocation!),
+                                  voicepin.memo,
+                                ));
+                          } else {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => TextOverlayScreen(text: voicepin.memo)),
+                            );
+                          }
+                        }),
+                  ),
+                ),
               ));
         },
       ),
@@ -235,7 +204,7 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
   Widget _buildNoLocations(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    return ScrollingInfoPage(
+    return GenericInfoPage(
       header: l10n.voicepins_placeholder_header,
       body: l10n.voicepins_placeholder_body,
       decoration: Image.asset('assets/images/voicepin.png', fit: BoxFit.cover),
@@ -248,6 +217,38 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
     return Semantics(
       label: l10n.label_common_loading_t,
       child: Text(l10n.label_common_loading),
+    );
+  }
+
+  @override
+  Widget floatingActionButton(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return FloatingActionButton(
+      onPressed: () async {
+        if (mounted == true && _currentLocation != null) {
+          if (mounted) {
+            var voicepin = VoicePin(
+              name: "",
+              memo: "",
+              lat: _currentLocation!.latitude,
+              lon: _currentLocation!.longitude,
+            );
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => VoicePinCreateUpdateScreen(voicepin: voicepin),
+              ),
+            )
+                .then((value) async {
+              _load();
+            });
+          }
+        }
+      },
+      tooltip: l10n.screen_header_voicepins,
+      mini: false,
+      child: const Icon(Icons.add, size: 50),
     );
   }
 }

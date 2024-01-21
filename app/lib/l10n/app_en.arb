@@ -363,10 +363,10 @@
   "locations_placeholder_body": "Why not start by adding **HOME** or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
  
   "routes_recording_placeholder_header": "Looks like you haven't recorded any routes yet.",
-  "routes_recording_placeholder_body": "Imagine retracing your steps with ease and confidence, no matter where your adventures take you. That's the power of Candle's route recording feature! Begin by recording your journey from your hotel to a new destination, and Candle will safely guide you back whenever you need. Whether it's exploring unfamiliar streets or finding your way back to comfort, start recording your routes today. With Candle, every journey is an opportunity to navigate with certainty and ease. Record your first route and embrace the freedom of reliable, reverse navigation at your fingertips!",
-  
+  "routes_recording_placeholder_body": "Discover the joy of seamless navigation with Candle's route recording. Record your journeys, from exploring new destinations to returning to familiar comforts. Start today and let Candle guide you confidently every step of the way. Experience the freedom of reliable navigation, right at your fingertips!",
+
   "voicepins_placeholder_header": "No VoicePins Set Yet.",
-  "voicepins_placeholder_body": "Explore the power of sound to ease your journey. Start by setting VoicePins at crucial locations, like where to find the **front door** or the **nearest crosswalk**. These spoken cues are a simple yet powerful tool to make your daily travels more familiar. A VoicePin can be anything – from a reminder of which door to use, to hints about nearby pedestrian crossings. \n\nAdd your first VoicePin today and experience how it enhances your orientation and makes your journeys safer!",
+  "voicepins_placeholder_body": "Simplify navigation with VoicePins at key locations like the **front door** or **nearest crosswalk**. These audio cues enhance orientation and safety. Try setting your first VoicePin today for a more familiar journey!",
 
   "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
 
@@ -412,6 +412,16 @@
     "description": "The label for the location name input"
   },
 
+
+  "voicepin_memo_t": "Input field for the VoicePin memo",
+  "@voicepin_memo_t": {
+    "description": "Talkback for the input field for a voicepin memo text"
+  },
+
+  "voicepin_memo": "Memo",
+  "@voicepin_memo": {
+    "description": "The label for the voicepin memo input"
+  },
 
   "route_name_t": "Input field for the route name",
   "@route_name_t": {
@@ -461,7 +471,10 @@
     "description": "Intro message for the route recording screen"
   },
 
-
+  "voicepin_memo_required_snackbar": "Please add a memo to the VoicePin to save it, or cancel the action.",
+  "@voicepin_memo_required_snackbar": {
+    "description": "The required message for the location name input"
+  },
 
   "location_reached": "You've arrived. Welcome!",
   "@location_name": {
@@ -510,6 +523,23 @@
     }
   },
 
+ "voicepin_delete_toast": "VoicePin deleted.",
+
+ "voicepin_readout":"Recorded message {distance} meters away: {memo}.",
+  "@voicepin_readout": {
+    "description": "Information that the favorite has deleted with success",
+    "placeholders": {
+      "distance": {
+        "type": "int",
+        "description": "the distance from the message to the user"
+      },
+      "memo": {
+        "type": "String",
+        "description": "the recorded memo text"
+      }
+    }
+  },
+
   "location_share_message": "Here is my current location: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
   "@location_saved_toast": {
     "description": "Information that the favorite has deleted with success",
@@ -531,6 +561,11 @@
   },
 
 
+  "voicepin_add_speak_t": "Press to record a notice for this location using voice input",
+  "@voicepin_add_speak_t": {
+    "description": "Talkback for the start voice recoding button of a VoicePin"
+  },
+
   "screen_header_location_add_t": "Give the location a name to save it in your favorites.",
   "@screen_header_location_add_t": {
     "description": "Talkback for the save location AppBar"
@@ -549,6 +584,26 @@
   "@screen_header_location_update": {
     "description": "Title for location/favorite update dialog"
   },
+
+  "screen_header_voicepin_add_t": "Create a new VoicePin with location-specific memo.",
+  "@screen_header_voicepin_add_t": {
+    "description": "Talkback for the create VoicePin AppBar"
+  },
+  "screen_header_voicepin_add": "Create VoicePin",
+  "@screen_header_voicepin_add": {
+    "description": "Title for VoicePin add dialog"
+  },
+
+  "screen_header_voicepin_update_t": "Edit VoicePin memo to update location-related information.",
+  "@screen_header_voicepin_update_t": {
+    "description": "Talkback for the update VoicePin Edit AppBar"
+  },
+  "screen_header_voicepin_update": "Update VoicePin",
+  "@screen_header_voicepin_update": {
+    "description": "Title for VoicePin update dialog"
+  },
+
+
 
 
   "screen_header_route_update_t": "Give the route a new name and save it.",

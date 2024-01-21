@@ -125,10 +125,10 @@
   "locations_placeholder_body": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
 
   "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
-  "routes_recording_placeholder_body": "Stellen Sie sich vor, Ihre Schritte mühelos und mit Zuversicht zurückzuverfolgen, egal wohin Ihre Abenteuer Sie führen. Das ist die Kraft von Candles Routenaufzeichnungsfunktion! Beginnen Sie damit, Ihre Reise vom Hotel zu einem neuen Ziel aufzuzeichnen, und Candle wird Sie sicher zurückführen, wann immer Sie es benötigen. Ob beim Erkunden unbekannter Straßen oder beim Finden des Wegs zurück zum Komfort – starten Sie heute damit, Ihre Routen aufzuzeichnen. Mit Candle wird jede Reise zu einer Gelegenheit, mit Gewissheit und Leichtigkeit zu navigieren. Zeichnen Sie Ihre erste Route auf und genießen Sie die Freiheit einer zuverlässigen, umkehrbaren Navigation direkt zur Hand!",
+  "routes_recording_placeholder_body": "Entdecken Sie mit Candles Routenaufzeichnung die Freude am sicheren Navigieren. Zeichnen Sie Ihre Wege auf, von kleinen Abenteuern bis hin zur Rückkehr ins Hotel. Beginnen Sie jetzt und erleben Sie, wie Candle Sie verlässlich begleitet und Orientierung bietet – jederzeit und überall!",
 
   "voicepins_placeholder_header": "Noch keine VoicePins gesetzt.",
-  "voicepins_placeholder_body": "Nutzen Sie die Möglichkeiten von Sprachnotizen, um Ihre Wege zu erleichtern. Beginnen Sie damit, VoicePins an wichtigen Orten zu platzieren, wie zum Beispiel dort, wo sich die **Haupteingangstür** befindet oder der **nächste Fußgängerüberweg** ist. Diese akustischen Hinweise sind ein einfaches und effektives Mittel, um Ihnen im Alltag Orientierung zu bieten. Ein VoicePin kann vieles sein – von einer Erinnerung, welche Tür zu verwenden ist, bis hin zu Hinweisen auf nahegelegene Fußgängerüberwege. Setzen Sie heute Ihren ersten VoicePin und erleben Sie, wie er Ihre Orientierung unterstützt und Ihre Reisen sicherer macht!",
+  "voicepins_placeholder_body": "Erleichtern Sie sich die Orientierung mit VoicePins. Platzieren Sie Ihre ersten Sprachnotizen an wichtigen Orten, wie der **Haupteingangstür** oder dem **nächsten Fußgängerüberweg**. Ein VoicePin hilft Ihnen, sich besser zurechtzufinden. Probieren Sie es aus und verbessern Sie Ihre Reisesicherheit!",
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
 
@@ -143,6 +143,11 @@
   "screen_header_location_update_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
   "screen_header_location_update": "Standort bearbeiten",
 
+  "screen_header_voicepin_add_t": "Erstellen Sie einen neuen VoicePin mit standortspezifischer Notiz.",
+  "screen_header_voicepin_add": "VoicePin anlegen",
+
+  "screen_header_voicepin_update_t": "Bearbeiten Sie den VoicePin-Memo, um standortbezogene Informationen zu aktualisieren.",
+  "screen_header_voicepin_update": "VoicePin bearbeiten",
 
   "screen_header_route_update_t": "Strecken Name umbenennen",
   "screen_header_route_update": "Name andern",
@@ -154,15 +159,25 @@
   "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
   "route_delete_toast": "Strecke '{name}' wurde gelöscht.",
   "route_add_speak_t": "Drücken Sie, um die Stecke mittels Spracheingabe zu benennen.",
-  "route_recording_intro": "Geben Sie Ihrer Route einen Namen und drücken Sie **Aufnehmen**, um die Aufzeichnung zu starten. Wenn Sie Ihr Ziel erreicht haben, wählen Sie **Speichern**, um die Route zu behalten, oder **Überspringen**, um sie zu verwerfen. Ihre gespeicherten Routen helfen Ihnen, je nach Ihrem aktuellen Standort, zurück zu Ihrem Ausgangspunkt oder vorwärts zu Ihrem Ziel zu navigieren.",
+"route_recording_intro": "Benennen Sie Ihre Route und starten Sie die Aufzeichnung mit **Aufnehmen**. Am Ziel angekommen, können Sie mit **Speichern** die Route behalten oder mit **Überspringen** verwerfen. Gespeicherte Routen leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
+  
+  "voicepin_add_speak_t": "Tippen Sie hier, um dem Standort eine sprachbasierte Notiz hinzuzufügen.",
 
   "location_name_t": "Eingabefeld für den Favoritennamen.",
   "location_name": "Favoriten Name",
   "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
   "location_reached": "Sie sind da. Willkommen!",
   
+  "voicepin_memo_required_snackbar": "Bitte fügen Sie eine Notiz zum VoicePin hinzu, um ihn zu speichern, oder brechen Sie ab.",
+
+  "voicepin_memo_t": "Eingabefeld für die ortsbezogene Notiz",
+  "voicepin_memo": "Notiz",
+
+  "voicepin_delete_toast": "Sprachnachricht gelöscht.",
+
+  "voicepin_readout": "{distance} Meter entfernt aufgezeichnete Nachricht: {memo}.",
 
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
   

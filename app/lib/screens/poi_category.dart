@@ -131,7 +131,7 @@ class _ScreenState extends State<PoiCategoryScreen> {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
-    return ScrollingInfoPage(
+    return GenericInfoPage(
       header: l10n.no_location_for_category,
       body: "",
       decoration: Icon(

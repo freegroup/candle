@@ -193,7 +193,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
   Widget _buildNoLocations(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    return ScrollingInfoPage(
+    return GenericInfoPage(
       header: l10n.locations_placeholder_header,
       body: l10n.locations_placeholder_body,
     );

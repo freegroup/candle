@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:candle/utils/geo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -95,5 +96,9 @@ class VoicePin {
         lat.hashCode ^
         lon.hashCode ^
         created.hashCode; // no problem if "created" is null.
+  }
+
+  int distance(LatLng currentLocation) {
+    return calculateDistance(latlng(), currentLocation).toInt();
   }
 }
