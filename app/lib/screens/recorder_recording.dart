@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/recorder.dart';
@@ -14,7 +13,6 @@ import 'package:candle/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:latlong2/latlong.dart';
 
 class RecorderRecordingScreen extends StatefulWidget {
   const RecorderRecordingScreen({super.key});
@@ -74,7 +72,6 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
   }
 
   Widget _buildTopPanel() {
-    ThemeData theme = Theme.of(context);
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return StreamBuilder<model.Route>(
@@ -109,7 +106,6 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
 
   Widget _buildBottomPane() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Row(
       children: [

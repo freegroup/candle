@@ -122,6 +122,16 @@
     "description": "Title for Favorites screen"
   },
 
+
+  "screen_header_voicepins_t": "VoicePins Screen",
+  "@screen_header_voicepins_t": {
+    "description": "Talkback for VoicePins"
+  },
+  "screen_header_voicepins": "VoicePins",
+  "@screen_header_voicepins": {
+    "description": "Title for VoicePins screen"
+  },
+
   "screen_header_routes_t": "Routes Screen",
   "@screen_header_routes_t": {
     "description": "Talkback for Routes"
@@ -222,6 +232,16 @@
   "buttonbar_routes": "Routes",
   "@buttonbar_routes": {
     "description": "Title for Routes ButtonBar Entry"
+  },
+
+
+  "buttonbar_voicepins_t": "VoicePin Screen",
+  "@buttonbar_voicepins_t": {
+    "description": "Talkback for VoicePin ButtonBar Entry"
+  },
+  "buttonbar_voicepins": "VoicePins",
+  "@buttonbar_voicepins": {
+    "description": "Title for VoicePin ButtonBar Entry"
   },
 
 
@@ -345,6 +365,9 @@
   "routes_recording_placeholder_header": "Looks like you haven't recorded any routes yet.",
   "routes_recording_placeholder_body": "Imagine retracing your steps with ease and confidence, no matter where your adventures take you. That's the power of Candle's route recording feature! Begin by recording your journey from your hotel to a new destination, and Candle will safely guide you back whenever you need. Whether it's exploring unfamiliar streets or finding your way back to comfort, start recording your routes today. With Candle, every journey is an opportunity to navigate with certainty and ease. Record your first route and embrace the freedom of reliable, reverse navigation at your fingertips!",
   
+  "voicepins_placeholder_header": "No VoicePins Set Yet.",
+  "voicepins_placeholder_body": "Explore the power of sound to ease your journey. Start by setting VoicePins at crucial locations, like where to find the **front door** or the **nearest crosswalk**. These spoken cues are a simple yet powerful tool to make your daily travels more familiar. A VoicePin can be anything – from a reminder of which door to use, to hints about nearby pedestrian crossings. \n\nAdd your first VoicePin today and experience how it enhances your orientation and makes your journeys safer!",
+
   "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
 
   "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",

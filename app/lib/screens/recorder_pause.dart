@@ -14,21 +14,9 @@ class RecorderPauseScreen extends StatefulWidget {
 }
 
 class _PauseScreenState extends State<RecorderPauseScreen> {
-  @override
-  void initState() {
-    super.initState();
-    print("initState: $runtimeType");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print("dispose: $runtimeType");
-  }
 
   @override
   Widget build(BuildContext context) {
-    print("build: $RecorderPauseScreen");
     AppLocalizations l10n = AppLocalizations.of(context)!;
     double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
     double screenDividerFraction = screenHeight * (7 / 9);

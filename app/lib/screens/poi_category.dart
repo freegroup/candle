@@ -7,7 +7,8 @@ import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/category_placeholder.dart';
+
+import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class PoiCategoryScreen extends StatefulWidget {
 
 class _ScreenState extends State<PoiCategoryScreen> {
   List<PoiDetail>? pois;
-  bool isLoading = true;
+  bool _isLoading = true;
   LatLng? _currentLocation;
   LatLng? _loadingLocation;
   StreamSubscription<Position>? _locationSubscription;
@@ -36,7 +37,7 @@ class _ScreenState extends State<PoiCategoryScreen> {
   void initState() {
     super.initState();
     _listenToLocationChanges().then((value) {
-      _fetchLocationAndPois();
+      _load();
     });
   }
 
@@ -73,13 +74,13 @@ class _ScreenState extends State<PoiCategoryScreen> {
       // reload the POI if we fare from the last time we have loaded the poi
       //
       if (calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
-        setState(() => isLoading = true);
-        _fetchLocationAndPois();
+        setState(() => _isLoading = true);
+        _load();
       }
     });
   }
 
-  void _fetchLocationAndPois() async {
+  void _load() async {
     try {
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
       var fetchedPois =
@@ -88,64 +89,91 @@ class _ScreenState extends State<PoiCategoryScreen> {
       if (mounted) {
         setState(() {
           pois = fetchedPois;
-          isLoading = false;
+          _isLoading = false;
         });
       }
     } catch (e) {
       // Handle error
-      if (mounted) setState(() => isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(widget.category.title),
         talkback: widget.category.title,
       ),
       body: BackgroundWidget(
-        child: isLoading
-            ? Semantics(
-                label: l10n.label_common_loading_t,
-                child: const Center(child: CircularProgressIndicator()),
-              )
-            : pois == null || pois!.isEmpty
-                ? const CategoryPlaceholder()
-                : Column(
-                    children: [
-                      SemanticHeader(
-                        title: l10n.explore_poi_header,
-                        talkback: l10n.explore_poi_header_t(pois!.length),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: pois!.length,
-                          itemBuilder: (context, index) {
-                            var loc = pois![index];
-
-                            return CandleListTile(
-                              title: loc.name,
-                              subtitle: loc.formattedAddress(context),
-                              trailing:
-                                  "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => LatLngCompassScreen(
-                                    target: loc.latlng,
-                                    targetName: loc.name,
-                                  ),
-                                ));
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: _isLoading
+              ? _buildLoading()
+              : pois == null || pois!.isEmpty
+                  ? _buildNoLocations()
+                  : _buildLocations(),
+        ),
       ),
+    );
+  }
+
+  Widget _buildLoading() {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Semantics(
+      label: l10n.label_common_loading_t,
+      child: const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildNoLocations() {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return ScrollingInfoPage(
+      header: l10n.no_location_for_category,
+      body: "",
+      decoration: Icon(
+        Icons.not_listed_location,
+        color: theme.primaryColor,
+        size: 160,
+      ),
+    );
+  }
+
+  Widget _buildLocations() {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      children: [
+        SemanticHeader(
+          title: l10n.explore_poi_header,
+          talkback: l10n.explore_poi_header_t(pois!.length),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: pois!.length,
+            itemBuilder: (context, index) {
+              var loc = pois![index];
+
+              return CandleListTile(
+                title: loc.name,
+                subtitle: loc.formattedAddress(context),
+                trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => LatLngCompassScreen(
+                      target: loc.latlng,
+                      targetName: loc.name,
+                    ),
+                  ));
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

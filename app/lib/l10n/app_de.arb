@@ -22,6 +22,9 @@
   "screen_header_locations_t": "Orte verwalten",
   "screen_header_locations": "Orte",
 
+  "screen_header_voicepin_t": "VoicePins verwalten",
+  "screen_header_voicepin": "VoicePin",
+
   "screen_header_routes_t": "Strecken verwalten",
   "screen_header_routes": "Strecken",
 
@@ -51,6 +54,9 @@
   "buttonbar_explore_t": "Interessante Orte in deiner Umgebung",
   "buttonbar_explore": "Erkunden",
 
+
+  "buttonbar_voicepins_t": "Ortsabhängige Sprachnachrichten",
+  "buttonbar_voicepins": "VoicePins",
 
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
@@ -121,6 +127,8 @@
   "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
   "routes_recording_placeholder_body": "Stellen Sie sich vor, Ihre Schritte mühelos und mit Zuversicht zurückzuverfolgen, egal wohin Ihre Abenteuer Sie führen. Das ist die Kraft von Candles Routenaufzeichnungsfunktion! Beginnen Sie damit, Ihre Reise vom Hotel zu einem neuen Ziel aufzuzeichnen, und Candle wird Sie sicher zurückführen, wann immer Sie es benötigen. Ob beim Erkunden unbekannter Straßen oder beim Finden des Wegs zurück zum Komfort – starten Sie heute damit, Ihre Routen aufzuzeichnen. Mit Candle wird jede Reise zu einer Gelegenheit, mit Gewissheit und Leichtigkeit zu navigieren. Zeichnen Sie Ihre erste Route auf und genießen Sie die Freiheit einer zuverlässigen, umkehrbaren Navigation direkt zur Hand!",
 
+  "voicepins_placeholder_header": "Noch keine VoicePins gesetzt.",
+  "voicepins_placeholder_body": "Nutzen Sie die Möglichkeiten von Sprachnotizen, um Ihre Wege zu erleichtern. Beginnen Sie damit, VoicePins an wichtigen Orten zu platzieren, wie zum Beispiel dort, wo sich die **Haupteingangstür** befindet oder der **nächste Fußgängerüberweg** ist. Diese akustischen Hinweise sind ein einfaches und effektives Mittel, um Ihnen im Alltag Orientierung zu bieten. Ein VoicePin kann vieles sein – von einer Erinnerung, welche Tür zu verwenden ist, bis hin zu Hinweisen auf nahegelegene Fußgängerüberwege. Setzen Sie heute Ihren ersten VoicePin und erleben Sie, wie er Ihre Orientierung unterstützt und Ihre Reisen sicherer macht!",
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
 

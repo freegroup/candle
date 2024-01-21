@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:candle/models/route.dart' as model;
-import 'package:candle/screens/address_search.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
@@ -60,7 +59,6 @@ class _ScreenState extends State<RouteUpdateScreen> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: CandleAppBar(

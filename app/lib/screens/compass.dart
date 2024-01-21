@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
+import 'package:candle/screens/fab.dart';
 
 import 'package:candle/services/compass.dart';
 import 'package:candle/utils/global_logger.dart';
@@ -24,7 +25,7 @@ class CompassScreen extends StatefulWidget {
   State<CompassScreen> createState() => _CompassScreenState();
 }
 
-class _CompassScreenState extends State<CompassScreen> {
+class _CompassScreenState extends State<CompassScreen> implements FloatingActionButtonProvider {
   StreamSubscription<CompassEvent>? _compassSubscription;
   int _currentHeadingDegrees = 0;
   bool _isCompassHorizontal = true;
@@ -68,6 +69,11 @@ class _CompassScreenState extends State<CompassScreen> {
     _horizontalCheckTimer?.cancel();
 
     super.dispose();
+  }
+
+  @override
+  Widget? floatingActionButton(BuildContext context) {
+    return null;
   }
 
   void _checkCompassOrientation(bool isHorizontal) {

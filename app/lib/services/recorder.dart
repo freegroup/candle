@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:candle/models/route.dart' as model;
-import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/services/database.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

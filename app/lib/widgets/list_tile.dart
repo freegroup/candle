@@ -5,13 +5,13 @@ class CandleListTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.trailing,
+    this.trailing,
     required this.onTap,
   });
 
   final String title;
   final String subtitle;
-  final String trailing;
+  final String? trailing;
   final VoidCallback onTap;
 
   @override
@@ -84,7 +84,7 @@ class CandleListTile extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        trailing,
+                        trailing ?? "",
                         style: theme.textTheme.headlineSmall,
                       ),
                     ),

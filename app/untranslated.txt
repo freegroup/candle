@@ -1,5 +1,7 @@
 {
   "de": [
+    "screen_header_voicepins_t",
+    "screen_header_voicepins",
     "screen_header_location_add"
   ]
 }

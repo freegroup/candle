@@ -81,7 +81,6 @@ class _ScreenState extends State<RecorderStartScreen> {
 
   Widget _buildBottomPane() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Center(
       // Center the content vertically and horizontally

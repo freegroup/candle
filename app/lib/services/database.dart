@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/models/route.dart';
+import 'package:candle/models/voicepin.dart';
 import "package:path/path.dart";
 
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   static const String _locationTable = "location";
+  static const String _voicepinTable = "voicepin";
   static const String _routeTable = "route";
 
   // singleton Pattern
@@ -20,7 +22,7 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     Directory docDirector = await getApplicationDocumentsDirectory();
-    String path = join(docDirector.path, "favorites.db");
+    String path = join(docDirector.path, "storage.db");
     return await openDatabase(
       path,
       version: 1,
@@ -29,6 +31,16 @@ class DatabaseService {
   }
 
   FutureOr<void> _onCreate(Database db, int version) async {
+    await db.execute(''' 
+    CREATE TABLE $_voicepinTable(
+      id INTEGER PRIMARY KEY,
+      name TEXT,
+      memo TEXT,
+      lat REAL,
+      lon REAL
+    )
+    ''');
+
     await db.execute(''' 
     CREATE TABLE $_locationTable(
       id INTEGER PRIMARY KEY,
@@ -50,7 +62,8 @@ class DatabaseService {
       id INTEGER PRIMARY KEY,
       name TEXT,
       annotation TEXT,
-      points TEXT
+      points TEXT,
+      created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''');
   }
@@ -58,31 +71,49 @@ class DatabaseService {
   Future<List<LocationAddress>> allLocations() async {
     Database db = await instance.database;
     var rows = await db.query(_locationTable, orderBy: "name");
-    List<LocationAddress> shopppingItems =
-        rows.isNotEmpty ? rows.map((e) => LocationAddress.fromMap(e)).toList() : [];
-
-    return shopppingItems;
+    return rows.isNotEmpty ? rows.map((e) => LocationAddress.fromMap(e)).toList() : [];
   }
 
   Future<int> addLocation(LocationAddress item) async {
     Database db = await instance.database;
-    return await db.insert(_locationTable, item.toMap());
+    return db.insert(_locationTable, item.toMap());
   }
 
   Future<int> removeLocation(LocationAddress item) async {
     Database db = await instance.database;
-    return await db.delete(_locationTable, where: 'id = ?', whereArgs: [item.id]);
+    return db.delete(_locationTable, where: 'id = ?', whereArgs: [item.id]);
   }
 
   Future<int> updateLocation(LocationAddress item) async {
     Database db = await instance.database;
-    return await db.update(_locationTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+    return db.update(_locationTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+  }
+
+  Future<List<VoicePin>> allVoicePins() async {
+    Database db = await instance.database;
+    var rows = await db.query(_voicepinTable);
+    return rows.isNotEmpty ? rows.map((e) => VoicePin.fromMap(e)).toList() : [];
+  }
+
+  Future<int> addVoicePin(VoicePin item) async {
+    Database db = await instance.database;
+    return db.insert(_voicepinTable, item.toMap());
+  }
+
+  Future<int> removeVoicePin(VoicePin item) async {
+    Database db = await instance.database;
+    return db.delete(_voicepinTable, where: 'id = ?', whereArgs: [item.id]);
+  }
+
+  Future<int> updateVoicePin(VoicePin item) async {
+    Database db = await instance.database;
+    return db.update(_voicepinTable, item.toMap(), where: 'id = ?', whereArgs: [item.id]);
   }
 
   Future<List<Route>> allRoutes() async {
     Database db = await instance.database;
     var rows = await db.query(_routeTable, orderBy: "name");
-    List<Route> routes = rows.isNotEmpty
+    return rows.isNotEmpty
         ? rows.map((e) {
             String pointsJson = e['points'] as String;
             var route = Route.fromMap(e);
@@ -90,8 +121,6 @@ class DatabaseService {
             return route;
           }).toList()
         : [];
-
-    return routes;
   }
 
   Future<List<Route>> allRoutesExcept(String excludedRouteName) async {
@@ -102,7 +131,7 @@ class DatabaseService {
       whereArgs: [excludedRouteName],
       orderBy: "name",
     );
-    List<Route> routes = rows.isNotEmpty
+    return rows.isNotEmpty
         ? rows.map((e) {
             String pointsJson = e['points'] as String;
             var route = Route.fromMap(e);
@@ -110,8 +139,6 @@ class DatabaseService {
             return route;
           }).toList()
         : [];
-
-    return routes;
   }
 
   // Create (Add) operation for Route
@@ -119,7 +146,7 @@ class DatabaseService {
     Database db = await instance.database;
     var routeMap = route.toMap();
     routeMap['points'] = route.pointsToJson();
-    return await db.insert(_routeTable, routeMap);
+    return db.insert(_routeTable, routeMap);
   }
 
   // Read (Get) operation for Route
@@ -159,12 +186,12 @@ class DatabaseService {
     Database db = await instance.database;
     var routeMap = route.toMap();
     routeMap['points'] = route.pointsToJson(); // Convert points to JSON string
-    return await db.update(_routeTable, routeMap, where: 'id = ?', whereArgs: [route.id]);
+    return db.update(_routeTable, routeMap, where: 'id = ?', whereArgs: [route.id]);
   }
 
   // Delete operation for Route
   Future<int> removeRoute(Route route) async {
     Database db = await instance.database;
-    return await db.delete(_routeTable, where: 'id = ?', whereArgs: [route.id]);
+    return db.delete(_routeTable, where: 'id = ?', whereArgs: [route.id]);
   }
 }
