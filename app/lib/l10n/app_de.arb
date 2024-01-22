@@ -89,6 +89,7 @@
   "button_common_save": "Speichern",
 
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
+  "button_navigate_poi": "Navigation starten",
 
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",

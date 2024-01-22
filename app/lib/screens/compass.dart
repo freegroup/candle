@@ -89,8 +89,8 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
       if ((heading >= point - snapRange) && (heading <= point + snapRange)) {
         if (_lastVibratedSnapPoint != point) {
           Vibration.vibrate(duration: 100);
-          _lastVibratedSnapPoint = point;
           SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
+          _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop
         }
       } else if (_lastVibratedSnapPoint == point) {

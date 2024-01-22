@@ -21,18 +21,18 @@ class DialogButton extends StatelessWidget {
       button: true,
       child: ExcludeSemantics(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
               onTap: onTab,
               child: Container(
-                width: double.infinity, // Full width
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: theme.primaryColor, // Button color
+                  color: theme.primaryColor,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 10), // Vertical padding
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   label,
                   textAlign: TextAlign.center,

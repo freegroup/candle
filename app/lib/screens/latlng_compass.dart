@@ -13,6 +13,7 @@ import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
@@ -44,21 +45,13 @@ class _ScreenState extends State<LatLngCompassScreen> {
 
   bool _wasAligned = false;
 
-  bool _isAligned(int headingDegrees) {
-    return (headingDegrees.abs() <= 8) || (headingDegrees.abs() >= 352);
-  }
-
-  void updateGpsLocation() async {
-    _currentLocation = (await LocationService.instance.location)!;
-  }
-
   @override
   void initState() {
     super.initState();
 
-    updateGpsLocation();
+    _updateLocation();
     _updateLocationTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
-      updateGpsLocation();
+      _updateLocation();
     });
 
     ScreenWakeService.keepOn(true);
@@ -108,11 +101,19 @@ class _ScreenState extends State<LatLngCompassScreen> {
     super.dispose();
   }
 
+  bool _isAligned(int headingDegrees) {
+    return (headingDegrees.abs() <= 8) || (headingDegrees.abs() >= 352);
+  }
+
+  void _updateLocation() async {
+    _currentLocation = (await LocationService.instance.location)!;
+  }
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
-    double screenDividerFraction = screenHeight * (5 / 9);
+    double screenDividerFraction = screenHeight * (6 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -182,19 +183,19 @@ class _ScreenState extends State<LatLngCompassScreen> {
               subtitle: '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
               subtitleTalkback: '${_currentDistanceToStateLocation.toStringAsFixed(0)} Meter',
             ),
-            BoldIconButton(
-                talkback: l10n.button_navigate_poi_t,
-                buttonWidth: MediaQuery.of(context).size.width / 5,
-                icons: Icons.near_me,
-                onTab: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => LatLngRouteScreen(
-                      source: _currentLocation,
-                      target: widget.target,
-                      route: widget.route,
-                    ),
-                  ));
-                }),
+            DialogButton(
+              label: l10n.button_navigate_poi,
+              talkback: l10n.button_navigate_poi_t,
+              onTab: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => LatLngRouteScreen(
+                    source: _currentLocation,
+                    target: widget.target,
+                    route: widget.route,
+                  ),
+                ));
+              },
+            )
           ],
         ),
       ],

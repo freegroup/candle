@@ -687,6 +687,10 @@
   "@button_navigate_poi_t": {
     "description": "Talkback for navigate to Poi"
   },
+  "button_navigate_poi": "Start Navigation",
+  "@button_navigate_poi": {
+    "description": "Label for navigate to Poi"
+  },
 
   "button_common_edit_t": "Edit Element",
   "@button_common_edit_t": {
