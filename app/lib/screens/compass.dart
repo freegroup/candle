@@ -13,8 +13,10 @@ import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vibration/vibration.dart';
 
 class CompassScreen extends StatefulWidget {
   const CompassScreen({super.key});
@@ -29,10 +31,17 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
   bool _isCompassHorizontal = true;
   Timer? _horizontalCheckTimer;
 
+  // managmenet vars to check if the phone is tilled and can not show correct
+  // the compass information
+  //
   static const int _kConsecutiveDuration = 3; // seconds
   int _consecutiveHorizontalFalseCount = 0;
   int _consecutiveHorizontalTrueCount = 0;
   bool _canShowSnackbar = true;
+
+  // vibration and announcement handling
+  //
+  int? _lastVibratedSnapPoint;
 
   @override
   void initState() {
@@ -42,9 +51,12 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         log.e(err);
       }).listen((compassEvent) {
+        int heading = ((360 - (compassEvent.heading ?? 0)) % 360).toInt();
+        _vibrateAtSnapPoints(heading);
+
         if (mounted) {
           setState(() {
-            _currentHeadingDegrees = ((360 - (compassEvent.heading ?? 0)) % 360).toInt();
+            _currentHeadingDegrees = heading;
           });
         }
       });
@@ -67,6 +79,25 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
     _horizontalCheckTimer?.cancel();
 
     super.dispose();
+  }
+
+  void _vibrateAtSnapPoints(int heading) {
+    const snapPoints = [0, 90, 180, 270];
+    const snapRange = 10; // ±10° range for snap points
+
+    for (var point in snapPoints) {
+      if ((heading >= point - snapRange) && (heading <= point + snapRange)) {
+        if (_lastVibratedSnapPoint != point) {
+          Vibration.vibrate(duration: 100);
+          _lastVibratedSnapPoint = point;
+          SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
+          break; // Vibrate once and exit loop
+        }
+      } else if (_lastVibratedSnapPoint == point) {
+        // Clear the last vibrated point if we move out of the snap range
+        _lastVibratedSnapPoint = null;
+      }
+    }
   }
 
   @override

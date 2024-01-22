@@ -30,7 +30,7 @@ class CompassService {
   // Handler for accelerometer updates
   void _onAccelerometerChanged(AccelerometerEvent event) {
     double angle = atan(sqrt(event.x * event.x + event.y * event.y) / event.z) * (180 / pi);
-    _isHorizontal = (angle < 20.0 && angle > -20.0);
+    _isHorizontal = (angle < 30.0 && angle > -30.0);
   }
 
   // Stream of compass updates
