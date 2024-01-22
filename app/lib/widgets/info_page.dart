@@ -17,12 +17,11 @@ class GenericInfoPage extends StatelessWidget {
 
     MarkdownStyleSheet markdownStyle = MarkdownStyleSheet(
       p: theme.textTheme.bodyLarge,
-      // Add other custom styles if needed
     );
 
     return MergeSemantics(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Align content to the start
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Fixed header
@@ -38,8 +37,6 @@ class GenericInfoPage extends StatelessWidget {
           ),
           Container(color: theme.primaryColor.withAlpha(30), height: 1.0),
 
-          // Scrollable content
-          // Scrollable content
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
