@@ -6,7 +6,9 @@ import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -64,10 +66,9 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mediaQueryData = MediaQuery.of(context);
-    bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
+    double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
+    double screenDividerFraction = screenHeight * (7 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -76,37 +77,47 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
         talkback:
             _isUpdate ? l10n.screen_header_voicepin_update_t : l10n.screen_header_voicepin_add_t,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: AccessibleTextInput(
-                maxLines: 5,
-                mandatory: true,
-                hintText: l10n.voicepin_memo,
-                talkbackInput: l10n.voicepin_memo_t,
-                talkbackIcon: l10n.voicepin_add_speak_t,
-                controller: editingController,
-                autofocus: !isScreenReaderEnabled,
-              ),
-            ),
-            const SizedBox(height: 50),
-            BoldIconButton(
-                talkback: l10n.button_save_t,
-                buttonWidth: MediaQuery.of(context).size.width / 7,
-                icons: Icons.check,
-                onTab: canSubmit
-                    ? () {
-                        _save(context);
-                      }
-                    : () {
-                        showSnackbar(context, l10n.voicepin_memo_required_snackbar);
-                      } // Disable the button if name is empty
-                ),
-          ],
+      body: BackgroundWidget(
+        child: DividedWidget(
+          fraction: screenDividerFraction,
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
+  }
+
+  Padding _buildTopPane(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: AccessibleTextInput(
+          maxLines: 5,
+          mandatory: true,
+          hintText: l10n.voicepin_memo,
+          talkbackInput: l10n.voicepin_memo_t,
+          talkbackIcon: l10n.voicepin_add_speak_t,
+          controller: editingController),
+    );
+  }
+
+  Widget _buildBottomPane(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return BoldIconButton(
+        talkback: l10n.button_save_t,
+        buttonWidth: MediaQuery.of(context).size.width / 7,
+        icons: Icons.check,
+        onTab: canSubmit
+            ? () {
+                _save(context);
+              }
+            : () {
+                showSnackbar(context, l10n.voicepin_memo_required_snackbar);
+              } // Disable the button if name is empty
+        );
   }
 }

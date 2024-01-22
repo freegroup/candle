@@ -125,11 +125,11 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
                       ))
                       .then((value) => {setState(() => {})});
                 },
-                CustomSemanticsAction(label: l10n.button_common_delete_t): () {
-                  setState(() {
-                    db.removeVoicePin(voicepin);
-                    showSnackbar(context, l10n.voicepin_delete_toast);
-                  });
+                CustomSemanticsAction(label: l10n.button_common_delete_t): () async {
+                  db.removeVoicePin(voicepin).then((count) => _load());
+                  if (mounted) {
+                    showSnackbar(context, l10n.voicepin_deleted_toast);
+                  }
                 },
               },
               child: Slidable(
@@ -138,10 +138,9 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
                   children: [
                     SlidableAction(
                       onPressed: (context) async {
-                        db.removeVoicePin(voicepin);
-                        _load();
+                        db.removeVoicePin(voicepin).then((count) => _load());
                         if (mounted) {
-                          showSnackbar(context, l10n.location_delete_toast(voicepin.name));
+                          showSnackbar(context, l10n.voicepin_deleted_toast);
                         }
                       },
                       backgroundColor: theme.colorScheme.error,

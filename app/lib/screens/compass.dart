@@ -115,14 +115,14 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPanel(),
+          top: _buildTopPane(),
           bottom: _buildBottomPane(),
         ),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPane() {
     return Center(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {

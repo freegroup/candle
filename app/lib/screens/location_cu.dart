@@ -7,7 +7,9 @@ import 'package:candle/services/database.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
+import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,10 +78,9 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mediaQueryData = MediaQuery.of(context);
-    bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
+    double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
+    double screenDividerFraction = screenHeight * (7 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
@@ -88,69 +89,87 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
         talkback:
             _isUpdate ? l10n.screen_header_location_update_t : l10n.screen_header_location_add_t,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: AccessibleTextInput(
+      body: BackgroundWidget(
+        child: DividedWidget(
+          fraction: screenDividerFraction,
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView _buildTopPane(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: AccessibleTextInput(
                 maxLines: 1,
                 mandatory: true,
                 hintText: l10n.location_name,
                 talkbackInput: l10n.location_name_t,
                 talkbackIcon: l10n.location_add_speak_t,
-                controller: editingController,
-                autofocus: !isScreenReaderEnabled,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddressSearchScreen(
-                    sink: _addressController.sink,
-                    addressFragment: stateLocation?.formattedAddress,
-                  ),
-                ));
-              },
-              child: AbsorbPointer(
-                // Prevents the TextField from gaining focus
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: MergeSemantics(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.inputhint_address,
-                          style: theme.textTheme.labelMedium,
-                        ),
-                        TextField(
-                          controller: TextEditingController(text: stateLocation?.formattedAddress),
-                          maxLines: null,
-                        ),
-                        Semantics(label: l10n.address_search_doubletab_hint_t),
-                      ],
-                    ),
+                controller: editingController),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddressSearchScreen(
+                  sink: _addressController.sink,
+                  addressFragment: stateLocation?.formattedAddress,
+                ),
+              ));
+            },
+            child: AbsorbPointer(
+              // Prevents the TextField from gaining focus
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: MergeSemantics(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.inputhint_address,
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      TextField(
+                        controller: TextEditingController(text: stateLocation?.formattedAddress),
+                        maxLines: null,
+                      ),
+                      Semantics(label: l10n.address_search_doubletab_hint_t),
+                    ],
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 50),
-            BoldIconButton(
-                talkback: l10n.button_save_t,
-                buttonWidth: MediaQuery.of(context).size.width / 7,
-                icons: Icons.check,
-                onTab: canSubmit
-                    ? () {
-                        _save(context);
-                      }
-                    : () {
-                        showSnackbar(context, l10n.location_name_required_snackbar);
-                      } // Disable the button if name is empty
-                ),
-          ],
-        ),
+          ),
+
+          // _buildBottomPane(context),
+        ],
       ),
     );
+  }
+
+  Widget _buildBottomPane(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return BoldIconButton(
+        talkback: l10n.button_save_t,
+        buttonWidth: MediaQuery.of(context).size.width / 7,
+        icons: Icons.check,
+        onTab: canSubmit
+            ? () {
+                _save(context);
+              }
+            : () {
+                showSnackbar(context, l10n.location_name_required_snackbar);
+              } // Disable the button if name is empty
+        );
   }
 }

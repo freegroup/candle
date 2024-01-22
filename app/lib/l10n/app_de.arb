@@ -175,14 +175,14 @@
   "voicepin_memo_t": "Eingabefeld für die ortsbezogene Notiz",
   "voicepin_memo": "Notiz",
 
-  "voicepin_delete_toast": "Sprachnachricht gelöscht.",
+  "voicepin_deleted_toast": "Sprachnachricht gelöscht.",
 
   "voicepin_readout": "{distance} Meter entfernt aufgezeichnete Nachricht: {memo}.",
 
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
   
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
-  "location_delete_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
+  "location_deleted_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  

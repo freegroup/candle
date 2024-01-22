@@ -512,7 +512,7 @@
     }
   },
   
-  "location_delete_toast": "Location '{name}' deleted.",
+  "location_deleted_toast": "Location '{name}' deleted.",
   "@location_saved_toast": {
     "description": "Information that the favorite has deleted with success",
     "placeholders": {
@@ -523,7 +523,7 @@
     }
   },
 
- "voicepin_delete_toast": "VoicePin deleted.",
+ "voicepin_deleted_toast": "VoicePin deleted.",
 
  "voicepin_readout":"Recorded message {distance} meters away: {memo}.",
   "@voicepin_readout": {

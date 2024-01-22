@@ -132,7 +132,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
                 CustomSemanticsAction(label: l10n.button_common_delete_t): () {
                   setState(() {
                     db.removeLocation(loc);
-                    showSnackbar(context, l10n.location_delete_toast(loc.name));
+                    showSnackbar(context, l10n.location_deleted_toast(loc.name));
                   });
                 },
               },
@@ -145,7 +145,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
                         db.removeLocation(loc);
                         _load();
                         if (mounted) {
-                          showSnackbar(context, l10n.location_delete_toast(loc.name));
+                          showSnackbar(context, l10n.location_deleted_toast(loc.name));
                         }
                       },
                       backgroundColor: theme.colorScheme.error,

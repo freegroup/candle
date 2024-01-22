@@ -16,7 +16,7 @@ class GenericInfoPage extends StatelessWidget {
     double imageWidth = screenWidth * (2 / 7);
 
     MarkdownStyleSheet markdownStyle = MarkdownStyleSheet(
-      p: theme.textTheme.bodyText1?.copyWith(fontSize: 18), // Set paragraph text size
+      p: theme.textTheme.bodyLarge,
       // Add other custom styles if needed
     );
 
@@ -25,7 +25,7 @@ class GenericInfoPage extends StatelessWidget {
       child: MergeSemantics(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start, // Align content to the start
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               color: theme.cardColor,
