@@ -8,6 +8,7 @@ import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -89,7 +90,6 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
 
   Padding _buildTopPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(18.0),
@@ -105,12 +105,10 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
 
   Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
-    return BoldIconButton(
-        talkback: l10n.button_save_t,
-        buttonWidth: MediaQuery.of(context).size.width / 7,
-        icons: Icons.check,
+    return DialogButton(
+        label: l10n.button_common_save,
+        talkback: l10n.button_common_save_t,
         onTab: canSubmit
             ? () {
                 _save(context);

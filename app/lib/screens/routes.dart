@@ -147,7 +147,7 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
 
   Widget _buildLoading() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
+
     return Semantics(
       label: l10n.label_common_loading_t,
       child: Text(l10n.label_common_loading),
@@ -156,7 +156,6 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
 
   Widget _buildNoRoutes() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return GenericInfoPage(
       header: l10n.routes_recording_placeholder_header,

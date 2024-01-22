@@ -112,7 +112,7 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
         Expanded(
           child: Semantics(
             button: true, // Explicitly mark as a button
-            label: l10n.button_close_t,
+            label: l10n.button_common_close_t,
             child: BoldIconButton(
               talkback: "",
               buttonWidth: 50,
@@ -126,7 +126,7 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
         Expanded(
           child: Semantics(
             button: true, // Explicitly mark as a button
-            label: l10n.button_close_t,
+            label: l10n.button_common_close_t,
             child: BoldIconButton(
               talkback: "",
               buttonWidth: 120,

@@ -73,11 +73,7 @@
   "button_recording_t": "Strecke aufzeichnen.",
   "button_recording": "Aufzeichnen",
 
-  "button_close_t": "Fenster schliessen.",
-  "button_close": "Schliessen",
 
-  "button_save_t": "Speichern und Dialog schliessen.",
-  "button_save": "Speichern",
 
   "button_common_edit_t": "Eintrag bearbeiten",
   "button_common_edit": "Bearbeiten",
@@ -88,6 +84,9 @@
 
   "button_common_close_t": "Dialog schliessen",
   "button_common_close": "Schliessen",
+
+  "button_common_save_t": "Speichern",
+  "button_common_save": "Speichern",
 
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
 
@@ -154,7 +153,7 @@
 
   "route_name_t": "Eingabefeld für den Streckennamen",
   "route_name": "Name",
-  "route_name_required_snackbar": "Naem der Strecke ist ein Pflichtfeld.",
+  "route_name_required_snackbar": "Bitte geben Sie einen Namen für die Route ein, um die Aufzeichnung zu starten.",
 
   "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
   "route_delete_toast": "Strecke '{name}' wurde gelöscht.",

@@ -49,14 +49,13 @@ class _PauseScreenState extends State<RecorderPauseScreen> {
 
   Widget _buildBottomPane() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Column(children: [
       Container(
         width: double.infinity, // Full width for TalkBack focus
         child: Semantics(
           button: true, // Explicitly mark as a button
-          label: l10n.button_close_t,
+          label: l10n.button_common_close_t,
           child: BoldIconButton(
             talkback: "",
             buttonWidth: MediaQuery.of(context).size.width / 5,

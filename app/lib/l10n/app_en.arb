@@ -433,7 +433,7 @@
     "description": "The label for the route name input"
   },
 
-  "route_name_required_snackbar": "Route name is required",
+  "route_name_required_snackbar": "Please enter a name for the route to start recording.",
   "@route_name_required_snackbar": {
     "description": "The required message for the route name input"
   },
@@ -585,11 +585,11 @@
     "description": "Title for location/favorite update dialog"
   },
 
-  "screen_header_voicepin_add_t": "Create a new VoicePin with location-specific memo.",
+  "screen_header_voicepin_add_t": "Set a new VoicePin at this location.",
   "@screen_header_voicepin_add_t": {
     "description": "Talkback for the create VoicePin AppBar"
   },
-  "screen_header_voicepin_add": "Create VoicePin",
+  "screen_header_voicepin_add": "Set a VoicePin",
   "@screen_header_voicepin_add": {
     "description": "Title for VoicePin add dialog"
   },
@@ -707,6 +707,15 @@
   },
 
 
+  "button_common_save_t": "Savve",
+  "@button_common_save_t": {
+    "description": "Talkback for save button"
+  },
+  "button_common_save": "Save",
+  "@button_common_save": {
+    "description": "Title for save button"
+  },
+
   "button_common_delete_t": "Delete Element",
   "@button_common_delete_t": {
     "description": "Talkback for a generic delete Button"
@@ -789,24 +798,6 @@
     "description": "Title for record track button"
   },
 
-
-  "button_close_t": "Close Dialog.",
-  "@button_close_t": {
-    "description": "Talkback for close button"
-  },
-  "button_close": "Close",
-  "@button_close": {
-    "description": "Title for close button"
-  },
-
-  "button_save_t": "Save data and close dialog",
-  "@button_save_t": {
-    "description": "Talkback for save button"
-  },
-  "button_save": "Close",
-  "@button_save": {
-    "description": "Title for save button"
-  },
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

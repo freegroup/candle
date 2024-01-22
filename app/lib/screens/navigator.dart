@@ -70,7 +70,7 @@ class _ScreenState extends State<NavigatorScreen> {
     Widget? fab;
     if (currentScreenState is FloatingActionButtonProvider) {
       FloatingActionButtonProvider fabProvider = currentScreenState as FloatingActionButtonProvider;
-      fab = fabProvider!.floatingActionButton(context);
+      fab = fabProvider.floatingActionButton(context);
     }
 
     return FutureBuilder<LatLng?>(

@@ -82,7 +82,7 @@ class _ScreenState extends State<RouteUpdateScreen> {
             ),
             const SizedBox(height: 50),
             BoldIconButton(
-                talkback: l10n.button_save_t,
+                talkback: l10n.button_common_save_t,
                 buttonWidth: MediaQuery.of(context).size.width / 7,
                 icons: Icons.check,
                 onTab: canSubmit

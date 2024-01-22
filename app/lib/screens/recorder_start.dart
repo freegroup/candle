@@ -3,7 +3,7 @@ import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/bold_icon_button.dart';
+import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,14 +39,14 @@ class _ScreenState extends State<RecorderStartScreen> {
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPanel(),
+          top: _buildTopPane(),
           bottom: _buildBottomPane(),
         ),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPane() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -82,32 +82,16 @@ class _ScreenState extends State<RecorderStartScreen> {
   Widget _buildBottomPane() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
-    return Center(
-      // Center the content vertically and horizontally
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // Take up as little space as necessary
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width / 4, // Set the width of the button
-            child: Semantics(
-              button: true,
-              label: l10n.button_close_t,
-              child: BoldIconButton(
-                talkback: "",
-                buttonWidth: MediaQuery.of(context).size.width / 4,
-                icons: Icons.arrow_right,
-                onTab: () async {
-                  if (_nameController.text.trim().isNotEmpty) {
-                    RecorderService.start(_nameController.text.trim());
-                  } else {
-                    showSnackbar(context, "Please enter a name of the route to start recording.");
-                  }
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return DialogButton(
+        label: l10n.button_recording,
+        talkback: l10n.button_recording_t,
+        onTab: _nameController.text.trim().isNotEmpty
+            ? () {
+                RecorderService.start(_nameController.text.trim());
+              }
+            : () {
+                showSnackbar(context, l10n.route_name_required_snackbar);
+              } // Disable the button if name is empty
+        );
   }
 }

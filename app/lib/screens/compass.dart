@@ -11,6 +11,7 @@ import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:candle/theme_data.dart';
+import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';
 
@@ -105,11 +106,11 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     double screenHeight = MediaQuery.of(context).size.height - kToolbarHeight;
-    double screenDividerFraction = screenHeight * (5 / 9);
+    double screenDividerFraction = screenHeight * (6 / 9);
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.screen_header_compass_t),
+        title: Text(l10n.screen_header_compass),
         talkback: l10n.screen_header_compass_t,
       ),
       body: BackgroundWidget(
@@ -154,21 +155,13 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
         subtitle: getHorizon(context, _currentHeadingDegrees),
         subtitleTalkback: getHorizon(context, _currentHeadingDegrees),
       ),
-      Container(
-        width: double.infinity, // Full width for TalkBack focus
-        child: Semantics(
-          button: true, // Explicitly mark as a button
-          label: l10n.button_close_t,
-          child: BoldIconButton(
-            talkback: "",
-            buttonWidth: MediaQuery.of(context).size.width / 5,
-            icons: Icons.close_rounded,
-            onTab: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      )
+      DialogButton(
+        label: l10n.button_common_close,
+        onTab: () {
+          Navigator.pop(context);
+        },
+        talkback: l10n.button_common_close_t,
+      ),
     ]);
   }
 }
