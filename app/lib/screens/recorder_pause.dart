@@ -50,7 +50,7 @@ class _PauseScreenState extends State<RecorderPauseScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Column(children: [
-      Container(
+      SizedBox(
         width: double.infinity, // Full width for TalkBack focus
         child: Semantics(
           button: true, // Explicitly mark as a button

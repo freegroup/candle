@@ -3,18 +3,15 @@ import 'dart:async';
 import 'package:candle/icons/compass.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/screens/fab.dart';
-
 import 'package:candle/services/compass.dart';
+import 'package:candle/theme_data.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/bold_icon_button.dart';
-import 'package:candle/theme_data.dart';
 import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

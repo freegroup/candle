@@ -77,7 +77,7 @@ class _ScreenState extends State<HomeScreen> {
 
                               try {
                                 var coord = await LocationService.instance.location;
-                                if (coord != null) {
+                                if (mounted && coord != null) {
                                   var geo = Provider.of<GeoServiceProvider>(context, listen: false)
                                       .service;
                                   LocationAddress? address = await geo.getGeolocationAddress(coord);
@@ -126,7 +126,7 @@ class _ScreenState extends State<HomeScreen> {
 
                               try {
                                 var coord = await LocationService.instance.location;
-                                if (coord != null) {
+                                if (mounted && coord != null) {
                                   var geo = Provider.of<GeoServiceProvider>(context, listen: false)
                                       .service;
                                   LocationAddress? address = await geo.getGeolocationAddress(coord);

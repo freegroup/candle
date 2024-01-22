@@ -27,12 +27,12 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
     ThemeData theme = Theme.of(context);
     Color color = widget.color ?? theme.primaryColor;
     return Expanded(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Semantics(
                 label: widget.headlineTalkback,
@@ -48,7 +48,7 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Semantics(
                 label: widget.subtitleTalkback,

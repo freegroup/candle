@@ -113,12 +113,10 @@ class _ScreenState extends State<AddressSearchScreen> {
                           ),
                         ],
                       ),
-                      leading: Container(
-                        child: Icon(
-                          Icons.place_rounded,
-                          color: theme.primaryColor,
-                          size: 32,
-                        ),
+                      leading: Icon(
+                        Icons.place_rounded,
+                        color: theme.primaryColor,
+                        size: 32,
                       ),
                       onTap: () async {
                         final placeDetail = suggestion[index];

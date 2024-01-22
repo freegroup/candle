@@ -125,7 +125,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
         Align(
           alignment: Alignment.center,
           child: Transform.translate(
-            offset: Offset(0, 150 / 2),
+            offset: const Offset(0, 150 / 2),
             child: Image.asset(
               'assets/images/location_marker.png', // Pfad zu Ihrem Bild
               width: 150.0, // Breite des Bildes

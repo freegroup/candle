@@ -10,7 +10,6 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/services/router.dart';
-import 'package:candle/utils/configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';

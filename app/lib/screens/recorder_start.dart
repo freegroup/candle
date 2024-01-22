@@ -69,7 +69,7 @@ class _ScreenState extends State<RecorderStartScreen> {
             const SizedBox(height: 50),
             MarkdownBody(data: l10n.route_recording_intro),
             const SizedBox(height: 50),
-            Container(
+            SizedBox(
               width: imageWidth,
               child: Image.asset('assets/images/recording_splash.png', fit: BoxFit.cover),
             ),

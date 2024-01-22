@@ -7,7 +7,7 @@ extension CustomThemeColors on ThemeData {
 
 class CThemeData {
   static ThemeData get darkTheme {
-    MaterialColor mySwatch = _createMaterialColor(Color.fromRGBO(255, 192, 4, 1));
+    MaterialColor mySwatch = _createMaterialColor(const Color.fromRGBO(255, 192, 4, 1));
     ThemeData baseTheme = ThemeData.dark(); // Use the default dark theme as base
 
     // Kopieren Sie das existierende TextTheme und ändern Sie nur das labelLarge-Attribut
@@ -23,8 +23,8 @@ class CThemeData {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
-      cardColor: Color.fromRGBO(20, 20, 20, 1),
-      dividerColor: Color.fromARGB(255, 40, 40, 40),
+      cardColor: const Color.fromRGBO(20, 20, 20, 1),
+      dividerColor: const Color.fromARGB(255, 40, 40, 40),
       primaryColorDark: _createDarkerColor(mySwatch),
       textTheme: customTextTheme.apply(
         bodyColor: mySwatch,
@@ -32,7 +32,7 @@ class CThemeData {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Color.fromRGBO(100, 100, 100, 1),
+        fillColor: const Color.fromRGBO(100, 100, 100, 1),
         labelStyle: TextStyle(color: mySwatch),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -52,7 +52,7 @@ class CThemeData {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.black), // Transparent background
-          side: MaterialStateProperty.all(BorderSide(color: Colors.black)), // Border Color
+          side: MaterialStateProperty.all(const BorderSide(color: Colors.black)), // Border Color
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0) // Adjust border radius as needed
               )),
@@ -83,7 +83,7 @@ class CThemeData {
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
     }
-    strengths.forEach((strength) {
+    for (var strength in strengths) {
       final double ds = 0.5 - strength;
       swatch[(strength * 1000).round()] = Color.fromRGBO(
         r + ((r - ds < 0 ? 0 : (r - ds > 255 ? 255 : r - ds)).round()),
@@ -91,7 +91,7 @@ class CThemeData {
         b + ((b - ds < 0 ? 0 : (b - ds > 255 ? 255 : b - ds)).round()),
         1,
       );
-    });
+    }
     return MaterialColor(color.value, swatch);
   }
 }

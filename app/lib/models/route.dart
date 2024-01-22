@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:math' as math;
+
+import 'package:candle/models/navigation_point.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
-import 'package:xml/xml.dart' as xml;
-
-import 'package:candle/models/navigation_point.dart';
 import 'package:latlong2/latlong.dart';
 
 class Route {
@@ -196,32 +195,6 @@ class Route {
       annotation: "",
       type: type, // Set the type
     );
-  }
-
-  String toGPX() {
-    var builder = xml.XmlBuilder();
-    builder.processing('xml', 'version="1.0" encoding="UTF-8"');
-    builder.element('gpx', nest: () {
-      builder.attribute('version', '1.1');
-      builder.attribute('creator', 'YourAppName'); // Replace with your app name
-      builder.element('trk', nest: () {
-        builder.element('name', nest: name);
-        builder.element('trkseg', nest: () {
-          for (var point in points) {
-            builder.element('trkpt', nest: () {
-              builder.attribute('lat', point.coordinate.latitude.toString());
-              builder.attribute('lon', point.coordinate.longitude.toString());
-              builder.element('ele', nest: '0'); // Elevation, set to 0 if not available
-              builder.element('time',
-                  nest: DateTime.now()
-                      .toIso8601String()); // Current time, replace if actual time data is available
-            });
-          }
-        });
-      });
-    });
-
-    return builder.buildDocument().toXmlString(pretty: true);
   }
 
   // Convert the list of NavigationPoints to a JSON string

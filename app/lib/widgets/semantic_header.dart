@@ -21,7 +21,7 @@ class SemanticHeader extends StatelessWidget {
             child: ExcludeSemantics(
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.headlineLarge,
@@ -29,6 +29,6 @@ class SemanticHeader extends StatelessWidget {
               ),
             ),
           )
-        : SizedBox.shrink(); // Returns an empty widget if screen reader is not enabled
+        : const SizedBox.shrink();
   }
 }

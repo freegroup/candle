@@ -25,6 +25,8 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CandleAppBarState extends State<CandleAppBar> {
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Semantics(
       label: widget.talkback,
       child: ExcludeSemantics(
@@ -40,12 +42,12 @@ class _CandleAppBarState extends State<CandleAppBar> {
               ],
             ),
           ),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          backgroundColor: theme.appBarTheme.backgroundColor,
           actions: widget.actions,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(1.0),
             child: Container(
-              color: Theme.of(context).appBarTheme.titleTextStyle?.color?.withAlpha(50),
+              color: theme.primaryColor.withAlpha(60),
               height: 1.0,
             ),
           ),
