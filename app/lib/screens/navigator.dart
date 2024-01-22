@@ -154,47 +154,49 @@ class _ScreenState extends State<NavigatorScreen> {
         children: pages,
       ),
       floatingActionButton: fab,
-      bottomNavigationBar: BottomAppBar(
-        color: theme.primaryColor,
-        padding: EdgeInsets.zero,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(navBarItems.length, (index) {
-            bool isSelected = currentIndex == index;
-            return Expanded(
-              child: InkWell(
-                onTap: () {
-                  //SemanticsService.announce(pages[index].getTalkback(context), TextDirection.ltr);
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                child: Semantics(
-                  label: navBarItems[index].talkback,
-                  child: Container(
-                    color: isSelected ? theme.cardColor : Colors.transparent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          navBarItems[index].icon.icon,
-                          color: isSelected ? theme.primaryColor : theme.cardColor,
-                          size: 40, // Icon size can be adjusted as needed
-                        ),
-                        Text(
-                          navBarItems[index].label,
-                          style: TextStyle(
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 1), // Top border
+          ),
+        ),
+        child: BottomAppBar(
+          color: theme.primaryColor,
+          padding: EdgeInsets.zero,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(navBarItems.length, (index) {
+              bool isSelected = currentIndex == index;
+              return Expanded(
+                child: InkWell(
+                  onTap: () => setState(() => currentIndex = index),
+                  child: Semantics(
+                    label: navBarItems[index].talkback,
+                    child: Container(
+                      color: isSelected ? theme.cardColor : Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            navBarItems[index].icon.icon,
                             color: isSelected ? theme.primaryColor : theme.cardColor,
-                            fontSize: 12, // Font size can be adjusted as needed
+                            size: 40, // Icon size can be adjusted as needed
                           ),
-                        ),
-                      ],
+                          Text(
+                            navBarItems[index].label,
+                            style: TextStyle(
+                              color: isSelected ? theme.primaryColor : theme.cardColor,
+                              fontSize: 12, // Font size can be adjusted as needed
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );
