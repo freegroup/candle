@@ -14,7 +14,6 @@ class RecorderPauseScreen extends StatefulWidget {
 }
 
 class _PauseScreenState extends State<RecorderPauseScreen> {
-
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -29,14 +28,14 @@ class _PauseScreenState extends State<RecorderPauseScreen> {
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPanel(),
-          bottom: _buildBottomPane(),
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPane(BuildContext context) {
     return const Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -47,7 +46,7 @@ class _PauseScreenState extends State<RecorderPauseScreen> {
     );
   }
 
-  Widget _buildBottomPane() {
+  Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Column(children: [

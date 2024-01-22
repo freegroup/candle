@@ -64,14 +64,14 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPanel(),
-          bottom: _buildBottomPane(),
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return StreamBuilder<model.Route>(
@@ -104,7 +104,7 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
     );
   }
 
-  Widget _buildBottomPane() {
+  Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Row(

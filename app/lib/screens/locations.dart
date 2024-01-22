@@ -100,13 +100,13 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
             child: _isLoading
                 ? _buildLoading(context)
                 : _locations.isEmpty
-                    ? _buildNoLocations(context)
-                    : _buildLocations(context)),
+                    ? _buildNoContent(context)
+                    : _buildContent(context)),
       ),
     );
   }
 
-  Widget _buildLocations(BuildContext context) {
+  Widget _buildContent(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
@@ -190,7 +190,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
     );
   }
 
-  Widget _buildNoLocations(BuildContext context) {
+  Widget _buildNoContent(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return GenericInfoPage(

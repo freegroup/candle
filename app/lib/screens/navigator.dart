@@ -77,21 +77,21 @@ class _ScreenState extends State<NavigatorScreen> {
       future: _locationFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildLoadingScreen(context);
+          return _buildLoading(context);
         } else if (snapshot.hasData && snapshot.data != null) {
-          return _buildMainContent(context, fab);
+          return _buildContent(context, fab);
         } else {
-          return _buildErrorScreen(context);
+          return _buildError(context);
         }
       },
     );
   }
 
-  Widget _buildLoadingScreen(BuildContext context) {
+  Widget _buildLoading(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _buildErrorScreen(BuildContext context) {
+  Widget _buildError(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -109,7 +109,7 @@ class _ScreenState extends State<NavigatorScreen> {
     );
   }
 
-  Widget _buildMainContent(BuildContext context, Widget? fab) {
+  Widget _buildContent(BuildContext context, Widget? fab) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 

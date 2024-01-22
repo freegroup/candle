@@ -257,40 +257,42 @@ class _ScreenState extends State<LatLngRouteScreen> {
       body: MergeSemantics(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: ExcludeSemantics(child: _buildTopPanel()),
-          bottom: _buildBottomPanel(),
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
   }
 
   // Separate method to build the map, isolated from other state changes.
-  Widget _buildTopPanel() {
-    return FutureBuilder<model.Route?>(
-      future: _stateRoute,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          // Consider logging the error or showing a more informative message
-          return Center(child: Text('Error fetching route: ${snapshot.error}'));
-        } else if (snapshot.hasData && snapshot.data != null) {
-          return RouteMapWidget(
-            route: snapshot.data!,
-            mapRotation: -_currentMapRotation.toDouble(),
-            currentLocation: _currentLocation,
-            currentWaypoint: _currentHeadingWaypoint?.latlng(),
-            marker1: _currentTurnByTurnWaypoint?.latlng(),
-            marker2: _nextTurnByTurnWaypoint?.latlng(),
-          );
-        } else {
-          return const Center(child: Text('No route found'));
-        }
-      },
+  Widget _buildTopPane(BuildContext context) {
+    return ExcludeSemantics(
+      child: FutureBuilder<model.Route?>(
+        future: _stateRoute,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Consider logging the error or showing a more informative message
+            return Center(child: Text('Error fetching route: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data != null) {
+            return RouteMapWidget(
+              route: snapshot.data!,
+              mapRotation: -_currentMapRotation.toDouble(),
+              currentLocation: _currentLocation,
+              currentWaypoint: _currentHeadingWaypoint?.latlng(),
+              marker1: _currentTurnByTurnWaypoint?.latlng(),
+              marker2: _nextTurnByTurnWaypoint?.latlng(),
+            );
+          } else {
+            return const Center(child: Text('No route found'));
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildBottomPanel() {
+  Widget _buildBottomPane(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
     bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);

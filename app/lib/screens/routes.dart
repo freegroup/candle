@@ -21,6 +21,8 @@ class RoutesScreen extends StatefulWidget {
 }
 
 class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonProvider {
+  List<model.Route>? routes;
+
   @override
   Widget build(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
@@ -38,15 +40,25 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
                 future: db.allRoutes(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return _buildLoading();
+                    return _buildLoading(context);
                   }
-                  return snapshot.data!.isEmpty ? _buildNoRoutes() : _buildRoutes(snapshot.data!);
+                  routes = snapshot.data!;
+                  return snapshot.data!.isEmpty ? _buildNoContent(context) : _buildContent(context);
                 },
               )),
         ));
   }
 
-  Widget _buildRoutes(List<model.Route> routes) {
+  Widget _buildLoading(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Semantics(
+      label: l10n.label_common_loading_t,
+      child: Text(l10n.label_common_loading),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
@@ -54,14 +66,14 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
     return SlidableAutoCloseBehavior(
       closeWhenOpened: true,
       child: ListView.separated(
-        itemCount: routes.length,
+        itemCount: routes!.length,
         separatorBuilder: (context, index) {
           return Divider(
             color: theme.primaryColorDark,
           );
         },
         itemBuilder: (context, index) {
-          model.Route route = routes[index];
+          model.Route route = routes![index];
 
           return Semantics(
             customSemanticsActions: {
@@ -145,16 +157,7 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
     );
   }
 
-  Widget _buildLoading() {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-
-    return Semantics(
-      label: l10n.label_common_loading_t,
-      child: Text(l10n.label_common_loading),
-    );
-  }
-
-  Widget _buildNoRoutes() {
+  Widget _buildNoContent(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return GenericInfoPage(

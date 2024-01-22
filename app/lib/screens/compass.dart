@@ -116,14 +116,14 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPane(),
-          bottom: _buildBottomPane(),
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
   }
 
-  Widget _buildTopPane() {
+  Widget _buildTopPane(BuildContext context) {
     return Center(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -142,7 +142,7 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
     );
   }
 
-  Widget _buildBottomPane() {
+  Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 

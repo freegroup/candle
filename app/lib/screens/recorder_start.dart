@@ -39,14 +39,14 @@ class _ScreenState extends State<RecorderStartScreen> {
       body: BackgroundWidget(
         child: DividedWidget(
           fraction: screenDividerFraction,
-          top: _buildTopPane(),
-          bottom: _buildBottomPane(),
+          top: _buildTopPane(context),
+          bottom: _buildBottomPane(context),
         ),
       ),
     );
   }
 
-  Widget _buildTopPane() {
+  Widget _buildTopPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -79,7 +79,7 @@ class _ScreenState extends State<RecorderStartScreen> {
     );
   }
 
-  Widget _buildBottomPane() {
+  Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return DialogButton(

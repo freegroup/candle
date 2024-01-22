@@ -109,16 +109,16 @@ class _ScreenState extends State<PoiCategoryScreen> {
         child: Align(
           alignment: Alignment.topCenter,
           child: _isLoading
-              ? _buildLoading()
+              ? _buildLoading(context)
               : pois == null || pois!.isEmpty
-                  ? _buildNoLocations()
-                  : _buildLocations(),
+                  ? _buildNoContent(context)
+                  : _buildContent(context),
         ),
       ),
     );
   }
 
-  Widget _buildLoading() {
+  Widget _buildLoading(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Semantics(
@@ -127,7 +127,7 @@ class _ScreenState extends State<PoiCategoryScreen> {
     );
   }
 
-  Widget _buildNoLocations() {
+  Widget _buildNoContent(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
@@ -142,7 +142,7 @@ class _ScreenState extends State<PoiCategoryScreen> {
     );
   }
 
-  Widget _buildLocations() {
+  Widget _buildContent(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Column(

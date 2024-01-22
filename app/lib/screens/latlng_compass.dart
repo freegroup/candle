@@ -121,13 +121,13 @@ class _ScreenState extends State<LatLngCompassScreen> {
       ),
       body: DividedWidget(
         fraction: screenDividerFraction,
-        top: _buildTopPanel(),
-        bottom: _buildBottomPanel(),
+        top: _buildTopPane(context),
+        bottom: _buildBottomPane(context),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPane(BuildContext context) {
     bool isAligned = _isAligned(_currentHeadingDegrees);
 
     return Semantics(
@@ -159,7 +159,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
     );
   }
 
-  Widget _buildBottomPanel() {
+  Widget _buildBottomPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
     Color? backgroundColor = _wasAligned ? theme.positiveColor : null;
