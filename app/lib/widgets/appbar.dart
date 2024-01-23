@@ -1,3 +1,4 @@
+import 'package:candle/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {

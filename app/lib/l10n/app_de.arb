@@ -74,6 +74,11 @@
   "button_recording": "Aufzeichnen",
 
 
+  "button_settings_t": "Einstellungen der App anpassen",
+  "button_settings": "Einstellungen",
+
+  "button_about_t": "Info über diese App",
+  "button_about": "Info",
 
   "button_common_edit_t": "Eintrag bearbeiten",
   "button_common_edit": "Bearbeiten",
@@ -91,6 +96,20 @@
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
   "button_navigate_poi": "Navigation starten",
 
+
+  "featureflag_recorder_t": "Aufzeichnen von Routen aktivieren",
+  "featureflag_recorder": "Strecke Aufzeichnen",
+
+  "featureflag_compass_t": "Kompass auf der Übersicht aktivieren.",
+  "featureflag_compass": "Kompass",
+
+
+  "featureflag_share_t": "Enable the Share Button",
+  "featureflag_share": "Share",
+
+  "featureflag_location_t": "Enable the Location Button",
+  "featureflag_location": "Ort Speichern",
+
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
   "label_common_required": "Pflichtfeld",
@@ -102,12 +121,12 @@
 
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
-  "label_rotate_left_target_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
-  "label_rotate_right_target_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_left_target_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_right_target_t": "Drehen Sie sich {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
   "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
 
-  "label_rotate_left_waypoint_t": "Bitte drehen Sie sich um {degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
-  "label_rotate_right_waypoint_t": "Bitte drehen Sie sich um {degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_left_waypoint_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_right_waypoint_t": "Drehen Sie sich {degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
   "label_rotate_no_waypoint_t": "Sie zeigen jetzt direkt auf den nächsten Wegpunkt.",
 
   "screen_header_compass_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",

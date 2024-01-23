@@ -773,6 +773,43 @@
   },
 
 
+  "featureflag_recorder_t": "Enable the GPS Recording of routes.",
+  "@featureflag_recorder_t": {
+    "description": "Talkback for Compass Featureflag"
+  },
+  "featureflag_recorder": "Route Recording",
+  "@featureflag_recorder": {
+    "description": "Title for compass Featureflag"
+  },
+
+
+  "featureflag_compass_t": "Enable the Compass Screen",
+  "@featureflag_compass_t": {
+    "description": "Talkback for Compass Featureflag"
+  },
+  "featureflag_compass": "Compass on Home Screen",
+  "@featureflag_compass": {
+    "description": "Title for compass Featureflag"
+  },
+
+  "featureflag_share_t": "Enable the Share Button",
+  "@featureflag_share_t": {
+    "description": "Talkback for Share Featureflag"
+  },
+  "featureflag_share": "Share",
+  "@featureflag_share": {
+    "description": "Title for share Featureflag"
+  },
+
+  "featureflag_location_t": "Enable the Location Button",
+  "@featureflag_location_t": {
+    "description": "Talkback for Compass Featureflag"
+  },
+  "featureflag_location": "Location",
+  "@featureflag_location": {
+    "description": "Title for location Featureflag"
+  },
+
   "button_share_location_t": "Share your current location",
   "@button_share_location_t": {
     "description": "Talkback for Location Share Button"
@@ -800,6 +837,24 @@
   "button_recording": "Record Track",
   "@button_recording": {
     "description": "Title for record track button"
+  },
+
+  "button_settings_t": "Configure or change Settings of the app",
+  "@button_settings_t": {
+    "description": "Talkback for settings Button"
+  },
+  "button_settings": "Settings",
+  "@button_settings": {
+    "description": "Title for settings button"
+  },
+
+  "button_about_t": "About this App",
+  "@button_about_t": {
+    "description": "Talkback for about Button"
+  },
+  "button_about": "About",
+  "@button_about": {
+    "description": "Title for about button"
   },
 
 

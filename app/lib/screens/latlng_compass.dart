@@ -17,6 +17,7 @@ import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
@@ -45,6 +46,10 @@ class _ScreenState extends State<LatLngCompassScreen> {
 
   bool _wasAligned = false;
 
+  // vibration and announcement handling
+  //
+  int? _lastVibratedSnapPoint;
+
   @override
   void initState() {
     super.initState();
@@ -70,6 +75,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
           var needleHeading = -(deviceHeading - poiHeading);
           bool currentlyAligned = _isAligned(needleHeading);
+          _vibrateAtSnapPoints((needleHeading + 360) % 360);
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
@@ -99,6 +105,31 @@ class _ScreenState extends State<LatLngCompassScreen> {
     _vibrationTimer?.cancel();
     _updateLocationTimer?.cancel();
     super.dispose();
+  }
+
+  void _vibrateAtSnapPoints(
+    int targetHeading,
+  ) {
+    var distance = calculateDistance(_currentLocation, widget.target);
+    const snapPoints = [0, 90, 180, 270];
+    const snapRange = 15; // ±15° range for snap points
+
+    for (var point in snapPoints) {
+      if ((targetHeading >= point - snapRange) && (targetHeading <= point + snapRange)) {
+        if (_lastVibratedSnapPoint != point) {
+          var announcement = sayRotateToTarget(
+              context, (360 - targetHeading) - 180, _isAligned(targetHeading), distance.toInt());
+
+          Vibration.vibrate(duration: 100);
+          SemanticsService.announce(announcement, TextDirection.ltr);
+          _lastVibratedSnapPoint = point;
+          break; // Vibrate once and exit loop
+        }
+      } else if (_lastVibratedSnapPoint == point) {
+        // Clear the last vibrated point if we move out of the snap range
+        _lastVibratedSnapPoint = null;
+      }
+    }
   }
 
   bool _isAligned(int headingDegrees) {

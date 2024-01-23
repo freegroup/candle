@@ -33,15 +33,15 @@ String sayHorizon(BuildContext context, int angle) {
 
 String sayRotateToTarget(BuildContext context, int angle, bool isAligned, int distance) {
   AppLocalizations l10n = AppLocalizations.of(context)!;
-
+  angle = (angle + 360) % 360;
   if (isAligned == true) {
     return l10n.label_rotate_no_target_t(distance);
   }
-  if (angle > 180 || angle < 0) {
-    return l10n.label_rotate_left_target_t(angle.abs());
+  if (angle >= 0 && angle < 180) {
+    return l10n.label_rotate_right_target_t(angle.abs());
   }
 
-  return l10n.label_rotate_right_target_t(angle.abs());
+  return l10n.label_rotate_left_target_t((angle - 180).abs());
 }
 
 String sayRotateToWaypoint(BuildContext context, int angle, bool isAligned) {

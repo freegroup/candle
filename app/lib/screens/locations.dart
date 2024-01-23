@@ -220,6 +220,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
             LocationAddress? address = await geo.getGeolocationAddress(_currentLocation!);
             if (!mounted) return;
+            print(address);
             Navigator.pop(context); // Close the loading dialog
             if (mounted) {
               Navigator.of(context)

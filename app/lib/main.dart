@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:candle/app.dart';
+import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/navigation_point.dart';
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/database.dart';
@@ -10,10 +11,12 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/services/router.dart';
+import 'package:candle/utils/featureflag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +26,44 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await RecorderService.initialize();
+  await AppFeatures.initialize();
   await initialService();
+
+  getSha1Key();
+  /*
+  try {
+    const scopes = ['email', 'openid'];
+    var googleSignIn = GoogleSignIn(
+      // Optional clientId
+      //serverClientId: GOOGLE_CLIENT_ID_ANDROID,
+      clientId: GOOGLE_CLIENT_ID_ANDROID,
+      scopes: scopes,
+    );
+    try {
+      googleSignIn.signIn().then((result) {
+        result!.authentication.then((googleKey) {
+          print(googleKey.accessToken);
+          print(googleKey.idToken);
+          print(googleSignIn.currentUser!.displayName);
+        }).catchError((err) {
+          print('inner error');
+        });
+      }).catchError((err) {
+        print(err);
+        print('error occured');
+      });
+      print('signed in .....');
+    } catch (error) {
+      print(error);
+    }
+  } catch (error) {
+    print('Error: $error');
+    if (error is PlatformException) {
+      print('Details: ${error.details}');
+      print('Stack trace: ${error.stacktrace}');
+    }
+  }
+  */
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -38,6 +78,16 @@ void main() async {
       child: const CandleApp(),
     ));
   });
+}
+
+const platform = MethodChannel('de.freegroup/native');
+Future<void> getSha1Key() async {
+  try {
+    final String sha1Key = await platform.invokeMethod('getSha1Key');
+    print('SHA-1 Key: $sha1Key');
+  } on PlatformException catch (e) {
+    print("Failed to get SHA-1 key: '${e.message}'.");
+  }
 }
 
 Future<void> initialService() async {

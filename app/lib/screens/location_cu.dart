@@ -41,10 +41,12 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     }
 
     _addressController.stream.listen((address) {
-      setState(() {
-        address.id = stateLocation?.id;
-        stateLocation = address;
-      });
+      if (mounted) {
+        setState(() {
+          address.id = stateLocation?.id;
+          stateLocation = address;
+        });
+      }
     });
 
     editingController.addListener(() {
