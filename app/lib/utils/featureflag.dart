@@ -49,10 +49,12 @@ class FeatureFlag {
 }
 
 class AppFeatures {
-  static final overviewCompass = FeatureFlag(userStateKey: 'overview_compass', systemState: true);
-  static final overviewLocation = FeatureFlag(userStateKey: 'overview_location', systemState: true);
-  static final overviewRecorder = FeatureFlag(userStateKey: 'overview_recorder', systemState: true);
-  static final overviewShare = FeatureFlag(userStateKey: 'overview_share', systemState: true);
+  static final overviewCompass = FeatureFlag(userStateKey: 'overviewCompass');
+  static final overviewLocation = FeatureFlag(userStateKey: 'overviewLocation');
+  static final overviewRecorder = FeatureFlag(userStateKey: 'overviewRecorder');
+  static final overviewShare = FeatureFlag(userStateKey: 'overviewShare');
+  static final allwaysAccessGps =
+      FeatureFlag(userStateKey: 'allwaysAccessGps', initialState: false);
 
   static ValueNotifier<bool> featuresUpdateNotifier = ValueNotifier(false);
 
@@ -69,6 +71,9 @@ class AppFeatures {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
     overviewShare.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    allwaysAccessGps.isEnabledListenable.addListener(() {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
   }

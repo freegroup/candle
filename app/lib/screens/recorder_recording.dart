@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/recorder.dart';
+import 'package:candle/services/screen_wake.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
@@ -13,6 +14,7 @@ import 'package:candle/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/utils/featureflag.dart';
 
 class RecorderRecordingScreen extends StatefulWidget {
   const RecorderRecordingScreen({super.key});
@@ -42,12 +44,22 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
         }
       });
     });
+
+    // If the user do not have switch on "allwaysGPS", then we must keep the screen
+    // on or the recordings stop if the app goes in the backgroudn or the screen locks.
+    //
+    if (!AppFeatures.allwaysAccessGps.isEnabled) {
+      ScreenWakeService.keepOn(true);
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     _compassSubscription.cancel();
+    if (!AppFeatures.allwaysAccessGps.isEnabled) {
+      ScreenWakeService.keepOn(false);
+    }
   }
 
   @override
@@ -95,6 +107,7 @@ class _RecordingScreenState extends State<RecorderRecordingScreen> {
             ],
           );
         } else {
+          print("No Route right now");
           return Semantics(
             label: l10n.label_common_loading_t,
             child: const Center(child: CircularProgressIndicator()),

@@ -107,6 +107,9 @@
   "featureflag_share_t": "Ort teilen auf der Übersicht aktivieren",
   "featureflag_share": "Ort teilen",
 
+  "featureflag_allwaysgps_t": "Stetiger GPS Zugriff zulassen, auch wenn die App gechlossen ist",
+  "featureflag_allwaysgps": "Stetiger Zugriff erlauben",
+
   "featureflag_location_t": "Ort speihern auf der Übersicht aktivieren",
   "featureflag_location": "Ort Speichern",
 
@@ -123,6 +126,9 @@
 
   "settings_header_tiles_t": "Kacheln  auf der Übersichtsseite einblenden oder ausblenden",
   "settings_header_tiles": "Übersicht Kacheln",
+
+  "settings_header_gps_t": "GPS Einstellungen für die App",
+  "settings_header_gps": "GPS Einstellungen",
 
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
@@ -219,9 +225,12 @@
   "screen_header_permissions_t": "App Berechtigungen erfragen",
   "screen_header_permissions": "Berechtigungen",
 
-  "label_permissions_explain": "Herzlich willkommen bei Candle!\n\nUm eine reibungslose und sichere Nutzung zu gewährleisten, benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für die Bedienung ohne Hände, was besonders für sehbehinderte Nutzer hilfreich ist. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um Ihre Candle-Erfahrung optimal zu nutzen.",
+  "label_permissions_explain": "# Willkommen bei Candle!\n\nAls Navigations-App für Blinde und Sehbehinderte benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für eine bedienungsfreie Nutzung. Diese Berechtigungen sind für unsere Kernfunktionalität unerlässlich. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um das volle Potenzial Ihrer Candle-Erfahrung zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",
   
+  "label_permissions_allwaysgps_explain": "# Setzen Sie die Berechtigung des Standorts auf **'Immer zulassen'**, um diese Funktion zu aktivieren.\n\nDiese Berechtigung ermöglicht die Routenaufzeichnung auch bei geschlossener App, was besonders für Sehbehinderte nützlich ist. \n\nObwohl die App im Hintergrund Ihren Standort verfolgen kann, bleiben Ihre Daten privat und auf dem Gerät. Ein Ablehnen dieser Berechtigung verringter zwar den Komfort jedoch ist ohne Einfluss auf die Hauptfunktionalität der App.",
+
+
   "permissions_denied_title": "Berechtigungen Verweigert",
   "permissions_denied_description": "Um alle Funktionen unserer App nutzen zu können, benötigt sie Zugriff auf Ihren Standort, Ihr Mikrofon und Ihre Kamera. Ohne diese Berechtigungen funktionieren bestimmte Funktionen möglicherweise nicht richtig. Bitte aktivieren Sie diese Berechtigungen in Ihren Geräteeinstellungen, um fortzufahren.",
 

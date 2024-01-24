@@ -28,7 +28,7 @@ class OSMGeocodingService implements GeocodingService {
           lat: coord.latitude,
           lon: coord.longitude,
           name: "",
-          formattedAddress: "",
+          formattedAddress: formattedAddress(addressInfo),
           street: street,
           number: addressInfo['house_number'] ?? '',
           zip: addressInfo['postcode'] ?? '',
@@ -47,7 +47,6 @@ class OSMGeocodingService implements GeocodingService {
     return null;
   }
 
-  @override
   @override
   Future<List<LocationAddress>> searchNearbyAddress({
     required String addressFragment,
@@ -78,5 +77,23 @@ class OSMGeocodingService implements GeocodingService {
       // Handle the exception
     }
     return [];
+  }
+
+  String formattedAddress(Map<String, dynamic> addressInfo) {
+    String street = addressInfo['road'] ?? '';
+    if (street.isEmpty && addressInfo.containsKey('city_block')) {
+      street = addressInfo['city_block'];
+    }
+
+    String number = addressInfo['house_number'] ?? "";
+    String zip = addressInfo['postcode'] ?? '';
+    String city = addressInfo['city'] ??
+        addressInfo['town'] ??
+        addressInfo['village'] ??
+        addressInfo['municipality'] ??
+        addressInfo['suburb'] ??
+        '';
+
+    return "$street $number, $zip $city";
   }
 }

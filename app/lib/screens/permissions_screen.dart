@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:candle/screens/navigator.dart';
+import 'package:candle/utils/featureflag.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsScreen extends StatefulWidget {
@@ -24,7 +26,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _checkPermissions() async {
     if (await Permission.location.isGranted &&
         await Permission.microphone.isGranted &&
-        (Platform.isIOS || await Permission.locationAlways.isGranted)) {
+        (!AppFeatures.allwaysAccessGps.isEnabled || await Permission.locationAlways.isGranted)) {
       _navigateToMainApp();
     }
   }
@@ -34,7 +36,10 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     final microphoneStatus = await Permission.microphone.request();
 
     if (locationStatus.isGranted && microphoneStatus.isGranted) {
-      if (Platform.isAndroid) {
+      // ask for the "allwaysGPS" access if the user has switched on this feature
+      //in the App-Settings
+      //
+      if (AppFeatures.allwaysAccessGps.isEnabled) {
         final backgroundLocationStatus = await Permission.locationAlways.request();
         if (backgroundLocationStatus.isGranted) {
           _navigateToMainApp();
@@ -83,66 +88,72 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
+
+    MarkdownStyleSheet markdownStyle = MarkdownStyleSheet(
+      p: theme.textTheme.bodyLarge,
+    );
     return Scaffold(
       appBar: CandleAppBar(
         talkback: l10n.screen_header_permissions_t,
         title: Text(l10n.screen_header_permissions),
       ),
-      body: BackgroundWidget(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  l10n.label_permissions_explain,
-                  style: theme.textTheme.headlineMedium,
+      body: SizedBox.expand(
+        child: BackgroundWidget(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: MarkdownBody(
+                    data: l10n.label_permissions_explain,
+                    styleSheet: markdownStyle,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Semantics(
-                label: l10n.button_permissions_request,
-                child: Center(
-                  child: Container(
-                    width: screenWidth * 0.8,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: _requestPermissions,
-                          child: Container(
-                            width: screenWidth / 3,
-                            height: screenWidth / 3,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: theme.primaryColor,
-                            ),
-                            child: Icon(
-                              Icons.verified,
-                              size: screenWidth / 4,
-                              color: Colors.black,
+                const SizedBox(height: 20),
+                Semantics(
+                  label: l10n.button_permissions_request,
+                  child: Center(
+                    child: Container(
+                      width: screenWidth * 0.8,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: _requestPermissions,
+                            child: Container(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: theme.primaryColor,
+                              ),
+                              child: Icon(
+                                Icons.verified,
+                                size: screenWidth / 4,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        ExcludeSemantics(
-                          child: Text(
-                            l10n.button_permissions_request,
-                            style: theme.textTheme.headlineSmall,
+                          const SizedBox(height: 20),
+                          ExcludeSemantics(
+                            child: Text(
+                              l10n.button_permissions_request,
+                              style: theme.textTheme.headlineSmall,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 40),
-            ],
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),

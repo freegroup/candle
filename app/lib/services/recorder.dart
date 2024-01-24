@@ -28,7 +28,6 @@ class RecorderService {
     _state = isRunning ? RecordingState.recording : RecordingState.stopped;
 
     _backgroundStreamSubscription = service.on('route_updated').listen((event) async {
-      print('GOT $event');
       if (event != null && event['routeName'] != null) {
         var eventRouteName = event['routeName'] as String;
         var route = await DatabaseService.instance.getRouteByName(eventRouteName);
@@ -49,7 +48,7 @@ class RecorderService {
     _recordingController.add(_state);
   }
 
-  void dispose() {
+  static void dispose() {
     _backgroundStreamSubscription.cancel();
     _recordingController.close();
     _routeController.close();
@@ -64,9 +63,12 @@ class RecorderService {
         // Start the service first
         await service.startService();
 
-        // Then, invoke the method once the service is running
-        // otherwise the message is not delivered...
-        service.invoke("startedService", {"routeName": routeName});
+        // Giv the service some time to start....
+        Future.delayed(const Duration(seconds: 2), () {
+          // Then, invoke the method once the service is running
+          // otherwise the message is not delivered...
+          service.invoke("startedService", {"routeName": routeName});
+        });
       }
     } finally {
       _setState(RecordingState.recording);

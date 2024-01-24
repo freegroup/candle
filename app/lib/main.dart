@@ -25,8 +25,8 @@ import 'package:vibration/vibration.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await RecorderService.initialize();
   await AppFeatures.initialize();
+  await RecorderService.initialize();
   await initialService();
 
   getSha1Key();
@@ -92,11 +92,13 @@ Future<void> getSha1Key() async {
 
 Future<void> initialService() async {
   final service = FlutterBackgroundService();
+  bool isForeground = AppFeatures.allwaysAccessGps.isEnabled;
+
   await service.configure(
     iosConfiguration: IosConfiguration(),
     androidConfiguration: AndroidConfiguration(
       onStart: onStart,
-      isForegroundMode: true,
+      isForegroundMode: isForeground,
       autoStart: false,
     ),
   );
@@ -104,78 +106,91 @@ Future<void> initialService() async {
 
 const String kDefaultRouteToIgnore = "___ignore___";
 var _currentRouteName = kDefaultRouteToIgnore;
+Timer? _periodicTimer;
 
 @pragma('vm:entry-point')
 void onStart(ServiceInstance service) async {
   DartPluginRegistrant.ensureInitialized();
-  if (service is AndroidServiceInstance) {
-    service.on('setAsForeground').listen((event) {
-      print('setAsForeground');
-      service.setAsForegroundService();
-    });
 
-    service.on('setAsBackground').listen((event) async {
-      print('setAsBackground');
-      service.setAsBackgroundService();
-    });
-  }
+  // because the "onStart" function can run in a differnet scope, the "_pref" in the AppFeature
+  // maybe not initilized. We must do the "inititialize" again/first time if
+  // the service runs in ForegroundMode.
+  //
+  await AppFeatures.initialize();
 
   service.on('startedService').listen((event) async {
-    print('startedService');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('backgroundServicePaused', false);
-    Vibration.vibrate(duration: 100);
+    try {
+      if (service is AndroidServiceInstance) {
+        bool isForeground = AppFeatures.allwaysAccessGps.isEnabled;
+        if (isForeground) {
+          print('Setting as Foreground due to allwaysOnGps flag => continue running on app close');
+          service.setAsForegroundService();
+        } else {
+          print('Running as Background due to allwaysOnGps flag => terminate on app close');
+          service.setAsBackgroundService();
+        }
+      }
 
-    _currentRouteName = event?['routeName'] as String;
-    print(_currentRouteName);
-    var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
-    if (route == null) {
-      route = model.Route(name: _currentRouteName, points: []);
-      await DatabaseService.instance.addRoute(route);
-    } else {
-      route.points = [];
-      await DatabaseService.instance.updateRoute(route);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('backgroundServicePaused', false);
+      Vibration.vibrate(duration: 100);
+
+      _currentRouteName = event?['routeName'] as String;
+
+      var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
+      if (route == null) {
+        route = model.Route(name: _currentRouteName, points: []);
+        await DatabaseService.instance.addRoute(route);
+      } else {
+        route.points = [];
+        await DatabaseService.instance.updateRoute(route);
+      }
+    } catch (e) {
+      print(e);
     }
   });
 
   service.on('pauseService').listen((event) async {
-    print('pauseService');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('backgroundServicePaused', true);
   });
 
   service.on('resumeService').listen((event) async {
-    print('resumeService');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('backgroundServicePaused', false);
   });
 
   service.on('stopService').listen((event) async {
-    print('stopService');
+    _periodicTimer?.cancel();
+    _periodicTimer = null;
     service.stopSelf();
     _currentRouteName = kDefaultRouteToIgnore;
   });
 
   // Setup notification periodically
-  Timer.periodic(const Duration(seconds: 5), (timer) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool backgroundServicePaused = prefs.getBool('backgroundServicePaused') ?? false;
-    if (backgroundServicePaused || _currentRouteName == kDefaultRouteToIgnore) {
-      print("paused or ignored due to missing correct routeName");
-      return;
-    }
-
-    if (service is AndroidServiceInstance && await service.isForegroundService()) {
-      LatLng? loc = await LocationService.instance.location;
-      if (loc != null) {
-        var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
-        if (route != null) {
-          route.points.add(NavigationPoint(coordinate: loc, annotation: ""));
-          await DatabaseService.instance.updateRoute(route);
-        }
-        service.invoke('route_updated', {"routeName": _currentRouteName});
-      }
-      Vibration.vibrate(duration: 100);
-    }
+  updateRecording(service);
+  _periodicTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+    updateRecording(service);
   });
+}
+
+// Extracted function
+Future<void> updateRecording(ServiceInstance service) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool backgroundServicePaused = prefs.getBool('backgroundServicePaused') ?? false;
+  if (backgroundServicePaused || _currentRouteName == kDefaultRouteToIgnore) {
+    print("paused or ignored due to missing correct routeName");
+    return;
+  }
+
+  LatLng? loc = await LocationService.instance.location;
+  if (loc != null) {
+    var route = await DatabaseService.instance.getRouteByName(_currentRouteName);
+    if (route != null) {
+      route.points.add(NavigationPoint(coordinate: loc, annotation: ""));
+      await DatabaseService.instance.updateRoute(route);
+    }
+    service.invoke('route_updated', {"routeName": _currentRouteName});
+  }
+  Vibration.vibrate(duration: 100);
 }

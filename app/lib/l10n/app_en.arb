@@ -665,9 +665,14 @@
   },
 
 
-  "label_permissions_explain": "Welcome to Candle!\n\nTo ensure a smooth and safe experience, we require location access for precise navigation and voice input for hands-free operation, especially helpful for visually impaired users. Thank you for enabling these permissions to make the most out of your Candle experience.",
+  "label_permissions_explain": "# Welcome to Candle!\n\nAs a navigation app for the blind and visually impaired, we require location access for precise navigation and voice input for hands-free operation. These permissions are essential for our core functionality. Thank you for enabling these permissions to fully utilize your Candle experience.",
   "@label_permissions_explain": {
     "description": "Infotext for the permissions request"
+  },
+
+  "label_permissions_allwaysgps_explain": "Set the location permission to **'Allow all the time'** to enable this feature.\n\nThis permission allows for route recording even when the app is closed, which is particularly useful for visually impaired users. \n\nAlthough the app can track your location in the background, your data remains private and on your device. Declining this permission may reduce convenience but does not affect the core functionality of the app.",
+  "@label_permissions_allwaysgps_explain": {
+    "description": "Infotext for the permissions gps_allways request"
   },
 
   "button_permissions_request": "Grant Permissions",
@@ -806,6 +811,16 @@
     "description": "Title for share Featureflag"
   },
 
+  "featureflag_allwaysgps_t": "Allow GPS access even if app is closed",
+  "@featureflag_allwaysgps_t": {
+    "description": "Talkback for GPS Featureflag"
+  },
+  "featureflag_allwaysgps": "Allow Permanent Access",
+  "@featureflag_allwaysgps": {
+    "description": "Title for shgpsare Featureflag"
+  },
+
+
   "featureflag_location_t": "Enable the Location Button",
   "@featureflag_location_t": {
     "description": "Talkback for Compass Featureflag"
@@ -870,6 +885,16 @@
   "@settings_header_tiles": {
     "description": "Title for overview button"
   },
+
+  "settings_header_gps_t": "GPS Settings for this App",
+  "@settings_header_gps_t": {
+    "description": "Talkback for gps settings section"
+  },
+  "settings_header_gps": "GPS Settings",
+  "@settings_header_gps": {
+    "description": "Title for gpss settings section"
+  },
+
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

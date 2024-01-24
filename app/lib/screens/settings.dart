@@ -1,8 +1,10 @@
+import 'package:candle/screens/permissions_screen_allwaysgps.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -40,6 +42,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _buildFeatureFlagToggle(AppFeatures.overviewLocation),
                   _buildFeatureFlagToggle(AppFeatures.overviewRecorder),
                   _buildFeatureFlagToggle(AppFeatures.overviewShare),
+                  const SizedBox(height: 40),
+                  Semantics(
+                    label: l10n.settings_header_gps_t,
+                    child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge),
+                  ),
+                  _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
                 ],
               ),
             ),
@@ -55,18 +63,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ValueListenableBuilder<bool>(
       valueListenable: featureFlag.isEnabledListenable,
       builder: (context, isEnabled, _) {
-        return Visibility(
-          visible: featureFlag.isConfigurable,
-          child: SwitchListTile(
+        if (!featureFlag.isConfigurable) {
+          return const SizedBox.shrink();
+        }
+        return SwitchListTile(
             title: Text(
               _getFeatureFlagTitle(context, featureFlag.userStateKey),
               style: theme.textTheme.labelLarge,
             ), // Customize the title as needed
             value: isEnabled,
-            onChanged:
-                featureFlag.isConfigurable ? (newValue) => featureFlag.setEnabled(newValue) : null,
-          ),
-        );
+            onChanged: (newValue) {
+              _handleAllwaysGPSPermissions(newValue, featureFlag);
+            });
       },
     );
   }
@@ -77,17 +85,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // Implement logic to return a human-readable title for each feature flag
     // For example, you might use a switch statement or a map
     switch (userStateKey) {
-      case 'overview_recorder':
+      case 'overviewRecorder':
         return l10n.featureflag_recorder;
-      case 'overview_compass':
+      case 'overviewCompass':
         return l10n.featureflag_compass;
-      case 'overview_location':
+      case 'overviewLocation':
         return l10n.featureflag_location;
-      case 'overview_share':
+      case 'overviewShare':
         return l10n.featureflag_share;
+      case 'allwaysAccessGps':
+        return l10n.featureflag_allwaysgps;
 
       default:
         return 'Unknown Feature';
+    }
+  }
+
+  Future<void> _handleAllwaysGPSPermissions(bool newValue, FeatureFlag featureFlag) async {
+    if (featureFlag != AppFeatures.allwaysAccessGps) {
+      featureFlag.setEnabled(newValue);
+      return;
+    }
+
+    if (await Permission.locationAlways.isGranted) {
+      featureFlag.setEnabled(newValue);
+      return;
+    }
+
+    // Request permissions
+    if (mounted) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const PermissionsAllwaysGPSScreen(),
+      ));
     }
   }
 }
