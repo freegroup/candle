@@ -32,6 +32,7 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
         appBar: CandleAppBar(
           title: Text(l10n.screen_header_routes),
           talkback: l10n.screen_header_routes_t,
+          settingsEnabled: true,
         ),
         body: BackgroundWidget(
           child: Align(

@@ -47,7 +47,6 @@ class _ScreenState extends State<HomeScreen> {
           _buildTileButtonLocation(l10n, context),
           _buildTileButtonRecorder(l10n, context),
           _buildTileButtonShare(l10n, context),
-          _buildTileButtonSettings(l10n, context),
           _buildTileButtonAbout(l10n, context),
         ];
         List<Widget> filteredButtons =
@@ -58,6 +57,7 @@ class _ScreenState extends State<HomeScreen> {
               title: Text(l10n.screen_header_home),
               subtitle: Text(l10n.appbar_slogan, style: theme.textTheme.bodyMedium),
               talkback: l10n.screen_header_home_t,
+              settingsEnabled: true,
             ),
             body: BackgroundWidget(
               child: Padding(
@@ -81,20 +81,6 @@ class _ScreenState extends State<HomeScreen> {
                 ),
               ),
             ));
-      },
-    );
-  }
-
-  Widget? _buildTileButtonSettings(AppLocalizations l10n, BuildContext context) {
-    return TileButton(
-      title: l10n.button_settings,
-      talkback: l10n.button_settings_t,
-      icon: const Icon(
-        Icons.settings,
-        size: 80,
-      ),
-      onPressed: () async {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
       },
     );
   }

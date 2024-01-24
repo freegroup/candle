@@ -758,9 +758,14 @@
     "description": "Common message for an empty favorite screen"
   },
 
-  "label_favorite_saved": "Favorite saved.",
-  "@label_favorite_saved": {
+  "location_saved_snackbar": "Location saved as Favorite.",
+  "@location_saved_snackbar": {
     "description": "Common message if a location has saved or updated"
+  },
+
+  "voicepin_saved_snackbar": "VoicePin saved as Favorite.",
+  "@voicepin_saved_snackbar": {
+    "description": "Common message if a VoicePin has saved or updated"
   },
 
   "button_compass_t": "Compass to North",
@@ -857,6 +862,14 @@
     "description": "Title for about button"
   },
 
+  "settings_header_tiles_t": "Configure the Buttons on the overview page",
+  "@settings_header_tiles_t": {
+    "description": "Talkback for overview Button"
+  },
+  "settings_header_tiles": "Overview Tiles",
+  "@settings_header_tiles": {
+    "description": "Title for overview button"
+  },
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

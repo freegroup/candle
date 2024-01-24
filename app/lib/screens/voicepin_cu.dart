@@ -61,7 +61,7 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
       DatabaseService.instance.addVoicePin(voicepinToSave);
     }
     if (!mounted) return;
-    showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+    showSnackbarAndNavigateBack(context, l10n.voicepin_saved_snackbar);
   }
 
   @override

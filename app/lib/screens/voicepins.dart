@@ -89,6 +89,7 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_voicepins),
         talkback: l10n.screen_header_voicepins_t,
+        settingsEnabled: true,
       ),
       body: BackgroundWidget(
         child: Align(

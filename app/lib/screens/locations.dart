@@ -93,6 +93,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_locations),
         talkback: l10n.screen_header_locations_t,
+        settingsEnabled: true,
       ),
       body: BackgroundWidget(
         child: Align(

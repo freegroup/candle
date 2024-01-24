@@ -75,7 +75,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
       DatabaseService.instance.addLocation(locationToSave);
     }
     if (!mounted) return;
-    showSnackbarAndNavigateBack(context, l10n.label_favorite_saved);
+    showSnackbarAndNavigateBack(context, l10n.location_saved_snackbar);
   }
 
   @override

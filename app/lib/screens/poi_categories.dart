@@ -109,6 +109,7 @@ class _ScreenState extends State<PoiCategoriesScreen> implements FloatingActionB
         appBar: CandleAppBar(
           title: Text(l10n.screen_header_explore),
           talkback: l10n.screen_header_explore_t,
+          settingsEnabled: true,
         ),
         body: BackgroundWidget(
           child: Padding(

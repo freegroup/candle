@@ -32,7 +32,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l10n.buttonbar_home, style: theme.textTheme.headlineLarge),
+                  Semantics(
+                    label: l10n.settings_header_tiles_t,
+                    child: Text(l10n.settings_header_tiles, style: theme.textTheme.headlineLarge),
+                  ),
                   _buildFeatureFlagToggle(AppFeatures.overviewCompass),
                   _buildFeatureFlagToggle(AppFeatures.overviewLocation),
                   _buildFeatureFlagToggle(AppFeatures.overviewRecorder),

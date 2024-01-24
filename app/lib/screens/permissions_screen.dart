@@ -71,9 +71,11 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   }
 
   void _navigateToMainApp() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const NavigatorScreen(),
-    ));
+    if (mounted) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const NavigatorScreen(),
+      ));
+    }
   }
 
   @override

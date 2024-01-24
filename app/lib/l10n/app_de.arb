@@ -104,20 +104,25 @@
   "featureflag_compass": "Kompass",
 
 
-  "featureflag_share_t": "Enable the Share Button",
-  "featureflag_share": "Share",
+  "featureflag_share_t": "Ort teilen auf der Übersicht aktivieren",
+  "featureflag_share": "Ort teilen",
 
-  "featureflag_location_t": "Enable the Location Button",
+  "featureflag_location_t": "Ort speihern auf der Übersicht aktivieren",
   "featureflag_location": "Ort Speichern",
 
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
   "label_common_required": "Pflichtfeld",
 
-  "label_favorite_saved": "Favorite wurde gespeichert.",
-  
+  "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
+  "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",
+
+
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
+
+  "settings_header_tiles_t": "Kacheln  auf der Übersichtsseite einblenden oder ausblenden",
+  "settings_header_tiles": "Übersicht Kacheln",
 
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
