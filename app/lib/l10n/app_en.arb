@@ -670,7 +670,7 @@
     "description": "Infotext for the permissions request"
   },
 
-  "label_permissions_allwaysgps_explain": "Set the location permission to **'Allow all the time'** to enable this feature.\n\nThis permission allows for route recording even when the app is closed, which is particularly useful for visually impaired users. \n\nAlthough the app can track your location in the background, your data remains private and on your device. Declining this permission may reduce convenience but does not affect the core functionality of the app.",
+  "label_permissions_allwaysgps_explain": "# Set the location permission to **'Allow all the time'** for essential app functionalities like route recording.\n\n\nThis permission is crucial for background location tracking, allowing route recording even when the app is closed or not in use, which is particularly beneficial for visually impaired users. Rest assured, location tracking is solely for in-app functions, and your data remains private on your device.",
   "@label_permissions_allwaysgps_explain": {
     "description": "Infotext for the permissions gps_allways request"
   },

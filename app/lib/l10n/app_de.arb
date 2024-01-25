@@ -228,7 +228,7 @@
   "label_permissions_explain": "# Willkommen bei Candle!\n\nAls Navigations-App für Blinde und Sehbehinderte benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für eine bedienungsfreie Nutzung. Diese Berechtigungen sind für unsere Kernfunktionalität unerlässlich. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um das volle Potenzial Ihrer Candle-Erfahrung zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",
   
-  "label_permissions_allwaysgps_explain": "# Setzen Sie die Berechtigung des Standorts auf **'Immer zulassen'**, um diese Funktion zu aktivieren.\n\nDiese Berechtigung ermöglicht die Routenaufzeichnung auch bei geschlossener App, was besonders für Sehbehinderte nützlich ist. \n\nObwohl die App im Hintergrund Ihren Standort verfolgen kann, bleiben Ihre Daten privat und auf dem Gerät. Ein Ablehnen dieser Berechtigung verringter zwar den Komfort jedoch ist ohne Einfluss auf die Hauptfunktionalität der App.",
+  "label_permissions_allwaysgps_explain": "# Stellen Sie die Standortberechtigung auf **'Immer zulassen'** ein, um wichtige App-Funktionen wie die Routenaufzeichnung zu ermöglichen.\n\n\nDiese Berechtigung ist entscheidend für die Standortverfolgung im Hintergrund und ermöglicht die Routenaufzeichnung, auch wenn die App geschlossen ist oder nicht verwendet wird, was besonders für sehbehinderte Benutzer nützlich ist. Ihre Daten bleiben ausschließlich auf Ihrem Gerät privat und werden nur für App-Funktionen verwendet."
 
 
   "permissions_denied_title": "Berechtigungen Verweigert",

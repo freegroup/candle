@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -8,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PermissionsScreen extends StatefulWidget {
   const PermissionsScreen({super.key});
@@ -149,6 +149,21 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                         ],
                       ),
                     ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: TextButton(
+                    onPressed: () async {
+                      final Uri url = Uri.parse('https://freegroup.github.io/candle/');
+                      await launchUrl(url);
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: theme.textTheme.bodyLarge, // Text color
+                      backgroundColor: Colors.black, // Button background color
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
+                    ),
+                    child: const Text('Our Privacy Policy'),
                   ),
                 ),
                 const SizedBox(height: 40),

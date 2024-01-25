@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PermissionsAllwaysGPSScreen extends StatefulWidget {
   const PermissionsAllwaysGPSScreen({super.key});
@@ -134,6 +135,20 @@ class _ScreenState extends State<PermissionsAllwaysGPSScreen> {
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: TextButton(
+                      onPressed: () async {
+                        final Uri url = Uri.parse('https://freegroup.github.io/candle/');
+                        await launchUrl(url);
+                      },
+                      style: TextButton.styleFrom(
+                          textStyle: theme.textTheme.bodyLarge, // Text color
+                          backgroundColor: Colors.black, // Button background color
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+                      child: const Text('Our Privacy Policy'),
                     ),
                   ),
                   const SizedBox(height: 40),
