@@ -11,6 +11,7 @@ import 'package:candle/services/screen_wake.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:candle/widgets/dialog_button.dart';
@@ -62,7 +63,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
     ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
       if (_isAligned(_currentHeadingDegrees) && (await Vibration.hasVibrator() ?? false)) {
-        Vibration.vibrate(duration: 100);
+        CandleVibrate.vibrateCompass(duration: 100);
       }
     });
 
@@ -79,9 +80,9 @@ class _ScreenState extends State<LatLngCompassScreen> {
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
-              Vibration.vibrate(duration: 100, repeat: 2);
+              CandleVibrate.vibrateCompass(duration: 100, repeat: 2);
             } else {
-              Vibration.vibrate(duration: 500);
+              CandleVibrate.vibrateCompass(duration: 500);
             }
             _wasAligned = currentlyAligned;
           }
@@ -120,7 +121,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
           var announcement = sayRotateToTarget(
               context, (360 - targetHeading) - 180, _isAligned(targetHeading), distance.toInt());
 
-          Vibration.vibrate(duration: 100);
+          CandleVibrate.vibrateCompass(duration: 100);
           SemanticsService.announce(announcement, TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop

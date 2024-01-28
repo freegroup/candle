@@ -55,6 +55,10 @@ class AppFeatures {
   static final overviewShare = FeatureFlag(userStateKey: 'overviewShare');
   static final allwaysAccessGps =
       FeatureFlag(userStateKey: 'allwaysAccessGps', initialState: false);
+  // It can be annoying for a person non visually impaired person to have
+  //// all the time the vibration "on". Allow the ser to witch them off.
+  static final vibrateDuringNavigation = FeatureFlag(userStateKey: 'vibrateDuringNavigation');
+  static final vibrateCompass = FeatureFlag(userStateKey: 'vibrateCompass');
 
   static ValueNotifier<bool> featuresUpdateNotifier = ValueNotifier(false);
 

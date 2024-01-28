@@ -10,6 +10,7 @@ import 'package:candle/theme_data.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/route_map_osm.dart';
@@ -90,9 +91,9 @@ class _ScreenState extends State<LatLngRouteScreen> {
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
-              Vibration.vibrate(duration: 100, repeat: 2);
+              CandleVibrate.vibrateDuringNavigation(duration: 100, repeat: 2);
             } else {
-              Vibration.vibrate(duration: 500);
+              CandleVibrate.vibrateDuringNavigation(duration: 500);
             }
             _wasAligned = currentlyAligned;
           }
@@ -199,7 +200,8 @@ class _ScreenState extends State<LatLngRouteScreen> {
 
     if (startCoordinateIndex > lastVibratedIndex) {
       // Vibrate and update lastVibratedIndex
-      Vibration.vibrate(duration: 100); // Assuming you have a vibration function
+      CandleVibrate.vibrateDuringNavigation(
+          duration: 100); // Assuming you have a vibration function
       lastVibratedIndex = startCoordinateIndex;
 
       if (startCoordinateIndex < route.points.length - 1) {

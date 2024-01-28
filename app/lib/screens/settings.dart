@@ -48,6 +48,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge),
                   ),
                   _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
+                  const SizedBox(height: 40),
+                  Semantics(
+                    label: l10n.settings_header_common_t,
+                    child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge),
+                  ),
+                  _buildFeatureFlagToggle(AppFeatures.vibrateCompass),
+                  _buildFeatureFlagToggle(AppFeatures.vibrateDuringNavigation),
                 ],
               ),
             ),
@@ -95,6 +102,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return l10n.featureflag_share;
       case 'allwaysAccessGps':
         return l10n.featureflag_allwaysgps;
+      case 'vibrateDuringNavigation':
+        return l10n.featureflag_vibraterouting;
+      case 'vibrateCompass':
+        return l10n.featureflag_vibratecompass;
 
       default:
         return 'Unknown Feature';

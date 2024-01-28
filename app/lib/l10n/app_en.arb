@@ -670,7 +670,7 @@
     "description": "Infotext for the permissions request"
   },
 
-  "label_permissions_allwaysgps_explain": "# Set the location permission to **'Allow all the time'** for essential app functionalities like route recording.\n\n\nThis permission is crucial for background location tracking, allowing route recording even when the app is closed or not in use, which is particularly beneficial for visually impaired users. Rest assured, location tracking is solely for in-app functions, and your data remains private on your device.",
+  "label_permissions_allwaysgps_explain": "# Set the location permission to **'Allow all the time'** to enable important app functionalities like **route recording**. \n\nThis permission is crucial for **background location tracking**, allowing **route recording even when the app is closed or not in use**, which is particularly beneficial for visually impaired users. Rest assured, **location tracking is solely for in-app functions**, and your data remains **private on your device**. Granting this permission is optional; if not granted, the background recording feature will be disabled.",
   "@label_permissions_allwaysgps_explain": {
     "description": "Infotext for the permissions gps_allways request"
   },
@@ -820,6 +820,24 @@
     "description": "Title for shgpsare Featureflag"
   },
 
+  "featureflag_vibratecompass_t": "Compass vibrates during 90 degree snap or target hit.",
+  "@featureflag_vibratecompass_t": {
+    "description": "Talkback for GPS Featureflag"
+  },
+  "featureflag_vibratecompass": "Vibrating Compass",
+  "@featureflag_vibratecompass": {
+    "description": "Title for shgpsare Featureflag"
+  },
+
+  "featureflag_vibraterouting_t": "Vibrate Feedback during Routing",
+  "@featureflag_vibraterouting_t": {
+    "description": "Talkback for Vibrate Roting Featureflag"
+  },
+  "featureflag_vibraterouting": "Vibrate Feedback during Routing",
+  "@featureflag_vibraterouting": {
+    "description": "Title for Vibrate Routing Featureflag"
+  },
+
 
   "featureflag_location_t": "Enable the Location Button",
   "@featureflag_location_t": {
@@ -892,9 +910,18 @@
   },
   "settings_header_gps": "GPS Settings",
   "@settings_header_gps": {
-    "description": "Title for gpss settings section"
+    "description": "Title for gps settings section"
   },
 
+
+  "settings_header_common_t": "Common Features for this App",
+  "@settings_header_common_t": {
+    "description": "Talkback for common settings section"
+  },
+  "settings_header_common": "Common",
+  "@settings_header_common": {
+    "description": "Title for common settings section"
+  },
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

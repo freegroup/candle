@@ -7,6 +7,7 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
+import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/dialog_button.dart';
@@ -88,7 +89,7 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
     for (var point in snapPoints) {
       if ((heading >= point - snapRange) && (heading <= point + snapRange)) {
         if (_lastVibratedSnapPoint != point) {
-          Vibration.vibrate(duration: 100);
+          CandleVibrate.vibrateCompass(duration: 100);
           SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop

@@ -113,6 +113,12 @@
   "featureflag_location_t": "Ort speihern auf der Übersicht aktivieren",
   "featureflag_location": "Ort Speichern",
 
+  "featureflag_vibratecompass_t": "Vibrierender Kompass",
+  "featureflag_vibratecompass": "Vibrierender Kompass",
+
+  "featureflag_vibraterouting_t": "Vibrieren wärend dem Navigieren",
+  "featureflag_vibraterouting": "Vibrieren wärend dem Navigieren",
+
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
   "label_common_required": "Pflichtfeld",
@@ -130,6 +136,9 @@
   "settings_header_gps_t": "GPS Einstellungen für die App",
   "settings_header_gps": "GPS Einstellungen",
 
+  "settings_header_common_t": "Allgemeine Einstellungen",
+  "settings_header_common": "Allgemein",
+  
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
   "label_rotate_left_target_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
@@ -228,8 +237,7 @@
   "label_permissions_explain": "# Willkommen bei Candle!\n\nAls Navigations-App für Blinde und Sehbehinderte benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für eine bedienungsfreie Nutzung. Diese Berechtigungen sind für unsere Kernfunktionalität unerlässlich. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um das volle Potenzial Ihrer Candle-Erfahrung zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",
   
-  "label_permissions_allwaysgps_explain": "# Stellen Sie die Standortberechtigung auf **'Immer zulassen'** ein, um wichtige App-Funktionen wie die Routenaufzeichnung zu ermöglichen.\n\n\nDiese Berechtigung ist entscheidend für die Standortverfolgung im Hintergrund und ermöglicht die Routenaufzeichnung, auch wenn die App geschlossen ist oder nicht verwendet wird, was besonders für sehbehinderte Benutzer nützlich ist. Ihre Daten bleiben ausschließlich auf Ihrem Gerät privat und werden nur für App-Funktionen verwendet."
-
+  "label_permissions_allwaysgps_explain": "# Stellen Sie die Standortberechtigung auf **'Immer zulassen'** ein, um wichtige App-Funktionen wie die **Routenaufzeichnung** zu ermöglichen. \n\nDiese Berechtigung ist entscheidend für die **Standortverfolgung im Hintergrund** und ermöglicht die **Routenaufzeichnung, auch wenn die App geschlossen ist oder nicht verwendet wird**, was besonders für sehbehinderte Benutzer nützlich ist. Ihre Daten bleiben ausschließlich auf Ihrem **Gerät privat** und werden nur für **App-Funktionen verwendet**. Die Erteilung dieser Berechtigung ist optional; wird sie nicht erteilt, wird die Aufzeichnungsfunktion im Hintergrund deaktiviert.",
 
   "permissions_denied_title": "Berechtigungen Verweigert",
   "permissions_denied_description": "Um alle Funktionen unserer App nutzen zu können, benötigt sie Zugriff auf Ihren Standort, Ihr Mikrofon und Ihre Kamera. Ohne diese Berechtigungen funktionieren bestimmte Funktionen möglicherweise nicht richtig. Bitte aktivieren Sie diese Berechtigungen in Ihren Geräteeinstellungen, um fortzufahren.",
