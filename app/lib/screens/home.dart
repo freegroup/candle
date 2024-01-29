@@ -3,6 +3,7 @@ import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/about.dart';
 import 'package:candle/screens/compass.dart';
+import 'package:candle/screens/poi_radar.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/screens.dart';
 
@@ -46,6 +47,7 @@ class _ScreenState extends State<HomeScreen> {
           _buildTileButtonCompass(l10n, context),
           _buildTileButtonLocation(l10n, context),
           _buildTileButtonRecorder(l10n, context),
+          _buildTileButtonRadar(l10n, context),
           _buildTileButtonShare(l10n, context),
           _buildTileButtonAbout(l10n, context),
         ];
@@ -89,10 +91,7 @@ class _ScreenState extends State<HomeScreen> {
     return TileButton(
       title: l10n.button_about,
       talkback: l10n.button_about_t,
-      icon: const Icon(
-        Icons.info,
-        size: 80,
-      ),
+      icon: const Icon(Icons.info, size: 80),
       onPressed: () async {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutScreen()));
       },
@@ -106,10 +105,7 @@ class _ScreenState extends State<HomeScreen> {
     return TileButton(
       title: l10n.button_share_location,
       talkback: l10n.button_share_location_t,
-      icon: const Icon(
-        Icons.share,
-        size: 80,
-      ),
+      icon: const Icon(Icons.share, size: 80),
       onPressed: () async {
         showLoadingDialog(context);
 
@@ -130,9 +126,14 @@ class _ScreenState extends State<HomeScreen> {
   }
 
   Widget? _buildTileButtonRecorder(AppLocalizations l10n, BuildContext context) {
-    if (!AppFeatures.overviewRecorder.isEnabled) {
+    if (AppFeatures.betaRecording.isNotEnabled) {
       return null;
     }
+
+    if (AppFeatures.overviewRecorder.isNotEnabled) {
+      return null;
+    }
+
     return TileButton(
       title: l10n.button_recording,
       talkback: l10n.button_recording_t,
@@ -143,6 +144,21 @@ class _ScreenState extends State<HomeScreen> {
       onPressed: () async {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const RecorderControllerScreen()));
+      },
+    );
+  }
+
+  Widget? _buildTileButtonRadar(AppLocalizations l10n, BuildContext context) {
+    if (AppFeatures.overviewRadar.isNotEnabled) {
+      return null;
+    }
+
+    return TileButton(
+      title: l10n.button_radar,
+      talkback: l10n.button_radar_t,
+      icon: const Icon(Icons.radar_outlined, size: 80),
+      onPressed: () async {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PoiRadarScreen()));
       },
     );
   }

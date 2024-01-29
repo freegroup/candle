@@ -15,52 +15,71 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
-  @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: CandleAppBar(
-        title: Text(l10n.button_settings),
-        talkback: l10n.button_settings_t,
-      ),
-      body: BackgroundWidget(
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Semantics(
-                    label: l10n.settings_header_tiles_t,
-                    child: Text(l10n.settings_header_tiles, style: theme.textTheme.headlineLarge),
+    return ValueListenableBuilder(
+      valueListenable: AppFeatures.featuresUpdateNotifier,
+      builder: (context, _, __) {
+        print(AppFeatures.betaRecording.isEnabled);
+        List<Widget?> unfilteredChildren = [
+          Semantics(
+            label: l10n.settings_header_tiles_t,
+            child: Text(l10n.settings_header_tiles, style: theme.textTheme.headlineLarge),
+          ),
+          _buildFeatureFlagToggle(AppFeatures.overviewCompass),
+          _buildFeatureFlagToggle(AppFeatures.overviewLocation),
+          _buildFeatureFlagToggle(AppFeatures.overviewRadar),
+          AppFeatures.betaRecording.isEnabled
+              ? _buildFeatureFlagToggle(AppFeatures.overviewRecorder)
+              : null,
+          _buildFeatureFlagToggle(AppFeatures.overviewShare),
+          const SizedBox(height: 40),
+          Semantics(
+            label: l10n.settings_header_gps_t,
+            child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge),
+          ),
+          _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
+          const SizedBox(height: 40),
+          Semantics(
+            label: l10n.settings_header_common_t,
+            child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge),
+          ),
+          _buildFeatureFlagToggle(AppFeatures.vibrateCompass),
+          _buildFeatureFlagToggle(AppFeatures.vibrateDuringNavigation),
+          const SizedBox(height: 40),
+          Semantics(
+            label: l10n.settings_header_beta_t,
+            child: Text(l10n.settings_header_beta, style: theme.textTheme.headlineLarge),
+          ),
+          _buildFeatureFlagToggle(AppFeatures.betaRecording),
+        ];
+
+        return Scaffold(
+          appBar: CandleAppBar(
+            title: Text(l10n.button_settings),
+            talkback: l10n.button_settings_t,
+          ),
+          body: BackgroundWidget(
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: unfilteredChildren
+                        .where((widget) => widget != null)
+                        .cast<Widget>()
+                        .toList(),
                   ),
-                  _buildFeatureFlagToggle(AppFeatures.overviewCompass),
-                  _buildFeatureFlagToggle(AppFeatures.overviewLocation),
-                  _buildFeatureFlagToggle(AppFeatures.overviewRecorder),
-                  _buildFeatureFlagToggle(AppFeatures.overviewShare),
-                  const SizedBox(height: 40),
-                  Semantics(
-                    label: l10n.settings_header_gps_t,
-                    child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge),
-                  ),
-                  _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
-                  const SizedBox(height: 40),
-                  Semantics(
-                    label: l10n.settings_header_common_t,
-                    child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge),
-                  ),
-                  _buildFeatureFlagToggle(AppFeatures.vibrateCompass),
-                  _buildFeatureFlagToggle(AppFeatures.vibrateDuringNavigation),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -94,6 +113,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     switch (userStateKey) {
       case 'overviewRecorder':
         return l10n.featureflag_recorder;
+      case 'overviewRadar':
+        return l10n.featureflag_radar;
       case 'overviewCompass':
         return l10n.featureflag_compass;
       case 'overviewLocation':
@@ -106,6 +127,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return l10n.featureflag_vibraterouting;
       case 'vibrateCompass':
         return l10n.featureflag_vibratecompass;
+      case 'betaRecording':
+        return l10n.featureflag_beta_recording;
 
       default:
         return 'Unknown Feature';

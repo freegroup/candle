@@ -1,5 +1,4 @@
 import 'package:candle/screens/settings.dart';
-import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

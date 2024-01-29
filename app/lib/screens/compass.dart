@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vibration/vibration.dart';
 
 class CompassScreen extends StatefulWidget {
   const CompassScreen({super.key});
@@ -64,12 +63,14 @@ class _CompassScreenState extends State<CompassScreen> implements FloatingAction
 
       _horizontalCheckTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         bool newIsHorizontal = CompassService.instance.isHorizontal;
-        if (_isCompassHorizontal != newIsHorizontal && mounted) {
-          setState(() {
-            _isCompassHorizontal = newIsHorizontal;
-          });
+        if (mounted) {
+          if (_isCompassHorizontal != newIsHorizontal) {
+            setState(() {
+              _isCompassHorizontal = newIsHorizontal;
+            });
+          }
+          _checkCompassOrientation(newIsHorizontal);
         }
-        _checkCompassOrientation(newIsHorizontal);
       });
     });
   }

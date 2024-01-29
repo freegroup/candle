@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/screens/permissions_screen.dart';
 import 'package:candle/utils/featureflag.dart';

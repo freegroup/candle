@@ -45,6 +45,8 @@ class FeatureFlag {
 
   bool get isEnabled => _isEnabledNotifier.value;
 
+  bool get isNotEnabled => !_isEnabledNotifier.value;
+
   bool get isConfigurable => systemState;
 }
 
@@ -52,13 +54,18 @@ class AppFeatures {
   static final overviewCompass = FeatureFlag(userStateKey: 'overviewCompass');
   static final overviewLocation = FeatureFlag(userStateKey: 'overviewLocation');
   static final overviewRecorder = FeatureFlag(userStateKey: 'overviewRecorder');
+  static final overviewRadar = FeatureFlag(userStateKey: 'overviewRadar');
   static final overviewShare = FeatureFlag(userStateKey: 'overviewShare');
   static final allwaysAccessGps =
       FeatureFlag(userStateKey: 'allwaysAccessGps', initialState: false);
+
   // It can be annoying for a person non visually impaired person to have
   //// all the time the vibration "on". Allow the ser to witch them off.
   static final vibrateDuringNavigation = FeatureFlag(userStateKey: 'vibrateDuringNavigation');
   static final vibrateCompass = FeatureFlag(userStateKey: 'vibrateCompass');
+
+  // Recording is still in beta mode. Allow the user to switch on this. "Off" by default
+  static final betaRecording = FeatureFlag(userStateKey: 'betaRecording', initialState: false);
 
   static ValueNotifier<bool> featuresUpdateNotifier = ValueNotifier(false);
 
@@ -78,6 +85,18 @@ class AppFeatures {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
     allwaysAccessGps.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    vibrateDuringNavigation.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    vibrateCompass.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    betaRecording.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    overviewRadar.isEnabledListenable.addListener(() {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
   }

@@ -235,6 +235,16 @@
   },
 
 
+  "buttonbar_radar_t": "Ein Radar mir der Anzeige von Orten in der Richtung wie das Handy gehalten wird",
+  "@buttonbar_radar_t": {
+    "description": "Talkback for Radar ButtonBar Entry"
+  },
+  "buttonbar_radar": "Orte Radar",
+  "@buttonbar_radar_t": {
+    "description": "Title for Radar ButtonBar Entry"
+  },
+
+
   "buttonbar_voicepins_t": "VoicePin Screen",
   "@buttonbar_voicepins_t": {
     "description": "Talkback for VoicePin ButtonBar Entry"
@@ -793,6 +803,18 @@
   },
 
 
+
+  "featureflag_radar_t": "Compass which fetches point of interest from the direction",
+  "@featureflag_radar_t": {
+    "description": "Talkback for Compass Featureflag"
+  },
+  "featureflag_radar": "Point of Interest Radar",
+  "@featureflag_radar": {
+    "description": "Title for compass Featureflag"
+  },
+
+
+
   "featureflag_compass_t": "Enable the Compass Screen",
   "@featureflag_compass_t": {
     "description": "Talkback for Compass Featureflag"
@@ -831,11 +853,20 @@
 
   "featureflag_vibraterouting_t": "Vibrate Feedback during Routing",
   "@featureflag_vibraterouting_t": {
-    "description": "Talkback for Vibrate Roting Featureflag"
+    "description": "Talkback for Vibrate Routing Featureflag"
   },
   "featureflag_vibraterouting": "Vibrate Feedback during Routing",
   "@featureflag_vibraterouting": {
     "description": "Title for Vibrate Routing Featureflag"
+  },
+
+  "featureflag_beta_recording_t": "Record and playback Routes",
+  "@featureflag_beta_recording_t": {
+    "description": "Talkback for Beta Feature flag for recording"
+  },
+  "featureflag_beta_recording": "Route Recording",
+  "@featureflag_beta_recording": {
+    "description": "Title for beta feature Route recording"
   },
 
 
@@ -876,6 +907,17 @@
   "@button_recording": {
     "description": "Title for record track button"
   },
+
+
+  "button_radar_t": "Point of interest radar",
+  "@button_radar_t": {
+    "description": "Talkback for radar Button"
+  },
+  "button_radar": "Poi Radar",
+  "@button_radar": {
+    "description": "Title for radar Button"
+  },
+
 
   "button_settings_t": "Configure or change Settings of the app",
   "@button_settings_t": {
@@ -922,6 +964,17 @@
   "@settings_header_common": {
     "description": "Title for common settings section"
   },
+
+
+  "settings_header_beta_t": "Not well tested beta features.",
+  "@settings_header_beta_t": {
+    "description": "Talkback for beta features section"
+  },
+  "settings_header_beta": "Beta Features",
+  "@settings_header_beta": {
+    "description": "Title for beta features section"
+  },
+
 
   "compassHorizonNorth": "North",
   "@compassHorizonNorth": {

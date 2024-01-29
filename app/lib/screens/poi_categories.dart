@@ -91,7 +91,7 @@ class _ScreenState extends State<PoiCategoriesScreen> implements FloatingActionB
       PoiCategory(
         icon: Icons.hearing,
         title: l10n.poi_category_audible_signals,
-        categories: ['node["amenity"="traffic_sginals"]'],
+        categories: ['node["amenity"="traffic_signals"]'],
       ),
       PoiCategory(
         icon: Icons.wc,

@@ -100,6 +100,9 @@
   "featureflag_recorder_t": "Aufzeichnen von Routen aktivieren",
   "featureflag_recorder": "Strecke Aufzeichnen",
 
+  "featureflag_radar_t": "Kompass der einem in der gezeigten Richtung Orte anzeigt",
+  "featureflag_radar": "Orte Radar",
+
   "featureflag_compass_t": "Kompass auf der Übersicht aktivieren.",
   "featureflag_compass": "Kompass",
 
@@ -118,6 +121,9 @@
 
   "featureflag_vibraterouting_t": "Vibrieren wärend dem Navigieren",
   "featureflag_vibraterouting": "Vibrieren wärend dem Navigieren",
+
+  "featureflag_beta_recording_t": "Strecken aufzeichnen und später abgehen",
+  "featureflag_beta_recording": "Strecken aufzeichnen",
 
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
@@ -139,6 +145,9 @@
   "settings_header_common_t": "Allgemeine Einstellungen",
   "settings_header_common": "Allgemein",
   
+  "settings_header_beta_t": "Noch nicht offiziel freigegebenen Funktionen, welche sich noch in Testphase befinden.",
+  "settings_header_beta": "Funktionen im Test",
+
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
   "label_rotate_left_target_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",

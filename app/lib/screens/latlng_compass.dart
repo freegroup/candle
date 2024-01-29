@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:candle/models/route.dart' as model;
 import 'package:candle/icons/location_arrow.dart';
 import 'package:candle/icons/location_dot.dart';
 import 'package:candle/l10n/helper.dart';
+import 'package:candle/models/route.dart' as model;
 import 'package:candle/screens/latlng_route.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
@@ -13,7 +13,6 @@ import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/twoliner.dart';

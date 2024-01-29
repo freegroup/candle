@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:candle/app.dart';
-import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/navigation_point.dart';
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/database.dart';
