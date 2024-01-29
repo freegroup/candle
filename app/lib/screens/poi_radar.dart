@@ -72,6 +72,7 @@ class _ScreenState extends State<PoiRadarScreen> {
   // Poi Data
   //
   List<PoiDetail>? _allPois;
+  List<PoiDetail>? _poisInHeadingDirection;
   bool _isLoading = true;
   LatLng? _currentLocation;
   LatLng? _loadingLocation;
@@ -88,13 +89,8 @@ class _ScreenState extends State<PoiRadarScreen> {
         print(err);
       }).listen((compassEvent) {
         int heading = ((360 - (compassEvent.heading ?? 0)) % 360).toInt();
-        _filterPoisAtSnapPoints(heading);
-
-        if (mounted) {
-          setState(() {
-            _currentHeadingDegrees = heading;
-          });
-        }
+        if (mounted) setState(() => _currentHeadingDegrees = heading);
+        _filterPoisAtSnapPoints();
       });
 
       _horizontalCheckTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -120,19 +116,52 @@ class _ScreenState extends State<PoiRadarScreen> {
     _horizontalCheckTimer?.cancel();
   }
 
-  void _filterPoisAtSnapPoints(int heading) {
+  void _filterPoisAtSnapPoints() {
     const snapPoints = [0, 45, 90, 135, 180, 225, 270, 315];
     const snapRange = 10; // ±10° range for snap points
 
-    for (var point in snapPoints) {
-      if ((heading >= point - snapRange) && (heading <= point + snapRange)) {
-        if (_lastVibratedSnapPoint != point) {
+    for (var snapPointAngle in snapPoints) {
+      if ((_currentHeadingDegrees >= snapPointAngle - snapRange) &&
+          (_currentHeadingDegrees <= snapPointAngle + snapRange)) {
+        if (_lastVibratedSnapPoint != snapPointAngle) {
           CandleVibrate.vibrateCompass(duration: 100);
-          SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
-          _lastVibratedSnapPoint = point;
+          _lastVibratedSnapPoint = snapPointAngle;
+
+          if (_allPois != null) {
+            const int angleRange = 25; // ±25° range
+            List<PoiDetail> filteredPois = [];
+            for (var poi in _allPois!) {
+              int bearing = 360 - calculateNorthBearing(_currentLocation!, poi.latlng);
+              if ((bearing >= snapPointAngle - angleRange) &&
+                  (bearing <= snapPointAngle + angleRange)) {
+                filteredPois.add(poi);
+              }
+            }
+
+            // Sort by distance
+            filteredPois.sort((a, b) {
+              var distA = calculateDistance(a.latlng, _currentLocation!);
+              var distB = calculateDistance(b.latlng, _currentLocation!);
+              return distA.compareTo(distB);
+            });
+
+            // Update the POIs in heading direction
+            if (mounted) {
+              AppLocalizations l10n = AppLocalizations.of(context)!;
+              setState(() => _poisInHeadingDirection = filteredPois);
+              SemanticsService.announce(
+                  l10n.locations_in_direction_toast(
+                      getHorizon(context, _currentHeadingDegrees), filteredPois.length),
+                  TextDirection.ltr);
+            }
+          } else {
+            SemanticsService.announce(
+                getHorizon(context, _currentHeadingDegrees), TextDirection.ltr);
+          }
+
           break; // Vibrate once and exit loop
         }
-      } else if (_lastVibratedSnapPoint == point) {
+      } else if (_lastVibratedSnapPoint == snapPointAngle) {
         // Clear the last vibrated point if we move out of the snap range
         _lastVibratedSnapPoint = null;
       }
@@ -171,28 +200,16 @@ class _ScreenState extends State<PoiRadarScreen> {
       print(err);
     }).listen((newLocation) async {
       var latlng = LatLng(newLocation.latitude, newLocation.longitude);
+      if (mounted) setState(() => _currentLocation = latlng);
 
       // Update the view for each new location position we get
-      if (mounted) {
-        // resort the locations based on the new location of the user
+      if (mounted && _currentLocation != null && _loadingLocation != null) {
+        // reload the POI if we fare from the last time we have loaded the poi
         //
-        if (_currentLocation != null && _allPois != null) {
-          _allPois!.sort((a, b) {
-            var distA = calculateDistance(a.latlng, _currentLocation!);
-            var distB = calculateDistance(b.latlng, _currentLocation!);
-            return distA.compareTo(distB);
-          });
+        if (calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
+          setState(() => _isLoading = true);
+          _load();
         }
-        setState(() {
-          _currentLocation = latlng;
-        });
-      }
-
-      // reload the POI if we fare from the last time we have loaded the poi
-      //
-      if (calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
-        setState(() => _isLoading = true);
-        _load();
       }
     });
   }
@@ -200,14 +217,12 @@ class _ScreenState extends State<PoiRadarScreen> {
   void _load() async {
     try {
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
-      var fetchedPois =
-          await poiProvider.fetchPois(widget.category.categories, 2000, _currentLocation!);
+      _allPois = await poiProvider.fetchPois(widget.category.categories, 2000, _currentLocation!);
       _loadingLocation = _currentLocation;
       if (mounted) {
-        setState(() {
-          _allPois = fetchedPois;
-          _isLoading = false;
-        });
+        _lastVibratedSnapPoint = null;
+        _filterPoisAtSnapPoints();
+        setState(() => _isLoading = false);
       }
     } catch (e) {
       // Handle error
@@ -217,17 +232,19 @@ class _ScreenState extends State<PoiRadarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text("widget.category.title"),
-        talkback: " widget.category.title",
+        title: Text(l10n.screen_header_radar),
+        talkback: l10n.screen_header_radar_t,
       ),
       body: BackgroundWidget(
         child: Align(
           alignment: Alignment.topCenter,
           child: _isLoading
               ? _buildLoading(context)
-              : _allPois == null || _allPois!.isEmpty
+              : _poisInHeadingDirection == null || _poisInHeadingDirection!.isEmpty
                   ? _buildNoContent(context)
                   : _buildContent(context),
         ),
@@ -266,13 +283,13 @@ class _ScreenState extends State<PoiRadarScreen> {
       children: [
         SemanticHeader(
           title: l10n.explore_poi_header,
-          talkback: l10n.explore_poi_header_t(_allPois!.length),
+          talkback: l10n.explore_poi_header_t(_poisInHeadingDirection!.length),
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: _allPois!.length,
+            itemCount: _poisInHeadingDirection!.length,
             itemBuilder: (context, index) {
-              var loc = _allPois![index];
+              var loc = _poisInHeadingDirection![index];
 
               return CandleListTile(
                 title: loc.name,

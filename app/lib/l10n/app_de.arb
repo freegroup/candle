@@ -40,7 +40,8 @@
   "explore_poi_header": "Gefundene Orte",
   "explore_poi_header_t": "Es sind {count} Orte in der Liste verfügbar",
 
-
+  "screen_header_radar_t": "Radar zeigt Orte in der gezeigten Richtung",
+  "screen_header_radar": "Orte Radar",
 
   "buttonbar_home_t": "Übersicht",
   "buttonbar_home": "Übersicht",
@@ -207,7 +208,7 @@
   "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
   "route_delete_toast": "Strecke '{name}' wurde gelöscht.",
   "route_add_speak_t": "Drücken Sie, um die Stecke mittels Spracheingabe zu benennen.",
-"route_recording_intro": "Benennen Sie Ihre Route und starten Sie die Aufzeichnung mit **Aufnehmen**. Am Ziel angekommen, können Sie mit **Speichern** die Route behalten oder mit **Überspringen** verwerfen. Gespeicherte Routen leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
+  "route_recording_intro": "Benennen Sie Ihre Route und starten Sie die Aufzeichnung mit **Aufnehmen**. Am Ziel angekommen, können Sie mit **Speichern** die Route behalten oder mit **Überspringen** verwerfen. Gespeicherte Routen leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
   
@@ -234,6 +235,9 @@
   
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  
+  "locations_in_direction_toast": "{heading}, {count} nahegelegene Orte.",
+
+  
   "screen_header_address_search_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
   "screen_header_address_search": "Adresse Suchen",
   "address_search_list": "Vorgeschlagene Adressen",

@@ -150,6 +150,17 @@
     "description": "Title for POI Category screen"
   },
 
+
+  "screen_header_radar_t": "Location Radar Screen",
+  "@screen_header_radar_t": {
+    "description": "Talkback for POI Radar screens"
+  },
+  "screen_header_radar": "Location Radar",
+  "@screen_header_radar": {
+    "description": "Title for POI Radar screen"
+  },
+
+
   "explore_category_header": "Categories",
   "@explore_category_header": {
     "description": "Heaeer for the category list"
@@ -522,6 +533,23 @@
     }
   },
   
+    
+  "locations_in_direction_toast": "{heading}, {count} nearby locations.",
+  "@locations_in_direction_toast": {
+    "description": "Information that the favorite has saved with success",
+    "placeholders": {
+      "heading": {
+        "type": "String",
+        "description": "The heading like south, west,..."
+      },
+      "count": {
+        "type": "int",
+        "description": "The count of locations in the heading direction"
+      }
+    }
+  },
+  
+
   "location_deleted_toast": "Location '{name}' deleted.",
   "@location_saved_toast": {
     "description": "Information that the favorite has deleted with success",
@@ -551,7 +579,7 @@
   },
 
   "location_share_message": "Here is my current location: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
-  "@location_saved_toast": {
+  "@location_share_message": {
     "description": "Information that the favorite has deleted with success",
     "placeholders": {
       "latitude": {
