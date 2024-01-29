@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/fab.dart';
-import 'package:candle/screens/location_cu.dart';
 import 'package:candle/screens/latlng_compass.dart';
+import 'package:candle/screens/location_cu.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
@@ -16,9 +16,8 @@ import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:candle/models/location_address.dart' as model;
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +29,7 @@ class LocationsScreen extends StatefulWidget {
   State<LocationsScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<LocationsScreen> implements FloatingActionButtonProvider {
+class _ScreenState extends State<LocationsScreen> {
   // the current location of the user given by the GPS signal
   LatLng? _currentLocation;
   bool _isLoading = true;
@@ -95,6 +94,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
         talkback: l10n.screen_header_locations_t,
         settingsEnabled: true,
       ),
+      floatingActionButton: _buildFloatingActionButton(context),
       body: BackgroundWidget(
         child: Align(
             alignment: Alignment.topCenter,
@@ -209,8 +209,7 @@ class _ScreenState extends State<LocationsScreen> implements FloatingActionButto
     );
   }
 
-  @override
-  Widget floatingActionButton(BuildContext context) {
+  Widget _buildFloatingActionButton(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return FloatingActionButton(

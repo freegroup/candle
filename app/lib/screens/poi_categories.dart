@@ -1,6 +1,4 @@
-import 'package:candle/screens/fab.dart';
 import 'package:candle/screens/poi_category.dart';
-
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/semantic_header.dart';
@@ -23,13 +21,8 @@ class PoiCategoriesScreen extends StatefulWidget {
   State<PoiCategoriesScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<PoiCategoriesScreen> implements FloatingActionButtonProvider {
+class _ScreenState extends State<PoiCategoriesScreen> {
   List<PoiCategory> categories = [];
-
-  @override
-  Widget? floatingActionButton(BuildContext context) {
-    return null;
-  }
 
   @override
   void didChangeDependencies() {

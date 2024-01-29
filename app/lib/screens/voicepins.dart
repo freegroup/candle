@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:candle/models/voicepin.dart';
-import 'package:candle/screens/fab.dart';
 import 'package:candle/screens/textoverlay.dart';
 import 'package:candle/screens/voicepin_cu.dart';
 import 'package:candle/services/database.dart';
@@ -26,7 +25,7 @@ class VoicePinsScreen extends StatefulWidget {
   State<VoicePinsScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButtonProvider {
+class _ScreenState extends State<VoicePinsScreen> {
   // the current location of the user given by the GPS signal
   LatLng? _currentLocation;
   bool _isLoading = true;
@@ -91,6 +90,7 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
         talkback: l10n.screen_header_voicepins_t,
         settingsEnabled: true,
       ),
+      floatingActionButton: _buildFloatingActionButton(context),
       body: BackgroundWidget(
         child: Align(
             alignment: Alignment.topCenter,
@@ -220,8 +220,7 @@ class _ScreenState extends State<VoicePinsScreen> implements FloatingActionButto
     );
   }
 
-  @override
-  Widget floatingActionButton(BuildContext context) {
+  Widget _buildFloatingActionButton(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return FloatingActionButton(

@@ -59,6 +59,10 @@
   "buttonbar_voicepins_t": "Ortsabhängige Sprachnachrichten",
   "buttonbar_voicepins": "VoicePins",
 
+
+  "button_radar_t": "Orte Radar, zeigt Orte nach einer Himmelsrichtung an.",
+  "button_radar": "Orte Radar",
+
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
 
@@ -187,7 +191,7 @@
   "remaining_waypoint_distance": "{meters} Meter",
 
   "screen_header_location_add_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "screen_header_location_add_t": "Standort anlegen",
+  "screen_header_location_add": "Standort anlegen",
 
   "screen_header_location_update_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
   "screen_header_location_update": "Standort bearbeiten",
@@ -236,8 +240,11 @@
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  
   "locations_in_direction_toast": "{heading}, {count} nahegelegene Orte.",
-
   
+  "buttonbar_radar_t": "Ein Radar mir der Anzeige von Orten in der Richtung wie das Handy gehalten wird",
+  "buttonbar_radar": "Orte Radar",
+
+
   "screen_header_address_search_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
   "screen_header_address_search": "Adresse Suchen",
   "address_search_list": "Vorgeschlagene Adressen",
@@ -246,6 +253,9 @@
 
   "screen_header_permissions_t": "App Berechtigungen erfragen",
   "screen_header_permissions": "Berechtigungen",
+
+  "screen_header_voicepins_t": "Sprachnotizen mit einem Ort verknüpfen",
+  "screen_header_voicepins": "Sprachnotizen",
 
   "label_permissions_explain": "# Willkommen bei Candle!\n\nAls Navigations-App für Blinde und Sehbehinderte benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für eine bedienungsfreie Nutzung. Diese Berechtigungen sind für unsere Kernfunktionalität unerlässlich. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um das volle Potenzial Ihrer Candle-Erfahrung zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",

@@ -246,11 +246,11 @@
   },
 
 
-  "buttonbar_radar_t": "Ein Radar mir der Anzeige von Orten in der Richtung wie das Handy gehalten wird",
+  "buttonbar_radar_t": "A radar which show locations in the given direction.",
   "@buttonbar_radar_t": {
     "description": "Talkback for Radar ButtonBar Entry"
   },
-  "buttonbar_radar": "Orte Radar",
+  "buttonbar_radar": "Location Radar",
   "@buttonbar_radar_t": {
     "description": "Title for Radar ButtonBar Entry"
   },
@@ -941,7 +941,7 @@
   "@button_radar_t": {
     "description": "Talkback for radar Button"
   },
-  "button_radar": "Poi Radar",
+  "button_radar": "Location Radar",
   "@button_radar": {
     "description": "Title for radar Button"
   },

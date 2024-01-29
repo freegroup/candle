@@ -1,11 +1,1 @@
-{
-  "de": [
-    "screen_header_voicepins_t",
-    "screen_header_voicepins",
-    "buttonbar_radar_t",
-    "buttonbar_radar",
-    "screen_header_location_add",
-    "button_radar_t",
-    "button_radar"
-  ]
-}
+{}

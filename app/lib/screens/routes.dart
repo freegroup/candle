@@ -1,5 +1,5 @@
 import 'package:candle/models/route.dart' as model;
-import 'package:candle/screens/fab.dart';
+
 import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/route_u.dart';
@@ -20,7 +20,7 @@ class RoutesScreen extends StatefulWidget {
   State<RoutesScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonProvider {
+class _ScreenState extends State<RoutesScreen> {
   List<model.Route>? routes;
 
   @override
@@ -34,6 +34,7 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
           talkback: l10n.screen_header_routes_t,
           settingsEnabled: true,
         ),
+        floatingActionButton: _buildFloatingActionButton(context),
         body: BackgroundWidget(
           child: Align(
               alignment: Alignment.topCenter,
@@ -167,8 +168,7 @@ class _ScreenState extends State<RoutesScreen> implements FloatingActionButtonPr
     );
   }
 
-  @override
-  Widget floatingActionButton(BuildContext context) {
+  Widget _buildFloatingActionButton(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return FloatingActionButton(
