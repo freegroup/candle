@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:convert';
+
 import 'package:candle/icons/compass.dart';
 import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
@@ -6,7 +9,6 @@ import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/poi_radar.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/screens.dart';
-
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
@@ -17,8 +19,9 @@ import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_extend/share_extend.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -113,10 +116,19 @@ class _ScreenState extends State<HomeScreen> {
           var coord = await LocationService.instance.location;
           if (mounted && coord != null) {
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
-            LocationAddress? address = await geo.getGeolocationAddress(coord);
+            LocationAddress address = (await geo.getGeolocationAddress(coord))!;
+            LocationAddress sharingAddress = address.copyWith(name: "MyPosition");
             String message = l10n.location_share_message(coord.latitude, coord.longitude);
-            message = "$message\n\n${address?.formattedAddress}";
-            Share.share(message);
+            message = "$message\n\n${sharingAddress.formattedAddress}";
+
+            var dataMap = {
+              "location": sharingAddress.toMap(),
+            };
+            String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+            final file = await _createTmpFileWithData("my_location", prettyJson);
+
+            // Share the file and text
+            ShareExtend.share(file.path, "file", subject: message);
           }
         } finally {
           if (mounted) Navigator.pop(context);
@@ -214,5 +226,13 @@ class _ScreenState extends State<HomeScreen> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompassScreen()));
       },
     );
+  }
+
+// This function creates a temporary file with given data and returns the File object
+  Future<File> _createTmpFileWithData(String basename, String data) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/$basename.candle');
+    await file.writeAsString(data);
+    return file;
   }
 }

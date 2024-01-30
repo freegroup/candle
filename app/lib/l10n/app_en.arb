@@ -90,6 +90,17 @@
     "description": "Title for the GPS Recorder Screen before recording"
   },
 
+
+  "screen_header_import_location_t": "Import shared Location or start navigation",
+  "@screen_header_import_location_t": {
+    "description": "Talkback for location shared screen"
+  },
+  "screen_header_import_location": "Shared Location",
+  "@screen_header_import_location": {
+    "description": "Title for the location shared screen"
+  },
+
+
   "screen_header_recorder_recording_t": "Route gets recorded.",
   "@screen_header_recorder_recording_t": {
     "description": "Talkback for route recording screen"
@@ -934,6 +945,16 @@
   "button_recording": "Record Track",
   "@button_recording": {
     "description": "Title for record track button"
+  },
+
+
+  "button_import_location_t": "Import shared location into your favorites.",
+  "@button_import_location_t": {
+    "description": "Talkback for location import Button"
+  },
+  "button_import_location": "Import Location",
+  "@button_import_location": {
+    "description": "Title for location import button"
   },
 
 

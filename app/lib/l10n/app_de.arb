@@ -12,6 +12,9 @@
   "screen_header_recorder_start_t": "Strecke aufzeichnen",
   "screen_header_recorder_start": "Strecke aufzeichnen",
 
+  "screen_header_import_location_t": "Geteilten Standort importieren oder Navigation starten",
+  "screen_header_import_location": "Geteilter Standort",
+
   "screen_header_recorder_recording_t": "Strecke wird aufgezeichnet",
   "screen_header_recorder_recording": "Aufzeichnen...",
 
@@ -78,6 +81,8 @@
   "button_recording_t": "Strecke aufzeichnen.",
   "button_recording": "Aufzeichnen",
 
+  "button_import_location_t": "Geteilten Standort als Favorit importieren",
+  "button_import_location": "Ort importieren",
 
   "button_settings_t": "Einstellungen der App anpassen",
   "button_settings": "Einstellungen",

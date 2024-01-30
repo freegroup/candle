@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/home.dart';
+import 'package:candle/screens/import_location.dart';
 import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/screens/poi_radar.dart';
@@ -13,6 +17,7 @@ import 'package:candle/utils/featureflag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class ButtonBarEntry {
   final Icon icon;
@@ -37,17 +42,34 @@ class NavigatorScreen extends StatefulWidget {
 class _ScreenState extends State<NavigatorScreen> {
   int currentIndex = 0;
   late Future<LatLng?> _locationFuture;
+  late StreamSubscription _intentSub;
 
   @override
   void initState() {
     super.initState();
-
     _initLocationFuture();
+    // Listen to media sharing coming from outside the app while the app is in the memory.
+    _intentSub = ReceiveSharingIntent.getMediaStream().listen((value) {
+      _handleSharedFile(value);
+      setState(() {});
+    }, onError: (err) {
+      print("getIntentDataStream error: $err");
+    });
+
+    // Get the media sharing coming from outside the app while the app is closed.
+    ReceiveSharingIntent.getInitialMedia().then((value) {
+      setState(() {
+        _handleSharedFile(value);
+        // Tell the library that we are done processing the intent.
+        ReceiveSharingIntent.reset();
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    _intentSub.cancel();
   }
 
   void _initLocationFuture() {
@@ -108,10 +130,8 @@ class _ScreenState extends State<NavigatorScreen> {
       });
     }
 
-    var singleScreen = _buildSingleScreen(currentIndex);
-
     return Scaffold(
-      body: singleScreen,
+      body: _buildSingleScreen(currentIndex),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
@@ -227,5 +247,37 @@ class _ScreenState extends State<NavigatorScreen> {
         ),
       ),
     );
+  }
+
+  void _handleSharedFile(List<SharedMediaFile> sharedFiles) async {
+    if (sharedFiles.isNotEmpty) {
+      final sharedFile = sharedFiles.first;
+      if (sharedFile.type == SharedMediaType.file) {
+        try {
+          final file = File(sharedFile.path);
+          final content = await file.readAsString();
+          final jsonData = jsonDecode(content);
+
+          if (jsonData.containsKey('location')) {
+            final locationData = jsonData['location'];
+            LocationAddress address = LocationAddress.fromMap(locationData);
+            // Now 'address' contains your LocationAddress object
+            print(address);
+
+            if (mounted) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ImportLocationScreen(
+                    address: address,
+                  ),
+                ),
+              );
+            }
+          }
+        } catch (e) {
+          print("Error processing shared file: $e");
+        }
+      }
+    }
   }
 }

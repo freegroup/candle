@@ -21,7 +21,7 @@ class DialogButton extends StatelessWidget {
       button: true,
       child: ExcludeSemantics(
         child: Padding(
-          padding: const EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 5),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
