@@ -219,8 +219,8 @@ class _ScreenState extends State<LocationsScreen> {
           if (mounted == true && _currentLocation != null) {
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
             LocationAddress? address = await geo.getGeolocationAddress(_currentLocation!);
-            if (!mounted) return;
-            print(address);
+            if (!mounted || address == null) return;
+
             Navigator.pop(context); // Close the loading dialog
             if (mounted) {
               Navigator.of(context)

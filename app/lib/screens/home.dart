@@ -193,7 +193,7 @@ class _ScreenState extends State<HomeScreen> {
             LocationAddress? address = await geo.getGeolocationAddress(coord);
             if (!mounted) return;
             Navigator.pop(context); // Close the loading dialog
-            if (mounted) {
+            if (mounted && address != null) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => LocationCreateUpdateScreen(

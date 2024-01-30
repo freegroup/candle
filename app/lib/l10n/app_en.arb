@@ -533,6 +533,7 @@
     }
   },
   
+  
   "location_saved_toast": "Location '{name}' has saved as favorite.",
   "@location_saved_toast": {
     "description": "Information that the favorite has saved with success",

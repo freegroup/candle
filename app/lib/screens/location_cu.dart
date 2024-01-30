@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationCreateUpdateScreen extends StatefulWidget {
-  final model.LocationAddress? initialLocation;
+  final model.LocationAddress initialLocation;
 
-  const LocationCreateUpdateScreen({super.key, this.initialLocation});
+  const LocationCreateUpdateScreen({super.key, required this.initialLocation});
 
   @override
   State<LocationCreateUpdateScreen> createState() => _ScreenState();
@@ -28,22 +28,22 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
 
   bool _isUpdate = false;
   bool canSubmit = false;
-  model.LocationAddress? stateLocation;
+  late model.LocationAddress stateLocation;
 
   @override
   void initState() {
-    super.initState();
     stateLocation = widget.initialLocation;
+    super.initState();
 
-    if (stateLocation?.id != null) {
+    if (stateLocation.id != null) {
       _isUpdate = true;
-      editingController.text = stateLocation!.name;
     }
+    editingController.text = stateLocation.name;
 
     _addressController.stream.listen((address) {
       if (mounted) {
         setState(() {
-          address.id = stateLocation?.id;
+          address.id = stateLocation.id;
           stateLocation = address;
         });
       }
@@ -68,7 +68,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     String name = editingController.text;
 
-    model.LocationAddress locationToSave = stateLocation!.copyWith(name: name);
+    model.LocationAddress locationToSave = stateLocation.copyWith(name: name);
     if (_isUpdate) {
       DatabaseService.instance.updateLocation(locationToSave);
     } else {
@@ -123,7 +123,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => AddressSearchScreen(
                   sink: _addressController.sink,
-                  addressFragment: stateLocation?.formattedAddress,
+                  addressFragment: stateLocation.formattedAddress,
                 ),
               ));
             },
@@ -140,7 +140,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
                         style: theme.textTheme.labelMedium,
                       ),
                       TextField(
-                        controller: TextEditingController(text: stateLocation?.formattedAddress),
+                        controller: TextEditingController(text: stateLocation.formattedAddress),
                         maxLines: null,
                       ),
                       Semantics(label: l10n.address_search_doubletab_hint_t),

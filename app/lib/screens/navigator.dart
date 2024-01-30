@@ -139,15 +139,15 @@ class _ScreenState extends State<NavigatorScreen> {
   Widget _buildSingleScreen(int index) {
     switch (index) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
-        return LocationsScreen();
+        return const LocationsScreen();
       case 2:
-        return RoutesScreen();
+        return const RoutesScreen();
       case 3:
-        return VoicePinsScreen();
+        return const VoicePinsScreen();
       case 4:
-        return PoiCategoriesScreen();
+        return const PoiCategoriesScreen();
       case 5:
         return PoiRadarScreen();
       default:
