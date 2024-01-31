@@ -31,6 +31,15 @@ class _ScreenState extends State<PoiCategoriesScreen> {
     // https://wiki.openstreetmap.org/wiki/DE:Key:amenity
     categories = [
       PoiCategory(
+        icon: Icons.transfer_within_a_station,
+        title: l10n.poi_category_crossing,
+        categories: [
+          'node ["highway"="crossing"]',
+          'way ["highway"="crossing"]',
+          'relation ["highway"="crossing"]',
+        ],
+      ),
+      PoiCategory(
         icon: Icons.local_drink,
         title: l10n.poi_category_bars,
         categories: [

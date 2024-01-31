@@ -1,4 +1,5 @@
 const int kMinDistanceForNextWaypoint = 3;
+const int kPoiRadiusInMeter = 2000;
 
 const String kMapStyle = '''
 [

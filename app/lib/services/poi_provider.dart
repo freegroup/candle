@@ -33,10 +33,14 @@ class PoiProvider extends ChangeNotifier {
   final PoiProviderOverpass _poiLookupProvider = PoiProviderOverpass();
 
   Future<List<PoiDetail>> fetchPois(
-      List<String> categories, int radiusInMeter, LatLng nearbyCoords) async {
+    AppLocalizations l10n,
+    List<String> categories,
+    int radiusInMeter,
+    LatLng nearbyCoords,
+  ) async {
     try {
       List<PoiDetail> pois =
-          await _poiLookupProvider.fetchPoi(categories, radiusInMeter, nearbyCoords);
+          await _poiLookupProvider.fetchPoi(l10n, categories, radiusInMeter, nearbyCoords);
       pois.sort((a, b) => calculateDistance(a.latlng, nearbyCoords)
           .compareTo(calculateDistance(b.latlng, nearbyCoords)));
 

@@ -1158,6 +1158,7 @@
   },
 
 
+  "poi_category_crossing": "Crossing",
   "poi_category_bars": "Bars",
   "poi_category_atms": "ATMs",
   "poi_category_restaurants": "Restaurants",
@@ -1168,6 +1169,12 @@
   "poi_category_pharmacies": "Pharmacies",
   "poi_category_audible_signals": "Audible Signals",
   "poi_category_public_toilets": "Public Toilets",
+
+
+  "crossing_traffic_signal": "Crossing with traffic signal",
+  "crossing_rebra_marking": "Crossing with with zebra marking",
+  "crossing_with_island": "Crossing with island",
+  "crossing_unmarked": "Unmarked crossing",
 
 
   "turnInstruction": "After {distance} meters, {turn}.",

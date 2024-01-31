@@ -6,6 +6,7 @@ import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/utils/vibrate.dart';
@@ -216,8 +217,10 @@ class _ScreenState extends State<PoiRadarScreen> {
 
   void _load() async {
     try {
+      final AppLocalizations l10n = AppLocalizations.of(context)!;
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
-      _allPois = await poiProvider.fetchPois(widget.category.categories, 2000, _currentLocation!);
+      _allPois = await poiProvider.fetchPois(
+          l10n, widget.category.categories, kPoiRadiusInMeter, _currentLocation!);
       _loadingLocation = _currentLocation;
       if (mounted) {
         _lastVibratedSnapPoint = null;

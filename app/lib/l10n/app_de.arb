@@ -311,6 +311,7 @@
   "email_contact_subject": "Candle Benutzer Anfrage",
   "error_no_email_launch": "E-Mail Programm kann nicht gestartet werden",
 
+  "poi_category_crossing": "Fussgängerüberweg",
   "poi_category_bars": "Bars",
   "poi_category_atms": "Geldautomaten",
   "poi_category_restaurants": "Restaurants",
@@ -322,6 +323,10 @@
   "poi_category_audible_signals": "Akustische Signale",
   "poi_category_public_toilets": "Öffentliche Toiletten",
 
+  "crossing_traffic_signal": "Übergang mit Ampel",
+  "crossing_rebra_marking": "Zebrastreifen",
+  "crossing_with_island": "Übergang mit Verkehrsinsel",
+  "crossing_unmarked": "Unmarkierter Fussgängerübergang",
 
   "turnInstruction": "Nach {distance} Metern, {turn}.",
   "turnInstruction_t": "Nach {distance} Metern, {turn}.",

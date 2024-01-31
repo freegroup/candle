@@ -4,6 +4,7 @@ import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
@@ -82,9 +83,10 @@ class _ScreenState extends State<PoiCategoryScreen> {
 
   void _load() async {
     try {
+      final AppLocalizations l10n = AppLocalizations.of(context)!;
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
-      var fetchedPois =
-          await poiProvider.fetchPois(widget.category.categories, 2000, _currentLocation!);
+      var fetchedPois = await poiProvider.fetchPois(
+          l10n, widget.category.categories, kPoiRadiusInMeter, _currentLocation!);
       _loadingLocation = _currentLocation;
       if (mounted) {
         setState(() {
