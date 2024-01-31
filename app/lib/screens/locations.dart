@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/location_address.dart';
@@ -7,7 +8,9 @@ import 'package:candle/screens/location_cu.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/theme_data.dart';
 import 'package:candle/utils/dialogs.dart';
+import 'package:candle/utils/files.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -21,6 +24,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:share_extend/share_extend.dart';
 
 class LocationsScreen extends StatefulWidget {
   const LocationsScreen({super.key});
@@ -120,72 +124,98 @@ class _ScreenState extends State<LocationsScreen> {
           model.LocationAddress loc = _locations[index];
 
           return Semantics(
-              customSemanticsActions: {
-                CustomSemanticsAction(label: l10n.button_common_edit_t): () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
+            customSemanticsActions: {
+              CustomSemanticsAction(label: l10n.button_common_edit_t): () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                      builder: (context) => LocationCreateUpdateScreen(
+                        initialLocation: loc,
+                      ),
+                    ))
+                    .then((value) => {setState(() => {})});
+              },
+              CustomSemanticsAction(label: l10n.button_share_location_t): () async {
+                String message = "${loc.name}\n\n${loc.formattedAddress}";
+                var dataMap = {
+                  "locations": [loc.copyWith(id: () => null).toMap()]
+                };
+                String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                final file = await createCandleFileWithData("location", prettyJson);
+                ShareExtend.share(file.path, "file", subject: message);
+              },
+              CustomSemanticsAction(label: l10n.button_common_delete_t): () {
+                setState(() {
+                  db.removeLocation(loc);
+                  showSnackbar(context, l10n.location_deleted_toast(loc.name));
+                });
+              },
+            },
+            child: Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  CustomSlidableAction(
+                    onPressed: (context) async {
+                      db.removeLocation(loc);
+                      _load();
+                      if (mounted) showSnackbar(context, l10n.location_deleted_toast(loc.name));
+                    },
+                    padding: EdgeInsets.zero,
+                    backgroundColor: theme.colorScheme.error,
+                    foregroundColor: theme.colorScheme.primary,
+                    child: const Icon(Icons.delete, size: 35),
+                  ),
+                  CustomSlidableAction(
+                    onPressed: (context) async {
+                      String message = "${loc.name}\n\n${loc.formattedAddress}";
+                      var dataMap = {
+                        "locations": [loc.copyWith(id: () => null).toMap()]
+                      };
+                      String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                      final file = await createCandleFileWithData("location", prettyJson);
+                      ShareExtend.share(file.path, "file", subject: message);
+                    },
+                    padding: EdgeInsets.zero,
+                    backgroundColor: theme.colorScheme.onPrimary,
+                    foregroundColor: theme.colorScheme.primary,
+                    child: const Icon(Icons.share, size: 35),
+                  ),
+                  CustomSlidableAction(
+                    onPressed: (context) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
                         builder: (context) => LocationCreateUpdateScreen(
                           initialLocation: loc,
                         ),
                       ))
-                      .then((value) => {setState(() => {})});
-                },
-                CustomSemanticsAction(label: l10n.button_common_delete_t): () {
-                  setState(() {
-                    db.removeLocation(loc);
-                    showSnackbar(context, l10n.location_deleted_toast(loc.name));
-                  });
-                },
-              },
-              child: Slidable(
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) async {
-                        db.removeLocation(loc);
+                          .then((value) async {
                         _load();
-                        if (mounted) {
-                          showSnackbar(context, l10n.location_deleted_toast(loc.name));
-                        }
-                      },
-                      backgroundColor: theme.colorScheme.error,
-                      foregroundColor: theme.colorScheme.primary,
-                      icon: Icons.delete,
-                      label: l10n.button_common_delete,
+                      });
+                    },
+                    padding: EdgeInsets.zero,
+                    backgroundColor: theme.positiveColor,
+                    foregroundColor: theme.colorScheme.primary,
+                    child: const Icon(Icons.edit, size: 35),
+                  ),
+                ],
+              ),
+              child: CandleListTile(
+                title: loc.name,
+                subtitle: loc.formattedAddress,
+                trailing: "${calculateDistance(loc.latlng(), _currentLocation!).toInt()} m",
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LatLngCompassScreen(
+                        target: loc.latlng(),
+                        targetName: loc.name,
+                      ),
                     ),
-                    SlidableAction(
-                      onPressed: (context) {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                          builder: (context) => LocationCreateUpdateScreen(
-                            initialLocation: loc,
-                          ),
-                        ))
-                            .then((value) async {
-                          _load();
-                        });
-                      },
-                      backgroundColor: theme.colorScheme.onPrimary,
-                      foregroundColor: theme.colorScheme.primary,
-                      icon: Icons.edit,
-                      label: l10n.button_common_edit,
-                    ),
-                  ],
-                ),
-                child: CandleListTile(
-                    title: loc.name,
-                    subtitle: loc.formattedAddress,
-                    trailing: "${calculateDistance(loc.latlng(), _currentLocation!).toInt()} m",
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LatLngCompassScreen(
-                          target: loc.latlng(),
-                          targetName: loc.name,
-                        ),
-                      ));
-                    }),
-              ));
+                  );
+                },
+              ),
+            ),
+          );
         },
       ),
     );

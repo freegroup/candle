@@ -44,7 +44,7 @@ class LocationAddress {
     double? lon,
   }) {
     return LocationAddress(
-      id: id?.call() ?? this.id,
+      id: (id != null) ? id.call() : this.id,
       name: name ?? this.name,
       formattedAddress: formattedAddress ?? this.formattedAddress,
       street: street ?? this.street,

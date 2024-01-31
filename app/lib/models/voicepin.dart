@@ -33,7 +33,7 @@ class VoicePin {
     DateTime? created,
   }) {
     return VoicePin(
-      id: id?.call() ?? this.id,
+      id: (id != null) ? id.call() : this.id,
       name: name ?? this.name,
       memo: memo ?? this.memo,
       lat: lat ?? this.lat,

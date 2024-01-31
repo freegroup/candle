@@ -12,8 +12,11 @@
   "screen_header_recorder_start_t": "Strecke aufzeichnen",
   "screen_header_recorder_start": "Strecke aufzeichnen",
 
-  "screen_header_import_location_t": "Geteilten Standort importieren oder Navigation starten",
+  "screen_header_import_location_t": "Geteilten Standort importieren oder direkt Navigation starten",
   "screen_header_import_location": "Geteilter Standort",
+
+  "screen_header_import_voicepin_t": "Geteilte Sprachnotiz importieren oder direkt Navigation starten",
+  "screen_header_import_voicepin": "Geteilte Sprachnotiz",
 
   "screen_header_recorder_recording_t": "Strecke wird aufgezeichnet",
   "screen_header_recorder_recording": "Aufzeichnen...",
@@ -71,9 +74,12 @@
 
   "button_contact_me": "Schick mir eine E-Mail",
 
-  "button_share_location_t": "Aktuellen Standort Teilen",
+  "button_share_location_t": "Standort Teilen",
   "button_share_location": "Teilen",
   
+  "button_share_voicepin_t": "Sprachnotiz zu einem Ort teilen",
+  "button_share_voicepin": "Teilen",
+
   "button_location_create_t": "Aktuellen Standort in ihren Favoriten speichern",
   "button_location_create": "Ort speichern",
 
@@ -83,6 +89,10 @@
 
   "button_import_location_t": "Geteilten Standort als Favorit importieren",
   "button_import_location": "Ort importieren",
+
+
+  "button_import_voicepin_t": "Geteilte Sprachnotiz als Favorit importieren",
+  "button_import_voicepin": "Notiz importieren",
 
   "button_settings_t": "Einstellungen der App anpassen",
   "button_settings": "Einstellungen",
@@ -238,7 +248,8 @@
   "voicepin_readout": "{distance} Meter entfernt aufgezeichnete Nachricht: {memo}.",
 
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
-  
+  "voicepin_distance_t": "Sprachnotiz wurde {meters} meter Luftlinie von hier aufgenommen",
+
   "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
   "location_deleted_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
   

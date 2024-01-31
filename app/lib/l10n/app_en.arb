@@ -101,6 +101,15 @@
   },
 
 
+  "screen_header_import_voicepin_t": "Import shared voicepin or start navigation",
+  "@screen_header_import_voicepin_t": {
+    "description": "Talkback for voicepin shared screen"
+  },
+  "screen_header_import_voicepin": "Shared VoicePin",
+  "@screen_header_import_voicepin": {
+    "description": "Title for the voicepin shared screen"
+  },
+
   "screen_header_recorder_recording_t": "Route gets recorded.",
   "@screen_header_recorder_recording_t": {
     "description": "Talkback for route recording screen"
@@ -532,7 +541,18 @@
       }
     }
   },
-  
+
+  "voicepin_distance_t": "voicepin is {meters} meters as the crow flies from you",
+  "@voicepin_distance_t": {
+    "description": "Information how far the voicepin is from you",
+    "placeholders": {
+      "meters": {
+        "type": "int",
+        "description": "The distance in meters of the voicepin"
+      }
+    }
+  },
+   
   
   "location_saved_toast": "Location '{name}' has saved as favorite.",
   "@location_saved_toast": {
@@ -784,6 +804,7 @@
     "description": "Title for delete button"
   },
 
+
   "label_common_required": "Field is requried",
   "@label_common_required": {
     "description": "Infotext for a required input field"
@@ -919,13 +940,23 @@
     "description": "Title for location Featureflag"
   },
 
-  "button_share_location_t": "Share your current location",
+  "button_share_location_t": "Share your location",
   "@button_share_location_t": {
     "description": "Talkback for Location Share Button"
   },
   "button_share_location": "Share",
   "@button_share_location": {
     "description": "Title for share location button"
+  },
+
+
+  "button_share_voicepin_t": "Share your voicdepin",
+  "@button_share_voicepin_t": {
+    "description": "Talkback for voicepin Share Button"
+  },
+  "button_share_voicepin": "Share",
+  "@button_share_voicepin": {
+    "description": "Title for share voicepin button"
   },
 
 
@@ -956,6 +987,16 @@
   "button_import_location": "Import Location",
   "@button_import_location": {
     "description": "Title for location import button"
+  },
+
+
+  "button_import_voicepin_t": "Import shared voicepin into your favorites.",
+  "@button_import_voicepin_t": {
+    "description": "Talkback for voicepin import Button"
+  },
+  "button_import_voicepin": "Import Voicepin",
+  "@button_import_voicepin": {
+    "description": "Title for voicepin import button"
   },
 
 

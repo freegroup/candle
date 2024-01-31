@@ -23,11 +23,11 @@ class LocationCreateUpdateScreen extends StatefulWidget {
 }
 
 class _ScreenState extends State<LocationCreateUpdateScreen> {
-  TextEditingController editingController = TextEditingController();
+  final TextEditingController _editingController = TextEditingController();
   final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 
   bool _isUpdate = false;
-  bool canSubmit = false;
+  bool _canSubmit = false;
   late model.LocationAddress stateLocation;
 
   @override
@@ -35,10 +35,9 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     stateLocation = widget.initialLocation;
     super.initState();
 
-    if (stateLocation.id != null) {
-      _isUpdate = true;
-    }
-    editingController.text = stateLocation.name;
+    _editingController.text = stateLocation.name;
+    _canSubmit = _editingController.text.isNotEmpty;
+    _isUpdate = stateLocation.id != null;
 
     _addressController.stream.listen((address) {
       if (mounted) {
@@ -49,11 +48,9 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
       }
     });
 
-    editingController.addListener(() {
+    _editingController.addListener(() {
       if (mounted) {
-        setState(() {
-          canSubmit = editingController.text.isNotEmpty;
-        });
+        setState(() => _canSubmit = _editingController.text.isNotEmpty);
       }
     });
   }
@@ -66,7 +63,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
 
   Future<void> _save(BuildContext context) async {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    String name = editingController.text;
+    String name = _editingController.text;
 
     model.LocationAddress locationToSave = stateLocation.copyWith(name: name);
     if (_isUpdate) {
@@ -101,7 +98,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     );
   }
 
-  SingleChildScrollView _buildTopPane(BuildContext context) {
+  Widget _buildTopPane(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
 
@@ -116,7 +113,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
                 hintText: l10n.location_name,
                 talkbackInput: l10n.location_name_t,
                 talkbackIcon: l10n.location_add_speak_t,
-                controller: editingController),
+                controller: _editingController),
           ),
           GestureDetector(
             onTap: () {
@@ -163,7 +160,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
     return DialogButton(
         label: l10n.button_common_save,
         talkback: l10n.button_common_save_t,
-        onTab: canSubmit
+        onTab: _canSubmit
             ? () {
                 _save(context);
               }

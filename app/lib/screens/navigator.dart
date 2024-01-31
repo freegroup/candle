@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:candle/models/location_address.dart';
+import 'package:candle/models/voicepin.dart';
 import 'package:candle/screens/home.dart';
 import 'package:candle/screens/import_location.dart';
+import 'package:candle/screens/import_voicepin.dart';
 import 'package:candle/screens/locations.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/screens/poi_radar.dart';
@@ -258,20 +260,40 @@ class _ScreenState extends State<NavigatorScreen> {
           final content = await file.readAsString();
           final jsonData = jsonDecode(content);
 
-          if (jsonData.containsKey('location')) {
-            final locationData = jsonData['location'];
-            LocationAddress address = LocationAddress.fromMap(locationData);
-            // Now 'address' contains your LocationAddress object
-            print(address);
-
-            if (mounted) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ImportLocationScreen(
-                    address: address,
+          if (jsonData.containsKey('locations') && jsonData['locations'] is List) {
+            final locationData = jsonData['locations'] as List;
+            // import a single address in an interactive way.
+            if (locationData.length == 1) {
+              LocationAddress address = LocationAddress.fromMap(locationData[0]);
+              if (mounted) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ImportLocationScreen(
+                      address: address,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
+            } else {
+              // import a complete list of elements.....TODO
+              print("Import of a list of locations not implemented right now");
+            }
+          } else if (jsonData.containsKey('voicepins') && jsonData['voicepins'] is List) {
+            final voicepinsData = jsonData['voicepins'] as List;
+            // import a single address in an interactive way.
+            if (voicepinsData.length == 1) {
+              VoicePin voicepin = VoicePin.fromMap(voicepinsData[0]);
+              if (mounted) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ImportVoicepinScreen(
+                      voicepin: voicepin,
+                    ),
+                  ),
+                );
+              }
+            } else {
+              // import a complete list of elements.....TODO
             }
           }
         } catch (e) {

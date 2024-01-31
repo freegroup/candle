@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:candle/models/voicepin.dart';
 import 'package:candle/screens/textoverlay.dart';
 import 'package:candle/screens/voicepin_cu.dart';
 import 'package:candle/services/database.dart';
 import 'package:candle/services/location.dart';
+import 'package:candle/theme_data.dart';
+import 'package:candle/utils/files.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -17,6 +20,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:share_extend/share_extend.dart';
 
 class VoicePinsScreen extends StatefulWidget {
   const VoicePinsScreen({super.key});
@@ -126,6 +130,15 @@ class _ScreenState extends State<VoicePinsScreen> {
                       ))
                       .then((value) => {setState(() => {})});
                 },
+                CustomSemanticsAction(label: l10n.button_share_voicepin_t): () async {
+                  String message = "${voicepin.memo}\n\n";
+                  var dataMap = {
+                    "voicepins": [voicepin.copyWith(id: () => null).toMap()]
+                  };
+                  String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                  final file = await createCandleFileWithData("voicepin", prettyJson);
+                  ShareExtend.share(file.path, "file", subject: message);
+                },
                 CustomSemanticsAction(label: l10n.button_common_delete_t): () async {
                   db.removeVoicePin(voicepin).then((count) => _load());
                   if (mounted) {
@@ -137,7 +150,7 @@ class _ScreenState extends State<VoicePinsScreen> {
                 endActionPane: ActionPane(
                   motion: const ScrollMotion(),
                   children: [
-                    SlidableAction(
+                    CustomSlidableAction(
                       onPressed: (context) async {
                         db.removeVoicePin(voicepin).then((count) => _load());
                         if (mounted) {
@@ -146,25 +159,39 @@ class _ScreenState extends State<VoicePinsScreen> {
                       },
                       backgroundColor: theme.colorScheme.error,
                       foregroundColor: theme.colorScheme.primary,
-                      icon: Icons.delete,
-                      label: l10n.button_common_delete,
+                      child: const Icon(Icons.delete, size: 35),
                     ),
-                    SlidableAction(
-                      onPressed: (context) {
+                    CustomSlidableAction(
+                      onPressed: (context) async {
+                        String message = "${voicepin.memo}\n\n";
+                        var dataMap = {
+                          "voicepins": [voicepin.copyWith(id: () => null).toMap()]
+                        };
+                        String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                        final file = await createCandleFileWithData("voicepin", prettyJson);
+                        ShareExtend.share(file.path, "file", subject: message);
+                      },
+                      backgroundColor: theme.colorScheme.onPrimary,
+                      foregroundColor: theme.colorScheme.primary,
+                      child: const Icon(Icons.share, size: 35),
+                    ),
+                    CustomSlidableAction(
+                      onPressed: (context) async {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
                           builder: (context) => VoicePinCreateUpdateScreen(
                             voicepin: voicepin,
                           ),
                         ))
-                            .then((value) async {
-                          _load();
-                        });
+                            .then(
+                          (value) async {
+                            _load();
+                          },
+                        );
                       },
-                      backgroundColor: theme.colorScheme.onPrimary,
+                      backgroundColor: theme.positiveColor,
                       foregroundColor: theme.colorScheme.primary,
-                      icon: Icons.edit,
-                      label: l10n.button_common_edit,
+                      child: const Icon(Icons.edit, size: 35),
                     ),
                   ],
                 ),

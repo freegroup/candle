@@ -13,6 +13,7 @@ import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
 import 'package:candle/utils/featureflag.dart';
+import 'package:candle/utils/files.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/location_tile.dart';
@@ -122,10 +123,10 @@ class _ScreenState extends State<HomeScreen> {
             message = "$message\n\n${sharingAddress.formattedAddress}";
 
             var dataMap = {
-              "location": sharingAddress.toMap(),
+              "locations": [sharingAddress.toMap()]
             };
             String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
-            final file = await _createTmpFileWithData("my_location", prettyJson);
+            final file = await createCandleFileWithData("my_location", prettyJson);
 
             // Share the file and text
             ShareExtend.share(file.path, "file", subject: message);
@@ -192,7 +193,7 @@ class _ScreenState extends State<HomeScreen> {
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
             LocationAddress? address = await geo.getGeolocationAddress(coord);
             if (!mounted) return;
-            Navigator.pop(context); // Close the loading dialog
+            Navigator.pop(context);
             if (mounted && address != null) {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -226,13 +227,5 @@ class _ScreenState extends State<HomeScreen> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CompassScreen()));
       },
     );
-  }
-
-// This function creates a temporary file with given data and returns the File object
-  Future<File> _createTmpFileWithData(String basename, String data) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File('${directory.path}/$basename.candle');
-    await file.writeAsString(data);
-    return file;
   }
 }
