@@ -26,7 +26,6 @@ class LocationService {
 
   void _initLocationUpdates() async {
     // Enable background mode
-
     _locationSubscription = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.best,

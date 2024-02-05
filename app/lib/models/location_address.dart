@@ -87,6 +87,45 @@ class LocationAddress {
     );
   }
 
+  static LocationAddress? fromIntentUrl(intentUrl) {
+    // Extract the fallback URL from the Intent URL
+    final RegExp fallbackUrlPattern = RegExp(r'S.browser_fallback_url=([^;]+)');
+    var match = fallbackUrlPattern.firstMatch(intentUrl);
+
+    if (match != null) {
+      final String fallbackUrl = Uri.decodeComponent(match!.group(1)!);
+      final Uri uri = Uri.parse(fallbackUrl);
+      final latLonPattern = RegExp(r'!3d([-\d.]+)!4d([-\d.]+)');
+      match = latLonPattern.firstMatch(uri.toString());
+      if (match != null) {
+        final String latitude = match.group(1)!;
+        final String longitude = match.group(2)!;
+        String formatedAddress = "";
+        final List<String> pathSegments = uri.pathSegments;
+
+        if (pathSegments.length > 2) {
+          if (pathSegments[0] == "maps" && pathSegments[1] == "place") {
+            formatedAddress = pathSegments[2].replaceAll('+', ' ');
+          }
+        }
+
+        return LocationAddress(
+          id: null,
+          name: 'Shared Location',
+          formattedAddress: formatedAddress,
+          street: '',
+          number: '',
+          zip: '',
+          city: '',
+          country: '',
+          lat: double.parse(latitude),
+          lon: double.parse(longitude),
+        );
+      }
+    }
+    return null;
+  }
+
   String toJson() => json.encode(toMap());
 
   factory LocationAddress.fromJson(String source) => LocationAddress.fromMap(json.decode(source));

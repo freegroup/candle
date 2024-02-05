@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+
 import 'package:candle/models/location_address.dart';
 import 'package:candle/models/voicepin.dart';
 import 'package:candle/screens/home.dart';
@@ -43,6 +46,7 @@ class NavigatorScreen extends StatefulWidget {
 
 class _ScreenState extends State<NavigatorScreen> {
   int currentIndex = 0;
+  String? _mapsUrlToResolve;
   late Future<LatLng?> _locationFuture;
   late StreamSubscription _intentSub;
 
@@ -50,6 +54,16 @@ class _ScreenState extends State<NavigatorScreen> {
   void initState() {
     super.initState();
     _initLocationFuture();
+    _initSharingIntent();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _intentSub.cancel();
+  }
+
+  void _initSharingIntent() {
     // Listen to media sharing coming from outside the app while the app is in the memory.
     _intentSub = ReceiveSharingIntent.getMediaStream().listen((value) {
       _handleSharedFile(value);
@@ -68,12 +82,6 @@ class _ScreenState extends State<NavigatorScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _intentSub.cancel();
-  }
-
   void _initLocationFuture() {
     _locationFuture = LocationService.instance.location;
   }
@@ -87,6 +95,9 @@ class _ScreenState extends State<NavigatorScreen> {
     return FutureBuilder<LatLng?>(
       future: _locationFuture,
       builder: (context, snapshot) {
+        if (_mapsUrlToResolve != null) {
+          return _buildResolveMapsUrl(context);
+        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoading(context);
         } else if (snapshot.hasData && snapshot.data != null) {
@@ -100,6 +111,51 @@ class _ScreenState extends State<NavigatorScreen> {
 
   Widget _buildLoading(BuildContext context) {
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+
+  Widget _buildResolveMapsUrl(BuildContext context) {
+    // #docregion platform_features
+    final PlatformWebViewControllerCreationParams params =
+        const PlatformWebViewControllerCreationParams();
+    final WebViewController controller = WebViewController.fromPlatformCreationParams(params);
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+            LocationAddress? address = LocationAddress.fromIntentUrl(url);
+            if (mounted && address != null) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ImportLocationScreen(
+                    address: address!,
+                  ),
+                ),
+              );
+              setState(() => _mapsUrlToResolve = null);
+            }
+          },
+          onWebResourceError: (WebResourceError error) {
+            print(error);
+            setState(() => _mapsUrlToResolve = null);
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(_mapsUrlToResolve!));
+
+    // #docregion platform_features
+    if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text("Resolve Maps URL")),
+      body: WebViewWidget(
+        controller: controller,
+      ),
+    );
   }
 
   Widget _buildError(BuildContext context) {
@@ -298,6 +354,14 @@ class _ScreenState extends State<NavigatorScreen> {
           }
         } catch (e) {
           print("Error processing shared file: $e");
+        }
+      } else if (sharedFile.type == SharedMediaType.text) {
+        String text = sharedFile.path;
+        print(text);
+        if (text.startsWith("https://maps.app.goo.gl/")) {
+          setState(() {
+            _mapsUrlToResolve = text;
+          });
         }
       }
     }
