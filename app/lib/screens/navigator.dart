@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-
 import 'package:candle/models/location_address.dart';
 import 'package:candle/models/voicepin.dart';
 import 'package:candle/screens/home.dart';
@@ -23,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 class ButtonBarEntry {
   final Icon icon;

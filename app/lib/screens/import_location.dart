@@ -40,26 +40,6 @@ class _ScreenState extends State<ImportLocationScreen> {
     _locationSubscription?.cancel();
   }
 
-  Future<void> _listenToLocationChanges() async {
-    _currentLocation = await LocationService.instance.location;
-    if (_currentLocation != null && mounted) {
-      setState(() {
-        _distance = calculateDistance(widget.address.latlng(), _currentLocation!);
-      });
-    }
-    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
-      print(err);
-    }).listen((newLocation) async {
-      var latlng = LatLng(newLocation.latitude, newLocation.longitude);
-      if (mounted) {
-        setState(() {
-          _currentLocation = latlng;
-          _distance = calculateDistance(widget.address.latlng(), _currentLocation!);
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -94,26 +74,7 @@ class _ScreenState extends State<ImportLocationScreen> {
             Row(
               children: [
                 Icon(Icons.person_pin_circle, size: 90.0, color: theme.textTheme.bodyLarge?.color),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.home_street(
-                          widget.address.street,
-                          widget.address.number,
-                        ),
-                        style: theme.textTheme.titleLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        widget.address.city,
-                        style: theme.textTheme.titleLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
+                _buildAddressPane(context),
               ],
             ),
             const SizedBox(height: 30),
@@ -172,5 +133,69 @@ class _ScreenState extends State<ImportLocationScreen> {
       label: l10n.label_common_loading_t,
       child: Text(l10n.label_common_loading),
     );
+  }
+
+  Widget _buildAddressPane(BuildContext context) {
+    var theme = Theme.of(context);
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    // Check if all parts of the address are provided
+    bool isCompleteAddressProvided = widget.address.street.isNotEmpty &&
+        widget.address.number.isNotEmpty &&
+        widget.address.city.isNotEmpty;
+
+    if (isCompleteAddressProvided) {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.home_street(widget.address.street, widget.address.number),
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              widget.address.city,
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            widget.address.formattedAddress,
+            style: theme.textTheme.titleLarge,
+            textAlign: TextAlign.left,
+            softWrap: true,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _listenToLocationChanges() async {
+    _currentLocation = await LocationService.instance.location;
+    if (_currentLocation != null && mounted) {
+      setState(() {
+        _distance = calculateDistance(widget.address.latlng(), _currentLocation!);
+      });
+    }
+    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
+      print(err);
+    }).listen((newLocation) async {
+      var latlng = LatLng(newLocation.latitude, newLocation.longitude);
+      if (mounted) {
+        setState(() {
+          _currentLocation = latlng;
+          _distance = calculateDistance(widget.address.latlng(), _currentLocation!);
+        });
+      }
+    });
   }
 }
