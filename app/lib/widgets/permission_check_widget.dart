@@ -13,6 +13,12 @@ class PermissionsCheckWidget extends StatelessWidget {
     var speechStatus = await Permission.speech.status;
     var locationAlwaysStatus = await Permission.locationAlways.status;
 
+    print("Permission.speech.isGranted : ${await Permission.speech.isGranted}");
+    print("Permission.location.isGranted : ${await Permission.location.isGranted}");
+    print("Permission.microphone.isGranted : ${await Permission.microphone.isGranted}");
+    print("Permission.locationAlways.isGranted : ${await Permission.locationAlways.isGranted}");
+    print(
+        "Permission.locationAlways.isPermanentlyDenied : ${await Permission.locationAlways.isPermanentlyDenied}");
     // Switch off the feature if the user has removed the permissions in the
     // android settings. Never ask here in the initial screen for the permissions.
     // The user MUST always activate them in the settings screen (again)

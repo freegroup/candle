@@ -6,6 +6,10 @@
 
   "home_street": "{street} {number}",
 
+
+  "screen_header_location_always": "Zugriff auf Standortdaten im Hintergrund erforderlich",
+  "location_permission_explanation": "Um die Aufzeichnung von Strecken im Hintergrund zu ermöglichen, benötigt die App die Berechtigung für den 'Immer' Zugriff auf Standortdaten. Bitte gehen Sie zu den App-Einstellungen und setzen Sie den Zugriff auf Standortdaten auf 'Immer', um diese Funktion zu nutzen.",
+
   "screen_header_home_t": "Hauptmenü",
   "screen_header_home": "Candle",
 
@@ -106,6 +110,8 @@
   "button_common_delete_t": "Eintrag löschen",
   "button_common_delete": "Löschen",
 
+  "button_common_app_settings_t": "App Einstellungen öffnen",
+  "button_common_app_settings": "App Einstellungen",
 
   "button_common_close_t": "Dialog schliessen",
   "button_common_close": "Schliessen",

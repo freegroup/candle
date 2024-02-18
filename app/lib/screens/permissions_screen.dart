@@ -23,10 +23,6 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   }
 
   Future<void> _checkPermissions() async {
-    print("Permission.speech.isGranted : ${await Permission.speech.isGranted}");
-    print("Permission.location.isGranted : ${await Permission.location.isGranted}");
-    print("Permission.microphone.isGranted : ${await Permission.microphone.isGranted}");
-    print("Permission.locationAlways.isGranted : ${await Permission.locationAlways.isGranted}");
     if (await Permission.location.isGranted &&
         await Permission.speech.isGranted &&
         await Permission.microphone.isGranted &&
@@ -39,9 +35,6 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     final locationStatus = await Permission.location.request();
     final microphoneStatus = await Permission.microphone.request();
     final speechStatus = await Permission.speech.request();
-    print("speechStatus ${speechStatus.isGranted}, ${speechStatus.isPermanentlyDenied}");
-    print("locationStatus ${locationStatus.isGranted}, ${locationStatus.isPermanentlyDenied}");
-    print("microphoneStatus ${microphoneStatus.isGranted} ${microphoneStatus.isPermanentlyDenied}");
     if (locationStatus.isGranted && microphoneStatus.isGranted && speechStatus.isGranted) {
       // ask for the "allwaysGPS" access if the user has switched on this feature
       //in the App-Settings

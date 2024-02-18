@@ -55,16 +55,26 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need always access to your location if you wnat to record your route in the background</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need access to your location for gps navigation</string>
+
+	<key>NSLocationUsageDescription</key>
+	<string>We need access to your location for gps navigation</string>
+
+
 	<key>NSMicrophoneUsageDescription</key>
 	<string>microphone</string>
+
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Voice input to add VoicePins to any location where you are</string>
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

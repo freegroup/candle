@@ -28,11 +28,15 @@ class _ScreenState extends State<PermissionsAllwaysGPSScreen> {
   }
 
   Future<void> _requestPermissions() async {
-    final backgroundLocationStatus = await Permission.locationAlways.request();
-    if (backgroundLocationStatus.isGranted) {
-      _granted();
+    if (await Permission.locationAlways.isPermanentlyDenied) {
+      _openLocationAlwaysAppSettings();
     } else {
-      _denied();
+      final backgroundLocationStatus = await Permission.locationAlways.request();
+      if (backgroundLocationStatus.isGranted) {
+        _granted();
+      } else {
+        _denied();
+      }
     }
   }
 
@@ -62,9 +66,7 @@ class _ScreenState extends State<PermissionsAllwaysGPSScreen> {
     // Later the user can switch off again....but the permissions stays.
     //
     AppFeatures.allwaysAccessGps.setEnabled(true);
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
+    if (mounted) Navigator.of(context).pop();
   }
 
   @override
@@ -158,6 +160,40 @@ class _ScreenState extends State<PermissionsAllwaysGPSScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _openLocationAlwaysAppSettings() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            dialogBackgroundColor: theme.cardColor,
+            // Customize other dialog properties as needed
+          ),
+          child: AlertDialog(
+            title: Text(l10n.screen_header_location_always),
+            content: Text(l10n.location_permission_explanation),
+            actions: <Widget>[
+              TextButton(
+                child: Text(l10n.button_common_app_settings_t),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
+              ),
+              TextButton(
+                child: Text(l10n.button_common_close),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -72,6 +72,9 @@
     }
   },
 
+  "screen_header_location_always": "Background Location Access",
+  "location_permission_explanation": "To enable track recording in the background, the app needs 'Always' location access permission. Please go to the app settings and set location access to 'Always' to use this feature.",
+
   "screen_header_home_t": "Main Menu",
   "@screen_header_home_t": {
     "description": "Talkback for MainMenu"
@@ -776,6 +779,17 @@
     "description": "Title for edit button"
   },
 
+  "button_common_app_settings_t": "Show the App Settings",
+  "@button_common_app_settings_t": {
+    "description": "Title for app settings button"
+  },
+  "button_common_app_settings": "App Settings",
+  "@button_common_app_settings": {
+    "description": "Title for app settings button"
+  },
+
+
+
   "button_common_close_t": "Close Dialog Window",
   "@button_common_close_t": {
     "description": "Title for edit button"
@@ -786,7 +800,7 @@
   },
 
 
-  "button_common_save_t": "Savve",
+  "button_common_save_t": "Save",
   "@button_common_save_t": {
     "description": "Talkback for save button"
   },
