@@ -61,7 +61,7 @@ class _ScreenState extends State<LatLngCompassScreen> {
 
     ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
-      if (_isAligned(_currentHeadingDegrees) && (await Vibration.hasVibrator() ?? false)) {
+      if (_isAligned(_currentHeadingDegrees)) {
         CandleVibrate.vibrateCompass(duration: 100);
       }
     });

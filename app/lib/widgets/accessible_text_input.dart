@@ -33,14 +33,28 @@ class AccessibleTextInput extends StatefulWidget {
 }
 
 class _InputState extends State<AccessibleTextInput> {
-  late stt.SpeechToText _speech;
+  stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
 
   @override
   void initState() {
     super.initState();
-    _speech = stt.SpeechToText();
+//    _speech = stt.SpeechToText();
+    checkMicrophoneAvailability();
     widget.controller.addListener(_onTextChanged);
+  }
+
+  void checkMicrophoneAvailability() async {
+    try {
+      bool available = await _speech.initialize(debugLogging: true);
+      if (available) {
+        print('Microphone available: $available');
+      } else {
+        print("The user has denied the use of speech recognition.");
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -54,7 +68,7 @@ class _InputState extends State<AccessibleTextInput> {
     setState(() {}); // Trigger rebuild on text change
   }
 
-  void _listen() async {
+  Future<void> _listen() async {
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
@@ -65,10 +79,12 @@ class _InputState extends State<AccessibleTextInput> {
         },
         onError: (val) => log.e('onError: $val'),
       );
+      print(available);
       if (available) {
         setState(() => _isListening = true);
         _speech.listen(
           onResult: (val) => setState(() {
+            print("first result");
             widget.controller.text = val.recognizedWords;
             if (val.finalResult) {
               AppLocalizations l10n = AppLocalizations.of(context)!;

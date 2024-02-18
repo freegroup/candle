@@ -23,7 +23,12 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   }
 
   Future<void> _checkPermissions() async {
+    print("Permission.speech.isGranted : ${await Permission.speech.isGranted}");
+    print("Permission.location.isGranted : ${await Permission.location.isGranted}");
+    print("Permission.microphone.isGranted : ${await Permission.microphone.isGranted}");
+    print("Permission.locationAlways.isGranted : ${await Permission.locationAlways.isGranted}");
     if (await Permission.location.isGranted &&
+        await Permission.speech.isGranted &&
         await Permission.microphone.isGranted &&
         (!AppFeatures.allwaysAccessGps.isEnabled || await Permission.locationAlways.isGranted)) {
       _navigateToMainApp();
@@ -33,8 +38,11 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _requestPermissions() async {
     final locationStatus = await Permission.location.request();
     final microphoneStatus = await Permission.microphone.request();
-
-    if (locationStatus.isGranted && microphoneStatus.isGranted) {
+    final speechStatus = await Permission.speech.request();
+    print("speechStatus ${speechStatus.isGranted}, ${speechStatus.isPermanentlyDenied}");
+    print("locationStatus ${locationStatus.isGranted}, ${locationStatus.isPermanentlyDenied}");
+    print("microphoneStatus ${microphoneStatus.isGranted} ${microphoneStatus.isPermanentlyDenied}");
+    if (locationStatus.isGranted && microphoneStatus.isGranted && speechStatus.isGranted) {
       // ask for the "allwaysGPS" access if the user has switched on this feature
       //in the App-Settings
       //
@@ -158,10 +166,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                       await launchUrl(url);
                     },
                     style: TextButton.styleFrom(
-                      textStyle: theme.textTheme.bodyLarge, // Text color
-                      backgroundColor: Colors.black, // Button background color
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
-                    ),
+                        textStyle: theme.textTheme.bodyLarge, // Text color
+                        backgroundColor: Colors.black, // Button background color
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
                     child: const Text('Our Privacy Policy'),
                   ),
                 ),

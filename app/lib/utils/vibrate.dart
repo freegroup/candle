@@ -8,8 +8,8 @@ class CandleVibrate {
     int repeat = -1,
     List<int> intensities = const [],
     int amplitude = -1,
-  }) {
-    if (AppFeatures.vibrateDuringNavigation.isEnabled) {
+  }) async {
+    if (AppFeatures.vibrateDuringNavigation.isEnabled && (await Vibration.hasVibrator() ?? false)) {
       Vibration.vibrate(
           duration: duration,
           repeat: repeat,
@@ -25,8 +25,9 @@ class CandleVibrate {
     int repeat = -1,
     List<int> intensities = const [],
     int amplitude = -1,
-  }) {
-    if (AppFeatures.vibrateCompass.isEnabled) {
+  }) async {
+    print("${AppFeatures.vibrateCompass.isEnabled} && ${await Vibration.hasVibrator() ?? false}");
+    if (AppFeatures.vibrateCompass.isEnabled && (await Vibration.hasVibrator() ?? false)) {
       Vibration.vibrate(
           duration: duration,
           repeat: repeat,

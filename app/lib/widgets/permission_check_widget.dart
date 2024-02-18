@@ -10,6 +10,7 @@ class PermissionsCheckWidget extends StatelessWidget {
   Future<bool> _checkPermissions() async {
     var locationStatus = await Permission.location.status;
     var microphoneStatus = await Permission.microphone.status;
+    var speechStatus = await Permission.speech.status;
     var locationAlwaysStatus = await Permission.locationAlways.status;
 
     // Switch off the feature if the user has removed the permissions in the
@@ -21,7 +22,7 @@ class PermissionsCheckWidget extends StatelessWidget {
     }
 
     // Ensure all required permissions are granted
-    return locationStatus.isGranted && microphoneStatus.isGranted;
+    return locationStatus.isGranted && microphoneStatus.isGranted && speechStatus.isGranted;
   }
 
   @override

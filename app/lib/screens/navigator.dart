@@ -114,8 +114,8 @@ class _ScreenState extends State<NavigatorScreen> {
 
   Widget _buildResolveMapsUrl(BuildContext context) {
     // #docregion platform_features
-    final PlatformWebViewControllerCreationParams params =
-        const PlatformWebViewControllerCreationParams();
+    const PlatformWebViewControllerCreationParams params =
+        PlatformWebViewControllerCreationParams();
     final WebViewController controller = WebViewController.fromPlatformCreationParams(params);
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -124,12 +124,10 @@ class _ScreenState extends State<NavigatorScreen> {
           onPageFinished: (String url) {
             debugPrint('Page finished loading: $url');
             LocationAddress? address = LocationAddress.fromIntentUrl(url);
-            if (mounted && address != null) {
+            if (mounted && address != null && mounted) {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ImportLocationScreen(
-                    address: address!,
-                  ),
+                  builder: (context) => ImportLocationScreen(address: address),
                 ),
               );
               setState(() => _mapsUrlToResolve = null);

@@ -27,7 +27,6 @@ void main() async {
   await RecorderService.initialize();
   await initialService();
 
-  getSha1Key();
   /*
   try {
     const scopes = ['email', 'openid'];
@@ -76,16 +75,6 @@ void main() async {
       child: const CandleApp(),
     ));
   });
-}
-
-const platform = MethodChannel('de.freegroup/native');
-Future<void> getSha1Key() async {
-  try {
-    final String sha1Key = await platform.invokeMethod('getSha1Key');
-    print('SHA-1 Key: $sha1Key');
-  } on PlatformException catch (e) {
-    print("Failed to get SHA-1 key: '${e.message}'.");
-  }
 }
 
 Future<void> initialService() async {
