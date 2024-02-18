@@ -864,6 +864,15 @@
   },
 
 
+  "featureflag_dictation_t": "Enable voice input icon for input fields",
+  "@featureflag_dictation_t": {
+    "description": "Talkback for dictation input feature for input fields"
+  },
+  "featureflag_dictation": "Enable Dictation Input",
+  "@featureflag_dictation": {
+    "description": "Title for dictation input feature"
+  },
+
 
   "featureflag_radar_t": "Compass which fetches point of interest from the direction",
   "@featureflag_radar_t": {

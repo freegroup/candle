@@ -22,7 +22,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ValueListenableBuilder(
       valueListenable: AppFeatures.featuresUpdateNotifier,
       builder: (context, _, __) {
-        print(AppFeatures.betaRecording.isEnabled);
         List<Widget?> unfilteredChildren = [
           Semantics(
             label: l10n.settings_header_tiles_t,
@@ -46,6 +45,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             label: l10n.settings_header_common_t,
             child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge),
           ),
+          AppFeatures.dictationInput.isConfigurable
+              ? _buildFeatureFlagToggle(AppFeatures.dictationInput)
+              : null,
           _buildFeatureFlagToggle(AppFeatures.vibrateCompass),
           _buildFeatureFlagToggle(AppFeatures.vibrateDuringNavigation),
           const SizedBox(height: 40),
@@ -111,6 +113,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // Implement logic to return a human-readable title for each feature flag
     // For example, you might use a switch statement or a map
     switch (userStateKey) {
+      case 'dictationInput':
+        return l10n.featureflag_dictation;
       case 'overviewRecorder':
         return l10n.featureflag_recorder;
       case 'overviewRadar':

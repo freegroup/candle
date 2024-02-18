@@ -1,3 +1,4 @@
+import 'package:candle/utils/featureflag.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -33,20 +34,23 @@ class AccessibleTextInput extends StatefulWidget {
 }
 
 class _InputState extends State<AccessibleTextInput> {
-  stt.SpeechToText _speech = stt.SpeechToText();
+  final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
 
   @override
   void initState() {
     super.initState();
-//    _speech = stt.SpeechToText();
     checkMicrophoneAvailability();
     widget.controller.addListener(_onTextChanged);
   }
 
   void checkMicrophoneAvailability() async {
+    if (AppFeatures.dictationInput.isNotEnabled) {
+      return;
+    }
+
     try {
-      bool available = await _speech.initialize(debugLogging: true);
+      bool available = await _speech.initialize();
       if (available) {
         print('Microphone available: $available');
       } else {
@@ -69,6 +73,9 @@ class _InputState extends State<AccessibleTextInput> {
   }
 
   Future<void> _listen() async {
+    // do not start listen if the feature is not enabled
+    assert(AppFeatures.dictationInput.isEnabled);
+
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
@@ -79,12 +86,10 @@ class _InputState extends State<AccessibleTextInput> {
         },
         onError: (val) => log.e('onError: $val'),
       );
-      print(available);
       if (available) {
         setState(() => _isListening = true);
         _speech.listen(
           onResult: (val) => setState(() {
-            print("first result");
             widget.controller.text = val.recognizedWords;
             if (val.finalResult) {
               AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -106,65 +111,97 @@ class _InputState extends State<AccessibleTextInput> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-    bool showError = widget.mandatory && widget.controller.text.isEmpty;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Label in der ersten Zeile
-        ExcludeSemantics(
-          child: Text(
-            widget.mandatory ? "${widget.hintText} *" : widget.hintText,
-            style: theme.textTheme.labelMedium, // Passen Sie den Stil nach Bedarf an
+        _buildInputLabel(),
+        // Textfeld und Icon in der zweiten Zeile
+        AppFeatures.dictationInput.isEnabled ? _buildDictationInputField() : _buildInputField(),
+      ],
+    );
+  }
+
+  Widget _buildInputField() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+    bool showError = widget.mandatory && widget.controller.text.isEmpty;
+
+    return Semantics(
+      label: widget.talkbackInput ?? l10n.accessible_text_input_t,
+      child: ExcludeSemantics(
+        child: TextField(
+          controller: widget.controller,
+          decoration: widget.decoration?.copyWith(
+                errorText: showError ? l10n.label_common_required : null,
+              ) ??
+              InputDecoration(hintStyle: TextStyle(color: theme.primaryColor)),
+          autofocus: widget.autofocus ?? false,
+          onSubmitted: widget.onSubmitted,
+          maxLines: widget.maxLines,
+          keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDictationInputField() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+    bool showError = widget.mandatory && widget.controller.text.isEmpty;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Semantics(
+            label: widget.talkbackInput == null
+                ? "${l10n.accessible_text_input_t} ${l10n.accessible_text_suffix_t}"
+                : "${widget.talkbackInput} ${l10n.accessible_text_suffix_t}",
+            child: ExcludeSemantics(
+              child: TextField(
+                controller: widget.controller,
+                decoration: widget.decoration?.copyWith(
+                      errorText: showError ? l10n.label_common_required : null,
+                    ) ??
+                    InputDecoration(
+                      hintStyle: TextStyle(color: theme.primaryColor),
+                    ),
+                autofocus: widget.autofocus ?? false,
+                onSubmitted: widget.onSubmitted,
+                maxLines: widget.maxLines,
+                keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
+              ),
+            ),
           ),
         ),
-        // Textfeld und Icon in der zweiten Zeile
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Semantics(
-                label: widget.talkbackInput == null
-                    ? "${l10n.accessible_text_input_t} ${l10n.accessible_text_suffix_t}"
-                    : "${widget.talkbackInput} ${l10n.accessible_text_suffix_t}",
-                child: ExcludeSemantics(
-                  child: TextField(
-                    controller: widget.controller,
-                    decoration: widget.decoration?.copyWith(
-                          errorText: showError ? l10n.label_common_required : null,
-                        ) ??
-                        InputDecoration(
-                          hintStyle: TextStyle(color: theme.primaryColor),
-                        ),
-                    autofocus: widget.autofocus ?? false,
-                    onSubmitted: widget.onSubmitted,
-                    maxLines: widget.maxLines,
-                    keyboardType:
-                        widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
-                  ),
-                ),
+        Align(
+          alignment: Alignment.center,
+          child: Semantics(
+            label: widget.talkbackIcon ?? 'Speech Input',
+            child: ExcludeSemantics(
+              child: IconButton(
+                color: theme.primaryColor,
+                icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                onPressed: _listen,
+                padding: EdgeInsets.zero,
+                iconSize: 48, // Icon-Größe
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Semantics(
-                label: widget.talkbackIcon ?? 'Speech Input',
-                child: ExcludeSemantics(
-                  child: IconButton(
-                    color: theme.primaryColor,
-                    icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
-                    onPressed: _listen,
-                    padding: EdgeInsets.zero,
-                    iconSize: 48, // Icon-Größe
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildInputLabel() {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+    return ExcludeSemantics(
+      child: Text(
+        widget.mandatory ? "${widget.hintText} *" : widget.hintText,
+        style: theme.textTheme.labelMedium,
+      ),
     );
   }
 }

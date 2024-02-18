@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,6 +69,13 @@ class AppFeatures {
   // Recording is still in beta mode. Allow the user to switch on this. "Off" by default
   static final betaRecording = FeatureFlag(userStateKey: 'betaRecording', initialState: false);
 
+  // Define the dictationInput feature flag with systemState dependent on the platform
+  static final dictationInput = FeatureFlag(
+    userStateKey: 'dictationInput',
+    systemState: kIsWeb ? false : (Platform.isIOS ? false : true),
+    initialState: true, // Default to true, but will be overridden by systemState on iOS
+  );
+
   static ValueNotifier<bool> featuresUpdateNotifier = ValueNotifier(false);
 
   static Future<void> initialize() async {
@@ -97,6 +106,9 @@ class AppFeatures {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
     overviewRadar.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    dictationInput.isEnabledListenable.addListener(() {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
   }

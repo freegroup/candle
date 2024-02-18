@@ -120,6 +120,10 @@
   "featureflag_recorder_t": "Aufzeichnen von Routen aktivieren",
   "featureflag_recorder": "Strecke Aufzeichnen",
 
+
+  "featureflag_dictation_t": "Spracheingabe-Shortcut aktivieren. Tippen, um das Mikrofonsymbol als Shortcut für die Spracheingabe in Textfeldern anzuzeigen.",
+  "featureflag_dictation": "Spracheingabe-Shortcut aktiviert",
+
   "featureflag_radar_t": "Kompass der einem in der gezeigten Richtung Orte anzeigt",
   "featureflag_radar": "Orte Radar",
 
