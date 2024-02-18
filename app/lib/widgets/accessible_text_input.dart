@@ -69,7 +69,7 @@ class _InputState extends State<AccessibleTextInput> {
   }
 
   void _onTextChanged() {
-    setState(() {}); // Trigger rebuild on text change
+    if (mounted) setState(() {});
   }
 
   Future<void> _listen() async {
@@ -79,7 +79,6 @@ class _InputState extends State<AccessibleTextInput> {
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) {
-          log.d('onStatus: $val');
           if (val == 'done' || val == 'notListening') {
             setState(() => _isListening = false);
           }
@@ -87,7 +86,7 @@ class _InputState extends State<AccessibleTextInput> {
         onError: (val) => log.e('onError: $val'),
       );
       if (available) {
-        setState(() => _isListening = true);
+        if (mounted) setState(() => _isListening = true);
         _speech.listen(
           onResult: (val) => setState(() {
             widget.controller.text = val.recognizedWords;
@@ -105,7 +104,7 @@ class _InputState extends State<AccessibleTextInput> {
       }
     } else {
       _speech.stop();
-      setState(() => _isListening = false);
+      if (mounted) setState(() => _isListening = false);
     }
   }
 
