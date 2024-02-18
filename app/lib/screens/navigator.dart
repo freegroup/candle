@@ -16,6 +16,7 @@ import 'package:candle/screens/voicepins.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/utils/featureflag.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
@@ -213,6 +214,7 @@ class _ScreenState extends State<NavigatorScreen> {
   Container _buildBottomNavigationBar() {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);
+    final MaterialLocalizations m10n = MaterialLocalizations.of(context);
 
     return Container(
       decoration: const BoxDecoration(
@@ -259,19 +261,22 @@ class _ScreenState extends State<NavigatorScreen> {
                 icon: const Icon(Icons.radar_outlined),
               ),
             ];
-
+            var visibleLenght = navBarItems.where((item) => item.isVisible).length;
+            var visibleIndex = 0;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(navBarItems.length, (index) {
                 bool isSelected = currentIndex == index;
                 var item = navBarItems[index];
+                visibleIndex += item.isVisible ? 1 : 0;
                 return Visibility(
                   visible: item.isVisible,
                   child: Expanded(
                     child: InkWell(
                       onTap: () => setState(() => currentIndex = index),
                       child: Semantics(
-                        label: item.talkback,
+                        label:
+                            "${item.talkback}, ${m10n.tabLabel(tabIndex: visibleIndex, tabCount: visibleLenght)}",
                         child: Container(
                           color: isSelected ? theme.cardColor : Colors.transparent,
                           child: Column(
@@ -282,11 +287,13 @@ class _ScreenState extends State<NavigatorScreen> {
                                 color: isSelected ? theme.primaryColor : theme.cardColor,
                                 size: 40,
                               ),
-                              Text(
-                                item.label,
-                                style: TextStyle(
-                                  color: isSelected ? theme.primaryColor : theme.cardColor,
-                                  fontSize: 12,
+                              ExcludeSemantics(
+                                child: Text(
+                                  item.label,
+                                  style: TextStyle(
+                                    color: isSelected ? theme.primaryColor : theme.cardColor,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ],

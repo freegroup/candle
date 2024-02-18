@@ -21,7 +21,6 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vibration/vibration.dart';
 
 class LatLngCompassScreen extends StatefulWidget {
   final LatLng target;

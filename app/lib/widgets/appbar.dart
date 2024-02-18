@@ -1,5 +1,6 @@
 import 'package:candle/screens/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -34,6 +35,8 @@ class _CandleAppBarState extends State<CandleAppBar> {
 
     return AppBar(
       title: Semantics(
+        header: true,
+        sortKey: const OrdinalSortKey(0),
         label: widget.talkback,
         child: ExcludeSemantics(
           child: Padding(

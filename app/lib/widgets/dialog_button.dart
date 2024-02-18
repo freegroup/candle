@@ -16,30 +16,24 @@ class DialogButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    return Semantics(
-      label: talkback,
-      button: true,
-      child: ExcludeSemantics(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 5),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: GestureDetector(
-              onTap: onTab,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: theme.primaryColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headlineMedium!.copyWith(color: theme.cardColor),
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 15),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ElevatedButton(
+          onPressed: onTab,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: theme.primaryColor,
+              foregroundColor: theme.cardColor,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-            ),
+              minimumSize: const Size(double.infinity, 48)),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineMedium!.copyWith(color: theme.cardColor),
           ),
         ),
       ),
