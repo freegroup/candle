@@ -5,6 +5,7 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/services/recorder.dart';
 import 'package:candle/services/screen_wake.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
@@ -20,10 +21,10 @@ class RecorderRecordingScreen extends StatefulWidget {
   const RecorderRecordingScreen({super.key});
 
   @override
-  State<RecorderRecordingScreen> createState() => _RecordingScreenState();
+  State<RecorderRecordingScreen> createState() => _ScreenState();
 }
 
-class _RecordingScreenState extends State<RecorderRecordingScreen> {
+class _ScreenState extends State<RecorderRecordingScreen>   with SemanticAnnouncer{
   late StreamSubscription<CompassEvent> _compassSubscription;
   int _currentMapRotation = 0;
 

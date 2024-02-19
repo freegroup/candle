@@ -269,14 +269,16 @@ class _ScreenState extends State<NavigatorScreen> {
                 bool isSelected = currentIndex == index;
                 var item = navBarItems[index];
                 visibleIndex += item.isVisible ? 1 : 0;
+                var label =
+                    "${item.talkback}, ${m10n.tabLabel(tabIndex: visibleIndex, tabCount: visibleLenght)}";
+                label = isSelected ? "$label, ${l10n.label_common_selected} " : label;
                 return Visibility(
                   visible: item.isVisible,
                   child: Expanded(
                     child: InkWell(
                       onTap: () => setState(() => currentIndex = index),
                       child: Semantics(
-                        label:
-                            "${item.talkback}, ${m10n.tabLabel(tabIndex: visibleIndex, tabCount: visibleLenght)}",
+                        label: label,
                         child: Container(
                           color: isSelected ? theme.cardColor : Colors.transparent,
                           child: Column(

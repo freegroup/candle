@@ -11,6 +11,7 @@ import 'package:candle/services/screen_wake.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/dialog_button.dart';
@@ -34,7 +35,7 @@ class LatLngCompassScreen extends StatefulWidget {
   State<LatLngCompassScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<LatLngCompassScreen> {
+class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   Timer? _vibrationTimer;
   Timer? _updateLocationTimer;
@@ -94,6 +95,11 @@ class _ScreenState extends State<LatLngCompassScreen> {
           });
         }
       });
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_compass_poi_t(widget.targetName));
     });
   }
 

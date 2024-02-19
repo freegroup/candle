@@ -6,6 +6,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 
@@ -27,7 +28,7 @@ class PoiCategoryScreen extends StatefulWidget {
   State<PoiCategoryScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<PoiCategoryScreen> {
+class _ScreenState extends State<PoiCategoryScreen>   with SemanticAnnouncer{
   List<PoiDetail>? pois;
   bool _isLoading = true;
   LatLng? _currentLocation;

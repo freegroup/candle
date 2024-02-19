@@ -4,6 +4,7 @@ import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/address_search.dart';
 import 'package:candle/services/database.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -22,7 +23,7 @@ class LocationCreateUpdateScreen extends StatefulWidget {
   State<LocationCreateUpdateScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<LocationCreateUpdateScreen> {
+class _ScreenState extends State<LocationCreateUpdateScreen> with SemanticAnnouncer {
   final TextEditingController _editingController = TextEditingController();
   final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 
@@ -52,6 +53,13 @@ class _ScreenState extends State<LocationCreateUpdateScreen> {
       if (mounted) {
         setState(() => _canSubmit = _editingController.text.isNotEmpty);
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      var text =
+          _isUpdate ? l10n.screen_header_location_update_t : l10n.screen_header_location_add_t;
+      announceOnShow(text);
     });
   }
 

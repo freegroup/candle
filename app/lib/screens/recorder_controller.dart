@@ -4,6 +4,7 @@ import 'package:candle/screens/recorder_pause.dart';
 import 'package:candle/screens/recorder_recording.dart';
 import 'package:candle/screens/recorder_start.dart';
 import 'package:candle/services/recorder.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:flutter/material.dart';
 
 class RecorderControllerScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class RecorderControllerScreen extends StatefulWidget {
   State<RecorderControllerScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RecorderControllerScreen> {
+class _ScreenState extends State<RecorderControllerScreen>   with SemanticAnnouncer{
   late StreamSubscription<RecordingState> _recordingServiceSubscription;
   RecordingState _recordingState = RecorderService.state;
 

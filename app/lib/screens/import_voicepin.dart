@@ -5,6 +5,7 @@ import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/voicepin_cu.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/dialog_button.dart';
@@ -23,7 +24,7 @@ class ImportVoicepinScreen extends StatefulWidget {
   State<ImportVoicepinScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<ImportVoicepinScreen> {
+class _ScreenState extends State<ImportVoicepinScreen> with SemanticAnnouncer {
   LatLng? _currentLocation;
   double? _distance;
   StreamSubscription<Position>? _locationSubscription;
@@ -32,6 +33,11 @@ class _ScreenState extends State<ImportVoicepinScreen> {
   void initState() {
     super.initState();
     _listenToLocationChanges();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_import_voicepin_t);
+    });
   }
 
   @override

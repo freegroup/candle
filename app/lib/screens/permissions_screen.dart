@@ -1,5 +1,6 @@
 import 'package:candle/screens/navigator.dart';
 import 'package:candle/utils/featureflag.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,16 @@ class PermissionsScreen extends StatefulWidget {
   State<PermissionsScreen> createState() => _PermissionsScreenState();
 }
 
-class _PermissionsScreenState extends State<PermissionsScreen> {
+class _PermissionsScreenState extends State<PermissionsScreen> with SemanticAnnouncer {
   @override
   void initState() {
     super.initState();
     _checkPermissions();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_permissions_t);
+    });
   }
 
   Future<void> _checkPermissions() async {

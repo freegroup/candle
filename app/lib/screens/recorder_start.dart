@@ -1,4 +1,5 @@
 import 'package:candle/services/recorder.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -16,7 +17,7 @@ class RecorderStartScreen extends StatefulWidget {
   State<RecorderStartScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RecorderStartScreen> {
+class _ScreenState extends State<RecorderStartScreen>   with SemanticAnnouncer{
   final TextEditingController _nameController = TextEditingController();
 
   @override

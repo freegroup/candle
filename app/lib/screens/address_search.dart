@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class AddressSearchScreen extends StatefulWidget {
   State<AddressSearchScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<AddressSearchScreen> {
+class _ScreenState extends State<AddressSearchScreen> with SemanticAnnouncer {
   final _controller = TextEditingController();
   List<LocationAddress> suggestion = [];
   Timer? _debounce;
@@ -31,6 +32,11 @@ class _ScreenState extends State<AddressSearchScreen> {
     super.initState();
     _controller.addListener(_onSearchChanged);
     _controller.text = widget.addressFragment ?? "";
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_address_search_t);
+    });
   }
 
   void _onSearchChanged() {

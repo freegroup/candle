@@ -10,6 +10,7 @@ import 'package:candle/theme_data.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/divided_widget.dart';
@@ -34,7 +35,7 @@ class LatLngRouteScreen extends StatefulWidget {
   State<LatLngRouteScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<LatLngRouteScreen> {
+class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<Position>? _locationSubscription;
 
@@ -117,6 +118,11 @@ class _ScreenState extends State<LatLngRouteScreen> {
           }
         }
       });
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_navigation_poi_t);
     });
   }
 

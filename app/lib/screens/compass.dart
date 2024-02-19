@@ -6,6 +6,7 @@ import 'package:candle/l10n/helper.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/global_logger.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -25,7 +26,7 @@ class CompassScreen extends StatefulWidget {
   State<CompassScreen> createState() => _CompassScreenState();
 }
 
-class _CompassScreenState extends State<CompassScreen> {
+class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   int _currentHeadingDegrees = 0;
   bool _isCompassHorizontal = true;
@@ -72,6 +73,11 @@ class _CompassScreenState extends State<CompassScreen> {
           _checkCompassOrientation(newIsHorizontal);
         }
       });
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_compass_t);
     });
   }
 

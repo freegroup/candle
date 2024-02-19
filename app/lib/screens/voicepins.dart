@@ -9,6 +9,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/files.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
@@ -29,7 +30,7 @@ class VoicePinsScreen extends StatefulWidget {
   State<VoicePinsScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<VoicePinsScreen> {
+class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
   // the current location of the user given by the GPS signal
   LatLng? _currentLocation;
   bool _isLoading = true;
@@ -42,6 +43,11 @@ class _ScreenState extends State<VoicePinsScreen> {
     super.initState();
     _listenToLocationChanges().then((value) {
       _load();
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_voicepins_t);
     });
   }
 

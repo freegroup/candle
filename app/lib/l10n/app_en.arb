@@ -72,6 +72,19 @@
     }
   },
 
+
+  "screen_show_announcement_t": "New Screen opend: {title}",
+  "@screen_show_announcement_t": {
+    "description": "Announcement if a new screen is shown",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "description": "The title of the new Screen"
+      }
+    }
+  },
+
+
   "screen_header_location_always": "Background Location Access",
   "location_permission_explanation": "To enable track recording in the background, the app needs 'Always' location access permission. Please go to the app settings and set location access to 'Always' to use this feature.",
 
@@ -818,6 +831,10 @@
     "description": "Title for delete button"
   },
 
+  "label_common_selected": "Selected",
+  "@label_common_selected": {
+    "description": "Infotext for a selected element"
+  },
 
   "label_common_required": "Field is requried",
   "@label_common_required": {

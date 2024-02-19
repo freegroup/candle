@@ -8,6 +8,7 @@ import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -52,7 +53,7 @@ class PoiRadarScreen extends StatefulWidget {
   State<PoiRadarScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<PoiRadarScreen> {
+class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   int _currentHeadingDegrees = 0;
   bool _isCompassHorizontal = true;
@@ -106,6 +107,11 @@ class _ScreenState extends State<PoiRadarScreen> {
           _checkCompassOrientation(newIsHorizontal);
         }
       });
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_radar_t);
     });
   }
 

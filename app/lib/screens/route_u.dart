@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/database.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -18,7 +19,7 @@ class RouteUpdateScreen extends StatefulWidget {
   State<RouteUpdateScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RouteUpdateScreen> {
+class _ScreenState extends State<RouteUpdateScreen>   with SemanticAnnouncer{
   TextEditingController editingController = TextEditingController();
 
   bool canSubmit = true;

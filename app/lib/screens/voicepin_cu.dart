@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/models/voicepin.dart';
 import 'package:candle/services/database.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -21,7 +22,7 @@ class VoicePinCreateUpdateScreen extends StatefulWidget {
   State<VoicePinCreateUpdateScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<VoicePinCreateUpdateScreen> {
+class _ScreenState extends State<VoicePinCreateUpdateScreen> with SemanticAnnouncer {
   TextEditingController editingController = TextEditingController();
   final StreamController<LocationAddress> _addressController = StreamController<LocationAddress>();
 
@@ -41,6 +42,13 @@ class _ScreenState extends State<VoicePinCreateUpdateScreen> {
           canSubmit = editingController.text.isNotEmpty;
         });
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      var text =
+          _isUpdate ? l10n.screen_header_voicepin_update_t : l10n.screen_header_voicepin_add_t;
+      announceOnShow(text);
     });
   }
 

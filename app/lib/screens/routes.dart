@@ -4,6 +4,7 @@ import 'package:candle/screens/latlng_compass.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/route_u.dart';
 import 'package:candle/services/database.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
@@ -20,7 +21,7 @@ class RoutesScreen extends StatefulWidget {
   State<RoutesScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RoutesScreen> {
+class _ScreenState extends State<RoutesScreen>   with SemanticAnnouncer{
   List<model.Route>? routes;
 
   @override

@@ -1,4 +1,5 @@
 import 'package:candle/services/recorder.dart';
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
@@ -10,10 +11,10 @@ class RecorderPauseScreen extends StatefulWidget {
   const RecorderPauseScreen({super.key});
 
   @override
-  State<RecorderPauseScreen> createState() => _PauseScreenState();
+  State<RecorderPauseScreen> createState() => _ScreenState();
 }
 
-class _PauseScreenState extends State<RecorderPauseScreen> {
+class _ScreenState extends State<RecorderPauseScreen>   with SemanticAnnouncer{
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;

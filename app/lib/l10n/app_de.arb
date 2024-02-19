@@ -6,6 +6,7 @@
 
   "home_street": "{street} {number}",
 
+  "screen_show_announcement_t": "Neues Fenster geöffnet: {title}",
 
   "screen_header_location_always": "Zugriff auf Standortdaten im Hintergrund erforderlich",
   "location_permission_explanation": "Um die Aufzeichnung von Strecken im Hintergrund zu ermöglichen, benötigt die App die Berechtigung für den 'Immer' Zugriff auf Standortdaten. Bitte gehen Sie zu den App-Einstellungen und setzen Sie den Zugriff auf Standortdaten auf 'Immer', um diese Funktion zu nutzen.",
@@ -158,6 +159,7 @@
   "label_common_loading_t": "Lade Daten.",
   "label_common_loading": "Laden...",
   "label_common_required": "Pflichtfeld",
+  "label_common_selected": "Ausgewählt",
 
   "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
   "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",

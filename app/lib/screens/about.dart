@@ -1,10 +1,11 @@
+import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -13,39 +14,15 @@ class AboutScreen extends StatefulWidget {
   State<AboutScreen> createState() => _AboutScreenState();
 }
 
-class _AboutScreenState extends State<AboutScreen> {
-  Future<String> _readPubspecVersion() async {
-    String pubspecContent = await rootBundle.loadString('pubspec.yaml');
-    final RegExp versionPattern = RegExp(r'version: ([\d\.]+)');
-    final match = versionPattern.firstMatch(pubspecContent);
-    return match != null ? match.group(1)! : 'Unknown';
-  }
+class _AboutScreenState extends State<AboutScreen> with SemanticAnnouncer {
+  @override
+  void initState() {
+    super.initState();
 
-  void _sendEmail(context) async {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: 'a.herz@freegroup.de',
-      query: _encodeQueryParameters(<String, String>{
-        'subject': l10n.email_contact_subject,
-      }),
-    );
-
-    try {
-      final bool launched = await launchUrl(emailLaunchUri);
-      if (!launched) {
-        showSnackbar(context, l10n.error_no_email_launch);
-      }
-    } catch (e) {
-      showSnackbar(context, l10n.error_no_email_launch);
-    }
-  }
-
-  String? _encodeQueryParameters(Map<String, String> params) {
-    return params.entries
-        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-        .join('&');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppLocalizations l10n = AppLocalizations.of(context)!;
+      announceOnShow(l10n.screen_header_about_t);
+    });
   }
 
   @override
@@ -165,5 +142,39 @@ class _AboutScreenState extends State<AboutScreen> {
         ),
       ),
     );
+  }
+
+  Future<String> _readPubspecVersion() async {
+    String pubspecContent = await rootBundle.loadString('pubspec.yaml');
+    final RegExp versionPattern = RegExp(r'version: ([\d\.]+)');
+    final match = versionPattern.firstMatch(pubspecContent);
+    return match != null ? match.group(1)! : 'Unknown';
+  }
+
+  void _sendEmail(context) async {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'a.herz@freegroup.de',
+      query: _encodeQueryParameters(<String, String>{
+        'subject': l10n.email_contact_subject,
+      }),
+    );
+
+    try {
+      final bool launched = await launchUrl(emailLaunchUri);
+      if (!launched) {
+        showSnackbar(context, l10n.error_no_email_launch);
+      }
+    } catch (e) {
+      showSnackbar(context, l10n.error_no_email_launch);
+    }
+  }
+
+  String? _encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }
