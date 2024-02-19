@@ -36,7 +36,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
         List<Widget?> unfilteredChildren = [
           Semantics(
             label: l10n.settings_header_tiles_t,
-            child: Text(l10n.settings_header_tiles, style: theme.textTheme.headlineLarge),
+            child: ExcludeSemantics(
+                child: Text(l10n.settings_header_tiles, style: theme.textTheme.headlineLarge)),
           ),
           _buildFeatureFlagToggle(AppFeatures.overviewCompass),
           _buildFeatureFlagToggle(AppFeatures.overviewLocation),
@@ -48,13 +49,15 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
           const SizedBox(height: 40),
           Semantics(
             label: l10n.settings_header_gps_t,
-            child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge),
+            child: ExcludeSemantics(
+                child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge)),
           ),
           _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
           const SizedBox(height: 40),
           Semantics(
             label: l10n.settings_header_common_t,
-            child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge),
+            child: ExcludeSemantics(
+                child: Text(l10n.settings_header_common, style: theme.textTheme.headlineLarge)),
           ),
           AppFeatures.dictationInput.isConfigurable
               ? _buildFeatureFlagToggle(AppFeatures.dictationInput)
@@ -64,7 +67,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
           const SizedBox(height: 40),
           Semantics(
             label: l10n.settings_header_beta_t,
-            child: Text(l10n.settings_header_beta, style: theme.textTheme.headlineLarge),
+            child: ExcludeSemantics(
+                child: Text(l10n.settings_header_beta, style: theme.textTheme.headlineLarge)),
           ),
           _buildFeatureFlagToggle(AppFeatures.betaRecording),
         ];
