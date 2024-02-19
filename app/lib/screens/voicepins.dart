@@ -268,17 +268,15 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
             );
             Navigator.of(context)
                 .push(
-              MaterialPageRoute(
-                builder: (context) => VoicePinCreateUpdateScreen(voicepin: voicepin),
-              ),
-            )
-                .then((value) async {
-              _load();
-            });
+                  MaterialPageRoute(
+                    builder: (context) => VoicePinCreateUpdateScreen(voicepin: voicepin),
+                  ),
+                )
+                .then((value) => _load());
           }
         }
       },
-      tooltip: l10n.screen_header_voicepins,
+      tooltip: l10n.voicepin_add_speak_t,
       mini: false,
       child: const Icon(Icons.add, size: 50),
     );

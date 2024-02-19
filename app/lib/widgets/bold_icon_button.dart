@@ -24,27 +24,30 @@ class BoldIconButton extends StatelessWidget {
 
     return Semantics(
       label: talkback,
+      button: true,
       child: InkWell(
         onTap: onTab,
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          alignment: Alignment.center,
+        child: ExcludeSemantics(
           child: Container(
-            width: buttonWidth,
-            height: buttonWidth,
-            decoration: circle
-                ? BoxDecoration(
-                    color: theme.cardColor,
-                    boxShadow: createShadow(),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: theme.primaryColor, width: 4.0),
-                  )
-                : null,
-            child: Icon(
-              icons,
-              size: buttonWidth * 0.7,
-              color: theme.primaryColor,
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            alignment: Alignment.center,
+            child: Container(
+              width: buttonWidth,
+              height: buttonWidth,
+              decoration: circle
+                  ? BoxDecoration(
+                      color: theme.cardColor,
+                      boxShadow: createShadow(),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: theme.primaryColor, width: 4.0),
+                    )
+                  : null,
+              child: Icon(
+                icons,
+                size: buttonWidth * 0.7,
+                color: theme.primaryColor,
+              ),
             ),
           ),
         ),

@@ -32,30 +32,34 @@ class TileButton extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-          )),
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
-          textStyle: MaterialStateProperty.all(theme.textTheme.labelSmall),
-        ),
-        onPressed: onPressed,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            double iconSize = constraints.maxHeight / 2;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: iconSize, width: iconSize, child: icon),
-                const SizedBox(height: 8),
-                Semantics(
-                    label: talkback,
-                    child: ExcludeSemantics(child: Text(title, textScaleFactor: 1.3))),
-              ],
-            );
-          },
+      child: Semantics(
+        label: talkback,
+        button: true,
+        child: ExcludeSemantics(
+          child: ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+              )),
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              shadowColor: MaterialStateProperty.all(Colors.transparent),
+              textStyle: MaterialStateProperty.all(theme.textTheme.labelSmall),
+            ),
+            onPressed: onPressed,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                double iconSize = constraints.maxHeight / 2;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: iconSize, width: iconSize, child: icon),
+                    const SizedBox(height: 8),
+                    Text(title, textScaleFactor: 1.3),
+                  ],
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
