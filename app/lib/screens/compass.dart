@@ -5,6 +5,7 @@ import 'package:candle/l10n/helper.dart';
 
 import 'package:candle/services/compass.dart';
 import 'package:candle/theme_data.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
@@ -28,7 +29,7 @@ class CompassScreen extends StatefulWidget {
 
 class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
-  int _currentHeadingDegrees = 0;
+  int _currentDeviceHeading = 0;
   bool _isCompassHorizontal = true;
   Timer? _horizontalCheckTimer;
 
@@ -52,12 +53,12 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         log.e(err);
       }).listen((compassEvent) {
-        int heading = ((360 - (compassEvent.heading ?? 0)) % 360).toInt();
+        int heading = 360 - ((720 - (compassEvent.heading ?? 0)) % 360).toInt();
         _vibrateAtSnapPoints(heading);
 
         if (mounted) {
           setState(() {
-            _currentHeadingDegrees = heading;
+            _currentDeviceHeading = heading;
           });
         }
       });
@@ -90,13 +91,11 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
   }
 
   void _vibrateAtSnapPoints(int heading) {
-    const snapPoints = [0, 90, 180, 270];
-    const snapRange = 10; // ±10° range for snap points
-
-    for (var point in snapPoints) {
-      if ((heading >= point - snapRange) && (heading <= point + snapRange)) {
+    for (var point in kSnapPoints) {
+      if ((heading >= point - kSnapRange) && (heading <= point + kSnapRange)) {
         if (_lastVibratedSnapPoint != point) {
           CandleVibrate.vibrateCompass(duration: 100);
+          print(heading);
           SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop
@@ -160,10 +159,10 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
         builder: (BuildContext context, BoxConstraints constraints) {
           double containerWidth = constraints.maxWidth * 0.7;
           return Semantics(
-            label: sayHorizon(context, _currentHeadingDegrees),
+            label: sayHorizon(context, _currentDeviceHeading),
             child: CompassIcon(
               shadow: true,
-              rotationDegrees: _currentHeadingDegrees,
+              rotationDegrees: 360 - _currentDeviceHeading,
               height: containerWidth,
               width: containerWidth,
             ),
@@ -181,10 +180,10 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
     return Column(children: [
       TwolinerWidget(
         color: color,
-        headline: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-        headlineTalkback: '${_currentHeadingDegrees.toStringAsFixed(0)}°',
-        subtitle: getHorizon(context, _currentHeadingDegrees),
-        subtitleTalkback: getHorizon(context, _currentHeadingDegrees),
+        headline: '${_currentDeviceHeading.toStringAsFixed(0)}°',
+        headlineTalkback: '${_currentDeviceHeading.toStringAsFixed(0)}°',
+        subtitle: getHorizon(context, _currentDeviceHeading),
+        subtitleTalkback: getHorizon(context, _currentDeviceHeading),
       ),
       DialogButton(
         label: l10n.button_common_close,

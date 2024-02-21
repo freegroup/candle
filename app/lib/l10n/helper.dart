@@ -39,10 +39,10 @@ String sayRotateToTarget(BuildContext context, int targetHeading, bool isAligned
     return l10n.label_rotate_no_target_t(distance);
   }
   if (targetHeading >= 0 && targetHeading <= 180) {
-    return l10n.label_rotate_right_target_t(targetHeading);
+    return l10n.label_rotate_left_target_t(targetHeading);
   }
 
-  return l10n.label_rotate_left_target_t(360 - targetHeading);
+  return l10n.label_rotate_right_target_t(360 - targetHeading);
 }
 
 String sayRotateToWaypoint(BuildContext context, int angle, bool isAligned) {

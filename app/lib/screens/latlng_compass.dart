@@ -9,6 +9,7 @@ import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/screen_wake.dart';
 import 'package:candle/theme_data.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/semantic.dart';
@@ -39,10 +40,8 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   Timer? _vibrationTimer;
   Timer? _updateLocationTimer;
-  int _currentHeadingDegrees = 0;
+  int _currentDiffHeading = 0;
   int _currentDistanceToStateLocation = 0;
-
-  static const snapRange = 10;
 
   late LatLng _currentLocation;
 
@@ -63,7 +62,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
 
     ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
-      if (_isAligned(_currentHeadingDegrees)) {
+      if (_isAligned(_currentDiffHeading)) {
         CandleVibrate.vibrateCompass(duration: 100);
       }
     });
@@ -74,10 +73,10 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
       }).listen((compassEvent) async {
         if (mounted) {
           var poiHeading = calculateNorthBearing(_currentLocation, widget.target);
-          var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
-          var needleHeading = (-(deviceHeading - poiHeading) + 720) % 360;
-          bool currentlyAligned = _isAligned(needleHeading);
-          _vibrateAtSnapPoints(needleHeading);
+          var deviceHeading = 360 - (((compassEvent.heading ?? 0)) % 360).toInt();
+          var diffHeading = ((poiHeading - deviceHeading) + 720) % 360;
+          bool currentlyAligned = _isAligned(diffHeading);
+          _vibrateAtSnapPoints(diffHeading);
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
@@ -89,7 +88,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
           }
 
           setState(() {
-            _currentHeadingDegrees = needleHeading;
+            _currentDiffHeading = diffHeading;
             _currentDistanceToStateLocation = calculateDistance(
               _currentLocation,
               widget.target,
@@ -117,10 +116,9 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   // targetHeading is always in range [0..360]
   void _vibrateAtSnapPoints(int targetHeading) {
     var distance = calculateDistance(_currentLocation, widget.target);
-    const snapPoints = [0, 45, 90, 135, 180, 225, 270, 315];
 
-    for (var point in snapPoints) {
-      if ((targetHeading >= point - snapRange) && (targetHeading <= point + snapRange)) {
+    for (var point in kSnapPoints) {
+      if ((targetHeading >= point - kSnapRange) && (targetHeading <= point + kSnapRange)) {
         if (_lastVibratedSnapPoint != point) {
           var announcement = sayRotateToTarget(
               context, targetHeading, _isAligned(targetHeading), distance.toInt());
@@ -139,7 +137,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   }
 
   bool _isAligned(int headingDegrees) {
-    return (headingDegrees.abs() <= snapRange) || (headingDegrees.abs() >= (360 - snapRange));
+    return (headingDegrees.abs() <= kSnapRange) || (headingDegrees.abs() >= (360 - kSnapRange));
   }
 
   void _updateLocation() async {
@@ -166,11 +164,11 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   }
 
   Widget _buildTopPane(BuildContext context) {
-    bool isAligned = _isAligned(_currentHeadingDegrees);
+    bool isAligned = _isAligned(_currentDiffHeading);
 
     return Semantics(
       label: sayRotateToTarget(
-          context, _currentHeadingDegrees, isAligned, _currentDistanceToStateLocation),
+          context, _currentDiffHeading, isAligned, _currentDistanceToStateLocation),
       child: Center(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -180,7 +178,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
               children: [
                 LocationArrowIcon(
                   shadow: true,
-                  rotationDegrees: isAligned ? 0 : _currentHeadingDegrees,
+                  rotationDegrees: isAligned ? 0 : (360 - _currentDiffHeading),
                   height: containerWidth,
                   width: containerWidth,
                 ),
