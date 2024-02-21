@@ -42,6 +42,8 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   int _currentHeadingDegrees = 0;
   int _currentDistanceToStateLocation = 0;
 
+  static const snapRange = 10;
+
   late LatLng _currentLocation;
 
   bool _wasAligned = false;
@@ -73,9 +75,9 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
         if (mounted) {
           var poiHeading = calculateNorthBearing(_currentLocation, widget.target);
           var deviceHeading = (((compassEvent.heading ?? 0)) % 360).toInt();
-          var needleHeading = -(deviceHeading - poiHeading);
+          var needleHeading = (-(deviceHeading - poiHeading) + 720) % 360;
           bool currentlyAligned = _isAligned(needleHeading);
-          _vibrateAtSnapPoints((needleHeading + 360) % 360);
+          _vibrateAtSnapPoints(needleHeading);
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
@@ -112,19 +114,18 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
     super.dispose();
   }
 
-  void _vibrateAtSnapPoints(
-    int targetHeading,
-  ) {
+  // targetHeading is always in range [0..360]
+  void _vibrateAtSnapPoints(int targetHeading) {
     var distance = calculateDistance(_currentLocation, widget.target);
-    const snapPoints = [0, 90, 180, 270];
-    const snapRange = 15; // ±15° range for snap points
+    const snapPoints = [0, 45, 90, 135, 180, 225, 270, 315];
 
     for (var point in snapPoints) {
       if ((targetHeading >= point - snapRange) && (targetHeading <= point + snapRange)) {
         if (_lastVibratedSnapPoint != point) {
           var announcement = sayRotateToTarget(
-              context, (360 - targetHeading) - 180, _isAligned(targetHeading), distance.toInt());
+              context, targetHeading, _isAligned(targetHeading), distance.toInt());
 
+          print(announcement);
           CandleVibrate.vibrateCompass(duration: 100);
           SemanticsService.announce(announcement, TextDirection.ltr);
           _lastVibratedSnapPoint = point;
@@ -138,7 +139,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   }
 
   bool _isAligned(int headingDegrees) {
-    return (headingDegrees.abs() <= 8) || (headingDegrees.abs() >= 352);
+    return (headingDegrees.abs() <= snapRange) || (headingDegrees.abs() >= (360 - snapRange));
   }
 
   void _updateLocation() async {

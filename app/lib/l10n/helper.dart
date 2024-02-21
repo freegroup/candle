@@ -31,17 +31,18 @@ String sayHorizon(BuildContext context, int angle) {
       .compassDirection(getHorizon(context, angle)); // "Sie halten das Handy in Richtung {}"
 }
 
-String sayRotateToTarget(BuildContext context, int angle, bool isAligned, int distance) {
+String sayRotateToTarget(BuildContext context, int targetHeading, bool isAligned, int distance) {
   AppLocalizations l10n = AppLocalizations.of(context)!;
-  angle = (angle + 360) % 360;
+  targetHeading = (targetHeading + 720) % 360;
+  print("angle: $targetHeading, isAligned: $isAligned, distance= $distance");
   if (isAligned == true) {
     return l10n.label_rotate_no_target_t(distance);
   }
-  if (angle >= 0 && angle < 180) {
-    return l10n.label_rotate_right_target_t(angle.abs());
+  if (targetHeading >= 0 && targetHeading <= 180) {
+    return l10n.label_rotate_right_target_t(targetHeading);
   }
 
-  return l10n.label_rotate_left_target_t((angle - 180).abs());
+  return l10n.label_rotate_left_target_t(360 - targetHeading);
 }
 
 String sayRotateToWaypoint(BuildContext context, int angle, bool isAligned) {

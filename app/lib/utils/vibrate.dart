@@ -36,6 +36,7 @@ class CandleVibrate {
     List<int> intensities = const [],
     int amplitude = -1,
   }) async {
+    print("vibrateCompass");
     if (AppFeatures.vibrateCompass.isEnabled) {
       if (await _hasVibrator()) {
         Vibration.vibrate(

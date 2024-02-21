@@ -22,7 +22,7 @@ class PoiCategoriesScreen extends StatefulWidget {
   State<PoiCategoriesScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<PoiCategoriesScreen>  with SemanticAnnouncer {
+class _ScreenState extends State<PoiCategoriesScreen> with SemanticAnnouncer {
   List<PoiCategory> categories = [];
 
   @override
@@ -148,7 +148,7 @@ class _ScreenState extends State<PoiCategoriesScreen>  with SemanticAnnouncer {
                                     ),
                                   ),
                                 )
-                                .then((value) => setState(() {}));
+                                .then((value) => {if (mounted) setState(() {})});
                           },
                         );
                       }).toList(),

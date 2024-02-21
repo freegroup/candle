@@ -28,7 +28,7 @@ class PoiCategoryScreen extends StatefulWidget {
   State<PoiCategoryScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<PoiCategoryScreen>   with SemanticAnnouncer{
+class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
   List<PoiDetail>? pois;
   bool _isLoading = true;
   LatLng? _currentLocation;
@@ -40,6 +40,10 @@ class _ScreenState extends State<PoiCategoryScreen>   with SemanticAnnouncer{
     super.initState();
     _listenToLocationChanges().then((value) {
       _load();
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      announceOnShow(widget.category.title);
     });
   }
 
@@ -75,7 +79,8 @@ class _ScreenState extends State<PoiCategoryScreen>   with SemanticAnnouncer{
 
       // reload the POI if we fare from the last time we have loaded the poi
       //
-      if (calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
+      if (_currentLocation != null &&
+          calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
         setState(() => _isLoading = true);
         _load();
       }
