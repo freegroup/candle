@@ -182,8 +182,8 @@ class _ScreenState extends State<LocationsScreen> with SemanticAnnouncer {
                       ShareExtend.share(file.path, "file", subject: message);
                     },
                     padding: EdgeInsets.zero,
-                    backgroundColor: theme.colorScheme.onPrimary,
-                    foregroundColor: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
                     child: const Icon(Icons.share, size: 35),
                   ),
                   CustomSlidableAction(

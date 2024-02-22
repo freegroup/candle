@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:candle/screens/latlng_compass.dart';
+import 'package:candle/screens/location_cu.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
 import 'package:candle/utils/configuration.dart';
+import 'package:candle/utils/files.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
@@ -15,9 +18,12 @@ import 'package:candle/widgets/list_tile.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:share_extend/share_extend.dart';
+import 'package:candle/theme_data.dart';
 
 class PoiCategoryScreen extends StatefulWidget {
   final PoiCategory category;
@@ -51,6 +57,127 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
   void dispose() {
     super.dispose();
     _locationSubscription?.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CandleAppBar(
+        title: Text(widget.category.title),
+        talkback: widget.category.title,
+      ),
+      body: BackgroundWidget(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: _isLoading
+              ? _buildLoading(context)
+              : pois == null || pois!.isEmpty
+                  ? _buildNoContent(context)
+                  : _buildContent(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoading(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Semantics(
+      label: l10n.label_common_loading_t,
+      child: const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildNoContent(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return GenericInfoPage(
+      header: l10n.no_location_for_category,
+      body: "",
+      decoration: Icon(
+        Icons.not_listed_location,
+        color: theme.primaryColor,
+        size: 160,
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    final ThemeData theme = Theme.of(context);
+
+    return Column(
+      children: [
+        SemanticHeader(
+          title: l10n.explore_poi_header,
+          talkback: l10n.explore_poi_header_t(pois!.length),
+        ),
+        Expanded(
+          child: SlidableAutoCloseBehavior(
+            closeWhenOpened: true,
+            child: ListView.builder(
+              itemCount: pois!.length,
+              itemBuilder: (context, index) {
+                var loc = pois![index];
+
+                return Slidable(
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      CustomSlidableAction(
+                        onPressed: (context) async {
+                          var locAddress = loc.toLocationAddress(context);
+                          String message = "${locAddress.name}\n\n${locAddress.formattedAddress}";
+                          var dataMap = {
+                            "locations": [locAddress.toMap()]
+                          };
+                          String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                          final file = await createCandleFileWithData("location", prettyJson);
+                          ShareExtend.share(file.path, "file", subject: message);
+                        },
+                        padding: EdgeInsets.zero,
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                        child: const Icon(Icons.share, size: 35),
+                      ),
+                      CustomSlidableAction(
+                        onPressed: (context) {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                builder: (context) => LocationCreateUpdateScreen(
+                                  initialLocation: loc.toLocationAddress(context),
+                                ),
+                              ))
+                              .then((value) async => _load());
+                        },
+                        padding: EdgeInsets.zero,
+                        backgroundColor: theme.positiveColor,
+                        foregroundColor: theme.colorScheme.primary,
+                        child: const Icon(Icons.add, size: 35),
+                      ),
+                    ],
+                  ),
+                  child: CandleListTile(
+                    title: loc.name,
+                    subtitle: loc.formattedAddress(context),
+                    trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => LatLngCompassScreen(
+                          target: loc.latlng,
+                          targetName: loc.name,
+                        ),
+                      ));
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Future<void> _listenToLocationChanges() async {
@@ -104,84 +231,5 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
       // Handle error
       if (mounted) setState(() => _isLoading = false);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CandleAppBar(
-        title: Text(widget.category.title),
-        talkback: widget.category.title,
-      ),
-      body: BackgroundWidget(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: _isLoading
-              ? _buildLoading(context)
-              : pois == null || pois!.isEmpty
-                  ? _buildNoContent(context)
-                  : _buildContent(context),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoading(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-
-    return Semantics(
-      label: l10n.label_common_loading_t,
-      child: const Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget _buildNoContent(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
-
-    return GenericInfoPage(
-      header: l10n.no_location_for_category,
-      body: "",
-      decoration: Icon(
-        Icons.not_listed_location,
-        color: theme.primaryColor,
-        size: 160,
-      ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-
-    return Column(
-      children: [
-        SemanticHeader(
-          title: l10n.explore_poi_header,
-          talkback: l10n.explore_poi_header_t(pois!.length),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: pois!.length,
-            itemBuilder: (context, index) {
-              var loc = pois![index];
-
-              return CandleListTile(
-                title: loc.name,
-                subtitle: loc.formattedAddress(context),
-                trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => LatLngCompassScreen(
-                      target: loc.latlng,
-                      targetName: loc.name,
-                    ),
-                  ));
-                },
-              );
-            },
-          ),
-        ),
-      ],
-    );
   }
 }

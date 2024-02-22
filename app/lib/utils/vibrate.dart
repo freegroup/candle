@@ -53,14 +53,12 @@ class CandleVibrate {
     }
   }
 
-  static Future<void> preloadAudio() async {
-    await _audioCache.load('click.mp3');
-    _isCached = true; // Mark as cached
-  }
-
   static Future<void> playClickSound() async {
     // Ensure the audio file is cached before playing.
-    if (!_isCached) await preloadAudio();
+    if (!_isCached) {
+      await _audioCache.load('click.mp3');
+      _isCached = true;
+    }
 
     // Play the cached audio file.
     final source = AssetSource("sounds/click.mp3");

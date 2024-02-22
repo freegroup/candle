@@ -1,3 +1,4 @@
+import 'package:candle/models/location_address.dart';
 import 'package:candle/services/poi_provider_overpass.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,20 @@ class PoiDetail {
     return (street.isEmpty || number.isEmpty || city.isEmpty)
         ? ""
         : l10n.formated_address_short(street, number, city);
+  }
+
+  LocationAddress toLocationAddress(BuildContext context) {
+    return LocationAddress(
+      name: name,
+      formattedAddress: formattedAddress(context),
+      street: street,
+      number: number,
+      zip: zip,
+      city: city,
+      country: "",
+      lat: latlng.latitude,
+      lon: latlng.longitude,
+    );
   }
 }
 
