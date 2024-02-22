@@ -1,9 +1,11 @@
 import 'package:candle/models/location_address.dart';
+import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/poi_provider_overpass.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
 class PoiDetail {
   String name;
@@ -21,18 +23,26 @@ class PoiDetail {
     this.zip = "",
   });
 
-  String formattedAddress(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-
+  String formattedAddress(AppLocalizations l10n) {
     return (street.isEmpty || number.isEmpty || city.isEmpty)
         ? ""
         : l10n.formated_address_short(street, number, city);
   }
 
-  LocationAddress toLocationAddress(BuildContext context) {
+  Future<LocationAddress> toLocationAddress(BuildContext context) async {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    // do a GeoCoder lookup to fetch the required formatedAddress of the poi
+    // do not provide one
+    if (street.isEmpty || number.isEmpty || city.isEmpty) {
+      var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
+      var address = await geo.getGeolocationAddress(latlng);
+      if (address != null) {
+        return address.copyWith(name: name, lat: latlng.latitude, lon: latlng.longitude);
+      }
+    }
     return LocationAddress(
       name: name,
-      formattedAddress: formattedAddress(context),
+      formattedAddress: formattedAddress(l10n),
       street: street,
       number: number,
       zip: zip,

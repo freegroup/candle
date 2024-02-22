@@ -6,24 +6,24 @@ import 'package:candle/screens/location_cu.dart';
 import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
+import 'package:candle/theme_data.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/files.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
-
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:share_extend/share_extend.dart';
-import 'package:candle/theme_data.dart';
 
 class PoiCategoryScreen extends StatefulWidget {
   final PoiCategory category;
@@ -121,55 +121,84 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
               itemBuilder: (context, index) {
                 var loc = pois![index];
 
-                return Slidable(
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      CustomSlidableAction(
-                        onPressed: (context) async {
-                          var locAddress = loc.toLocationAddress(context);
-                          String message = "${locAddress.name}\n\n${locAddress.formattedAddress}";
-                          var dataMap = {
-                            "locations": [locAddress.toMap()]
-                          };
-                          String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
-                          final file = await createCandleFileWithData("location", prettyJson);
-                          ShareExtend.share(file.path, "file", subject: message);
-                        },
-                        padding: EdgeInsets.zero,
-                        backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: theme.colorScheme.onPrimary,
-                        child: const Icon(Icons.share, size: 35),
-                      ),
-                      CustomSlidableAction(
-                        onPressed: (context) {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                builder: (context) => LocationCreateUpdateScreen(
-                                  initialLocation: loc.toLocationAddress(context),
-                                ),
-                              ))
-                              .then((value) async => _load());
-                        },
-                        padding: EdgeInsets.zero,
-                        backgroundColor: theme.positiveColor,
-                        foregroundColor: theme.colorScheme.primary,
-                        child: const Icon(Icons.add, size: 35),
-                      ),
-                    ],
-                  ),
-                  child: CandleListTile(
-                    title: loc.name,
-                    subtitle: loc.formattedAddress(context),
-                    trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LatLngCompassScreen(
-                          target: loc.latlng,
-                          targetName: loc.name,
-                        ),
-                      ));
+                return Semantics(
+                  customSemanticsActions: {
+                    CustomSemanticsAction(label: l10n.button_common_edit_t): () async {
+                      var locAddress = await loc.toLocationAddress(context);
+                      if (context.mounted) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                              builder: (context) => LocationCreateUpdateScreen(
+                                initialLocation: locAddress,
+                              ),
+                            ))
+                            .then((value) => {setState(() => {})});
+                      }
                     },
+                    CustomSemanticsAction(label: l10n.button_share_location_t): () async {
+                      var locAddress = await loc.toLocationAddress(context);
+                      String message = "${loc.name}\n\n${loc.formattedAddress}";
+                      var dataMap = {
+                        "locations": [locAddress.toMap()]
+                      };
+                      String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                      final file = await createCandleFileWithData("location", prettyJson);
+                      ShareExtend.share(file.path, "file", subject: message);
+                    },
+                  },
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        CustomSlidableAction(
+                          onPressed: (context) async {
+                            var locAddress = await loc.toLocationAddress(context);
+                            String message = "${locAddress.name}\n\n${locAddress.formattedAddress}";
+                            var dataMap = {
+                              "locations": [locAddress.toMap()]
+                            };
+                            String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
+                            final file = await createCandleFileWithData("location", prettyJson);
+                            ShareExtend.share(file.path, "file", subject: message);
+                          },
+                          padding: EdgeInsets.zero,
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          child: const Icon(Icons.share, size: 35),
+                        ),
+                        CustomSlidableAction(
+                          onPressed: (context) async {
+                            var locAddress = await loc.toLocationAddress(context);
+                            if (context.mounted) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) {
+                                  return LocationCreateUpdateScreen(
+                                    initialLocation: locAddress,
+                                  );
+                                },
+                              )).then((value) async => _load());
+                            }
+                          },
+                          padding: EdgeInsets.zero,
+                          backgroundColor: theme.positiveColor,
+                          foregroundColor: theme.colorScheme.primary,
+                          child: const Icon(Icons.add, size: 35),
+                        ),
+                      ],
+                    ),
+                    child: CandleListTile(
+                      title: loc.name,
+                      subtitle: loc.formattedAddress(l10n),
+                      trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LatLngCompassScreen(
+                            target: loc.latlng,
+                            targetName: loc.name,
+                          ),
+                        ));
+                      },
+                    ),
                   ),
                 );
               },

@@ -13,7 +13,6 @@ import 'package:candle/utils/snackbar.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
-
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:candle/widgets/semantic_header.dart';
@@ -302,7 +301,7 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
 
               return CandleListTile(
                 title: loc.name,
-                subtitle: loc.formattedAddress(context),
+                subtitle: loc.formattedAddress(l10n),
                 trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(

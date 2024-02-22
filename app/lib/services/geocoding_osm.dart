@@ -9,8 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 class OSMGeocodingService implements GeocodingService {
+  final Map<String, dynamic> _cache = {};
+
   @override
   Future<model.LocationAddress?> getGeolocationAddress(LatLng coord) async {
+    final cacheKey = 'reverse_${coord.latitude}_${coord.longitude}';
+    if (_cache.containsKey(cacheKey)) {
+      return _cache[cacheKey];
+    }
+
     try {
       String url =
           'https://nominatim.openstreetmap.org/reverse?format=json&lat=${coord.latitude}&lon=${coord.longitude}';
@@ -24,7 +31,7 @@ class OSMGeocodingService implements GeocodingService {
           street = addressInfo['city_block'];
         }
 
-        return model.LocationAddress(
+        var address = model.LocationAddress(
           lat: coord.latitude,
           lon: coord.longitude,
           name: "",
@@ -40,10 +47,14 @@ class OSMGeocodingService implements GeocodingService {
               '',
           country: addressInfo['country'] ?? '',
         );
+
+        _cache[cacheKey] = address;
+        return address;
       }
     } on Exception catch (error) {
       log.e(error);
     }
+
     return null;
   }
 
