@@ -56,20 +56,14 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
         int heading = 360 - ((720 - (compassEvent.heading ?? 0)) % 360).toInt();
         _vibrateAtSnapPoints(heading);
 
-        if (mounted) {
-          setState(() {
-            _currentDeviceHeading = heading;
-          });
-        }
+        if (mounted) setState(() => _currentDeviceHeading = heading);
       });
 
       _horizontalCheckTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         bool newIsHorizontal = CompassService.instance.isHorizontal;
         if (mounted) {
           if (_isCompassHorizontal != newIsHorizontal) {
-            setState(() {
-              _isCompassHorizontal = newIsHorizontal;
-            });
+            setState(() => _isCompassHorizontal = newIsHorizontal);
           }
           _checkCompassOrientation(newIsHorizontal);
         }
@@ -95,7 +89,6 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
       if ((heading >= point - kSnapRange) && (heading <= point + kSnapRange)) {
         if (_lastVibratedSnapPoint != point) {
           CandleVibrate.vibrateCompass(duration: 100);
-          print(heading);
           SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop

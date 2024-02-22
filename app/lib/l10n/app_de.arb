@@ -182,13 +182,13 @@
 
   "screen_header_compass_poi": "Kompass",
   "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
-  "label_rotate_left_target_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
-  "label_rotate_right_target_t": "Drehen Sie sich {degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_left_target_t": "{degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
+  "label_rotate_right_target_t": "{degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
   "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
 
-  "label_rotate_left_waypoint_t": "Drehen Sie sich {degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
-  "label_rotate_right_waypoint_t": "Drehen Sie sich {degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
-  "label_rotate_no_waypoint_t": "Sie zeigen jetzt direkt auf den nächsten Wegpunkt.",
+  "label_rotate_left_waypoint_t": "{degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_right_waypoint_t": "{degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
+  "label_rotate_no_waypoint_t": "Sie zeigen direkt auf den nächsten Wegpunkt.",
 
   "screen_header_compass_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
   "screen_header_compass": "Kompass",
@@ -196,6 +196,9 @@
 
   "screen_header_navigation_poi_t": "Die Weg Führung zu ihrem Ziel wurde gestartet.",
   "screen_header_navigation_poi": "Wegführung",
+
+
+  "navigation_announcement_hint": "Tippen Sie auf die unteren zwei Drittel des Bildschirms, um neue Navigationsansagen oder den aktuellen Status der Wegfindung zu erhalten.",
 
   "waypoint_distance_t": "Der nächste Wegpunkt ist {meters} Meter von Ihnen entfernt.",
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",

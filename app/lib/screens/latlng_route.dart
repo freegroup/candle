@@ -122,7 +122,8 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AppLocalizations l10n = AppLocalizations.of(context)!;
-      announceOnShow(l10n.screen_header_navigation_poi_t);
+      announceOnShow(l10n.navigation_announcement_hint);
+      //announceOnShow(l10n.screen_header_navigation_poi_t);
     });
   }
 

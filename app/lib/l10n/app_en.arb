@@ -323,7 +323,7 @@
     }
   },
 
-  "label_rotate_left_target_t": "Rotate {degree} degrees to your left to directly face the target location",
+  "label_rotate_left_target_t": "{degree} degrees to your left to directly face the target location",
   "@label_rotate_left_target_t": {
     "description": "Message indicating the amount of rotation to point direct to a poi",
     "placeholders": {
@@ -334,7 +334,7 @@
     }
   },
 
-  "label_rotate_right_target_t": "Rotate {degree} degrees to your right to directly face the target location",
+  "label_rotate_right_target_t": "{degree} degrees to your right to directly face the target location",
   "@label_rotate_right_target_t": {
     "description": "Message indicating the amount of rotation to point direct to a poi",
     "placeholders": {
@@ -352,7 +352,7 @@
     "description": "Message indicating that the user is pointing direct to the waypoint"
   },
 
-  "label_rotate_left_waypoint_t": "Rotate {degree} degrees to your left to directly face the next waypoint.",
+  "label_rotate_left_waypoint_t": "{degree} degrees to your left to directly face the next waypoint.",
   "@label_rotate_left_waypoint_t": {
     "description": "Message indicating the amount of rotation to point direct to a waypoint",
     "placeholders": {
@@ -363,7 +363,7 @@
     }
   },
 
-  "label_rotate_right_waypoint_t": "Rotate {degree} degrees to your right to directly face the next waypoint.",
+  "label_rotate_right_waypoint_t": "{degree} degrees to your right to directly face the next waypoint.",
   "@label_rotate_right_waypoint_t": {
     "description": "Message indicating the amount of rotation to point direct to a waypoint",
     "placeholders": {
@@ -394,6 +394,9 @@
   "@screen_header_navigation_poi": {
     "description": "Title for navigation dialog"
   },
+
+
+  "navigation_announcement_hint": "Tap on the lower two-thirds of the screen to get new navigation announcements or the current status of the wayfinding.",
 
   "waypoint_distance_t": "The next waypoint is {meters} meters away from your current location.",
   "@waypoint_distance_t": {

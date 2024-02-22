@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -66,11 +68,17 @@ class CandleVibrate {
   }
 
   static Future<bool> _hasVibrator() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    IosDeviceInfo info = await deviceInfo.iosInfo;
-    if (info.model.toLowerCase().contains("ipad")) {
-      return false;
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    // Check the platform before accessing platform-specific APIs
+    if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      if (iosInfo.model.toLowerCase().contains("ipad")) {
+        return false;
+      }
     }
+
+    // For Android, or if it's an iPhone (which wasn't caught by the if block)
     return await Vibration.hasVibrator() ?? false;
   }
 }
