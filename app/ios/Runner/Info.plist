@@ -38,12 +38,16 @@
 	
 	<key>NSLocationUsageDescription</key>
 	<string>We need access to your location for gps navigation</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need access to your location for gps navigation</string>
+
 	<key>NSMicrophoneUsageDescription</key>
-	<string>microphone</string>
+	<string>To enable voice input for easier navigation and to enhance accessibility for visually impaired or blind users.</string>
+
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Voice input to add VoicePins to any location where you are</string>
+	
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
