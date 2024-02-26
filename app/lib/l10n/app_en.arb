@@ -839,6 +839,16 @@
     "description": "Infotext for a selected element"
   },
 
+  "label_common_list": "List",
+  "@label_common_list": {
+    "description": "Label for a tab to show the list version of data"
+  },
+  
+  "label_common_map": "Map",
+  "@label_common_map": {
+    "description": "Label for a tab to show a map version of data"
+  },
+
   "label_common_required": "Field is requried",
   "@label_common_required": {
     "description": "Infotext for a required input field"

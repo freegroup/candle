@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:candle/models/latlng_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google;
@@ -9,7 +10,7 @@ enum NavigationPointType {
   routing,
 }
 
-class NavigationPoint {
+class NavigationPoint implements LatLngProvider {
   int? id;
   LatLng coordinate;
   String annotation;
@@ -34,6 +35,7 @@ class NavigationPoint {
     );
   }
 
+  @override
   LatLng latlng() {
     return coordinate;
   }

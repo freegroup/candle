@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:candle/models/latlng_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 
-class LocationAddress {
+class LocationAddress implements LatLngProvider {
   int? id;
   final String name;
   final String formattedAddress;
@@ -27,6 +28,7 @@ class LocationAddress {
     required this.lon,
   });
 
+  @override
   LatLng latlng() {
     return LatLng(lat, lon);
   }

@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:candle/models/latlng_provider.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 
-class VoicePin {
+class VoicePin implements LatLngProvider {
   int? id;
   final String name;
   final String memo;
@@ -20,6 +21,7 @@ class VoicePin {
     this.created, // Optional
   });
 
+  @override
   LatLng latlng() {
     return LatLng(lat, lon);
   }

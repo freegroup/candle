@@ -106,20 +106,17 @@ class _WidgetState extends State<LatLngPickerWidget> {
             ),
           ),
         ),
-        Visibility(
-          visible: !_isLongPressActive,
-          child: Positioned(
-            top: pointY + pointSize / 2 + 6,
-            left: 0,
-            right: 0,
-            child: const IgnorePointer(
-              child: Text(
-                '(Long Press to Change)',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
+        Positioned(
+          top: pointY + pointSize / 2 + 6,
+          left: 0,
+          right: 0,
+          child: IgnorePointer(
+            child: Text(
+              _isLongPressActive ? '(Drag to Move)' : '(Long Press to Change)',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
               ),
             ),
           ),

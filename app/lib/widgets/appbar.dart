@@ -7,6 +7,7 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String talkback;
   final Widget? title;
   final Widget? subtitle;
+  final PreferredSizeWidget? bottom;
   final List<Widget>? actions;
   final bool settingsEnabled;
   const CandleAppBar(
@@ -15,13 +16,14 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.title,
       this.subtitle,
       this.actions,
+      this.bottom,
       this.settingsEnabled = false});
 
   @override
   State<CandleAppBar> createState() => _CandleAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 1.4);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight * 1.4 + (bottom == null ? 0 : 40));
 }
 
 class _CandleAppBarState extends State<CandleAppBar> {
@@ -54,13 +56,15 @@ class _CandleAppBarState extends State<CandleAppBar> {
       ),
       backgroundColor: theme.appBarTheme.backgroundColor,
       actions: actions,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(
-          color: theme.primaryColor.withAlpha(60),
-          height: 1.0,
-        ),
-      ),
+      bottom: widget.bottom != null
+          ? widget.bottom!
+          : PreferredSize(
+              preferredSize: const Size.fromHeight(1.0),
+              child: Container(
+                color: theme.primaryColor.withAlpha(60),
+                height: 1.0,
+              ),
+            ),
     );
   }
 

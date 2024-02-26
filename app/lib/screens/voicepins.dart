@@ -15,6 +15,8 @@ import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
+import 'package:candle/widgets/marker_map.dart';
+import 'package:candle/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,6 +24,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:share_extend/share_extend.dart';
+
+import '../widgets/marker_map_osm.dart';
 
 class VoicePinsScreen extends StatefulWidget {
   const VoicePinsScreen({super.key});
@@ -93,7 +97,16 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+    var mediaQueryData = MediaQuery.of(context);
+    bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
 
+    return isScreenReaderEnabled
+        ? _buildContent(l10n, theme, context)
+        : _buildTabbedContent(l10n, theme, context);
+  }
+
+  Widget _buildContent(AppLocalizations l10n, ThemeData theme, BuildContext context) {
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_voicepins),
@@ -101,19 +114,59 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
         settingsEnabled: true,
       ),
       floatingActionButton: _buildFloatingActionButton(context),
-      body: BackgroundWidget(
-        child: Align(
-            alignment: Alignment.topCenter,
-            child: _isLoading
+      body: _isLoading
+          ? _buildLoading(context)
+          : _voicepins.isEmpty
+              ? _buildNoContent(context)
+              : _buildContentList(context),
+    );
+  }
+
+  Widget _buildTabbedContent(AppLocalizations l10n, ThemeData theme, BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: CandleAppBar(
+          title: Text(l10n.screen_header_voicepins),
+          talkback: l10n.screen_header_voicepins_t,
+          settingsEnabled: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: l10n.label_common_list),
+              Tab(text: l10n.label_common_map),
+            ],
+            dividerColor: theme.primaryColor,
+            labelColor: Theme.of(context).primaryColor,
+            unselectedLabelColor: Theme.of(context).primaryColor,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: BoxDecoration(
+              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+        floatingActionButton: _buildFloatingActionButton(context),
+        body: TabBarView(
+          children: [
+            _isLoading
                 ? _buildLoading(context)
                 : _voicepins.isEmpty
                     ? _buildNoContent(context)
-                    : _buildContent(context)),
+                    : _buildContentList(context),
+            _isLoading
+                ? _buildLoading(context)
+                : MarkerMapWidget(
+                    currentLocation: _currentLocation!,
+                    pins: _voicepins,
+                    pinImage: 'assets/images/voicepin_marker.png',
+                  ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContentList(BuildContext context) {
     DatabaseService db = DatabaseService.instance;
     AppLocalizations l10n = AppLocalizations.of(context)!;
     ThemeData theme = Theme.of(context);

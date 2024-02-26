@@ -161,6 +161,9 @@
   "label_common_required": "Pflichtfeld",
   "label_common_selected": "Ausgewählt",
 
+  "label_common_list": "Liste",
+  "label_common_map": "Karte",
+
   "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
   "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",
 
