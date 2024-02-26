@@ -236,6 +236,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
       // reload the POI if we fare from the last time we have loaded the poi
       //
       if (_currentLocation != null &&
+          _loadingLocation != null &&
           calculateDistance(_currentLocation!, _loadingLocation!) > 500) {
         setState(() => _isLoading = true);
         _load();
@@ -257,6 +258,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
         });
       }
     } catch (e) {
+      print(e);
       // Handle error
       if (mounted) setState(() => _isLoading = false);
     }

@@ -5,7 +5,7 @@ class DividedWidget extends StatelessWidget {
   final Widget top;
   final Widget bottom;
   final double fraction;
-  final double corner = 60;
+  final double corner = 50;
   final int topBorder = 15;
 
   const DividedWidget({required this.top, required this.bottom, required this.fraction, super.key});

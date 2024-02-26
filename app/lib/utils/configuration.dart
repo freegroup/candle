@@ -1,4 +1,5 @@
-const int kMinDistanceForNextWaypoint = 3;
+const int kMinDistanceForNextWaypoint = 5;
+const int kMinDistanceForVoicePinAnnouncement = 8;
 const int kPoiRadiusInMeter = 2000;
 const List<int> kSnapPoints = [0, 45, 90, 135, 180, 225, 270, 315];
 const int kSnapRange = 10; // ±10° range for snap points

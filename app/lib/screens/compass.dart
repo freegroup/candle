@@ -52,10 +52,9 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         log.e(err);
-      }).listen((compassEvent) {
+      }).listen((compassEvent) async {
         int heading = 360 - ((720 - (compassEvent.heading ?? 0)) % 360).toInt();
-        _vibrateAtSnapPoints(heading);
-
+        await _vibrateAtSnapPoints(heading);
         if (mounted) setState(() => _currentDeviceHeading = heading);
       });
 
@@ -84,11 +83,12 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
     super.dispose();
   }
 
-  void _vibrateAtSnapPoints(int heading) {
+  Future<void> _vibrateAtSnapPoints(int heading) async {
     for (var point in kSnapPoints) {
       if ((heading >= point - kSnapRange) && (heading <= point + kSnapRange)) {
         if (_lastVibratedSnapPoint != point) {
-          CandleVibrate.vibrateCompass(duration: 100);
+          await CandleVibrate.vibrateCompass(duration: 100);
+
           SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop

@@ -1,4 +1,5 @@
 import 'package:candle/models/route.dart' as model;
+import 'package:candle/models/voicepin.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -9,6 +10,7 @@ abstract class BaseRouteMapWidget extends StatefulWidget {
   final LatLng? currentWaypoint;
   final LatLng? marker1;
   final LatLng? marker2;
+  final List<VoicePin> voicepins;
   final double zoom;
   final double stroke;
   final bool debug = false;
@@ -21,6 +23,7 @@ abstract class BaseRouteMapWidget extends StatefulWidget {
     this.currentWaypoint,
     this.marker1,
     this.marker2,
+    this.voicepins = const [],
     this.zoom = 18,
     this.stroke = 15,
   });

@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
+import 'package:candle/models/voicepin.dart';
 import 'package:candle/services/compass.dart';
+import 'package:candle/services/database.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/router.dart';
 import 'package:candle/services/screen_wake.dart';
@@ -11,6 +13,7 @@ import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/semantic.dart';
+import 'package:candle/utils/snackbar.dart';
 import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/divided_widget.dart';
@@ -40,6 +43,8 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
   StreamSubscription<Position>? _locationSubscription;
 
   late Future<model.Route?> _stateRoute;
+  late Future<List<VoicePin>> _voicePins;
+  VoicePin? _lastAnnouncedVoicePin;
 
   int _currentMapRotation = 0;
   int _currentWaypointHeading = 0;
@@ -69,6 +74,7 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     super.initState();
     ScreenWakeService.keepOn(true);
 
+    _voicePins = DatabaseService.instance.allVoicePins();
     _stateRoute = widget.route != null
         ? Future(() => widget.route)
         : _calculateRoute(widget.source, widget.target);
@@ -157,6 +163,7 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     }).listen((newLocation) async {
       _currentLocation = LatLng(newLocation.latitude, newLocation.longitude);
       _updateWaypoints(_currentLocation);
+      _announceVoicePin(_currentLocation);
     });
   }
 
@@ -251,6 +258,24 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     }
   }
 
+  void _announceVoicePin(LatLng location) async {
+    var pins = await _voicePins;
+    if (pins.isNotEmpty) {
+      pins.sort((a, b) {
+        var distA = calculateDistance(a.latlng(), location);
+        var distB = calculateDistance(b.latlng(), location);
+        return distA.compareTo(distB);
+      });
+      var pin = pins.first;
+      if (calculateDistance(pin.latlng(), location) < kMinDistanceForVoicePinAnnouncement) {
+        if (mounted && pin != _lastAnnouncedVoicePin) {
+          showSnackbar(context, pin.memo);
+          _lastAnnouncedVoicePin = pin;
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -277,20 +302,34 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     return ExcludeSemantics(
       child: FutureBuilder<model.Route?>(
         future: _stateRoute,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, routeSnapshot) {
+          if (routeSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            // Consider logging the error or showing a more informative message
-            return Center(child: Text('Error fetching route: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data != null) {
-            return RouteMapWidget(
-              route: snapshot.data!,
-              mapRotation: -_currentMapRotation.toDouble(),
-              currentLocation: _currentLocation,
-              currentWaypoint: _currentHeadingWaypoint?.latlng(),
-              marker1: _currentTurnByTurnWaypoint?.latlng(),
-              marker2: _nextTurnByTurnWaypoint?.latlng(),
+          } else if (routeSnapshot.hasError) {
+            return Center(child: Text('Error fetching route: ${routeSnapshot.error}'));
+          } else if (routeSnapshot.hasData) {
+            return FutureBuilder<List<VoicePin>>(
+              future: _voicePins,
+              builder: (context, pinsSnapshot) {
+                if (pinsSnapshot.connectionState == ConnectionState.waiting) {
+                  // Optionally, return an empty container or a loading spinner
+                  return const Center(child: CircularProgressIndicator());
+                } else if (pinsSnapshot.hasError) {
+                  // Handle the error state
+                  return Center(child: Text('Error fetching voice pins: ${pinsSnapshot.error}'));
+                } else {
+                  // Both futures are resolved, return your widget
+                  return RouteMapWidget(
+                    route: routeSnapshot.data!,
+                    mapRotation: -_currentMapRotation.toDouble(),
+                    currentLocation: _currentLocation,
+                    currentWaypoint: _currentHeadingWaypoint?.latlng(),
+                    marker1: _currentTurnByTurnWaypoint?.latlng(),
+                    marker2: _nextTurnByTurnWaypoint?.latlng(),
+                    voicepins: pinsSnapshot.data!,
+                  );
+                }
+              },
             );
           } else {
             return const Center(child: Text('No route found'));

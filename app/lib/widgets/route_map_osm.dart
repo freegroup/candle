@@ -13,6 +13,7 @@ class RouteMapWidget extends BaseRouteMapWidget {
     super.marker1,
     super.marker2,
     super.zoom,
+    super.voicepins,
   });
 
   @override
@@ -44,18 +45,23 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
 
     List<LatLng> routePoints = widget.route == null
         ? []
-        : widget.route!.points
-            .map((navPoint) =>
-                navPoint.latlng()) // Konvertieren Sie jeden NavigationPoint in ein LatLng-Objekt
-            .toList();
+        : widget.route!.points.map((navPoint) => navPoint.latlng()).toList();
+    List<Marker> voicePinMarkers = widget.voicepins.map((pin) {
+      return Marker(
+        width: 25.0,
+        height: 25.0,
+        point: pin.latlng(),
+        rotate: true,
+        child: Image.asset('assets/images/voicepin_marker.png'),
+      );
+    }).toList();
 
     var polylines = <Polyline>[
       Polyline(
         points: routePoints,
         strokeWidth: widget.stroke,
-        color: theme.primaryColor, // Verwenden Sie Ihre primaryColor für die Route
+        color: theme.primaryColor,
       ),
-      // Sie können hier weitere Polylinien hinzufügen, falls erforderlich
     ];
 
     var markers = <CircleMarker>[
@@ -119,6 +125,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
             ),
             PolylineLayer(polylines: polylines),
             CircleLayer(circles: markers),
+            MarkerLayer(markers: voicePinMarkers),
             //MarkerLayer(markers: [nonRotatingMarker]),
           ],
         ),

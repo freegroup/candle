@@ -57,13 +57,13 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
 
     _updateLocation();
     _updateLocationTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
-      _updateLocation();
+      if (mounted) _updateLocation();
     });
 
     ScreenWakeService.keepOn(true);
     _vibrationTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) async {
-      if (_isAligned(_currentDiffHeading)) {
-        CandleVibrate.vibrateCompass(duration: 100);
+      if (mounted && _isAligned(_currentDiffHeading)) {
+        await CandleVibrate.vibrateCompass(duration: 100);
       }
     });
 
@@ -76,13 +76,13 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
           var deviceHeading = 360 - (((compassEvent.heading ?? 0)) % 360).toInt();
           var diffHeading = ((poiHeading - deviceHeading) + 720) % 360;
           bool currentlyAligned = _isAligned(diffHeading);
-          _vibrateAtSnapPoints(diffHeading);
+          await _vibrateAtSnapPoints(diffHeading);
 
           if (currentlyAligned != _wasAligned) {
             if (currentlyAligned) {
-              CandleVibrate.vibrateCompass(duration: 100, repeat: 2);
+              await CandleVibrate.vibrateCompass(duration: 100, repeat: 2);
             } else {
-              CandleVibrate.vibrateCompass(duration: 500);
+              await CandleVibrate.vibrateCompass(duration: 500);
             }
             _wasAligned = currentlyAligned;
           }
@@ -114,7 +114,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
   }
 
   // targetHeading is always in range [0..360]
-  void _vibrateAtSnapPoints(int targetHeading) {
+  Future<void> _vibrateAtSnapPoints(int targetHeading) async {
     var distance = calculateDistance(_currentLocation, widget.target);
 
     for (var point in kSnapPoints) {
@@ -124,8 +124,8 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
               context, targetHeading, _isAligned(targetHeading), distance.toInt());
 
           print(announcement);
-          CandleVibrate.vibrateCompass(duration: 100);
-          SemanticsService.announce(announcement, TextDirection.ltr);
+          await CandleVibrate.vibrateCompass(duration: 100);
+          await SemanticsService.announce(announcement, TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop
         }

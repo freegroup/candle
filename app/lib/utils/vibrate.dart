@@ -26,12 +26,12 @@ class CandleVibrate {
             intensities: intensities,
             amplitude: amplitude);
       } else {
-        playClickSound();
+        _playClickSound();
       }
     }
   }
 
-  static void vibrateCompass({
+  static Future<void> vibrateCompass({
     int duration = 500,
     List<int> pattern = const [],
     int repeat = -1,
@@ -48,21 +48,28 @@ class CandleVibrate {
             intensities: intensities,
             amplitude: amplitude);
       } else {
-        playClickSound();
+        await _playClickSound();
       }
     }
   }
 
-  static Future<void> playClickSound() async {
-    // Ensure the audio file is cached before playing.
-    if (!_isCached) {
-      await _audioCache.load('click.mp3');
-      _isCached = true;
-    }
+  static Future<void> _playClickSound() async {
+    try {
+      print("click");
+      // Ensure the audio file is cached before playing.
+      if (!_isCached) {
+        await _audioCache.load('click.mp3');
+        _isCached = true;
+      }
 
-    // Play the cached audio file.
-    final source = AssetSource("sounds/click.mp3");
-    await _audioPlayer.play(source);
+      // Play the cached audio file.
+      final source = AssetSource("sounds/click.mp3");
+      //final source = BytesSource(await _audioCache.loadAsBytes("click.mp3"));
+
+      await _audioPlayer.play(source);
+    } catch (e) {
+      print("Exception for playClickSound");
+    }
   }
 
   static Future<bool> _hasVibrator() async {

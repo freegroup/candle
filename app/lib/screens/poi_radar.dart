@@ -122,7 +122,7 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
     _horizontalCheckTimer?.cancel();
   }
 
-  void _filterPoisAtSnapPoints() {
+  Future<void> _filterPoisAtSnapPoints() async {
     const snapPoints = [0, 45, 90, 135, 180, 225, 270, 315];
     const snapRange = 10; // ±10° range for snap points
 
@@ -130,7 +130,7 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
       if ((_currentHeadingDegrees >= snapPointAngle - snapRange) &&
           (_currentHeadingDegrees <= snapPointAngle + snapRange)) {
         if (_lastVibratedSnapPoint != snapPointAngle) {
-          CandleVibrate.vibrateCompass(duration: 100);
+          await CandleVibrate.vibrateCompass(duration: 100);
           _lastVibratedSnapPoint = snapPointAngle;
 
           if (_allPois != null) {
