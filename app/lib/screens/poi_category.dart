@@ -15,6 +15,7 @@ import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
+import 'package:candle/widgets/marker_map_osm.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,6 +62,13 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQueryData = MediaQuery.of(context);
+    bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
+
+    return isScreenReaderEnabled ? _buildContent(context) : _buildTabbedContent(context);
+  }
+
+  Scaffold _buildContent(BuildContext context) {
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(widget.category.title),
@@ -73,7 +81,53 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
               ? _buildLoading(context)
               : pois == null || pois!.isEmpty
                   ? _buildNoContent(context)
-                  : _buildContent(context),
+                  : _buildContentList(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabbedContent(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: CandleAppBar(
+          title: Text(l10n.screen_header_voicepins),
+          talkback: l10n.screen_header_voicepins_t,
+          settingsEnabled: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: l10n.label_common_list),
+              Tab(text: l10n.label_common_map),
+            ],
+            dividerColor: theme.primaryColor,
+            labelColor: Theme.of(context).primaryColor,
+            unselectedLabelColor: Theme.of(context).primaryColor,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: BoxDecoration(
+              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _isLoading
+                ? _buildLoading(context)
+                : pois!.isEmpty
+                    ? _buildNoContent(context)
+                    : _buildContentList(context),
+            _isLoading
+                ? _buildLoading(context)
+                : MarkerMapWidget(
+                    currentLocation: _currentLocation!,
+                    pins: pois!,
+                    pinImage: 'assets/images/location_marker.png',
+                  ),
+          ],
         ),
       ),
     );
@@ -103,7 +157,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContentList(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
     final ThemeData theme = Theme.of(context);
 
@@ -189,11 +243,11 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
                     child: CandleListTile(
                       title: loc.name,
                       subtitle: loc.formattedAddress(l10n),
-                      trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
+                      trailing: "${calculateDistance(loc.latlng(), _currentLocation!).toInt()} m",
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => LatLngCompassScreen(
-                            target: loc.latlng,
+                            target: loc.latlng(),
                             targetName: loc.name,
                           ),
                         ));
@@ -223,8 +277,8 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
         //
         if (_currentLocation != null && pois != null) {
           pois!.sort((a, b) {
-            var distA = calculateDistance(a.latlng, _currentLocation!);
-            var distB = calculateDistance(b.latlng, _currentLocation!);
+            var distA = calculateDistance(a.latlng(), _currentLocation!);
+            var distB = calculateDistance(b.latlng(), _currentLocation!);
             return distA.compareTo(distB);
           });
         }

@@ -137,7 +137,7 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
             const int angleRange = 25; // ±25° range
             List<PoiDetail> filteredPois = [];
             for (var poi in _allPois!) {
-              int bearing = 360 - calculateNorthBearing(_currentLocation!, poi.latlng);
+              int bearing = 360 - calculateNorthBearing(_currentLocation!, poi.latlng());
               if ((bearing >= snapPointAngle - angleRange) &&
                   (bearing <= snapPointAngle + angleRange)) {
                 filteredPois.add(poi);
@@ -146,8 +146,8 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
 
             // Sort by distance
             filteredPois.sort((a, b) {
-              var distA = calculateDistance(a.latlng, _currentLocation!);
-              var distB = calculateDistance(b.latlng, _currentLocation!);
+              var distA = calculateDistance(a.latlng(), _currentLocation!);
+              var distB = calculateDistance(b.latlng(), _currentLocation!);
               return distA.compareTo(distB);
             });
 
@@ -302,11 +302,11 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
               return CandleListTile(
                 title: loc.name,
                 subtitle: loc.formattedAddress(l10n),
-                trailing: "${calculateDistance(loc.latlng, _currentLocation!).toInt()} m",
+                trailing: "${calculateDistance(loc.latlng(), _currentLocation!).toInt()} m",
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => LatLngCompassScreen(
-                      target: loc.latlng,
+                      target: loc.latlng(),
                       targetName: loc.name,
                     ),
                   ));
