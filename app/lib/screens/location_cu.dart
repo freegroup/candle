@@ -136,21 +136,20 @@ class _ScreenState extends State<LocationCreateUpdateScreen> with SemanticAnnoun
               // Prevents the TextField from gaining focus
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: MergeSemantics(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ExcludeSemantics(
+                      child: Text(
                         l10n.inputhint_address,
                         style: theme.textTheme.labelMedium,
                       ),
-                      TextField(
-                        controller: TextEditingController(text: stateLocation.formattedAddress),
-                        maxLines: null,
-                      ),
-                      Semantics(label: l10n.address_search_doubletab_hint_t),
-                    ],
-                  ),
+                    ),
+                    TextField(
+                      controller: TextEditingController(text: stateLocation.formattedAddress),
+                      maxLines: null,
+                    ),
+                  ],
                 ),
               ),
             ),
