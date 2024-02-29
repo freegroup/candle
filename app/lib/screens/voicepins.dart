@@ -46,7 +46,7 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
   void initState() {
     super.initState();
     _listenToLocationChanges().then((value) {
-      _load();
+      if (mounted) _load();
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -312,21 +312,19 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
     return FloatingActionButton(
       onPressed: () async {
         if (mounted == true && _currentLocation != null) {
-          if (mounted) {
-            var voicepin = VoicePin(
-              name: "",
-              memo: "",
-              lat: _currentLocation!.latitude,
-              lon: _currentLocation!.longitude,
-            );
-            Navigator.of(context)
-                .push(
-                  MaterialPageRoute(
-                    builder: (context) => VoicePinCreateUpdateScreen(voicepin: voicepin),
-                  ),
-                )
-                .then((value) => _load());
-          }
+          var voicepin = VoicePin(
+            name: "",
+            memo: "",
+            lat: _currentLocation!.latitude,
+            lon: _currentLocation!.longitude,
+          );
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (context) => VoicePinCreateUpdateScreen(voicepin: voicepin),
+                ),
+              )
+              .then((value) => _load());
         }
       },
       tooltip: l10n.voicepin_add_speak_t,
