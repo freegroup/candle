@@ -12,11 +12,8 @@ import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
-import 'package:candle/widgets/marker_map.dart';
-import 'package:candle/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -96,17 +93,16 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
     var mediaQueryData = MediaQuery.of(context);
     bool isScreenReaderEnabled = mediaQueryData.accessibleNavigation;
 
-    return isScreenReaderEnabled
-        ? _buildContent(l10n, theme, context)
-        : _buildTabbedContent(l10n, theme, context);
+    return isScreenReaderEnabled ? _buildContent(context) : _buildTabbedContent(context);
   }
 
-  Widget _buildContent(AppLocalizations l10n, ThemeData theme, BuildContext context) {
+  Widget _buildContent(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_voicepins),
@@ -122,7 +118,10 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
     );
   }
 
-  Widget _buildTabbedContent(AppLocalizations l10n, ThemeData theme, BuildContext context) {
+  Widget _buildTabbedContent(BuildContext context) {
+    AppLocalizations l10n = AppLocalizations.of(context)!;
+    ThemeData theme = Theme.of(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
