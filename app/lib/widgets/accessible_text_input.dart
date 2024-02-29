@@ -132,18 +132,16 @@ class _InputState extends State<AccessibleTextInput> {
 
     return Semantics(
       label: widget.talkbackInput ?? l10n.accessible_text_input_t,
-      child: ExcludeSemantics(
-        child: TextField(
-          controller: widget.controller,
-          decoration: widget.decoration?.copyWith(
-                errorText: showError ? l10n.label_common_required : null,
-              ) ??
-              InputDecoration(hintStyle: TextStyle(color: theme.primaryColor)),
-          autofocus: widget.autofocus ?? false,
-          onSubmitted: widget.onSubmitted,
-          maxLines: widget.maxLines,
-          keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
-        ),
+      child: TextField(
+        controller: widget.controller,
+        decoration: widget.decoration?.copyWith(
+              errorText: showError ? l10n.label_common_required : null,
+            ) ??
+            InputDecoration(hintStyle: TextStyle(color: theme.primaryColor)),
+        autofocus: widget.autofocus ?? false,
+        onSubmitted: widget.onSubmitted,
+        maxLines: widget.maxLines,
+        keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
       ),
     );
   }
