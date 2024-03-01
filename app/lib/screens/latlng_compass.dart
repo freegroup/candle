@@ -29,8 +29,12 @@ class LatLngCompassScreen extends StatefulWidget {
   final String targetName;
   final model.Route? route;
 
-  const LatLngCompassScreen(
-      {super.key, required this.target, required this.targetName, this.route});
+  const LatLngCompassScreen({
+    super.key,
+    required this.target,
+    required this.targetName,
+    this.route,
+  });
 
   @override
   State<LatLngCompassScreen> createState() => _ScreenState();
@@ -73,8 +77,8 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
       }).listen((compassEvent) async {
         if (mounted) {
           var poiHeading = calculateNorthBearing(_currentLocation, widget.target);
-          var deviceHeading = 360 - (((compassEvent.heading ?? 0)) % 360).toInt();
-          var diffHeading = ((poiHeading - deviceHeading) + 720) % 360;
+          var deviceHeading = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
+          var diffHeading = ((deviceHeading - poiHeading) + 360) % 360;
           bool currentlyAligned = _isAligned(diffHeading);
           await _vibrateAtSnapPoints(diffHeading);
 
@@ -178,7 +182,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
               children: [
                 LocationArrowIcon(
                   shadow: true,
-                  rotationDegrees: isAligned ? 0 : (360 - _currentDiffHeading),
+                  rotationDegrees: isAligned ? 0 : 360 - _currentDiffHeading,
                   height: containerWidth,
                   width: containerWidth,
                 ),

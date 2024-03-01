@@ -89,7 +89,9 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
         if (_lastVibratedSnapPoint != point) {
           await CandleVibrate.vibrateCompass(duration: 100);
 
-          SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
+          if (mounted) {
+            SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
+          }
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop
         }

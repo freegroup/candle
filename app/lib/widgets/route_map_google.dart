@@ -38,7 +38,7 @@ class _WidgetState extends State<RouteMapWidget> {
   void _loadCustomIcon() async {
     RouteMapWidget.customCircleIcon = await google.BitmapDescriptor.fromAssetImage(
       const ImageConfiguration(devicePixelRatio: 1),
-      'assets/images/location_marker.png', // Path to your circle icon
+      'assets/images/compass_marker.png', // Path to your circle icon
     );
   }
 
