@@ -26,28 +26,20 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We do not ask for any permissions for photo library access. this is only related to lib dependencies.</string>
-
 	<key>NSMotionUsageDescription</key>
 	<string>Your app uses the motion sensor for compass functionality.</string>
-
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need always access to your location if you wnat to record your route in the background</string>
-	
 	<key>NSLocationUsageDescription</key>
 	<string>We need access to your location for gps navigation</string>
-
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need access to your location for gps navigation</string>
-
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To enable voice input for easier navigation and to enhance accessibility for visually impaired or blind users.</string>
-
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Voice input to add VoicePins to any location where you are</string>
-	
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -87,6 +79,23 @@
 					<string>application/x-candle</string>
 				</array>
 			</dict>
+		</dict>
+	</array>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Candle File</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>candle</string>
+			</array>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>de.freegroup.candle</string>
+			</array>
 		</dict>
 	</array>
 </dict>
