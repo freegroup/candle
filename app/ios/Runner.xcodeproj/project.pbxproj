@@ -71,12 +71,6 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8407A76BD447893FEAC189 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
-		C3C1D1B02B8215360064760D /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		C3C1D1B32B8215360064760D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		C3C1D1B52B8215360064760D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C3C1D1C42B82158E0064760D /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		C3C1D1C72B82158E0064760D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		C3C1D1C92B82158F0064760D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C44E425F54835198B3A41607 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		C587A0182D77E1904B6B0022 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		CCBEC0D786287B2F7CDA792D /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,8 +130,6 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
-				C3C1D1AF2B8215360064760D /* Share Extension */,
-				C3C1D1C32B82158E0064760D /* Share Extension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				FBDFCB59854B04D753758BC8 /* Pods */,
@@ -167,26 +159,6 @@
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
-			sourceTree = "<group>";
-		};
-		C3C1D1AF2B8215360064760D /* Share Extension */ = {
-			isa = PBXGroup;
-			children = (
-				C3C1D1B02B8215360064760D /* ShareViewController.swift */,
-				C3C1D1B22B8215360064760D /* MainInterface.storyboard */,
-				C3C1D1B52B8215360064760D /* Info.plist */,
-			);
-			path = "Share Extension";
-			sourceTree = "<group>";
-		};
-		C3C1D1C32B82158E0064760D /* Share Extension */ = {
-			isa = PBXGroup;
-			children = (
-				C3C1D1C42B82158E0064760D /* ShareViewController.swift */,
-				C3C1D1C62B82158E0064760D /* MainInterface.storyboard */,
-				C3C1D1C92B82158F0064760D /* Info.plist */,
-			);
-			path = "Share Extension";
 			sourceTree = "<group>";
 		};
 		FBDFCB59854B04D753758BC8 /* Pods */ = {
@@ -464,22 +436,6 @@
 				97C147001CF9000F007C117D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		C3C1D1B22B8215360064760D /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C3C1D1B32B8215360064760D /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
-		C3C1D1C62B82158E0064760D /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C3C1D1C72B82158E0064760D /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
