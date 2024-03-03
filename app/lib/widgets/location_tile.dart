@@ -72,7 +72,7 @@ class _WidgetState extends State<LocationAddressTile> {
     });
 
     _addressController.stream.listen((address) {
-      var i10n = AppLocalizations.of(context)!;
+      var l10n = AppLocalizations.of(context)!;
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -143,14 +143,14 @@ class _WidgetState extends State<LocationAddressTile> {
   }
 
   Widget _buildErrorContent(BuildContext context) {
-    var i10n = AppLocalizations.of(context)!;
+    var l10n = AppLocalizations.of(context)!;
 
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min, // To make the column fit its content size
         children: [
           Text(
-            i10n.label_address_load_fail,
+            l10n.label_address_load_fail,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16),
           ),
@@ -158,7 +158,7 @@ class _WidgetState extends State<LocationAddressTile> {
           TextButton.icon(
             onPressed: () => _updateLocationAddress(),
             icon: const Icon(Icons.refresh, size: 24), // Reload icon
-            label: Text(i10n.button_address_reload),
+            label: Text(l10n.button_address_reload),
           ),
         ],
       ),
@@ -184,19 +184,19 @@ class _WidgetState extends State<LocationAddressTile> {
   }
 
   Widget _buildStartContent(BuildContext context) {
-    var i10n = AppLocalizations.of(context)!;
+    var l10n = AppLocalizations.of(context)!;
     var theme = Theme.of(context);
 
-    var talkback = i10n.label_common_loading_t;
+    var talkback = l10n.label_common_loading_t;
     if (_lastReadAddress != null) {
       if (_currentAddressOutdated) {
-        talkback = i10n.last_known_address_t(
+        talkback = l10n.last_known_address_t(
           _lastReadAddress!.street,
           _lastReadAddress!.number,
           _lastReadAddress!.city,
         );
       } else {
-        talkback = i10n.current_address_t(
+        talkback = l10n.current_address_t(
           _lastReadAddress!.street,
           _lastReadAddress!.number,
           _lastReadAddress!.city,
@@ -254,7 +254,7 @@ class _WidgetState extends State<LocationAddressTile> {
   }
 
   Widget _buildDestinationContent(BuildContext context) {
-    var i10n = AppLocalizations.of(context)!;
+    var l10n = AppLocalizations.of(context)!;
     var theme = Theme.of(context);
 
     return TextButton(
@@ -280,7 +280,7 @@ class _WidgetState extends State<LocationAddressTile> {
         minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
       ),
       child: Text(
-        i10n.button_common_enter_target,
+        l10n.button_common_enter_target,
         style: theme.textTheme.titleLarge,
       ),
     );
