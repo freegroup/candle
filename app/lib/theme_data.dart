@@ -1,3 +1,4 @@
+import 'package:candle/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 extension CustomThemeColors on ThemeData {
@@ -7,7 +8,7 @@ extension CustomThemeColors on ThemeData {
 
 class CThemeData {
   static ThemeData get darkTheme {
-    MaterialColor mySwatch = _createMaterialColor(const Color.fromRGBO(255, 192, 4, 1));
+    MaterialColor mySwatch = createMaterialColor(const Color.fromRGBO(255, 192, 4, 1));
     ThemeData baseTheme = ThemeData.dark(); // Use the default dark theme as base
 
     // Kopieren Sie das existierende TextTheme und ändern Sie nur das labelLarge-Attribut
@@ -73,25 +74,5 @@ class CThemeData {
   static Color _createDarkerColor(MaterialColor color) {
     // Create a darker shade
     return color[900] ?? color.shade900; // Adjust the shade as needed
-  }
-
-  static MaterialColor _createMaterialColor(Color color) {
-    List strengths = <double>[.05];
-    Map<int, Color> swatch = {};
-    final int r = color.red, g = color.green, b = color.blue;
-
-    for (int i = 1; i < 10; i++) {
-      strengths.add(0.1 * i);
-    }
-    for (var strength in strengths) {
-      final double ds = 0.5 - strength;
-      swatch[(strength * 1000).round()] = Color.fromRGBO(
-        r + ((r - ds < 0 ? 0 : (r - ds > 255 ? 255 : r - ds)).round()),
-        g + ((g - ds < 0 ? 0 : (g - ds > 255 ? 255 : g - ds)).round()),
-        b + ((b - ds < 0 ? 0 : (b - ds > 255 ? 255 : b - ds)).round()),
-        1,
-      );
-    }
-    return MaterialColor(color.value, swatch);
   }
 }

@@ -795,6 +795,17 @@
     "description": "Title for edit button"
   },
 
+  "button_common_enter_target_t": "Enter a destination to start navigation",
+  "@button_common_enter_target_t": {
+    "description": "Talkback for enter target for routing bnutton"
+  },
+
+  "button_common_enter_target": "Navigate to Address",
+  "@button_common_enter_target": {
+    "description": "Title for enter target for routing bnutton"
+  },
+
+
   "button_common_app_settings_t": "Show the App Settings",
   "@button_common_app_settings_t": {
     "description": "Title for app settings button"
@@ -834,9 +845,23 @@
     "description": "Title for delete button"
   },
 
+  "button_address_reload": "Reload",
+  "@button_address_reload": {
+    "description": "Title for reload/retry address button"
+  },
+  "button_address_reload_t": "Reload Address",
+  "@button_address_reload_t": {
+    "description": "Talkback for reload/retry button"
+  },
+
   "label_common_selected": "Selected",
   "@label_common_selected": {
     "description": "Infotext for a selected element"
+  },
+
+  "label_address_load_fail": "Unable to determine current location.",
+  "@label_address_load_fail": {
+    "description": "Infotext if we are unable to determine the current address"
   },
 
   "label_common_list": "List",

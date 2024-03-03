@@ -64,24 +64,23 @@ class _ScreenState extends State<HomeScreen> {
               settingsEnabled: true,
             ),
             body: BackgroundWidget(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const LocationAddressTile(),
-                      const SizedBox(height: 20),
-                      Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const LocationAddressTile(),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
                         child: GridView.count(
                             crossAxisCount: 2, // Two columns
                             childAspectRatio: 1.0, // Aspect ratio of 1.0 (width == height)
                             crossAxisSpacing: 10, // Spacing in between items horizontally
                             mainAxisSpacing: 10, // Spacing in between items vertically
                             children: filteredButtons),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ));
@@ -113,7 +112,7 @@ class _ScreenState extends State<HomeScreen> {
 
         try {
           var coord = await LocationService.instance.location;
-          if (mounted && coord != null) {
+          if (context.mounted && coord != null) {
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
             LocationAddress address = (await geo.getGeolocationAddress(coord))!;
             LocationAddress sharingAddress = address.copyWith(name: "MyPosition");
@@ -130,7 +129,7 @@ class _ScreenState extends State<HomeScreen> {
             ShareExtend.share(file.path, "file", subject: message);
           }
         } finally {
-          if (mounted) Navigator.pop(context);
+          if (context.mounted) Navigator.pop(context);
         }
       },
     );
@@ -187,10 +186,10 @@ class _ScreenState extends State<HomeScreen> {
 
         try {
           var coord = await LocationService.instance.location;
-          if (mounted && coord != null) {
+          if (context.mounted && coord != null) {
             var geo = Provider.of<GeoServiceProvider>(context, listen: false).service;
             LocationAddress? address = await geo.getGeolocationAddress(coord);
-            if (!mounted) return;
+            if (!context.mounted) return;
             Navigator.pop(context);
             if (mounted && address != null) {
               Navigator.of(context).push(
@@ -202,11 +201,11 @@ class _ScreenState extends State<HomeScreen> {
               );
             }
           } else {
-            if (!mounted) return;
+            if (!context.mounted) return;
             Navigator.pop(context);
           }
         } catch (e) {
-          if (!mounted) return;
+          if (!context.mounted) return;
           Navigator.pop(context);
         }
       },

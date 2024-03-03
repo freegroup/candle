@@ -127,7 +127,7 @@ class _ScreenState extends State<AddressSearchScreen> with SemanticAnnouncer {
                       onTap: () async {
                         final placeDetail = suggestion[index];
                         widget.sink.add(placeDetail);
-                        onBackPressed(context);
+                        Navigator.of(context).pop();
                       },
                     ),
                     itemCount: suggestion.length,
@@ -140,8 +140,4 @@ class _ScreenState extends State<AddressSearchScreen> with SemanticAnnouncer {
       ),
     );
   }
-}
-
-onBackPressed(BuildContext context) {
-  Navigator.of(context).pop();
 }

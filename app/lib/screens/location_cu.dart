@@ -66,6 +66,7 @@ class _ScreenState extends State<LocationCreateUpdateScreen> with SemanticAnnoun
   @override
   void dispose() {
     _addressController.close();
+    _editingController.dispose();
     super.dispose();
   }
 

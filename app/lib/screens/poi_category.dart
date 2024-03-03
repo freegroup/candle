@@ -95,8 +95,8 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
       length: 2,
       child: Scaffold(
         appBar: CandleAppBar(
-          title: Text(l10n.screen_header_voicepins),
-          talkback: l10n.screen_header_voicepins_t,
+          title: Text(widget.category.title),
+          talkback: widget.category.title,
           settingsEnabled: true,
           bottom: TabBar(
             tabs: [

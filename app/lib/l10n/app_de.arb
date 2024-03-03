@@ -111,14 +111,20 @@
   "button_common_delete_t": "Eintrag löschen",
   "button_common_delete": "Löschen",
 
+  "button_common_enter_target_t": "Geben Sie ein Ziel ein, um die Navigation zu starten",
+  "button_common_enter_target": "Zieladresse eingeben",
+
   "button_common_app_settings_t": "App Einstellungen öffnen",
   "button_common_app_settings": "App Einstellungen",
 
-  "button_common_close_t": "Dialog schliessen",
+  "button_common_close_t": "Fenter schliessen",
   "button_common_close": "Schliessen",
 
   "button_common_save_t": "Speichern",
   "button_common_save": "Speichern",
+
+  "button_address_reload": "Aktualisieren",
+  "button_address_reload_t": "Aktualisieren der Addresse",
 
   "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
   "button_navigate_poi": "Navigation starten",
@@ -163,6 +169,8 @@
 
   "label_common_list": "Liste",
   "label_common_map": "Karte",
+
+  "label_address_load_fail": "Aktuelle Addresse konnte nicht bestimmt werden",
 
   "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
   "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",

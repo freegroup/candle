@@ -41,6 +41,7 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
                     alignment: Alignment.center,
                     child: Text(
                       widget.headline,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.displaySmall!.copyWith(color: color),
                     ),
@@ -57,6 +58,7 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
                     alignment: Alignment.center,
                     child: Text(
                       widget.subtitle,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headlineSmall!.copyWith(color: color),
                     ),
