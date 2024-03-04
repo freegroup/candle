@@ -8,6 +8,23 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Candle</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Candle File</string>
+			<key>CFBundleTypeRole</key>
+            <string>Editor</string>     
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>de.freegroup.candle.file</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>NSDocument</string>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,10 +43,13 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We do not ask for any permissions for photo library access. this is only related to lib dependencies.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Your app uses the motion sensor for compass functionality.</string>
+	
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    
+	<key>UIFileSharingEnabled</key>
+    <true/>
+
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need always access to your location if you wnat to record your route in the background</string>
 	<key>NSLocationUsageDescription</key>
@@ -38,6 +58,10 @@
 	<string>We need access to your location for gps navigation</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To enable voice input for easier navigation and to enhance accessibility for visually impaired or blind users.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Your app uses the motion sensor for compass functionality.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We do not ask for any permissions for photo library access. this is only related to lib dependencies.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Voice input to add VoicePins to any location where you are</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -63,11 +87,16 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.data</string>
+				<string>public.content</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Candle File</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>CandleFileType</string>
+			</array>
 			<key>UTTypeIdentifier</key>
-			<string>de.freegroup.candle</string>
+			<string>de.freegroup.candle.file</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -76,26 +105,9 @@
 				</array>
 				<key>public.mime-type</key>
 				<array>
-					<string>application/x-candle</string>
+					<string>application/candle</string>
 				</array>
 			</dict>
-		</dict>
-	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Candle File</string>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>candle</string>
-			</array>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>de.freegroup.candle</string>
-			</array>
 		</dict>
 	</array>
 </dict>

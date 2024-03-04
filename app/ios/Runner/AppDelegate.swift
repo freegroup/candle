@@ -17,31 +17,20 @@ import receive_sharing_intent
   override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     print("Application called to open URL: \(url)")
     
-    // Ensure the URL is a file URL and that the file has the correct extension
-    guard url.isFileURL && url.pathExtension == "candle" else {
-      return false
+    let sharingIntent = SwiftReceiveSharingIntentPlugin.instance
+    if url.pathExtension == "candle" {
+       print("matching URL schema")
+       return sharingIntent.application(app, open: url, options: options)
     }
+      
+    // For example load MSALPublicClientApplication
+    // return MSALPublicClientApplication.handleMSALResponse(url, sourceApplication: options[.sourceApplication] as? String)
 
-    // Start accessing a security-scoped resource.
-    guard url.startAccessingSecurityScopedResource() else {
-      // Handle the failure here if you can't access the resource.
-      return false
-    }
+    // Cancel url handling
+    // return false
 
-    // Your app should read the file and process the contents.
-    do {
-      let fileData = try Data(contentsOf: url)
-      // Process the file data (e.g., pass to Flutter/Dart side for handling)
-    } catch {
-      print("Failed to read the file: \(error)")
-      url.stopAccessingSecurityScopedResource()
-      return false
-    }
-
-    // Stop accessing the security-scoped resource
-    url.stopAccessingSecurityScopedResource()
-
-    return true
+    // Proceed url handling for other Flutter libraries like uni_links
+    return super.application(app, open: url, options:options)
   }
 
   // Add any additional methods needed to process the file data as appropriate for your app.
