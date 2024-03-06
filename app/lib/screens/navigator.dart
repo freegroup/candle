@@ -315,6 +315,7 @@ class _ScreenState extends State<NavigatorScreen> {
 
   void _handleSharedFile(List<SharedMediaFile> sharedFiles) async {
     print("called.....");
+    print(sharedFiles);
     if (sharedFiles.isNotEmpty) {
       final sharedFile = sharedFiles.first;
       if (sharedFile.type == SharedMediaType.file) {
