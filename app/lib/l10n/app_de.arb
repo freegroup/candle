@@ -105,6 +105,9 @@
   "button_about_t": "Info über diese App",
   "button_about": "Info",
 
+  "button_wikipedia_t": "Wikipedia Artikel mit Bezug zu deiner aktuellen Position",
+  "button_wikipedia": "Wikipedia",
+
   "button_common_edit_t": "Eintrag bearbeiten",
   "button_common_edit": "Bearbeiten",
   
@@ -143,6 +146,8 @@
   "featureflag_compass_t": "Kompass auf der Übersicht aktivieren.",
   "featureflag_compass": "Kompass",
 
+  "featureflag_wikipedia_t": "Wikipedia auf der Übersicht aktivieren",
+  "featureflag_wikipedia": "Wikipedia",
 
   "featureflag_share_t": "Ort teilen auf der Übersicht aktivieren",
   "featureflag_share": "Ort teilen",
@@ -298,6 +303,9 @@
 
   "screen_header_voicepins_t": "Sprachnotizen mit einem Ort verknüpfen",
   "screen_header_voicepins": "Sprachnotizen",
+
+  "screen_header_wikipedia_t": "Wikipedia Artikel mit Bezug zu ihrem Standort",
+  "screen_header_wikipedia": "Wikipedia Artikel",
 
   "label_permissions_explain": "# Willkommen bei Candle!\n\nAls Navigations-App für Blinde und Sehbehinderte benötigen wir Zugriff auf Ihren Standort für präzise Navigation und Spracheingabe für eine bedienungsfreie Nutzung. Diese Berechtigungen sind für unsere Kernfunktionalität unerlässlich. Vielen Dank, dass Sie diese Berechtigungen aktivieren, um das volle Potenzial Ihrer Candle-Erfahrung zu nutzen.",
   "button_permissions_request": "Berechtigungen Zulassen",

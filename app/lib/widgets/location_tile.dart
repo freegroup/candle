@@ -72,8 +72,6 @@ class _WidgetState extends State<LocationAddressTile> {
     });
 
     _addressController.stream.listen((address) {
-      var l10n = AppLocalizations.of(context)!;
-
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LatLngCompassScreen(

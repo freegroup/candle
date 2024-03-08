@@ -297,11 +297,20 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
   }
 
   Widget _buildLoading(BuildContext context) {
-    AppLocalizations l10n = AppLocalizations.of(context)!;
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Semantics(
       label: l10n.label_common_loading_t,
-      child: Text(l10n.label_common_loading),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Use min to wrap content by size
+          children: [
+            const CircularProgressIndicator(),
+            SizedBox(height: 8), // Spacing between indicator and text
+            Text(l10n.label_common_loading_t), // Loading label text
+          ],
+        ),
+      ),
     );
   }
 

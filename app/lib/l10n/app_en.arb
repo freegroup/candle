@@ -159,6 +159,15 @@
   },
 
 
+  "screen_header_wikipedia_t": "Wikipedia articles related to your current location",
+  "@screen_header_wikipedia_t": {
+    "description": "Talkback for Wikipedia Article"
+  },
+  "screen_header_wikipedia": "Wikipedia Articles",
+  "@screen_header_wikipedia": {
+    "description": "Title for Wikipedia screen"
+  },
+
   "screen_header_voicepins_t": "VoicePins Screen",
   "@screen_header_voicepins_t": {
     "description": "Talkback for VoicePins"
@@ -972,6 +981,17 @@
     "description": "Title for share Featureflag"
   },
 
+
+  "featureflag_wikipedia_t": "Enable the Wikipedia Button",
+  "@featureflag_wikipedia_t": {
+    "description": "Talkback for Wikipedia Featureflag"
+  },
+  "featureflag_wikipedia": "Wikipedia",
+  "@featureflag_wikipedia": {
+    "description": "Title for wikipedia Featureflag"
+  },
+
+
   "featureflag_allwaysgps_t": "Allow GPS access even if app is closed",
   "@featureflag_allwaysgps_t": {
     "description": "Talkback for GPS Featureflag"
@@ -1096,6 +1116,16 @@
   "@button_settings": {
     "description": "Title for settings button"
   },
+
+  "button_wikipedia_t": "Wikipedia articles near by you",
+  "@button_wikipedia_t": {
+    "description": "Talkback for wikipedia Button"
+  },
+  "button_wikipedia": "Wikipedia",
+  "@button_wikipedia": {
+    "description": "Title for wikipedia button"
+  },
+
 
   "button_about_t": "About this App",
   "@button_about_t": {

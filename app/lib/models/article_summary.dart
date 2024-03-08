@@ -1,6 +1,6 @@
 import 'package:candle/utils/parse_html.dart';
 
-class SummaryModel {
+class ArticleSummary {
   int? pageid;
 
   int? ns;
@@ -9,7 +9,7 @@ class SummaryModel {
   String? description;
   String? descriptionsource;
 
-  SummaryModel({
+  ArticleSummary({
     this.pageid,
     this.ns,
     this.title,
@@ -18,7 +18,7 @@ class SummaryModel {
     this.descriptionsource,
   });
 
-  SummaryModel.fromJson(Map<String, dynamic> json) {
+  ArticleSummary.fromJson(Map<String, dynamic> json) {
     pageid = json['pageid'];
     ns = json['ns'];
     title = json['title'];

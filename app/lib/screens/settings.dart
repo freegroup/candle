@@ -42,6 +42,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
           _buildFeatureFlagToggle(AppFeatures.overviewCompass),
           _buildFeatureFlagToggle(AppFeatures.overviewLocation),
           _buildFeatureFlagToggle(AppFeatures.overviewRadar),
+          _buildFeatureFlagToggle(AppFeatures.overviewWikipedia),
           AppFeatures.betaRecording.isEnabled
               ? _buildFeatureFlagToggle(AppFeatures.overviewRecorder)
               : null,
@@ -140,6 +141,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
         return l10n.featureflag_location;
       case 'overviewShare':
         return l10n.featureflag_share;
+      case 'overviewWikipedia':
+        return l10n.featureflag_wikipedia;
       case 'allwaysAccessGps':
         return l10n.featureflag_allwaysgps;
       case 'vibrateDuringNavigation':

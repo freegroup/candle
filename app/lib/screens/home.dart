@@ -8,6 +8,7 @@ import 'package:candle/screens/compass.dart';
 import 'package:candle/screens/poi_radar.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/screens.dart';
+import 'package:candle/screens/wikipedia.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/utils/dialogs.dart';
@@ -51,6 +52,7 @@ class _ScreenState extends State<HomeScreen> {
           _buildTileButtonRecorder(l10n, context),
           _buildTileButtonRadar(l10n, context),
           _buildTileButtonShare(l10n, context),
+          _buildTileButtonWikipedia(l10n, context),
           _buildTileButtonAbout(l10n, context),
         ];
         List<Widget> filteredButtons =
@@ -95,6 +97,21 @@ class _ScreenState extends State<HomeScreen> {
       icon: const Icon(Icons.info, size: 80),
       onPressed: () async {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutScreen()));
+      },
+    );
+  }
+
+  Widget? _buildTileButtonWikipedia(AppLocalizations l10n, BuildContext context) {
+    if (!AppFeatures.overviewWikipedia.isEnabled) {
+      return null;
+    }
+    return TileButton(
+      title: l10n.button_wikipedia,
+      talkback: l10n.button_wikipedia_t,
+      icon: const Icon(Icons.school, size: 80),
+      onPressed: () async {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const WikipediaScreen()));
       },
     );
   }

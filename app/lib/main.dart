@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:candle/app.dart';
+import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/navigation_point.dart';
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/database.dart';
@@ -19,6 +20,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +28,7 @@ void main() async {
   await AppFeatures.initialize();
   await RecorderService.initialize();
   await initialService();
-
-  /*
+/*
   try {
     const scopes = ['email', 'openid'];
     var googleSignIn = GoogleSignIn(
@@ -60,8 +61,7 @@ void main() async {
       print('Stack trace: ${error.stacktrace}');
     }
   }
-  */
-
+*/
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

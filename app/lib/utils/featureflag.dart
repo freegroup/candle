@@ -58,6 +58,7 @@ class AppFeatures {
   static final overviewRecorder = FeatureFlag(userStateKey: 'overviewRecorder');
   static final overviewRadar = FeatureFlag(userStateKey: 'overviewRadar');
   static final overviewShare = FeatureFlag(userStateKey: 'overviewShare');
+  static final overviewWikipedia = FeatureFlag(userStateKey: 'overviewWikipedia');
   static final allwaysAccessGps =
       FeatureFlag(userStateKey: 'allwaysAccessGps', initialState: false);
 
@@ -91,6 +92,9 @@ class AppFeatures {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
     overviewShare.isEnabledListenable.addListener(() {
+      featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
+    });
+    overviewWikipedia.isEnabledListenable.addListener(() {
       featuresUpdateNotifier.value = !featuresUpdateNotifier.value;
     });
     allwaysAccessGps.isEnabledListenable.addListener(() {

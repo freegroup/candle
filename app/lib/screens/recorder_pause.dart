@@ -14,7 +14,7 @@ class RecorderPauseScreen extends StatefulWidget {
   State<RecorderPauseScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<RecorderPauseScreen>   with SemanticAnnouncer{
+class _ScreenState extends State<RecorderPauseScreen> with SemanticAnnouncer {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class CandleListTile extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final String? trailing;
+  final int maxLines;
+  final VoidCallback onTap;
+
   const CandleListTile({
     super.key,
     required this.title,
-    required this.subtitle,
-    this.trailing,
     required this.onTap,
+    this.subtitle,
+    this.trailing,
+    this.maxLines = 1,
   });
-
-  final String title;
-  final String subtitle;
-  final String? trailing;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +54,19 @@ class CandleListTile extends StatelessWidget {
                       children: [
                         Text(
                           title,
+                          maxLines: maxLines,
                           style: theme.textTheme.headlineSmall,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                            color: theme.primaryColor.withOpacity(0.5),
+                        if (subtitle != null) const SizedBox(height: 4),
+                        if (subtitle != null)
+                          Text(
+                            subtitle!,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: theme.primaryColor.withOpacity(0.5),
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
                       ],
                     ),
                   ),
