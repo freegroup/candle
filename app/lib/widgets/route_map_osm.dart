@@ -13,7 +13,7 @@ class RouteMapWidget extends BaseRouteMapWidget {
     super.marker1,
     super.marker2,
     super.zoom,
-    super.voicepins,
+    super.marker,
   });
 
   @override
@@ -46,7 +46,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
     List<LatLng> routePoints = widget.route == null
         ? []
         : widget.route!.points.map((navPoint) => navPoint.latlng()).toList();
-    List<Marker> voicePinMarkers = widget.voicepins.map((pin) {
+    List<Marker> voicePinMarkers = widget.marker.map((pin) {
       return Marker(
         width: 25.0,
         height: 25.0,

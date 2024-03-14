@@ -101,7 +101,6 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
 
   Widget _buildContent(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
-    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       appBar: CandleAppBar(

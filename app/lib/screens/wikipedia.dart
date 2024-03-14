@@ -12,6 +12,7 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:candle/widgets/marker_map_osm.dart';
+import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -140,8 +141,8 @@ class _ScreenState extends State<WikipediaScreen> with SemanticAnnouncer {
 
     return Scaffold(
       appBar: CandleAppBar(
-        title: Text(l10n.screen_header_locations),
-        talkback: l10n.screen_header_locations_t,
+        title: Text(l10n.screen_header_wikipedia),
+        talkback: l10n.screen_header_wikipedia_t,
         settingsEnabled: true,
       ),
       body: BackgroundWidget(

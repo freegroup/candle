@@ -1,20 +1,18 @@
 import 'dart:async';
 
+import 'package:candle/guidance/guidance.dart';
+import 'package:candle/guidance/simple.dart';
+import 'package:candle/models/latlng_provider.dart';
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
-import 'package:candle/models/voicepin.dart';
 import 'package:candle/services/compass.dart';
-import 'package:candle/services/database.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/router.dart';
-import 'package:candle/services/screen_wake.dart';
 import 'package:candle/theme_data.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/semantic.dart';
-import 'package:candle/utils/snackbar.dart';
-import 'package:candle/utils/vibrate.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:candle/widgets/route_map_osm.dart';
@@ -42,17 +40,14 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
   StreamSubscription<CompassEvent>? _compassSubscription;
   StreamSubscription<Position>? _locationSubscription;
 
+  late BaseGuidance _guidance;
   late Future<model.Route?> _stateRoute;
-  late Future<List<VoicePin>> _voicePins;
-  VoicePin? _lastAnnouncedVoicePin;
 
   int _currentMapRotation = 0;
   int _currentWaypointHeading = 0;
   int _distanceToTurnByTurnWaypoint = 0;
 
   int _distanceToTarget = 0;
-  // it is a oneTime toggle. Once the target is reached, it never gets back to "false"
-  bool targetReached = false;
 
   // the current location of the user given by the GPS signal
   late LatLng _currentLocation;
@@ -63,62 +58,68 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
   // this is the successor routing waypoint for the turn-by-turn instruction
   model.NavigationPoint? _nextTurnByTurnWaypoint;
 
-  // vibration handlnig
-  //
-  int lastVibratedIndex = -1;
-  bool _wasAligned = false;
+  int _currentWaypointSegmentIndex = -1;
   int _needleHeading = 0;
+
+  _ScreenState() {
+    _guidance = SimpleGuidance();
+  }
 
   @override
   void initState() {
     super.initState();
-    ScreenWakeService.keepOn(true);
 
-    _voicePins = DatabaseService.instance.allVoicePins();
+    _guidance.initialize(context);
+
     _stateRoute = widget.route != null
         ? Future(() => widget.route)
         : _calculateRoute(widget.source, widget.target);
     _currentLocation = widget.source;
     _updateWaypoints(_currentLocation);
-    _listenToLocationChanges();
+    _guidance.onRouteChange(context, _stateRoute);
+
+    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
+      log.e(err);
+    }).listen((newLocation) async {
+      _currentLocation = LatLng(newLocation.latitude, newLocation.longitude);
+      _updateWaypoints(_currentLocation);
+      _guidance.onLocationChange(context, _currentLocation);
+      if (context.mounted && _currentHeadingWaypoint != null) {
+        var route = await _stateRoute;
+        if (route == null) return;
+
+        var newWaypointDistance =
+            calculateDistance(_currentLocation, _currentTurnByTurnWaypoint!.latlng()).toInt();
+        var resumingOverallDistance =
+            route.calculateResumingLengthFromWaypoint(_currentHeadingWaypoint!).toInt() +
+                newWaypointDistance;
+        if (mounted &&
+            (newWaypointDistance != _distanceToTurnByTurnWaypoint ||
+                resumingOverallDistance != _distanceToTarget)) {
+          setState(() {
+            _distanceToTurnByTurnWaypoint = newWaypointDistance;
+            _distanceToTarget = resumingOverallDistance;
+          });
+        }
+      }
+    });
 
     CompassService.instance.initialize().then((_) {
       _compassSubscription = CompassService.instance.updates.handleError((dynamic err) {
         log.e(err);
       }).listen((compassEvent) async {
-        if (mounted && _currentHeadingWaypoint != null) {
-          var route = await _stateRoute;
-          if (route == null) return;
+        if (context.mounted && _currentHeadingWaypoint != null) {
           var waypointHeading =
               calculateNorthBearing(_currentLocation, _currentHeadingWaypoint!.latlng());
           var deviceHeading = (((compassEvent.heading ?? 0) + 360) % 360).toInt();
           var needleHeading = -(deviceHeading - waypointHeading);
-          bool currentlyAligned = _isAligned(deviceHeading, waypointHeading);
+          // ignore: use_build_context_synchronously
+          _guidance.onCompassChange(context, deviceHeading, waypointHeading);
 
-          if (currentlyAligned != _wasAligned) {
-            if (currentlyAligned) {
-              CandleVibrate.vibrateDuringNavigation(duration: 100, repeat: 2);
-            } else {
-              CandleVibrate.vibrateDuringNavigation(duration: 500);
-            }
-            _wasAligned = currentlyAligned;
-          }
-
-          var newDistance =
-              calculateDistance(_currentLocation, _currentTurnByTurnWaypoint!.latlng()).toInt();
-          var resumeDistance =
-              route.calculateResumingLengthFromWaypoint(_currentHeadingWaypoint!).toInt() +
-                  newDistance;
-
-          if (mounted &&
-              (deviceHeading != _currentMapRotation ||
-                  newDistance != _distanceToTurnByTurnWaypoint ||
-                  resumeDistance != _distanceToTarget)) {
+          if (mounted && (deviceHeading != _currentMapRotation)) {
             setState(() {
               _currentMapRotation = deviceHeading;
               _currentWaypointHeading = waypointHeading;
-              _distanceToTurnByTurnWaypoint = newDistance;
-              _distanceToTarget = resumeDistance;
               _needleHeading = needleHeading;
             });
           }
@@ -129,52 +130,39 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AppLocalizations l10n = AppLocalizations.of(context)!;
       announceOnShow(l10n.navigation_announcement_hint);
-      //announceOnShow(l10n.screen_header_navigation_poi_t);
     });
   }
 
   @override
   void dispose() {
     super.dispose();
-    ScreenWakeService.keepOn(false);
     _compassSubscription?.cancel();
     _locationSubscription?.cancel();
+    _guidance.cancel();
   }
 
   Future<model.Route?> _calculateRoute(LatLng start, LatLng target) async {
     try {
       var geo = Provider.of<RoutingProvider>(context, listen: false).service;
-      lastVibratedIndex = -1;
+      // do not remove the "await"...the catch block isn't working if we do not
+      // await the result ...
       return await geo.getPedestrianRoute(start, target);
     } catch (e) {
       log.e("Error fetching route: $e");
-      return null; // Or handle the error as needed
+      return null;
     }
   }
 
-  bool _isAligned(int mapRotation, waypointHeading) {
-    var diff = mapRotation - waypointHeading;
-    return (diff.abs() <= 8) || (diff.abs() >= 352);
-  }
-
-  void _listenToLocationChanges() {
-    _locationSubscription = LocationService.instance.listen.handleError((dynamic err) {
-      log.e(err);
-    }).listen((newLocation) async {
-      _currentLocation = LatLng(newLocation.latitude, newLocation.longitude);
-      _updateWaypoints(_currentLocation);
-      _announceVoicePin(_currentLocation);
-    });
-  }
-
   void _updateWaypoints(LatLng location) async {
-    if (targetReached == true) {
+    if (_guidance.targetReached == true) {
       return;
     }
 
     final route = await _stateRoute;
     if (route == null) {
       _stateRoute = _calculateRoute(location, widget.target);
+      // ignore: use_build_context_synchronously
+      _guidance.onRouteChange(context, _stateRoute);
       // try to find a wayoint in the next iteration
       return;
     }
@@ -188,6 +176,8 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     if (distance > 15) {
       log.d("Closest Segment is to far ($distance)- recalculate route....");
       _stateRoute = _calculateRoute(location, widget.target);
+      // ignore: use_build_context_synchronously
+      _guidance.onRouteChange(context, _stateRoute);
       // try to find a wayoint in the next iteration
       return;
     }
@@ -207,20 +197,18 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
             kMinDistanceForNextWaypoint) {
       startCoordinateIndex = nextCoordinateIndex;
       nextCoordinateIndex++;
-      log.d(
-          "Coordinate index changed because of closer segment startCoordinateIndex:$startCoordinateIndex");
+      log.d("index changed because of closer segment startCoordinateIndex:$startCoordinateIndex");
     }
 
-    if (startCoordinateIndex > lastVibratedIndex) {
-      // Vibrate and update lastVibratedIndex
-      CandleVibrate.vibrateDuringNavigation(
-          duration: 100); // Assuming you have a vibration function
-      lastVibratedIndex = startCoordinateIndex;
+    if (startCoordinateIndex > _currentWaypointSegmentIndex) {
+      _currentWaypointSegmentIndex = startCoordinateIndex;
 
       if (startCoordinateIndex < route.points.length - 1) {
         // index the next point of the first segment
         startCoordinateIndex++;
         _currentHeadingWaypoint = route.points[startCoordinateIndex];
+        // ignore: use_build_context_synchronously
+        _guidance.onWaypointChange(context, _currentHeadingWaypoint);
 
         // set some good default
         _currentTurnByTurnWaypoint = _currentHeadingWaypoint;
@@ -242,7 +230,8 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
                 (kMinDistanceForNextWaypoint * 2))) {
           // it seems that we have "almost" reached the target because
           // the next target points are pointing to the last rote points.
-          targetReached = true;
+          // ignore: use_build_context_synchronously
+          _guidance.setTargetReached(context);
         }
 
         // Now we have three wayoints we can calculate the values for the turn-by-turn
@@ -250,28 +239,10 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
         // - how far the next waypoint is.
         // - what the angle to turn if we reach this waypoint.
 
-        // update the UI
-        if (mounted) setState(() {});
+        if (context.mounted) setState(() {});
       } else {
-        targetReached = true;
-      }
-    }
-  }
-
-  void _announceVoicePin(LatLng location) async {
-    var pins = await _voicePins;
-    if (pins.isNotEmpty) {
-      pins.sort((a, b) {
-        var distA = calculateDistance(a.latlng(), location);
-        var distB = calculateDistance(b.latlng(), location);
-        return distA.compareTo(distB);
-      });
-      var pin = pins.first;
-      if (calculateDistance(pin.latlng(), location) < kMinDistanceForVoicePinAnnouncement) {
-        if (mounted && pin != _lastAnnouncedVoicePin) {
-          showSnackbar(context, pin.memo);
-          _lastAnnouncedVoicePin = pin;
-        }
+        // ignore: use_build_context_synchronously
+        _guidance.setTargetReached(context);
       }
     }
   }
@@ -308,8 +279,8 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
           } else if (routeSnapshot.hasError) {
             return Center(child: Text('Error fetching route: ${routeSnapshot.error}'));
           } else if (routeSnapshot.hasData) {
-            return FutureBuilder<List<VoicePin>>(
-              future: _voicePins,
+            return FutureBuilder<List<LatLngProvider>>(
+              future: _guidance.getMarker(),
               builder: (context, pinsSnapshot) {
                 if (pinsSnapshot.connectionState == ConnectionState.waiting) {
                   // Optionally, return an empty container or a loading spinner
@@ -326,7 +297,7 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
                     currentWaypoint: _currentHeadingWaypoint?.latlng(),
                     marker1: _currentTurnByTurnWaypoint?.latlng(),
                     marker2: _nextTurnByTurnWaypoint?.latlng(),
-                    voicepins: pinsSnapshot.data!,
+                    marker: pinsSnapshot.data!,
                   );
                 }
               },
@@ -339,10 +310,11 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
     );
   }
 
+  // Separate method to build the info pane, isolated from other state changes.
   Widget _buildBottomPane(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    bool isAligned = _isAligned(_currentMapRotation, _currentWaypointHeading);
+    bool isAligned = _guidance.isAligned(_currentMapRotation, _currentWaypointHeading);
     Color? backgroundColor = isAligned ? theme.positiveColor : null;
 
     // The "Background color layer" is required to avoid a complete TalkBack
@@ -359,7 +331,7 @@ class _ScreenState extends State<LatLngRouteScreen> with SemanticAnnouncer {
           width: double.infinity,
         ),
         // Content layer
-        targetReached
+        _guidance.targetReached
             ? const TargetReachedWidget()
             : TurnByTurnInstructionWidget(
                 currentCoord: _currentLocation,

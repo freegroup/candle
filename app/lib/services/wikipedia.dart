@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:candle/models/article_ref.dart';
 import 'package:candle/models/article_summary.dart';
@@ -7,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
+// https://www.mediawiki.org/wiki/Extension:GeoData#API
+//
 // action=query&list=geosearch&gsradius=10000&gscoord=37.786971%7C-122.399677
 class WikipediaService {
   /// The searchQuery is for searching any type for query.
@@ -32,11 +33,11 @@ class WikipediaService {
       // Get the current locale from the context
       Locale currentLocale = Localizations.localeOf(context);
       // Determine the base URL based on the user's language
-      String _baseUrl = _getBaseUrlForLocale(currentLocale);
+      String baseUrl = _getBaseUrlForLocale(currentLocale);
 
       final response = await http.get(Uri.parse(
-          "$_baseUrl?action=query&uselang=de&list=geosearch&gsprop=type&format=json&gsradius=$radius&gscoord=${location.latitude}%7C${location.longitude}"));
-      print(response.body);
+          "$baseUrl?action=query&uselang=de&list=geosearch&gsprop=type&format=json&gsradius=$radius&gscoord=${location.latitude}%7C${location.longitude}"));
+
       final jsonResult = json.decode(response.body);
       final articlesJson = jsonResult['query']['geosearch'] as List;
       List<ArticleRef> articles = articlesJson.map((articleJson) {
