@@ -1,0 +1,122 @@
+- name: Set up the Candle server
+  hosts: candle
+
+  vars:
+    # Bumping node is a one-line change (same pattern as electra/ansible).
+    node_major: 24
+
+  tasks:
+
+  # No `password:` on purpose: the account is created locked. Nobody logs in as
+  # "candle"; it only runs the API, deployments run as root via ansible.
+  - name: Create the user "candle" without admin access
+    user:
+      name: candle
+      shell: /bin/bash
+
+  - name: Ensure the apt keyring directory exists
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: '0755'
+
+  # Key in /etc/apt/keyrings, signed onto the nodesource repo only (see electra).
+  - name: Add the nodesource apt key
+    get_url:
+      url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+      dest: /etc/apt/keyrings/nodesource.asc
+      mode: '0644'
+
+  - name: Find leftover nodesource repo files
+    find:
+      paths: /etc/apt/sources.list.d
+      patterns: "*nodesource*"
+    register: nodesource_lists
+
+  - name: Remove nodesource repo files of other node versions
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    loop: "{{ nodesource_lists.files }}"
+    when: item.path is not search("node_" ~ node_major ~ "_x")
+
+  # "nodistro": nodesource serves one suite for all Debian/Ubuntu releases.
+  - name: Install the nodejs repo
+    apt_repository:
+      repo: "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_{{ node_major }}.x nodistro main"
+      filename: "nodesource_node_{{ node_major }}_x"
+      state: present
+      update_cache: yes
+
+  # latest: security releases of the chosen major are wanted on every run.
+  - name: Install / upgrade nodejs
+    apt:
+      name: nodejs
+      state: latest
+
+  # present, NOT latest: re-running this playbook on a live server must not
+  # upgrade the rest as a side effect. Security updates come from
+  # unattended-upgrades below.
+  - name: Install required packages
+    apt:
+      name:
+        - git
+        - nginx
+        - certbot
+        - ufw
+        - unattended-upgrades
+      state: present
+
+  - name: Install PM2 NodeJS Process manager
+    community.general.npm:
+      name: pm2
+      global: yes
+
+  - name: Enable automatic security updates
+    copy:
+      dest: /etc/apt/apt.conf.d/20auto-upgrades
+      content: |
+        APT::Periodic::Update-Package-Lists "1";
+        APT::Periodic::Unattended-Upgrade "1";
+      mode: '0644'
+
+  # Access is by SSH key only (the key is set when creating the server in the
+  # Hetzner console).
+  - name: Disable SSH password login
+    copy:
+      dest: /etc/ssh/sshd_config.d/10-candle.conf
+      content: |
+        PasswordAuthentication no
+        KbdInteractiveAuthentication no
+        PermitRootLogin prohibit-password
+      mode: '0644'
+    register: sshd_config
+
+  - name: Reload SSH
+    systemd:
+      name: ssh
+      state: reloaded
+    when: sshd_config.changed
+
+  # SSH first, then enable: enabling ufw without the SSH rule would lock us out.
+  # The API itself listens on 127.0.0.1:8080 only and is reached through nginx.
+  - name: Allow SSH, HTTP and HTTPS through the firewall
+    community.general.ufw:
+      rule: allow
+      port: "{{ item }}"
+      proto: tcp
+    loop: ['22', '80', '443']
+
+  - name: Enable the firewall (deny everything else)
+    community.general.ufw:
+      state: enabled
+      policy: deny
+
+  - name: Create the ACME challenge directory
+    file:
+      path: /var/www/letsencrypt
+      state: directory
+      mode: '0755'
+
+  - name: Configure nginx
+    include_tasks: nginx_site.yaml

@@ -1,0 +1,74 @@
+- name: Deploy the Candle API
+  hosts: candle
+
+  tasks:
+
+  - name: Git checkout candle
+    become: true
+    become_user: candle
+    ansible.builtin.git:
+      repo: 'https://github.com/freegroup/candle.git'
+      dest: /home/candle/candle
+      force: true
+      update: true
+
+  - name: Install packages in /server
+    become: true
+    become_user: candle
+    community.general.npm:
+      path: /home/candle/candle/server
+      ci: true
+      production: true
+
+  # The PRODUCTION secrets (git-ignored, see README). The server does not store
+  # anything else: a rebuilt server only needs this file.
+  - name: Copy secret file
+    ansible.builtin.copy:
+      src: secrets.env
+      dest: /home/candle/candle/server/.env
+      owner: candle
+      group: candle
+      mode: '0600'
+
+  - name: Check for a Google service account key
+    stat:
+      path: "{{ playbook_dir }}/google-service-account.json"
+    delegate_to: localhost
+    become: false
+    register: service_account
+
+  - name: Copy the Google service account key (Play Integrity)
+    ansible.builtin.copy:
+      src: google-service-account.json
+      dest: /home/candle/google-service-account.json
+      owner: candle
+      group: candle
+      mode: '0600'
+    when: service_account.stat.exists
+
+  # startOrRestart: starts on the first deployment, restarts afterwards.
+  - name: Run the application via PM2 ecosystem configuration
+    become: true
+    become_user: candle
+    command: pm2 startOrRestart ./ecosystem.config.cjs
+    args:
+      chdir: /home/candle/candle/server
+
+  # Without these two, pm2 forgets the process after a reboot of the server.
+  - name: Save the PM2 process list
+    become: true
+    become_user: candle
+    command: pm2 save
+
+  - name: Start PM2 on boot
+    command: pm2 startup systemd -u candle --hp /home/candle
+    args:
+      creates: /etc/systemd/system/pm2-candle.service
+
+  - name: Wait until the API answers
+    uri:
+      url: http://127.0.0.1:8080/health
+    register: api
+    retries: 10
+    delay: 2
+    until: api.status == 200

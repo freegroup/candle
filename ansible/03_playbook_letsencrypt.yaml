@@ -1,0 +1,28 @@
+- name: Request the TLS certificate
+  hosts: candle
+
+  tasks:
+
+  # certonly --webroot: certbot only fetches the certificate, the nginx config
+  # stays ours (see nginx_site.yaml). --keep-until-expiring makes a re-run a
+  # no-op instead of hitting the Let's Encrypt rate limit.
+  - name: Request the certificate
+    command: >
+      certbot certonly --webroot -w /var/www/letsencrypt
+      -d {{ candle_domain }} -m {{ letsencrypt_email }}
+      --agree-tos --non-interactive --keep-until-expiring
+    register: certbot
+    changed_when: "'Successfully received certificate' in certbot.stdout"
+
+  # The certbot package renews automatically (systemd timer); nginx has to
+  # reload afterwards to pick up the new certificate.
+  - name: Reload nginx after each renewal
+    copy:
+      dest: /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+      content: |
+        #!/bin/sh
+        systemctl reload nginx
+      mode: '0755'
+
+  - name: Enable HTTPS in nginx
+    include_tasks: nginx_site.yaml

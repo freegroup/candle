@@ -1,0 +1,38 @@
+# Shared by 01 (setup) and 03 (letsencrypt): writes the nginx site, with the
+# HTTPS server only once a certificate exists. Keeping the whole config in the
+# template means re-running any playbook never loses the TLS part (certbot's
+# nginx plugin would edit the file in place and the next run would undo it).
+- name: Check for an existing certificate
+  stat:
+    path: "/etc/letsencrypt/live/{{ candle_domain }}/fullchain.pem"
+  register: certificate
+
+- name: Write the nginx site
+  template:
+    src: templates/candle.nginx.conf.j2
+    dest: /etc/nginx/sites-available/candle
+    mode: '0644'
+  vars:
+    has_certificate: "{{ certificate.stat.exists }}"
+  register: nginx_site
+
+- name: Enable the nginx site
+  file:
+    src: /etc/nginx/sites-available/candle
+    dest: /etc/nginx/sites-enabled/candle
+    state: link
+
+- name: Disable the nginx default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Validate the nginx configuration
+  command: nginx -t
+  changed_when: false
+
+- name: Reload nginx
+  systemd:
+    name: nginx
+    state: reloaded
+  when: nginx_site.changed
