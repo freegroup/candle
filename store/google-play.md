@@ -98,7 +98,13 @@ Found a bug or have an idea? We welcome feedback – especially from blind and v
 ### Kategorie und Kontakt (Store-Einstellungen)
 
 - App-Kategorie: **Karten & Navigation**
-- Tags: Navigation, Barrierefreiheit
+- Tags: bis zu 5 aus Googles vorgegebener Liste (Store-Einstellungen → Tags verwalten), in dieser
+  Reihenfolge danach suchen und nehmen, was es gibt:
+  1. Navigation
+  2. Barrierefreiheit / Bedienungshilfen
+  3. Fußgänger / Zu Fuß
+  4. Kompass
+  5. Karten / Orte in der Nähe
 - E-Mail: *Adresse des Entwicklerkontos*
 - Website: `https://freegroup.github.io/candle/`
 
