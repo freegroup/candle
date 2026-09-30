@@ -1,7 +1,7 @@
 name: candle
 description: "Accessible Navigation App"
 publish_to: 'none'
-version: 1.4.9+46
+version: 1.4.10+47
 
 environment:
   sdk: ^3.12.0

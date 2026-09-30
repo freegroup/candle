@@ -242,7 +242,8 @@ class _ScreenState extends State<NavigatorScreen> {
     ];
     // All labels get the same number of lines: two for every tab as soon as one label
     // (at the current system font size) does not fit on a single line.
-    const labelStyle = TextStyle(fontSize: 12);
+    // Same style as the Text below gets from the Material default, so the measurement matches.
+    final labelStyle = theme.textTheme.bodyMedium!.merge(const TextStyle(fontSize: 12));
     final tabWidth = MediaQuery.sizeOf(context).width /
         navBarItems.where((item) => item.isVisible).length;
     var labelLines = 1;
@@ -253,7 +254,7 @@ class _ScreenState extends State<NavigatorScreen> {
         textDirection: Directionality.of(context),
         textScaler: MediaQuery.textScalerOf(context),
         maxLines: 2,
-      )..layout(maxWidth: tabWidth);
+      )..layout(maxWidth: tabWidth - 2);
       labelLines = max(labelLines, painter.computeLineMetrics().length);
       lineHeight = painter.preferredLineHeight;
       painter.dispose();
