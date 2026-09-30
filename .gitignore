@@ -60,3 +60,4 @@ app.*.map.json
 node_modules/
 ansible/secrets.env
 ansible/google-service-account.json
+ansible/google-play-publisher.json
