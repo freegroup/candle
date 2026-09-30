@@ -1,6 +1,14 @@
 {
     "configurations": [
         {
+            "name": "candle (Flutter app)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "app",
+            "program": "lib/main.dart",
+            "toolArgs": ["--dart-define-from-file=env/dev.json"]
+        },
+        {
             "name": "Python: File",
             "type": "python",
             "request": "launch",
