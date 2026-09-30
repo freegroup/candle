@@ -298,8 +298,9 @@ class _ScreenState extends State<NavigatorScreen> {
                               : const BoxDecoration(
                                   color: Colors.transparent,
                                 ),
+                          padding: const EdgeInsets.only(top: 8),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(
                                 item.icon.icon,
@@ -309,6 +310,7 @@ class _ScreenState extends State<NavigatorScreen> {
                               ExcludeSemantics(
                                 child: Text(
                                   item.label,
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: isSelected ? theme.primaryColor : theme.cardColor,
                                     fontSize: 12,
