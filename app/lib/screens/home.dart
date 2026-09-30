@@ -5,7 +5,7 @@ import 'package:candle/icons/poi_favorite.dart';
 import 'package:candle/models/location_address.dart';
 import 'package:candle/screens/about.dart';
 import 'package:candle/screens/compass.dart';
-import 'package:candle/screens/poi_radar.dart';
+import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/screens.dart';
 import 'package:candle/screens/wikipedia.dart';
@@ -183,7 +183,7 @@ class _ScreenState extends State<HomeScreen> {
       talkback: l10n.button_radar_t,
       icon: const Icon(Icons.radar_outlined, size: 80),
       onPressed: () async {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PoiRadarScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => buildRadarScreen()));
       },
     );
   }

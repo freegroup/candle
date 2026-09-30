@@ -16,7 +16,7 @@ void main() {
   test('builds one around-statement per filter', () async {
     final overpass = FakeOverpassClient(const Result.ok([]));
     await PoiRepositoryRemote(overpass: overpass)
-        .findNearby(PoiCategory.cafes, center, radiusInMeter: 300);
+        .findNearby({PoiCategory.cafes}, center, radiusInMeter: 300);
 
     expect(overpass.queries.single, contains('node["amenity"="cafe"](around:300,52.5163,13.3777);'));
     expect(overpass.queries.single, contains('out center;'));
@@ -41,7 +41,7 @@ void main() {
       el(7, 52.5168, {'highway': 'crossing'}),
     ]));
 
-    final result = await PoiRepositoryRemote(overpass: overpass).findNearby(PoiCategory.cafes, center);
+    final result = await PoiRepositoryRemote(overpass: overpass).findNearby({PoiCategory.cafes}, center);
     final pois = (result as Ok<List<Poi>>).value;
 
     expect(pois.map((p) => p.id), [4, 5, 6, 7, 2, 1]);
@@ -61,13 +61,13 @@ void main() {
       el(4, 52.5172, {'highway': 'crossing'}),
     ]));
 
-    final result = await PoiRepositoryRemote(overpass: overpass).findNearby(PoiCategory.cafes, center);
+    final result = await PoiRepositoryRemote(overpass: overpass).findNearby({PoiCategory.cafes}, center);
     expect((result as Ok<List<Poi>>).value.map((p) => p.id), [2, 3, 4]);
   });
 
   test('passes errors through', () async {
     final overpass = FakeOverpassClient(Result.error(Exception('down')));
-    final result = await PoiRepositoryRemote(overpass: overpass).findNearby(PoiCategory.cafes, center);
+    final result = await PoiRepositoryRemote(overpass: overpass).findNearby({PoiCategory.cafes}, center);
     expect(result, isA<Error<List<Poi>>>());
   });
 }

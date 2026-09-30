@@ -9,7 +9,7 @@ import 'package:candle/screens/import_location.dart';
 import 'package:candle/screens/import_voicepin.dart';
 import 'package:candle/screens/locations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
-import 'package:candle/screens/poi_radar.dart';
+import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/routes.dart';
 import 'package:candle/screens/voicepins.dart';
@@ -205,7 +205,7 @@ class _ScreenState extends State<NavigatorScreen> {
       case 4:
         return const PoiCategoriesScreen();
       case 5:
-        return PoiRadarScreen();
+        return buildRadarScreen();
       default:
         return Container(); // Placeholder for undefined index
     }

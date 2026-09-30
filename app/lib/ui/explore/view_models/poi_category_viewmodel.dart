@@ -55,7 +55,8 @@ class PoiCategoryViewModel extends ChangeNotifier {
     if (position == null) return Result.error(Exception('No GPS position available'));
     _location = position;
 
-    final result = await _poiRepository.findNearby(category, position, radiusInMeter: radiusInMeter);
+    final result =
+        await _poiRepository.findNearby({category}, position, radiusInMeter: radiusInMeter);
     switch (result) {
       case Ok(:final value):
         _pois = value;

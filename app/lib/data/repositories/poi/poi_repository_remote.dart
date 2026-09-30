@@ -32,12 +32,14 @@ class PoiRepositoryRemote implements PoiRepository {
 
   @override
   Future<Result<List<Poi>>> findNearby(
-    PoiCategory category,
+    Set<PoiCategory> categories,
     LatLng center, {
     int radiusInMeter = 2000,
   }) async {
     final around = '(around:$radiusInMeter,${center.latitude},${center.longitude})';
-    final statements = filters[category]!.map((f) => '$f$around;').join('\n');
+    final statements = [
+      for (final category in categories) ...filters[category]!.map((f) => '$f$around;'),
+    ].join('\n');
     final result = await _overpass.query('[out:json][timeout:25];\n(\n$statements\n);\nout center;');
 
     switch (result) {

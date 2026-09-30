@@ -8,11 +8,13 @@ class FakePoiRepository implements PoiRepository {
 
   Result<List<Poi>> result;
   int calls = 0;
+  Set<PoiCategory>? lastCategories;
 
   @override
-  Future<Result<List<Poi>>> findNearby(PoiCategory category, LatLng center,
+  Future<Result<List<Poi>>> findNearby(Set<PoiCategory> categories, LatLng center,
       {int radiusInMeter = 2000}) async {
     calls++;
+    lastCategories = categories;
     return result;
   }
 }
