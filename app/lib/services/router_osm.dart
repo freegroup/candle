@@ -1,12 +1,17 @@
 import 'dart:convert';
 
-import 'package:candle/auth/secrets.dart';
 import 'package:candle/models/navigation_point.dart' as model;
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/router.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+
+// openrouteservice.org API key, passed at build time:
+//   flutter run --dart-define-from-file=env/dev.json
+// Note: a key compiled into the app can be extracted. It moves to the
+// Candle server in a later phase.
+const String _orsApiKey = String.fromEnvironment('ORS_API_KEY');
 
 class OSMRoutingService implements RoutingService {
   @override
@@ -17,7 +22,7 @@ class OSMRoutingService implements RoutingService {
       var url = 'https://api.openrouteservice.org/v2/directions/foot-walking/geojson';
       var headers = {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $OPENSTREETMAP_API_KEY'
+        'Authorization': 'Bearer $_orsApiKey'
       };
       var body = json.encode({
         'coordinates': [

@@ -1,1 +1,40 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  # Legacy code that is being migrated to the new architecture (data/, domain/, ui/).
+  # Remove an entry as soon as its files are migrated; the list must be empty at the end.
+  exclude:
+    - lib/app.dart
+    - lib/main.dart
+    - lib/theme_data.dart
+    - lib/guidance/**
+    - lib/icons/**
+    - lib/l10n/helper.dart
+    - lib/models/**
+    - lib/screens/**
+    - lib/services/**
+    - lib/utils/colors.dart
+    - lib/utils/configuration.dart
+    - lib/utils/dialogs.dart
+    - lib/utils/featureflag.dart
+    - lib/utils/files.dart
+    - lib/utils/geo.dart
+    - lib/utils/global_logger.dart
+    - lib/utils/parse_html.dart
+    - lib/utils/semantic.dart
+    - lib/utils/shadow.dart
+    - lib/utils/snackbar.dart
+    - lib/utils/vibrate.dart
+    - lib/widgets/**
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - cancel_subscriptions
+    - close_sinks
+    - unawaited_futures
