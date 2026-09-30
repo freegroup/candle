@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -10,11 +11,9 @@ import 'package:candle/screens/import_voicepin.dart';
 import 'package:candle/screens/locations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/ui/radar/widgets/radar_screen.dart';
-import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/routes.dart';
 import 'package:candle/screens/voicepins.dart';
 import 'package:candle/services/location.dart';
-import 'package:candle/services/recorder.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -175,20 +174,12 @@ class _ScreenState extends State<NavigatorScreen> {
   }
 
   Widget _buildContent(BuildContext context) {
-    // Open the Route Recording Screen again if the recording is still running. This
-    // is the default if we allow "locationAllways" and terminate the app. In this
-    // case the recording continues even if the app is closed.
-    //
-    if (RecorderService.isRecordingMode) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const RecorderControllerScreen()));
-      });
-    }
-
     return Scaffold(
       body: _buildSingleScreen(currentIndex),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: ValueListenableBuilder(
+        valueListenable: AppFeatures.featuresUpdateNotifier,
+        builder: (context, _, __) => _buildBottomNavigationBar(),
+      ),
     );
   }
 
@@ -216,6 +207,58 @@ class _ScreenState extends State<NavigatorScreen> {
     ThemeData theme = Theme.of(context);
     final MaterialLocalizations m10n = MaterialLocalizations.of(context);
 
+    List<ButtonBarEntry> navBarItems = [
+      ButtonBarEntry(
+        label: l10n.buttonbar_home,
+        talkback: l10n.buttonbar_home_t,
+        icon: const Icon(Icons.view_module),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_locations,
+        talkback: l10n.buttonbar_locations_t,
+        icon: const Icon(Icons.location_on),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_routes,
+        talkback: l10n.buttonbar_routes_t,
+        icon: const Icon(Icons.route),
+        isVisible: AppFeatures.betaRecording.isEnabled,
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_voicepins,
+        talkback: l10n.buttonbar_voicepins_t,
+        icon: const Icon(Icons.mic),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_explore,
+        talkback: l10n.buttonbar_explore_t,
+        icon: const Icon(Icons.travel_explore),
+      ),
+      ButtonBarEntry(
+        label: l10n.buttonbar_radar,
+        talkback: l10n.buttonbar_radar_t,
+        icon: const Icon(Icons.radar_outlined),
+      ),
+    ];
+    // All labels get the same number of lines: two for every tab as soon as one label
+    // (at the current system font size) does not fit on a single line.
+    const labelStyle = TextStyle(fontSize: 12);
+    final tabWidth = MediaQuery.sizeOf(context).width /
+        navBarItems.where((item) => item.isVisible).length;
+    var labelLines = 1;
+    var lineHeight = 0.0;
+    for (final item in navBarItems.where((item) => item.isVisible)) {
+      final painter = TextPainter(
+        text: TextSpan(text: item.label, style: labelStyle),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+        maxLines: 2,
+      )..layout(maxWidth: tabWidth);
+      labelLines = max(labelLines, painter.computeLineMetrics().length);
+      lineHeight = painter.preferredLineHeight;
+      painter.dispose();
+    }
+
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -225,42 +268,10 @@ class _ScreenState extends State<NavigatorScreen> {
       child: BottomAppBar(
         color: theme.primaryColor,
         padding: EdgeInsets.zero,
+        height: 8 + 40 + labelLines * lineHeight + 8,
         child: ValueListenableBuilder(
           valueListenable: AppFeatures.featuresUpdateNotifier,
           builder: (context, _, __) {
-            List<ButtonBarEntry> navBarItems = [
-              ButtonBarEntry(
-                label: l10n.buttonbar_home,
-                talkback: l10n.buttonbar_home_t,
-                icon: const Icon(Icons.view_module),
-              ),
-              ButtonBarEntry(
-                label: l10n.buttonbar_locations,
-                talkback: l10n.buttonbar_locations_t,
-                icon: const Icon(Icons.location_on),
-              ),
-              ButtonBarEntry(
-                label: l10n.buttonbar_routes,
-                talkback: l10n.buttonbar_routes_t,
-                icon: const Icon(Icons.route),
-                isVisible: AppFeatures.betaRecording.isEnabled,
-              ),
-              ButtonBarEntry(
-                label: l10n.buttonbar_voicepins,
-                talkback: l10n.buttonbar_voicepins_t,
-                icon: const Icon(Icons.mic),
-              ),
-              ButtonBarEntry(
-                label: l10n.buttonbar_explore,
-                talkback: l10n.buttonbar_explore_t,
-                icon: const Icon(Icons.travel_explore),
-              ),
-              ButtonBarEntry(
-                label: l10n.buttonbar_radar,
-                talkback: l10n.buttonbar_radar_t,
-                icon: const Icon(Icons.radar_outlined),
-              ),
-            ];
             var visibleLength = navBarItems.where((item) => item.isVisible).length;
             var visibleIndex = 0;
             return Row(
@@ -311,9 +322,10 @@ class _ScreenState extends State<NavigatorScreen> {
                                 child: Text(
                                   item.label,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: labelStyle.copyWith(
                                     color: isSelected ? theme.primaryColor : theme.cardColor,
-                                    fontSize: 12,
                                   ),
                                 ),
                               ),

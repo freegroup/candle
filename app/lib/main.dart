@@ -45,6 +45,8 @@ Future<void> initialService() async {
       onStart: onStart,
       isForegroundMode: isForeground,
       autoStart: false,
+      // Only a recording started by the user may run the service, never a phone reboot.
+      autoStartOnBoot: false,
       foregroundServiceTypes: [AndroidForegroundType.location],
     ),
   );
