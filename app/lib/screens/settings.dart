@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:candle/screens/permissions_screen_allwaysgps.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:candle/utils/semantic.dart';
@@ -47,13 +49,17 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
               ? _buildFeatureFlagToggle(AppFeatures.overviewRecorder)
               : null,
           _buildFeatureFlagToggle(AppFeatures.overviewShare),
-          const SizedBox(height: 40),
-          Semantics(
-            label: l10n.settings_header_gps_t,
-            child: ExcludeSemantics(
-                child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge)),
-          ),
-          _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
+          // Android: no background location (Google Play policy); recording keeps
+          // the screen on instead. TODO(step 4): foreground service for recording.
+          if (!Platform.isAndroid) ...[
+            const SizedBox(height: 40),
+            Semantics(
+              label: l10n.settings_header_gps_t,
+              child: ExcludeSemantics(
+                  child: Text(l10n.settings_header_gps, style: theme.textTheme.headlineLarge)),
+            ),
+            _buildFeatureFlagToggle(AppFeatures.allwaysAccessGps),
+          ],
           const SizedBox(height: 40),
           Semantics(
             label: l10n.settings_header_common_t,

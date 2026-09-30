@@ -55,6 +55,26 @@
     args:
       chdir: /home/candle/candle/server
 
+  # Logs contain IP addresses: keep them 14 days at most (see the privacy
+  # policy in docs/index.html).
+  - name: Install pm2 log rotation
+    become: true
+    become_user: candle
+    command: pm2 install pm2-logrotate
+    args:
+      creates: /home/candle/.pm2/modules/pm2-logrotate
+
+  - name: Rotate logs daily, keep 14 days
+    become: true
+    become_user: candle
+    command: "pm2 set pm2-logrotate:{{ item }}"
+    loop:
+      - "rotateInterval '0 0 * * *'"
+      - "retain 14"
+      - "max_size 20M"
+      - "compress true"
+    changed_when: false
+
   # Without these two, pm2 forgets the process after a reboot of the server.
   - name: Save the PM2 process list
     become: true
