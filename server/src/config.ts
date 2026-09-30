@@ -38,7 +38,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
       environment,
     },
     android: {
-      packageName: env.ANDROID_PACKAGE ?? 'de.freegroup.candle',
+      packageName: env.ANDROID_PACKAGE ?? 'de.freegroup.candle.app',
       serviceAccountFile: env.GOOGLE_SERVICE_ACCOUNT_FILE || undefined,
       acceptUnrecognizedApp: env.PLAY_ACCEPT_UNRECOGNIZED === 'true',
     },

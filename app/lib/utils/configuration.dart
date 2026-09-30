@@ -1,5 +1,5 @@
 const String kAppStoreLink = 'https://apps.apple.com/de/app/candle-navigation-app/id6478289375';
-const String kPlayStoreLink = 'https://play.google.com/store/apps/details?id=de.freegroup.candle';
+const String kPlayStoreLink = 'https://play.google.com/store/apps/details?id=de.freegroup.candle.app';
 
 // OpenStreetMap services (Overpass, Nominatim) and Wikipedia reject requests
 // with the default "Dart/x.y (dart:io)" User-Agent.

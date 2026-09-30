@@ -32,7 +32,9 @@ android {
     }
 
     defaultConfig {
-        applicationId = "de.freegroup.candle"
+        // Store id. "de.freegroup.candle" stays bound to the app of a closed Play account
+        // (2025), so the new listing needs its own id; the code namespace stays unchanged.
+        applicationId = "de.freegroup.candle.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
