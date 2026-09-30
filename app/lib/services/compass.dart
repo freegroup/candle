@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sensors/sensors.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class CompassService {
   // Singleton Pattern
@@ -16,6 +16,10 @@ class CompassService {
 
   // Initialize the compass stream with permission check
   Future<void> initialize() async {
+    // Called by every screen that shows a heading. Register the sensor listeners
+    // only once, otherwise each call adds more listeners until the UI thread
+    // is flooded with sensor events (ANR on Android).
+    if (_streamController != null) return;
     _hasPermissions = await _checkPermissions();
     if (_hasPermissions) {
       _compassStream = FlutterCompass.events;
@@ -23,7 +27,7 @@ class CompassService {
       _compassStream?.listen((event) {
         _streamController?.add(event);
       });
-      accelerometerEvents.listen(_onAccelerometerChanged);
+      accelerometerEventStream().listen(_onAccelerometerChanged);
     }
   }
 

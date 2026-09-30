@@ -19,7 +19,7 @@ import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -155,13 +155,13 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
             if (mounted) {
               AppLocalizations l10n = AppLocalizations.of(context)!;
               setState(() => _poisInHeadingDirection = filteredPois);
-              SemanticsService.announce(
+              SemanticsService.sendAnnouncement(View.of(context), 
                   l10n.locations_in_direction_toast(
                       getHorizon(context, _currentHeadingDegrees), filteredPois.length),
                   TextDirection.ltr);
             }
           } else {
-            SemanticsService.announce(
+            SemanticsService.sendAnnouncement(View.of(context), 
                 getHorizon(context, _currentHeadingDegrees), TextDirection.ltr);
           }
 

@@ -1,8 +1,9 @@
 import 'package:candle/services/poi_provider.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'dart:convert';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 
 // We will use this util class to fetch the auto complete result and get the details of the place.
 class PoiProviderOverpass {
@@ -19,7 +20,7 @@ class PoiProviderOverpass {
     overpassQuery = Uri.encodeComponent(overpassQuery);
 
     Uri overpassUri = Uri.parse('https://overpass-api.de/api/interpreter?data=$overpassQuery');
-    var response = await http.get(overpassUri);
+    var response = await http.get(overpassUri, headers: kHttpHeaders);
 
     if (response.statusCode == 200) {
       String bodyUtf8 = utf8.decode(response.bodyBytes);

@@ -20,7 +20,7 @@ import 'package:candle/widgets/target_reached.dart';
 import 'package:candle/widgets/turn_by_turn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';

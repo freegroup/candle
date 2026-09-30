@@ -1,41 +1,42 @@
 # candle
 
-A new Flutter project.
+Accessible navigation app for iOS and Android.
 
-REQUIRES or builds only with flutter 3.16.9
+## Toolchain
 
-## Full Android build
+| Tool    | Version                          |
+|---------|----------------------------------|
+| Flutter | 3.44.x (pinned in `.fvmrc`)      |
+| Android | AGP 9.4, Gradle 9.6, Java 17, compileSdk 37 |
+| iOS     | Xcode 27, deployment target iOS 15 |
 
-```sh
-flutter --version
-  Flutter 3.16.9 • channel stable • https://github.com/flutter/flutter.git
-  Framework • revision 41456452f2 (8 months ago) • 2024-01-25 10:06:23 -0800
-  Engine • revision f40e976bed
-  Tools • Dart 3.2.6 • DevTools 2.28.5
+With [FVM](https://fvm.app) installed, `fvm install` picks up the pinned version.
+
+## Setup
+
+`lib/auth/secrets.dart` is not in git. Create it with the API keys:
+
+```dart
+var OPENSTREETMAP_API_KEY = "<openrouteservice key>";
 ```
 
-```sh
-dart pub cache clean  
+Localizations (`lib/l10n/app_localizations*.dart`) are generated from the `.arb`
+files on `flutter pub get`.
 
-flutter clean
+## Run
+
+```sh
 flutter pub get
-# flutter build apk --release   
+flutter run
+```
+
+## Release builds
+
+```sh
+# Android: signing via android/key.properties, or the environment variables
+# CANDLE_KEYSTORE_PATH, CANDLE_KEYSTORE_PASSWORD, CANDLE_KEY_ALIAS, CANDLE_KEY_PASSWORD
 flutter build appbundle --release
 
-```
-
-## Dull Apple Build
-
-```sh
-
-flutter build ios --release
-
-
-```
-
-## Run in Debug Mode
-
-```sh
-flutter devices
-
+# iOS
+flutter build ipa --release
 ```

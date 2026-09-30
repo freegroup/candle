@@ -41,7 +41,7 @@ class LocationService {
   Future<LatLng?> _lazyInitCurrentLocation() async {
     try {
       Position loc = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
       );
       _currentLocation = LatLng(loc.latitude, loc.longitude);
       return _currentLocation;

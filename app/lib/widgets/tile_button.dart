@@ -38,12 +38,12 @@ class TileButton extends StatelessWidget {
         child: ExcludeSemantics(
           child: ElevatedButton(
             style: ButtonStyle(
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
               )),
-              backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              shadowColor: MaterialStateProperty.all(Colors.transparent),
-              textStyle: MaterialStateProperty.all(theme.textTheme.labelSmall),
+              backgroundColor: WidgetStateProperty.all(Colors.transparent),
+              shadowColor: WidgetStateProperty.all(Colors.transparent),
+              textStyle: WidgetStateProperty.all(theme.textTheme.labelSmall),
             ),
             onPressed: onPressed,
             child: LayoutBuilder(
@@ -54,7 +54,7 @@ class TileButton extends StatelessWidget {
                   children: [
                     SizedBox(height: iconSize, width: iconSize, child: icon),
                     const SizedBox(height: 8),
-                    Text(title, textScaleFactor: 1.3),
+                    Text(title, textScaler: const TextScaler.linear(1.3)),
                   ],
                 );
               },

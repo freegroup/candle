@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:candle/models/location_address.dart' as model;
 import 'package:candle/models/location_address.dart';
 import 'package:candle/services/geocoding.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ class OSMGeocodingService implements GeocodingService {
     try {
       String url =
           'https://nominatim.openstreetmap.org/reverse?format=json&lat=${coord.latitude}&lon=${coord.longitude}';
-      var response = await http.get(Uri.parse(url));
+      var response = await http.get(Uri.parse(url), headers: kHttpHeaders);
       if (response.statusCode == 200) {
         Map<String, dynamic> addressInfo = json.decode(response.body)['address'] ?? {};
 
@@ -66,7 +67,7 @@ class OSMGeocodingService implements GeocodingService {
     try {
       String url =
           'https://nominatim.openstreetmap.org/search?format=json&q=$addressFragment&addressdetails=1&accept-language=${locale.languageCode}&limit=5';
-      var response = await http.get(Uri.parse(url));
+      var response = await http.get(Uri.parse(url), headers: kHttpHeaders);
       if (response.statusCode == 200) {
         List<dynamic> results = json.decode(response.body);
         return results.map((result) {

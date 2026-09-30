@@ -18,7 +18,7 @@ import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 
 class CompassScreen extends StatefulWidget {
   const CompassScreen({super.key});
@@ -90,7 +90,7 @@ class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
           await CandleVibrate.vibrateCompass(duration: 100);
 
           if (mounted) {
-            SemanticsService.announce(getHorizon(context, heading), TextDirection.ltr);
+            SemanticsService.sendAnnouncement(View.of(context), getHorizon(context, heading), TextDirection.ltr);
           }
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop

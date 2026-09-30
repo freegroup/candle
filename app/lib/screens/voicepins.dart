@@ -16,11 +16,10 @@ import 'package:candle/widgets/info_page.dart';
 import 'package:candle/widgets/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:share_extend/share_extend.dart';
 
 import '../widgets/marker_map_osm.dart';
 
@@ -138,7 +137,7 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
             unselectedLabelColor: Theme.of(context).primaryColor,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(5),
             ),
           ),
@@ -194,7 +193,7 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
                   };
                   String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
                   final file = await createCandleFileWithData("voicepin", prettyJson);
-                  ShareExtend.share(file.path, "file", subject: message);
+                  shareFile(file, subject: message);
                 },
                 CustomSemanticsAction(label: l10n.button_common_delete_t): () async {
                   db.removeVoicePin(voicepin).then((count) => _load());
@@ -226,7 +225,7 @@ class _ScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
                         };
                         String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
                         final file = await createCandleFileWithData("voicepin", prettyJson);
-                        ShareExtend.share(file.path, "file", subject: message);
+                        shareFile(file, subject: message);
                       },
                       backgroundColor: theme.colorScheme.onPrimary,
                       foregroundColor: theme.colorScheme.primary,

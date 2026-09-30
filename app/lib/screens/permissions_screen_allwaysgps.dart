@@ -3,8 +3,8 @@ import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:candle/l10n/app_localizations.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -178,7 +178,7 @@ class _ScreenState extends State<PermissionsAllwaysGPSScreen> with SemanticAnnou
       builder: (BuildContext context) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            dialogBackgroundColor: theme.cardColor,
+            dialogTheme: DialogThemeData(backgroundColor: theme.cardColor),
             // Customize other dialog properties as needed
           ),
           child: AlertDialog(

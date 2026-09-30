@@ -8,7 +8,7 @@ import 'package:candle/widgets/accessible_text_input.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/bold_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 
 class RouteUpdateScreen extends StatefulWidget {
   final model.Route route;

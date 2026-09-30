@@ -1,3 +1,12 @@
+const String kAppStoreLink = 'https://apps.apple.com/de/app/candle-navigation-app/id6478289375';
+const String kPlayStoreLink = 'https://play.google.com/store/apps/details?id=de.freegroup.candle';
+
+// OpenStreetMap services (Overpass, Nominatim) and Wikipedia reject requests
+// with the default "Dart/x.y (dart:io)" User-Agent.
+const Map<String, String> kHttpHeaders = {
+  'User-Agent': 'Candle/1.4 (de.freegroup.candle; +https://github.com/freegroup/candle)',
+};
+
 const int kMinDistanceForNextWaypoint = 5;
 const int kMinDistanceForVoicePinAnnouncement = 8;
 const int kPoiRadiusInMeter = 2000;

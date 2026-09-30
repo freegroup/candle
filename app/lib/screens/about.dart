@@ -1,13 +1,12 @@
+import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/semantic.dart';
 import 'package:candle/utils/snackbar.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:yaml/yaml.dart';
-import 'dart:convert'; // For jsonDecode
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -34,28 +33,13 @@ class _AboutScreenState extends State<AboutScreen> with SemanticAnnouncer {
   }
 
   Future<void> _loadAppInfo() async {
-    try {
-      String pubspecContent = await rootBundle.loadString('pubspec.yaml');
-      Map<String, dynamic> pubspec = loadYamlAsMap(pubspecContent);
-
-      setState(() {
-        version = pubspec['version'] ?? 'Unknown';
-        appStoreLink = pubspec['appStoreLink'] ?? '-Unknown-';
-        playStoreLink = pubspec['playStoreLink'] ?? '-Unknown-';
-      });
-    } catch (e) {
-      // Handle error
-      setState(() {
-        version = 'Unknown';
-        appStoreLink = '-Unknown-';
-        playStoreLink = '-Unknown-';
-      });
-    }
-  }
-
-  Map<String, dynamic> loadYamlAsMap(String yamlContent) {
-    final yamlMap = loadYaml(yamlContent) as YamlMap;
-    return jsonDecode(jsonEncode(yamlMap)) as Map<String, dynamic>;
+    final info = await PackageInfo.fromPlatform();
+    if (!mounted) return;
+    setState(() {
+      version = '${info.version}+${info.buildNumber}';
+      appStoreLink = kAppStoreLink;
+      playStoreLink = kPlayStoreLink;
+    });
   }
 
   @override

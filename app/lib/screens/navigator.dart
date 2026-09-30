@@ -18,7 +18,7 @@ import 'package:candle/services/recorder.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -285,7 +285,7 @@ class _ScreenState extends State<NavigatorScreen> {
                                   color: theme.cardColor,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: theme.primaryColor.withOpacity(
+                                      color: theme.primaryColor.withValues(alpha: 
                                           0.5), // Adjust the color and opacity to achieve the desired glow effect
                                       spreadRadius:
                                           2, // Adjust the spread radius to control the extent of the glow

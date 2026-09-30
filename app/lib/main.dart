@@ -19,7 +19,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,40 +26,6 @@ void main() async {
   await AppFeatures.initialize();
   await RecorderService.initialize();
   await initialService();
-/*
-  try {
-    const scopes = ['email', 'openid'];
-    var googleSignIn = GoogleSignIn(
-      // Optional clientId
-      //serverClientId: GOOGLE_CLIENT_ID_ANDROID,
-      clientId: GOOGLE_CLIENT_ID_ANDROID,
-      scopes: scopes,
-    );
-    try {
-      googleSignIn.signIn().then((result) {
-        result!.authentication.then((googleKey) {
-          print(googleKey.accessToken);
-          print(googleKey.idToken);
-          print(googleSignIn.currentUser!.displayName);
-        }).catchError((err) {
-          print('inner error');
-        });
-      }).catchError((err) {
-        print(err);
-        print('error occured');
-      });
-      print('signed in .....');
-    } catch (error) {
-      print(error);
-    }
-  } catch (error) {
-    print('Error: $error');
-    if (error is PlatformException) {
-      print('Details: ${error.details}');
-      print('Stack trace: ${error.stacktrace}');
-    }
-  }
-*/
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -86,6 +51,7 @@ Future<void> initialService() async {
       onStart: onStart,
       isForegroundMode: isForeground,
       autoStart: false,
+      foregroundServiceTypes: [AndroidForegroundType.location],
     ),
   );
 }

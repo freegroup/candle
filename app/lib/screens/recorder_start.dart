@@ -7,8 +7,8 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/dialog_button.dart';
 import 'package:candle/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:candle/l10n/app_localizations.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 class RecorderStartScreen extends StatefulWidget {
   const RecorderStartScreen({super.key});

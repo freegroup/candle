@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 
 void showLoadingDialog(BuildContext context) {
   AppLocalizations l10n = AppLocalizations.of(context)!;

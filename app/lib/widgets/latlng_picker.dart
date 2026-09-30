@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +89,7 @@ class _WidgetState extends State<LatLngPickerWidget> {
             bottom: 0,
             child: IgnorePointer(
               child: Container(
-                color: Colors.amber.withOpacity(0.6),
+                color: Colors.amber.withValues(alpha: 0.6),
               ),
             ),
           ),
@@ -127,14 +126,14 @@ class _WidgetState extends State<LatLngPickerWidget> {
 
   void updatePoint(BuildContext context) {
     setState(() {
-      _latlng = mapController.camera.pointToLatLng(Point(_getPointX(context), pointY));
+      _latlng = mapController.camera.screenOffsetToLatLng(Offset(_getPointX(context), pointY));
     });
     widget.onLatLngChanged(_latlng);
   }
 
   void initPoint(BuildContext context) {
     setState(() {
-      pointY = mapController.camera.latLngToScreenPoint(_latlng).y;
+      pointY = mapController.camera.latLngToScreenOffset(_latlng).dy;
     });
   }
 

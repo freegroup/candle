@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:candle/models/article_ref.dart';
 import 'package:candle/models/article_summary.dart';
+import 'package:candle/utils/configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -36,7 +37,8 @@ class WikipediaService {
       String baseUrl = _getBaseUrlForLocale(currentLocale);
 
       final response = await http.get(Uri.parse(
-          "$baseUrl?action=query&uselang=de&list=geosearch&gsprop=type&format=json&gsradius=$radius&gscoord=${location.latitude}%7C${location.longitude}"));
+          "$baseUrl?action=query&uselang=de&list=geosearch&gsprop=type&format=json&gsradius=$radius&gscoord=${location.latitude}%7C${location.longitude}"),
+          headers: kHttpHeaders);
 
       final jsonResult = json.decode(response.body);
       final articlesJson = jsonResult['query']['geosearch'] as List;
@@ -64,7 +66,8 @@ class WikipediaService {
       String _baseUrl = _getBaseUrlForLocale(currentLocale);
 
       final data = await http.get(Uri.parse(
-          "$_baseUrl?action=query&format=json&pageids=${ref.pageid}&prop=extracts|description&origin=*"));
+          "$_baseUrl?action=query&format=json&pageids=${ref.pageid}&prop=extracts|description&origin=*"),
+          headers: kHttpHeaders);
       return ArticleSummary.fromJson(json.decode(data.body)["query"]["pages"]["${ref.pageid}"]);
     } catch (e) {
       print(e);

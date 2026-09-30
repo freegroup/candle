@@ -4,7 +4,7 @@ import 'package:candle/utils/semantic.dart';
 import 'package:candle/widgets/appbar.dart';
 import 'package:candle/widgets/background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {

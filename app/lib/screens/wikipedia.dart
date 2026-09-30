@@ -15,7 +15,7 @@ import 'package:candle/widgets/marker_map_osm.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -111,7 +111,7 @@ class _ScreenState extends State<WikipediaScreen> with SemanticAnnouncer {
             unselectedLabelColor: Theme.of(context).primaryColor,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(5),
             ),
           ),

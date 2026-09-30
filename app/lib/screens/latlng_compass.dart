@@ -21,7 +21,7 @@ import 'package:candle/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:latlong2/latlong.dart';
 
 class LatLngCompassScreen extends StatefulWidget {
@@ -129,7 +129,7 @@ class _ScreenState extends State<LatLngCompassScreen> with SemanticAnnouncer {
 
           print(announcement);
           await CandleVibrate.vibrateCompass(duration: 100);
-          await SemanticsService.announce(announcement, TextDirection.ltr);
+          await SemanticsService.sendAnnouncement(View.of(context), announcement, TextDirection.ltr);
           _lastVibratedSnapPoint = point;
           break; // Vibrate once and exit loop
         }

@@ -63,7 +63,7 @@ class CandleListTile extends StatelessWidget {
                           Text(
                             subtitle!,
                             style: theme.textTheme.bodyMedium!.copyWith(
-                              color: theme.primaryColor.withOpacity(0.5),
+                              color: theme.primaryColor.withValues(alpha: 0.5),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),

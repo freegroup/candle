@@ -29,7 +29,7 @@ class DividedWidget extends StatelessWidget {
                 topLeft: Radius.circular(corner + index),
                 topRight: Radius.circular(corner + index),
               ),
-              child: Container(color: theme.primaryColor.withOpacity(opacity)),
+              child: Container(color: theme.primaryColor.withValues(alpha: opacity)),
             ),
           );
         }),

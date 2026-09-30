@@ -52,17 +52,17 @@ class CThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.black), // Transparent background
-          side: MaterialStateProperty.all(const BorderSide(color: Colors.black)), // Border Color
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          backgroundColor: WidgetStateProperty.all(Colors.black), // Transparent background
+          side: WidgetStateProperty.all(const BorderSide(color: Colors.black)), // Border Color
+          shape: WidgetStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0) // Adjust border radius as needed
               )),
           // Ensure that the button's minimum size is zero so it can be as small as its padding allows
-          minimumSize: MaterialStateProperty.all(Size.zero),
-          elevation: MaterialStateProperty.all(0.2),
-          foregroundColor: MaterialStateProperty.all(mySwatch),
+          minimumSize: WidgetStateProperty.all(Size.zero),
+          elevation: WidgetStateProperty.all(0.2),
+          foregroundColor: WidgetStateProperty.all(mySwatch),
           padding:
-              MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+              WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
         ),
       ),
       colorScheme: ColorScheme.fromSwatch(

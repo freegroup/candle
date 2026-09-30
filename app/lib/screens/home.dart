@@ -19,9 +19,8 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/location_tile.dart';
 import 'package:candle/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:share_extend/share_extend.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -142,7 +141,7 @@ class _ScreenState extends State<HomeScreen> {
             final file = await createCandleFileWithData("my_location", prettyJson);
 
             // Share the file and text
-            ShareExtend.share(file.path, "file", subject: message);
+            shareFile(file, subject: message);
           }
         } finally {
           if (context.mounted) Navigator.pop(context);

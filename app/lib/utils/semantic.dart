@@ -1,6 +1,6 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 
 mixin SemanticAnnouncer<T extends StatefulWidget> on State<T> {
   
@@ -10,6 +10,7 @@ mixin SemanticAnnouncer<T extends StatefulWidget> on State<T> {
     // wait a little bit to give the talkback of the "back button" is spoken...
     // then we can announce which screen is shown.
     await Future.delayed(const Duration(milliseconds: 3000));
-    SemanticsService.announce(speak, TextDirection.ltr);
+    if (!mounted) return;
+    SemanticsService.sendAnnouncement(View.of(context), speak, TextDirection.ltr);
   }
 }

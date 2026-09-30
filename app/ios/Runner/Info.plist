@@ -2,28 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
-	<key>NSPrivacyAccessedAPITypes</key>
-	<array>
-		<dict>
-			<key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
-			<string>We use file timestamps to determine whether to reload the last settings that were changed in the settings.</string>
-		</dict>
-		<dict>
-			<key>NSPrivacyAccessedAPICategoryUserDefaults</key>
-			<string>We store your settings and preferences locally to restore the settings you want after an app restart.</string>
-		</dict>
-		<dict>
-			<key>NSPrivacyAccessedAPICategoryDiskSpace</key>
-			<string>Checking the available disk space helps us ensure that your route recordings and app data are efficiently managed without overloading your device.</string>
-		</dict>
-		<dict>
-			<key>NSPrivacyAccessedAPICategorySystemBootTime</key>
-			<string>We use the system boot time to optimize app performance and ensure that time measurements for route recording are accurate.</string>
-		</dict>
-	</array>
-   
-
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -36,7 +14,7 @@
 			<key>CFBundleTypeName</key>
 			<string>Candle File</string>
 			<key>CFBundleTypeRole</key>
-            <string>Editor</string>     
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
@@ -47,8 +25,6 @@
 			<string>NSDocument</string>
 		</dict>
 	</array>
-
-
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -67,13 +43,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-    <true/>
-    
-	<key>UIFileSharingEnabled</key>
-    <true/>
-
+	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need always access to your location if you wnat to record your route in the background</string>
 	<key>NSLocationUsageDescription</key>
@@ -89,6 +60,8 @@
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Voice input to add VoicePins to any location where you are</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

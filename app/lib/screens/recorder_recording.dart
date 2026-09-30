@@ -14,7 +14,7 @@ import 'package:candle/widgets/pulse_icon.dart';
 import 'package:candle/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:candle/utils/featureflag.dart';
 
 class RecorderRecordingScreen extends StatefulWidget {

@@ -11,7 +11,7 @@ import 'package:candle/widgets/background.dart';
 import 'package:candle/widgets/info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class RoutesScreen extends StatefulWidget {

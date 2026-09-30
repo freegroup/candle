@@ -68,20 +68,20 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
       if (widget.currentWaypoint != null)
         CircleMarker(
           radius: widget.debug ? 30 : 10,
-          color: Colors.red.withOpacity(0.8),
+          color: Colors.red.withValues(alpha: 0.8),
           point: widget.currentWaypoint!,
         ),
       if (widget.debug)
         if (widget.marker1 != null)
           CircleMarker(
-            color: const Color.fromARGB(255, 57, 54, 244).withOpacity(0.8),
+            color: const Color.fromARGB(255, 57, 54, 244).withValues(alpha: 0.8),
             radius: 15.0,
             point: widget.marker1!,
           ),
       if (widget.debug)
         if (widget.marker2 != null)
           CircleMarker(
-            color: const Color.fromARGB(255, 44, 215, 113).withOpacity(0.8),
+            color: const Color.fromARGB(255, 44, 215, 113).withValues(alpha: 0.8),
             radius: 10,
             point: widget.marker2!,
           ),
@@ -111,7 +111,6 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
             initialZoom: widget.zoom,
             initialRotation: widget.mapRotation,
             interactionOptions: const InteractionOptions(
-              enableScrollWheel: false,
               flags: InteractiveFlag.none,
             ),
             maxZoom: widget.zoom,

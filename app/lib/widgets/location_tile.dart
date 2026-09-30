@@ -12,7 +12,7 @@ import 'package:candle/utils/global_logger.dart';
 import 'package:candle/utils/shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -265,8 +265,8 @@ class _WidgetState extends State<LocationAddressTile> {
         ));
       },
       style: ButtonStyle(
-        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 12)),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12)),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(
@@ -275,7 +275,7 @@ class _WidgetState extends State<LocationAddressTile> {
             ),
           ),
         ),
-        minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
+        minimumSize: WidgetStateProperty.all(const Size(double.infinity, 60)),
       ),
       child: Text(
         l10n.button_common_enter_target,

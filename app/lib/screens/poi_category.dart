@@ -19,12 +19,11 @@ import 'package:candle/widgets/marker_map_osm.dart';
 import 'package:candle/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:candle/l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:share_extend/share_extend.dart';
 
 class PoiCategoryScreen extends StatefulWidget {
   final PoiCategory category;
@@ -108,7 +107,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
             unselectedLabelColor: Theme.of(context).primaryColor,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(5),
             ),
           ),
@@ -117,14 +116,14 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
           children: [
             _isLoading
                 ? _buildLoading(context)
-                : pois!.isEmpty
+                : pois == null || pois!.isEmpty
                     ? _buildNoContent(context)
                     : _buildContentList(context),
             _isLoading
                 ? _buildLoading(context)
                 : MarkerMapWidget(
                     currentLocation: _currentLocation!,
-                    pins: pois!,
+                    pins: pois ?? [],
                     pinImage: 'assets/images/location_marker.png',
                   ),
           ],
@@ -197,7 +196,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
                       };
                       String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
                       final file = await createCandleFileWithData("location", prettyJson);
-                      ShareExtend.share(file.path, "file", subject: message);
+                      shareFile(file, subject: message);
                     },
                   },
                   child: Slidable(
@@ -213,7 +212,7 @@ class _ScreenState extends State<PoiCategoryScreen> with SemanticAnnouncer {
                             };
                             String prettyJson = const JsonEncoder.withIndent('  ').convert(dataMap);
                             final file = await createCandleFileWithData("location", prettyJson);
-                            ShareExtend.share(file.path, "file", subject: message);
+                            shareFile(file, subject: message);
                           },
                           padding: EdgeInsets.zero,
                           backgroundColor: theme.colorScheme.primary,

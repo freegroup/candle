@@ -78,7 +78,6 @@ class _RouteMapWidgetState extends State<MarkerMapWidget> {
             initialZoom: widget.zoom,
             initialRotation: _currentMapRotation.toDouble(),
             interactionOptions: const InteractionOptions(
-              enableScrollWheel: false,
               flags: InteractiveFlag.drag | InteractiveFlag.pinchZoom,
             ),
             maxZoom: widget.zoom,

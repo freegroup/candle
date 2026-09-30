@@ -84,6 +84,6 @@ class CandleVibrate {
     }
 
     // For Android, or if it's an iPhone (which wasn't caught by the if block)
-    return await Vibration.hasVibrator() ?? false;
+    return await Vibration.hasVibrator();
   }
 }
