@@ -27,7 +27,10 @@ jobs:
           cache: true
       - &secrets
         name: Create env/ci.json
-        run: echo '{"ORS_API_KEY": "${{ secrets.ORS_API_KEY }}"}' > env/ci.json
+        env:
+          ORS_API_KEY: ${{ secrets.ORS_API_KEY }}
+        run: |
+          jq -n --arg key "$ORS_API_KEY" '{ORS_API_KEY: $key}' > env/ci.json
       - run: flutter pub get
       # TODO: drop the --no-fatal-* flags once the remaining lint findings are fixed
       - run: flutter analyze --no-fatal-infos --no-fatal-warnings
