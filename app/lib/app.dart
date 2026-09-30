@@ -16,6 +16,12 @@ class CandleApp extends StatelessWidget {
       theme: CThemeData.darkTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      // Android 15+ draws the app edge-to-edge: keep every screen above the system
+      // navigation bar so no button or list entry ends up hidden behind it.
+      builder: (context, child) => ColoredBox(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: SafeArea(top: false, left: false, right: false, child: child!),
+      ),
       home: const PermissionsCheckWidget(),
     );
   }
