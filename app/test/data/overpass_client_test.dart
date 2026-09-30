@@ -1,0 +1,87 @@
+import 'dart:convert';
+
+import 'package:candle/data/services/overpass/overpass_client.dart';
+import 'package:candle/data/services/overpass/overpass_element.dart';
+import 'package:candle/utils/result.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
+
+const _body = {
+  'elements': [
+    {'type': 'node', 'id': 1, 'lat': 52.5, 'lon': 13.4, 'tags': {'name': 'Café A'}},
+    {'type': 'way', 'id': 2, 'center': {'lat': 52.6, 'lon': 13.5}, 'tags': {'highway': 'crossing'}},
+    {'type': 'relation', 'id': 3, 'tags': {'name': 'no position'}},
+  ],
+};
+
+http.Response _ok() => http.Response.bytes(utf8.encode(jsonEncode(_body)), 200);
+
+void main() {
+  test('parses nodes and ways (via center), skips elements without position', () async {
+    final client = OverpassClient(client: MockClient((_) async => _ok()), endpoints: ['https://a']);
+    final result = await client.query('q');
+
+    final elements = (result as Ok<List<OverpassElement>>).value;
+    expect(elements.map((e) => e.id), [1, 2]);
+    expect(elements[1].lat, 52.6);
+    expect(elements[0].tags['name'], 'Café A');
+  });
+
+  test('sends a User-Agent and the query as form data', () async {
+    late http.Request sent;
+    final client = OverpassClient(
+      client: MockClient((request) async {
+        sent = request;
+        return _ok();
+      }),
+      endpoints: ['https://a'],
+    );
+    await client.query('[out:json];node(1);out;');
+
+    expect(sent.method, 'POST');
+    expect(sent.headers['User-Agent'], startsWith('Candle/'));
+    expect(sent.bodyFields['data'], '[out:json];node(1);out;');
+  });
+
+  test('falls back to the next endpoint on 429 and 5xx', () async {
+    final hosts = <String>[];
+    final client = OverpassClient(
+      client: MockClient((request) async {
+        hosts.add(request.url.host);
+        return switch (request.url.host) {
+          'a' => http.Response('busy', 429),
+          'b' => http.Response('down', 504),
+          _ => _ok(),
+        };
+      }),
+      endpoints: ['https://a', 'https://b', 'https://c'],
+    );
+
+    expect(await client.query('q'), isA<Ok<List<OverpassElement>>>());
+    expect(hosts, ['a', 'b', 'c']);
+  });
+
+  test('does not retry client errors such as 406', () async {
+    var calls = 0;
+    final client = OverpassClient(
+      client: MockClient((_) async {
+        calls++;
+        return http.Response('no', 406);
+      }),
+      endpoints: ['https://a', 'https://b'],
+    );
+
+    final result = await client.query('q');
+    expect(result, isA<Error<List<OverpassElement>>>());
+    expect(calls, 1);
+  });
+
+  test('returns an error when all endpoints fail', () async {
+    final client = OverpassClient(
+      client: MockClient((_) async => throw http.ClientException('offline')),
+      endpoints: ['https://a', 'https://b'],
+    );
+    expect(await client.query('q'), isA<Error<List<OverpassElement>>>());
+  });
+}

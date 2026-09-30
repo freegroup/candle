@@ -8,7 +8,7 @@ import 'package:candle/screens/home.dart';
 import 'package:candle/screens/import_location.dart';
 import 'package:candle/screens/import_voicepin.dart';
 import 'package:candle/screens/locations.dart';
-import 'package:candle/screens/poi_categories.dart';
+import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/screens/poi_radar.dart';
 import 'package:candle/screens/recorder_controller.dart';
 import 'package:candle/screens/routes.dart';

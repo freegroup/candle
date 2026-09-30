@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/screens/latlng_compass.dart';
-import 'package:candle/screens/poi_categories.dart';
 import 'package:candle/services/compass.dart';
 import 'package:candle/services/location.dart';
 import 'package:candle/services/poi_provider.dart';
@@ -25,10 +24,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class PoiRadarScreen extends StatefulWidget {
-  final PoiCategory category = PoiCategory(
-    icon: Icons.local_drink,
-    title: "",
-    categories: [
+  // Overpass filters of all explore categories.
+  // TODO: use PoiRepository when the radar is migrated.
+  final List<String> categories = const [
       'node["amenity"="bar"]',
       'node["amenity"="nightclub"]',
       'node["amenity"="atm"]',
@@ -44,8 +42,7 @@ class PoiRadarScreen extends StatefulWidget {
       'node["amenity"="pharmacy"]',
       'node["amenity"="traffic_signals"]',
       'node["amenity"="toilet"]'
-    ],
-  );
+    ];
   PoiRadarScreen({super.key});
 
   @override
@@ -225,7 +222,7 @@ class _ScreenState extends State<PoiRadarScreen> with SemanticAnnouncer {
       final AppLocalizations l10n = AppLocalizations.of(context)!;
       var poiProvider = Provider.of<PoiProvider>(context, listen: false);
       _allPois = await poiProvider.fetchPois(
-          l10n, widget.category.categories, kPoiRadiusInMeter, _currentLocation!);
+          l10n, widget.categories, kPoiRadiusInMeter, _currentLocation!);
       _loadingLocation = _currentLocation;
       if (mounted) {
         _lastVibratedSnapPoint = null;

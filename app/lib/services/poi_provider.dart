@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:candle/models/latlng_provider.dart';
 import 'package:candle/models/location_address.dart';
+import 'package:candle/data/services/overpass/overpass_client.dart';
 import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/poi_provider_overpass.dart';
 import 'package:candle/utils/geo.dart';
@@ -64,7 +65,9 @@ class PoiDetail implements LatLngProvider{
 }
 
 class PoiProvider extends ChangeNotifier {
-  final PoiProviderOverpass _poiLookupProvider = PoiProviderOverpass();
+  PoiProvider(OverpassClient overpass) : _poiLookupProvider = PoiProviderOverpass(overpass);
+
+  final PoiProviderOverpass _poiLookupProvider;
 
   Future<List<PoiDetail>> fetchPois(
     AppLocalizations l10n,

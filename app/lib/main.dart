@@ -2,15 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:candle/app.dart';
+import 'package:candle/config/dependencies.dart';
 
 import 'package:candle/models/navigation_point.dart';
 import 'package:candle/models/route.dart' as model;
 import 'package:candle/services/database.dart';
-import 'package:candle/services/geocoding.dart';
 import 'package:candle/services/location.dart';
-import 'package:candle/services/poi_provider.dart';
 import 'package:candle/services/recorder.dart';
-import 'package:candle/services/router.dart';
 import 'package:candle/utils/featureflag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,11 +29,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => GeoServiceProvider()),
-        ChangeNotifierProvider(create: (_) => PoiProvider()),
-        ChangeNotifierProvider(create: (_) => RoutingProvider()),
-      ],
+      providers: providers,
       child: const CandleApp(),
     ));
   });
