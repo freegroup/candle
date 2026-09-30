@@ -64,62 +64,83 @@
     <div class="text-content">
       <h1>Candle</h1>
       <p>Candle is a haptic compass empowering visually impaired users through intuitive navigation. Harnessing advanced haptic feedback, it delivers real-time direction for confident exploration. Discover a new world of independence with Candle's groundbreaking approach to accessible travel.</p>
-      <p><a href="https://play.google.com/store/apps/details?id=de.freegroup.candle">App Store Entry</a></p>
+      <p><a href="https://play.google.com/store/apps/details?id=de.freegroup.candle.app">Google Play</a></p>
     </div>
   </div>
 
     
 
     <h2>Privacy Policy</h2>
-    <p>Andreas Herz (FreeGroup) developed the Candle app as an open-source project. This SERVICE is provided at no cost
-        and is intended for use as is. Candle is a navigation app primarily designed for visually impaired or blind
-        individuals.</p>
-    <p>This privacy policy is to inform users regarding our policies with the collection, use, and disclosure of
-        Personal Information for anyone deciding to use our Service.</p>
-    <p>Candle does not collect, store, or share any personal data. The app is designed to work entirely on your device,
-        ensuring your privacy and security.</p>
+    <p><em>Last updated: 30 September 2026</em></p>
+    <p>Candle is an open-source navigation app for blind and visually impaired people, developed by Andreas Herz
+        (FreeGroup) and provided free of charge. Candle has no user accounts, no advertising, no analytics and no
+        tracking. This policy explains which data leaves your device, where it goes and why.</p>
 
-    <h3>Information Collection and Use</h3>
-    <p>The app does not require you to provide any personally identifiable information. We do not collect any personal
-        data, and no information leaves your device.</p>
+    <h3>Data that stays on your device</h3>
+    <p>Your saved locations, routes, recorded tracks and voice pins (including their audio recordings) are stored only on
+        your device. They leave it only when you share them yourself, e.g. as a .candle file.</p>
 
-    <h3>Log Data</h3>
-    <p>We do not collect any Log Data. In case of an error in the app, no data is sent from your device.</p>
+    <h3>Map and place services</h3>
+    <p>To show places, maps and routes around you, the app sends your location (or the location you searched for) to
+        these open services. They receive your location and, as with any internet request, your IP address. Candle
+        sends no name, account or other identifier with these requests.</p>
+    <ul>
+      <li><b>Overpass API</b> (overpass-api.de, operated by FOSSGIS e.V., Germany) – places nearby, radar</li>
+      <li><b>openrouteservice</b> (operated by HeiGIT gGmbH, Heidelberg, Germany) – pedestrian routes (start and destination)</li>
+      <li><b>Nominatim</b> and <b>OpenStreetMap map tiles</b> (OpenStreetMap Foundation, UK) – address search, addresses of places, map display</li>
+      <li><b>Wikipedia</b> (Wikimedia Foundation, USA) – articles about places nearby</li>
+    </ul>
+    <p>Please refer to the privacy policies of these services for how they handle requests.</p>
 
-    <h3>Cookies</h3>
-    <p>Candle does not use “cookies” or similar tracking technologies.</p>
+    <h3>Candle server</h3>
+    <p>Some features use the Candle server, operated by us at Hetzner Online GmbH in Germany. So that the server can
+        protect itself against abuse without user accounts, each installation of the app registers anonymously: it
+        receives a random installation ID that is not linked to your name, phone number or any other account. To prove
+        that requests come from the genuine app on a real device, the app uses the device check of your platform
+        (Apple App Attest on iPhone, Google Play Integrity on Android); Apple or Google only confirm whether app and
+        device are genuine.</p>
+    <p>The server does not store your location. Its log files contain the IP address, time and requested function of
+        each request; they are used only to keep the service secure and are deleted after 14 days.</p>
+    <p>Where the app finds the server is published at https://freegroup.github.io/candle/api.json (GitHub Pages,
+        GitHub Inc., USA); loading this file transmits your IP address to GitHub.</p>
 
-    <h3>Background Location Data Usage</h3>
-    <p>The Candle app offers a feature for recording tracks, which requires access to your location data in the background. This feature is purely opt-in and is set to opt-out by default. To enable this feature, users must explicitly grant permission to access location data ‘always in use’ or ‘when the app is closed’.</p>
-    <p>When enabled, this feature allows the app to track your location in the background to provide continuous route recording. This is particularly useful for visually impaired users who require uninterrupted navigation assistance. Please be assured that this background location tracking is solely for the functionality of route recording within the app. Your location data is not used for any other purpose and remains on your device without being shared externally.</p>
-    <p>If you decide not to enable this feature, the core functionality of the Candle app remains unaffected, although the continuous route recording capability will not be available.</p>
-    
+    <h3>Voice input</h3>
+    <p>When you dictate text (e.g. an address search), the app uses the speech recognition of your phone. Depending on
+        your phone's settings, Apple or Google may process the audio on their servers. Voice pins are recorded and
+        stored on your device only.</p>
 
-    <h3>Service Providers</h3>
-    <p>We do not employ third-party companies and individuals. As such, no third parties have access to any Personal
-        Information, as none is collected.</p>
+    <h3>Location access</h3>
+    <p>Candle needs your location while you use it, for navigation, the compass to a destination and places nearby.
+        Route recording is optional and only runs after you start it. On iPhone you can additionally allow location
+        access "Always" in the app settings, so that a recording continues while the screen is locked. The recorded
+        track stays on your device.</p>
+
+    <h3>Legal basis</h3>
+    <p>Data is processed to provide the functions you use in the app (Art. 6(1)(b) GDPR) and, for the server log files
+        and the device check, based on our legitimate interest in a secure, abuse-free service (Art. 6(1)(f) GDPR).</p>
+
+    <h3>Your rights</h3>
+    <p>You have the right to access, rectification, erasure, restriction of processing, data portability and to object
+        to processing, and the right to lodge a complaint with a supervisory authority. As the Candle server stores no
+        data linked to your person, uninstalling the app removes everything we could associate with your installation.</p>
 
     <h3>Security</h3>
-    <p>As we do not collect personal information, your use of Candle is secure. There is no transmission or storage of
-        personal data.</p>
+    <p>All connections of the app use encrypted HTTPS.</p>
 
     <h3>Open Source Transparency</h3>
-    <p>The source code for the Candle app is publicly available. This transparency allows anyone to inspect and verify 
-      the app's practices, ensuring we adhere to our commitment to user privacy and security. If you have any doubts or 
-      questions about how Candle handles your data, we encourage you to review our code. The code can be accessed at 
+    <p>The source code of the app and the server is public, so anyone can verify these statements:
       <a href="https://github.com/freegroup/candle" target="_blank">https://github.com/freegroup/candle</a>.</p>
-      
+
     <h3>Children’s Privacy</h3>
-    <p>This Service does not specifically target anyone under the age of 13. As we do not collect personal information,
-        we do not knowingly collect or maintain data from children under 13.</p>
+    <p>Candle is not directed at children under 13 and does not knowingly collect data from them.</p>
 
     <h3>Changes to This Privacy Policy</h3>
-    <p>We may update our Privacy Policy from time to time. You are advised to review this page periodically for any
-        changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+    <p>We update this policy when the app changes. Changes are effective when they are posted on this page.</p>
 
-    <h3>Contact Us</h3>
-    <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at <a href="https://github.com/freegroup/candle">https://github.com/freegroup/candle</a> </p>
-    
+    <h3>Contact</h3>
+    <p>Andreas Herz (FreeGroup), e-mail: <a href="mailto:candle@freegroup.de">candle@freegroup.de</a>, or open an issue at
+      <a href="https://github.com/freegroup/candle">https://github.com/freegroup/candle</a>.</p>
+
 </body>
 
 </html>
