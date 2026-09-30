@@ -46,6 +46,7 @@ dependencies:
   wakelock_plus: ^1.8.1
   webview_flutter: ^4.14.1
   webview_flutter_android: ^4.14.1
+  flutter_secure_storage: ^11.2.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

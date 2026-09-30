@@ -1,3 +1,6 @@
 {
-  "ORS_API_KEY": "<openrouteservice.org API key>"
+  "ORS_API_KEY": "<openrouteservice.org API key>",
+  "PLAY_CLOUD_PROJECT_NUMBER": "<Google Cloud project number linked in the Play Console, for Play Integrity>",
+  "CANDLE_API_URL": "",
+  "DEBUG_ATTESTATION_TOKEN": ""
 }

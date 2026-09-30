@@ -66,3 +66,8 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Play Integrity for the Candle server (AttestationChannel.kt)
+    implementation("com.google.android.play:integrity:1.6.0")
+}

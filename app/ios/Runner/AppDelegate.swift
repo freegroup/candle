@@ -11,6 +11,9 @@ import Flutter
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         GeneratedPluginRegistrant.register(with: self)
+        if let registrar = registrar(forPlugin: "AttestationChannel") {
+            AttestationChannel.register(with: registrar)
+        }
         
         guard let controller = window?.rootViewController as? FlutterViewController else {
             fatalError("rootViewController is not type FlutterViewController")

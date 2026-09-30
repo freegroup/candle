@@ -14,20 +14,37 @@ With [FVM](https://fvm.app) installed, `fvm install` picks up the pinned version
 
 ## Setup
 
-`lib/auth/secrets.dart` is not in git. Create it with the API keys:
+Build settings come from `env/<name>.json` (not in git), passed with
+`--dart-define-from-file`. Copy the template and fill it in:
 
-```dart
-var OPENSTREETMAP_API_KEY = "<openrouteservice key>";
+```sh
+cp env/example.json env/dev.json
 ```
+
+| Key | Purpose |
+|-----|---------|
+| `ORS_API_KEY` | openrouteservice.org key for pedestrian routing |
+| `PLAY_CLOUD_PROJECT_NUMBER` | Google Cloud project for Play Integrity (Android sign-in at the Candle server) |
+| `CANDLE_API_URL` | development only: use this server instead of looking it up (e.g. `http://10.0.2.2:8080`) |
+| `DEBUG_ATTESTATION_TOKEN` | development only: lets simulators/emulators register at a local server with the same token |
 
 Localizations (`lib/l10n/app_localizations*.dart`) are generated from the `.arb`
 files on `flutter pub get`.
+
+## Candle server
+
+At start the app reads the server address from
+[docs/api.json](../docs/api.json) (GitHub Pages) and registers the installation
+anonymously with App Attest (iOS) / Play Integrity (Android), see
+[server/README.md](../server/README.md). Without that file or server the app
+works offline. Simulators and emulators cannot attest: run the server locally
+with `DEBUG_ATTESTATION_TOKEN` and set `CANDLE_API_URL` + the same token.
 
 ## Run
 
 ```sh
 flutter pub get
-flutter run
+flutter run --dart-define-from-file=env/dev.json
 ```
 
 ## Release builds
