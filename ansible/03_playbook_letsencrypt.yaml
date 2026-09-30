@@ -5,11 +5,12 @@
 
   # certonly --webroot: certbot only fetches the certificate, the nginx config
   # stays ours (see nginx_site.yaml). --keep-until-expiring makes a re-run a
-  # no-op instead of hitting the Let's Encrypt rate limit.
+  # no-op instead of hitting the Let's Encrypt rate limit. No e-mail: Let's
+  # Encrypt stopped sending expiry mails in 2025, renewal is automatic.
   - name: Request the certificate
     command: >
       certbot certonly --webroot -w /var/www/letsencrypt
-      -d {{ candle_domain }} -m {{ letsencrypt_email }}
+      -d {{ candle_domain }} --register-unsafely-without-email
       --agree-tos --non-interactive --keep-until-expiring
     register: certbot
     changed_when: "'Successfully received certificate' in certbot.stdout"

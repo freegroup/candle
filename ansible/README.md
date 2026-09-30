@@ -13,8 +13,8 @@ the apps simply register again.
 1. SSH key: `ssh-keygen -t ed25519 -f ~/.ssh/hetzner_candle` and add
    `~/.ssh/hetzner_candle.pub` in the console.
 2. Create the server: CPX12, Falkenstein, Ubuntu 26.04, IPv4 + IPv6, with that SSH key.
-3. Point the domain (A record, AAAA for IPv6) to the server.
-4. Put IP, domain and e-mail into `inventory.ini`.
+3. Put the IP into `inventory.ini`; `candle_domain` is `<ip-with-dashes>.sslip.io` (no own domain needed).
+4. Update `apiUrl` in `docs/api.json` - the app reads the server address from there.
 5. `cp secrets.env.example secrets.env` and fill in `JWT_SECRET`.
    For Android also save the Google service account key as `google-service-account.json`.
 

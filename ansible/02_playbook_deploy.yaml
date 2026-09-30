@@ -12,13 +12,14 @@
       force: true
       update: true
 
+  # npm ci: exactly the versions of package-lock.json; --omit=dev leaves out
+  # typescript/vitest (the npm module only knows the deprecated --production).
   - name: Install packages in /server
     become: true
     become_user: candle
-    community.general.npm:
-      path: /home/candle/candle/server
-      ci: true
-      production: true
+    command: npm ci --omit=dev
+    args:
+      chdir: /home/candle/candle/server
 
   # The PRODUCTION secrets (git-ignored, see README). The server does not store
   # anything else: a rebuilt server only needs this file.
