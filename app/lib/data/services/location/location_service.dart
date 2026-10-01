@@ -40,6 +40,9 @@ class LocationService {
               notificationText: text,
               enableWakeLock: true,
               setOngoing: true,
+              // Default is "ic_launcher", which does not exist in this app: Android then
+              // replaces the notification by a generic "Candle is running".
+              notificationIcon: AndroidResource(name: 'ic_notification', defType: 'drawable'),
             ),
           )
         : _settings;
