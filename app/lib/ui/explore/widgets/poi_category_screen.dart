@@ -1,23 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/app_localizations.dart';
-import 'package:candle/models/latlng_provider.dart';
-import 'package:candle/models/location_address.dart';
-import 'package:candle/screens/latlng_compass.dart';
-import 'package:candle/screens/location_cu.dart';
-import 'package:candle/theme_data.dart';
+import 'package:candle/domain/models/latlng_provider.dart';
+import 'package:candle/domain/models/location_address.dart';
+import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
+import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/explore/view_models/poi_category_viewmodel.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';
-import 'package:candle/utils/files.dart';
-import 'package:candle/utils/semantic.dart';
-import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/info_page.dart';
-import 'package:candle/widgets/list_tile.dart';
-import 'package:candle/widgets/marker_map_osm.dart';
-import 'package:candle/widgets/semantic_header.dart';
+import 'package:candle/data/services/share/share_service.dart';
+import 'package:candle/ui/core/utils/semantic.dart';
+import 'package:candle/ui/core/widgets/appbar.dart';
+import 'package:candle/ui/core/widgets/background.dart';
+import 'package:candle/ui/core/widgets/info_page.dart';
+import 'package:candle/ui/core/widgets/list_tile.dart';
+import 'package:candle/ui/core/widgets/marker_map_osm.dart';
+import 'package:candle/ui/core/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -183,6 +183,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
             button: true,
             label: l10n.button_common_retry_t,
             excludeSemantics: true,
+            onTap: _viewModel.load.execute,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(64)),
               onPressed: _viewModel.load.execute,
@@ -267,7 +268,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
   void _openCompass(Poi poi) {
     final l10n = AppLocalizations.of(context)!;
     Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (context) => LatLngCompassScreen(target: poi.position, targetName: l10n.poiName(poi)),
+      builder: (context) => buildTargetCompassScreen(target: poi.position, targetName: l10n.poiName(poi)),
     ));
   }
 
@@ -275,17 +276,13 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
     final address = await _toLocationAddress(poi);
     if (!mounted) return;
     await Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (context) => LocationCreateUpdateScreen(initialLocation: address),
+      builder: (context) => buildLocationEditScreen(address),
     ));
   }
 
   Future<void> _share(Poi poi) async {
     final address = await _toLocationAddress(poi);
-    final json = const JsonEncoder.withIndent('  ').convert({
-      'locations': [address.toMap()],
-    });
-    final file = await createCandleFileWithData('location', json);
-    await shareFile(file, subject: '${address.name}\n\n${address.formattedAddress}');
+    if (mounted) await context.read<ShareService>().shareLocation(address);
   }
 }
 

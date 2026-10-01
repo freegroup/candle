@@ -2,15 +2,14 @@ import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/app_localizations.dart';
-import 'package:candle/services/geocoding.dart';
 import 'package:candle/ui/explore/view_models/poi_category_viewmodel.dart';
 import 'package:candle/ui/explore/widgets/poi_category_screen.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';
-import 'package:candle/utils/semantic.dart';
-import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/semantic_header.dart';
-import 'package:candle/widgets/tile_button.dart';
+import 'package:candle/ui/core/utils/semantic.dart';
+import 'package:candle/ui/core/widgets/appbar.dart';
+import 'package:candle/ui/core/widgets/background.dart';
+import 'package:candle/ui/core/widgets/semantic_header.dart';
+import 'package:candle/ui/core/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +74,7 @@ class _PoiCategoriesScreenState extends State<PoiCategoriesScreen> with Semantic
             category: category,
             poiRepository: context.read<PoiRepository>(),
             locationService: context.read<LocationService>(),
-            geocodingService: context.read<GeoServiceProvider>().service,
+            geocodingRepository: context.read(),
           ),
         ),
       ),

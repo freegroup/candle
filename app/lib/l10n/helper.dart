@@ -34,7 +34,6 @@ String sayHorizon(BuildContext context, int angle) {
 String sayRotateToTarget(BuildContext context, int targetHeading, bool isAligned, int distance) {
   AppLocalizations l10n = AppLocalizations.of(context)!;
   targetHeading = (targetHeading + 720) % 360;
-  print("angle: $targetHeading, isAligned: $isAligned, distance= $distance");
   if (isAligned == true) {
     return l10n.label_rotate_no_target_t(distance);
   }

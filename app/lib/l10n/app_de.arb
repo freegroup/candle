@@ -379,5 +379,21 @@
   "explore_load_error": "Die Orte konnten gerade nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
   "button_common_retry": "Erneut versuchen",
   "button_common_retry_t": "Die Orte erneut laden",
-  "poi_audible_signal": "Ampel mit akustischem Signal"
+  "poi_audible_signal": "Ampel mit akustischem Signal",
+  "button_discard_recording": "Verwerfen",
+  "button_discard_recording_t": "Aufzeichnung verwerfen",
+  "button_save_recording": "Speichern",
+  "button_save_recording_t": "Aufgezeichnete Strecke speichern",
+  "recording_notification_title": "Candle zeichnet auf",
+  "recording_notification_text": "Ihre Strecke wird aufgezeichnet.",
+  "recording_start_failed": "Die Aufzeichnung konnte nicht gestartet werden.",
+  "location_position_unavailable": "Ihre Position konnte nicht bestimmt werden. Bitte versuchen Sie es gleich noch einmal.",
+  "route_name_taken": "Es gibt schon eine Strecke mit diesem Namen.",
+  "wikipedia_placeholder_header": "Keine Artikel in der Nähe",
+  "wikipedia_placeholder_body": "Wikipedia hat keine Artikel zu Orten im Umkreis von 10 km.",
+  "wikipedia_load_error": "Die Wikipedia-Artikel konnten gerade nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
+  "wikipedia_retry_t": "Die Wikipedia-Artikel erneut laden",
+  "navigation_route_failed": "Gerade konnte keine Route berechnet werden. Candle versucht es erneut, sobald Sie sich bewegen.",
+  "maps_link_failed": "Der geteilte Karten-Link konnte nicht geöffnet werden.",
+  "button_privacy_policy": "Unsere Datenschutzerklärung"
 }

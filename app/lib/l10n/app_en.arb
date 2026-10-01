@@ -1341,5 +1341,21 @@
   "explore_load_error": "The places could not be loaded right now. Please try again in a moment.",
   "button_common_retry": "Try again",
   "button_common_retry_t": "Try to load the places again",
-  "poi_audible_signal": "Traffic light with audible signal"
+  "poi_audible_signal": "Traffic light with audible signal",
+  "button_discard_recording": "Discard",
+  "button_discard_recording_t": "Discard the recording",
+  "button_save_recording": "Save",
+  "button_save_recording_t": "Save the recorded route",
+  "recording_notification_title": "Candle is recording",
+  "recording_notification_text": "Your route is being recorded.",
+  "recording_start_failed": "The recording could not be started.",
+  "location_position_unavailable": "Your position could not be determined. Please try again in a moment.",
+  "route_name_taken": "There is already a route with this name.",
+  "wikipedia_placeholder_header": "No articles nearby",
+  "wikipedia_placeholder_body": "Wikipedia has no articles about places within 10 km of you.",
+  "wikipedia_load_error": "The Wikipedia articles could not be loaded right now. Please try again in a moment.",
+  "wikipedia_retry_t": "Load the Wikipedia articles again",
+  "navigation_route_failed": "No route could be calculated right now. Candle tries again as soon as you move.",
+  "maps_link_failed": "The shared map link could not be opened.",
+  "button_privacy_policy": "Our privacy policy"
 }

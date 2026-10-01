@@ -4,7 +4,7 @@ import 'package:candle/utils/result.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../fakes/fake_geocoding_service.dart';
+import '../../fakes/fake_geocoding_repository.dart';
 import '../../fakes/fake_location_service.dart';
 import '../../fakes/fake_poi_repository.dart';
 
@@ -20,7 +20,7 @@ void main() {
         category: PoiCategory.cafes,
         poiRepository: repository,
         locationService: location,
-        geocodingService: FakeGeocodingService(),
+        geocodingRepository: FakeGeocodingRepository(),
       );
 
   setUp(() {

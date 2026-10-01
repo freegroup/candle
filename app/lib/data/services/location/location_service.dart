@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:candle/utils/result.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -25,4 +27,23 @@ class LocationService {
   /// Position updates while someone listens; GPS is released on cancel.
   Stream<LatLng> positions() => Geolocator.getPositionStream(locationSettings: _settings)
       .map((p) => LatLng(p.latitude, p.longitude));
+
+  /// Like [positions], but Android keeps delivering them while the screen is off
+  /// and shows a notification with [title] and [text] for that time.
+  Stream<LatLng> backgroundPositions({required String title, required String text}) {
+    final settings = Platform.isAndroid
+        ? AndroidSettings(
+            accuracy: LocationAccuracy.best,
+            distanceFilter: _settings.distanceFilter,
+            foregroundNotificationConfig: ForegroundNotificationConfig(
+              notificationTitle: title,
+              notificationText: text,
+              enableWakeLock: true,
+              setOngoing: true,
+            ),
+          )
+        : _settings;
+    return Geolocator.getPositionStream(locationSettings: settings)
+        .map((p) => LatLng(p.latitude, p.longitude));
+  }
 }

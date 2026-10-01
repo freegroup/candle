@@ -1,6 +1,6 @@
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/app_localizations.dart';
-import 'package:candle/theme_data.dart';
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/explore/view_models/poi_category_viewmodel.dart';
 import 'package:candle/ui/explore/widgets/poi_category_screen.dart';
 import 'package:candle/utils/result.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../fakes/fake_geocoding_service.dart';
+import '../../fakes/fake_geocoding_repository.dart';
 import '../../fakes/fake_location_service.dart';
 import '../../fakes/fake_poi_repository.dart';
 
@@ -33,7 +33,7 @@ void main() {
       category: PoiCategory.cafes,
       poiRepository: repository,
       locationService: FakeLocationService(const Result.ok(here)),
-      geocodingService: FakeGeocodingService(),
+      geocodingRepository: FakeGeocodingRepository(),
     );
     await tester.pumpWidget(MaterialApp(
       theme: CThemeData.darkTheme,

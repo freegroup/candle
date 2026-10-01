@@ -1,19 +1,19 @@
 import 'dart:async';
 
+import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
-import 'package:candle/screens/latlng_compass.dart';
+import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';
 import 'package:candle/ui/radar/view_models/radar_viewmodel.dart';
-import 'package:candle/utils/semantic.dart';
-import 'package:candle/utils/snackbar.dart';
-import 'package:candle/utils/vibrate.dart';
-import 'package:candle/widgets/appbar.dart';
-import 'package:candle/widgets/background.dart';
-import 'package:candle/widgets/info_page.dart';
-import 'package:candle/widgets/list_tile.dart';
-import 'package:candle/widgets/semantic_header.dart';
+import 'package:candle/ui/core/utils/semantic.dart';
+import 'package:candle/ui/core/utils/snackbar.dart';
+import 'package:candle/ui/core/widgets/appbar.dart';
+import 'package:candle/ui/core/widgets/background.dart';
+import 'package:candle/ui/core/widgets/info_page.dart';
+import 'package:candle/ui/core/widgets/list_tile.dart';
+import 'package:candle/ui/core/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:provider/provider.dart';
@@ -26,18 +26,19 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
         locationService: context.read(),
         compassService: context.read(),
       ),
-      builder: (context, _) => RadarScreen(viewModel: context.read()),
+      builder: (context, _) => RadarScreen(
+        viewModel: context.read(),
+        vibrate: () => context.read<VibrationService>().compass(duration: 100),
+      ),
     );
 
 /// Lists the places in the direction the phone points to. Entering one of the
 /// eight compass directions vibrates and announces it with the number of places.
 class RadarScreen extends StatefulWidget {
-  const RadarScreen({super.key, required this.viewModel, this.vibrate = _vibrate});
+  const RadarScreen({super.key, required this.viewModel, required this.vibrate});
 
   final RadarViewModel viewModel;
   final Future<void> Function() vibrate;
-
-  static Future<void> _vibrate() => CandleVibrate.vibrateCompass(duration: 100);
 
   @override
   State<RadarScreen> createState() => _RadarScreenState();
@@ -166,6 +167,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
             button: true,
             label: l10n.button_common_retry_t,
             excludeSemantics: true,
+            onTap: _viewModel.load.execute,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(64)),
               onPressed: _viewModel.load.execute,
@@ -209,7 +211,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
   void _openCompass(Poi poi) {
     final l10n = AppLocalizations.of(context)!;
     unawaited(Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (context) => LatLngCompassScreen(target: poi.position, targetName: l10n.poiName(poi)),
+      builder: (context) => buildTargetCompassScreen(target: poi.position, targetName: l10n.poiName(poi)),
     )));
   }
 }

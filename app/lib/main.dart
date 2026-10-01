@@ -1,149 +1,20 @@
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:candle/app.dart';
 import 'package:candle/config/dependencies.dart';
-
-import 'package:candle/models/navigation_point.dart';
-import 'package:candle/models/route.dart' as model;
-import 'package:candle/services/database.dart';
-import 'package:candle/services/location.dart';
-import 'package:candle/services/recorder.dart';
-import 'package:candle/utils/featureflag.dart';
+import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await AppFeatures.initialize();
-  await RecorderService.initialize();
-  await initialService();
-  SystemChrome.setPreferredOrientations([
+  final settings = await SettingsRepository.load();
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]).then((_) {
-    runApp(MultiProvider(
-      providers: providers,
-      child: const CandleApp(),
-    ));
-  });
-}
-
-Future<void> initialService() async {
-  final service = FlutterBackgroundService();
-  bool isForeground = AppFeatures.allwaysAccessGps.isEnabled;
-
-  await service.configure(
-    iosConfiguration: IosConfiguration(),
-    androidConfiguration: AndroidConfiguration(
-      onStart: onStart,
-      isForegroundMode: isForeground,
-      autoStart: false,
-      // Only a recording started by the user may run the service, never a phone reboot.
-      autoStartOnBoot: false,
-      foregroundServiceTypes: [AndroidForegroundType.location],
-    ),
-  );
-}
-
-const String kDefaultRouteToIgnore = "___ignore___";
-var _currentRouteName = kDefaultRouteToIgnore;
-Timer? _periodicTimer;
-
-@pragma('vm:entry-point')
-void onStart(ServiceInstance service) async {
-  DartPluginRegistrant.ensureInitialized();
-
-  // because the "onStart" function can run in a differnet scope, the "_pref" in the AppFeature
-  // maybe not initilized. We must do the "inititialize" again/first time if
-  // the service runs in ForegroundMode.
-  //
-  await AppFeatures.initialize();
-
-  service.on('startedService').listen((event) async {
-    try {
-      if (service is AndroidServiceInstance) {
-        bool isForeground = AppFeatures.allwaysAccessGps.isEnabled;
-        if (isForeground) {
-          print(
-              'Setting as Foreground due to allwaysOnGps flag => continue running on app close');
-          service.setAsForegroundService();
-        } else {
-          print(
-              'Running as Background due to allwaysOnGps flag => terminate on app close');
-          service.setAsBackgroundService();
-        }
-      }
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('backgroundServicePaused', false);
-      Vibration.vibrate(duration: 100);
-
-      _currentRouteName = event?['routeName'] as String;
-
-      var route =
-          await DatabaseService.instance.getRouteByName(_currentRouteName);
-      if (route == null) {
-        route = model.Route(name: _currentRouteName, points: []);
-        await DatabaseService.instance.addRoute(route);
-      } else {
-        route.points = [];
-        await DatabaseService.instance.updateRoute(route);
-      }
-    } catch (e) {
-      print(e);
-    }
-  });
-
-  service.on('pauseService').listen((event) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('backgroundServicePaused', true);
-  });
-
-  service.on('resumeService').listen((event) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('backgroundServicePaused', false);
-  });
-
-  service.on('stopService').listen((event) async {
-    _periodicTimer?.cancel();
-    _periodicTimer = null;
-    service.stopSelf();
-    _currentRouteName = kDefaultRouteToIgnore;
-  });
-
-  // Setup notification periodically
-  updateRecording(service);
-  _periodicTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-    updateRecording(service);
-  });
-}
-
-// Extracted function
-Future<void> updateRecording(ServiceInstance service) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool backgroundServicePaused =
-      prefs.getBool('backgroundServicePaused') ?? false;
-  if (backgroundServicePaused || _currentRouteName == kDefaultRouteToIgnore) {
-    print("paused or ignored due to missing correct routeName");
-    return;
-  }
-
-  LatLng? loc = await LocationService.instance.location;
-  if (loc != null) {
-    var route =
-        await DatabaseService.instance.getRouteByName(_currentRouteName);
-    if (route != null) {
-      route.points.add(NavigationPoint(coordinate: loc, annotation: ""));
-      await DatabaseService.instance.updateRoute(route);
-    }
-    service.invoke('route_updated', {"routeName": _currentRouteName});
-  }
-  Vibration.vibrate(duration: 100);
+  ]);
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider.value(value: settings), ...providers],
+    child: const CandleApp(),
+  ));
 }

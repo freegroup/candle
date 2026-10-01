@@ -18,4 +18,8 @@ class FakeLocationService implements LocationService {
 
   @override
   Stream<LatLng> positions() => controller.stream;
+
+  @override
+  Stream<LatLng> backgroundPositions({required String title, required String text}) =>
+      controller.stream;
 }

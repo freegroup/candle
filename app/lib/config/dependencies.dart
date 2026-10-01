@@ -4,21 +4,35 @@ import 'package:candle/config/environment.dart';
 import 'package:candle/data/repositories/auth/auth_repository.dart';
 import 'package:candle/data/repositories/auth/auth_storage.dart';
 import 'package:candle/data/repositories/poi/poi_repository.dart';
+import 'package:candle/data/repositories/geocoding/geocoding_repository.dart';
+import 'package:candle/data/repositories/locations/location_repository.dart';
 import 'package:candle/data/repositories/poi/poi_repository_remote.dart';
+import 'package:candle/data/repositories/recording/recording_repository.dart';
+import 'package:candle/data/repositories/routes/route_repository.dart';
+import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/attestation/attestation_service.dart';
 import 'package:candle/data/services/candle_api/candle_api_client.dart';
 import 'package:candle/data/services/candle_api/server_config_service.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
+import 'package:candle/data/services/database/candle_database.dart';
+import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
+import 'package:candle/data/services/nominatim/nominatim_client.dart';
+import 'package:candle/data/services/ors/ors_client.dart';
 import 'package:candle/data/services/overpass/overpass_client.dart';
-import 'package:candle/services/geocoding.dart';
-import 'package:candle/services/router.dart';
+import 'package:candle/data/services/permissions/permission_service.dart';
+import 'package:candle/data/services/share/share_service.dart';
+import 'package:candle/data/services/sharing/shared_content_service.dart';
+import 'package:candle/data/services/wikipedia/wikipedia_client.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:vibration/vibration.dart';
 
 final _log = Logger();
 
@@ -26,9 +40,32 @@ final _log = Logger();
 List<SingleChildWidget> get providers => [
       Provider<http.Client>(create: (_) => http.Client(), dispose: (_, client) => client.close()),
       Provider(create: (context) => OverpassClient(client: context.read())),
+      Provider(create: (context) => NominatimClient(client: context.read())),
+      Provider(create: (context) => GeocodingRepository(nominatim: context.read())),
+      Provider(create: (_) => ShareService()),
+      Provider(create: (_) => SharedContentService()),
+      Provider(create: (_) => PermissionService()),
+      Provider(create: (context) => WikipediaClient(client: context.read())),
+      Provider(create: (context) => WikipediaRepository(client: context.read())),
+      Provider(create: (context) => OrsClient(client: context.read())),
+      Provider(create: (context) => RoutingRepository(ors: context.read())),
       Provider(create: (_) => LocationService()),
       Provider(create: (_) => CompassService()),
+      Provider(create: (context) => VibrationService(settingsRepository: context.read())),
       Provider<PoiRepository>(create: (context) => PoiRepositoryRemote(overpass: context.read())),
+      Provider(create: (_) => CandleDatabase(), dispose: (_, db) => db.close()),
+      Provider(create: (context) => LocationRepository(database: context.read())),
+      Provider(create: (context) => VoicePinRepository(database: context.read())),
+      Provider(create: (context) => RouteRepository(database: context.read())),
+      Provider(
+        create: (context) => RecordingRepository(
+          routeRepository: context.read(),
+          locationService: context.read(),
+          // A short vibration per recorded point tells the user that recording runs.
+          onPointRecorded: () => Vibration.vibrate(duration: 100),
+        ),
+        dispose: (_, recording) => recording.dispose(),
+      ),
       Provider(
         create: (context) => ServerConfigService(
           client: context.read(),
@@ -60,6 +97,4 @@ List<SingleChildWidget> get providers => [
       ),
 
       // Legacy services, removed while the screens are migrated.
-      ChangeNotifierProvider(create: (_) => GeoServiceProvider()),
-      ChangeNotifierProvider(create: (_) => RoutingProvider()),
     ];

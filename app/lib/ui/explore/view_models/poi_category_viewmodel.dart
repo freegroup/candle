@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:candle/data/repositories/geocoding/geocoding_repository.dart';
 import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/poi.dart';
-import 'package:candle/models/location_address.dart';
-import 'package:candle/services/geocoding.dart';
+import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/utils/command.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
@@ -21,8 +21,7 @@ class PoiCategoryViewModel extends ChangeNotifier {
     required this.category,
     required this._poiRepository,
     required this._locationService,
-    // TODO(step 2): replace the legacy geocoding service by a repository.
-    required this._geocodingService,
+    required this._geocodingRepository,
     int? radiusInMeter,
     this.reloadDistanceInMeter = 500,
   }) : radiusInMeter = radiusInMeter ?? category.searchRadiusInMeter {
@@ -34,7 +33,7 @@ class PoiCategoryViewModel extends ChangeNotifier {
   final int reloadDistanceInMeter;
   final PoiRepository _poiRepository;
   final LocationService _locationService;
-  final GeocodingService _geocodingService;
+  final GeocodingRepository _geocodingRepository;
 
   late final Command0<void> load;
 
@@ -103,9 +102,9 @@ class PoiCategoryViewModel extends ChangeNotifier {
     required String formattedAddress,
   }) async {
     if (!poi.hasAddress) {
-      final address = await _geocodingService.getGeolocationAddress(poi.position);
-      if (address != null) {
-        return address.copyWith(
+      final address = await _geocodingRepository.addressAt(poi.position);
+      if (address case Ok(:final value)) {
+        return value.copyWith(
             name: name, lat: poi.position.latitude, lon: poi.position.longitude);
       }
     }

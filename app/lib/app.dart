@@ -1,5 +1,5 @@
-import 'package:candle/theme_data.dart';
-import 'package:candle/widgets/permission_check_widget.dart';
+import 'package:candle/ui/core/themes/theme_data.dart';
+import 'package:candle/ui/onboarding/widgets/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:candle/l10n/app_localizations.dart';
 
@@ -22,7 +22,7 @@ class CandleApp extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: SafeArea(top: false, left: false, right: false, child: child!),
       ),
-      home: const PermissionsCheckWidget(),
+      home: buildOnboarding(),
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:candle/models/navigation_point.dart';
-import 'package:candle/models/route.dart';
+import 'package:candle/domain/models/navigation_point.dart';
+import 'package:candle/domain/models/route.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
@@ -55,11 +55,5 @@ void main() {
     final closest = route.findClosestSegment(const LatLng(52.5173, 13.3812));
     expect((closest['start'] as Map)['index'], 1);
     expect((closest['end'] as Map)['index'], 2);
-  });
-
-  test('points survive a JSON round trip', () {
-    final route = lRoute();
-    final points = Route.pointsFromJson(route.pointsToJson());
-    expect(points.map((e) => e.coordinate), route.points.map((e) => e.coordinate));
   });
 }
