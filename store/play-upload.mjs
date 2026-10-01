@@ -81,7 +81,8 @@ try {
       releases: [
         {
           versionCodes: [versionCode],
-          status: 'completed',
+          // A never published app only accepts drafts: RELEASE_STATUS=draft, then roll out in the Console.
+          status: process.env.RELEASE_STATUS ?? 'completed',
           ...(notes ? { releaseNotes: [{ language: 'de-DE', text: notes }] } : {}),
         },
       ],
