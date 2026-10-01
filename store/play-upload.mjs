@@ -1,6 +1,10 @@
 // Uploads an Android App Bundle to a Google Play track, without extra dependencies.
 //
 //   node store/play-upload.mjs <track> <path/to/app-release.aab> ["release notes (de-DE)"]
+//   node store/play-upload.mjs <track> <version code> ["release notes (de-DE)"]
+//
+// The second form releases a bundle that is already uploaded (e.g. promote an internal
+// build to alpha): Google refuses to upload the same version code twice.
 //
 // track: internal | alpha (closed test) | beta (open test) | production
 // Auth: service account key ansible/google-play-publisher.json (git-ignored), invited in the
@@ -15,7 +19,7 @@ const uploadApi = `https://androidpublisher.googleapis.com/upload/androidpublish
 
 const [track, bundlePath, notes] = process.argv.slice(2);
 if (!track || !bundlePath) {
-  console.error('usage: node store/play-upload.mjs <track> <app-release.aab> ["release notes"]');
+  console.error('usage: node store/play-upload.mjs <track> <app-release.aab | version code> ["release notes"]');
   process.exit(1);
 }
 
@@ -60,13 +64,16 @@ async function call(method, url, { body, contentType = 'application/json' } = {}
 // All changes happen in an "edit" that is only published by the final commit.
 const edit = await call('POST', `${api}/edits`);
 try {
-  console.log(`uploading ${bundlePath} ...`);
-  const bundle = await call('POST', `${uploadApi}/edits/${edit.id}/bundles?uploadType=media`, {
-    body: readFileSync(bundlePath),
-    contentType: 'application/octet-stream',
-  });
-  const versionCode = String(bundle.versionCode);
-  console.log(`uploaded version code ${versionCode}`);
+  let versionCode = bundlePath;
+  if (!/^\d+$/.test(bundlePath)) {
+    console.log(`uploading ${bundlePath} ...`);
+    const bundle = await call('POST', `${uploadApi}/edits/${edit.id}/bundles?uploadType=media`, {
+      body: readFileSync(bundlePath),
+      contentType: 'application/octet-stream',
+    });
+    versionCode = String(bundle.versionCode);
+    console.log(`uploaded version code ${versionCode}`);
+  }
 
   await call('PUT', `${api}/edits/${edit.id}/tracks/${track}`, {
     body: {

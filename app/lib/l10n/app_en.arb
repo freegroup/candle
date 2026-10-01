@@ -1357,5 +1357,6 @@
   "wikipedia_retry_t": "Load the Wikipedia articles again",
   "navigation_route_failed": "No route could be calculated right now. Candle tries again as soon as you move.",
   "maps_link_failed": "The shared map link could not be opened.",
-  "button_privacy_policy": "Our privacy policy"
+  "button_privacy_policy": "Our privacy policy",
+  "recording_started_t": "Recording started."
 }

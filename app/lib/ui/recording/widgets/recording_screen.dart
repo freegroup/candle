@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:candle/l10n/app_localizations.dart';
@@ -14,6 +15,7 @@ import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/pulse_icon.dart';
 import 'package:candle/ui/core/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -72,9 +74,14 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
   }
 
   void _onStartChanged() {
+    final l10n = AppLocalizations.of(context)!;
     if (_viewModel.start.error) {
       _viewModel.start.clearResult();
-      showSnackbar(context, AppLocalizations.of(context)!.recording_start_failed);
+      showSnackbar(context, l10n.recording_start_failed);
+    } else if (_viewModel.start.completed) {
+      _viewModel.start.clearResult();
+      unawaited(SemanticsService.sendAnnouncement(
+          View.of(context), l10n.recording_started_t, Directionality.of(context)));
     }
   }
 
@@ -122,7 +129,12 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
               controller: _nameController,
               hintText: l10n.route_name,
               mandatory: true,
-              onSubmitted: (_) {},
+              // The name is all this screen asks for. Without a screen reader the
+              // keyboard opens at once; with one, the focus would cut off the
+              // announcement of the screen. "Done" on the keyboard starts the
+              // recording, so the keyboard never has to be closed by hand.
+              autofocus: !MediaQuery.of(context).accessibleNavigation,
+              onSubmitted: (_) => _start(),
               talkbackInput: l10n.route_name_t,
               talkbackIcon: l10n.route_add_speak_t,
             ),
@@ -145,18 +157,21 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
     return DialogButton(
       label: l10n.button_recording,
       talkback: l10n.button_recording_t,
-      onTab: () {
-        final name = _nameController.text.trim();
-        if (name.isEmpty) {
-          showSnackbar(context, l10n.route_name_required_snackbar);
-          return;
-        }
-        _viewModel.start.execute((
-          name,
-          (title: l10n.recording_notification_title, text: l10n.recording_notification_text),
-        ));
-      },
+      onTab: _start,
     );
+  }
+
+  void _start() {
+    final l10n = AppLocalizations.of(context)!;
+    final name = _nameController.text.trim();
+    if (name.isEmpty) {
+      showSnackbar(context, l10n.route_name_required_snackbar);
+      return;
+    }
+    _viewModel.start.execute((
+      name,
+      (title: l10n.recording_notification_title, text: l10n.recording_notification_text),
+    ));
   }
 
   Widget _buildMap(BuildContext context) {

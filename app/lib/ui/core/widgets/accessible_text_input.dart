@@ -92,11 +92,9 @@ class _InputState extends State<AccessibleTextInput> {
             if (val.finalResult) {
               AppLocalizations l10n = AppLocalizations.of(context)!;
               showSnackbar(context, l10n.accessible_text_snackbar(val.recognizedWords));
-              // Remove focus and hide keyboard
+              // Remove focus and hide keyboard; the user confirms the recognized text
+              // with the button of the screen.
               FocusScope.of(context).unfocus();
-              if (widget.onSubmitted != null) {
-                widget.onSubmitted!(val.recognizedWords);
-              }
             }
           }),
         );

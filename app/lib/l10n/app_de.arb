@@ -395,5 +395,6 @@
   "wikipedia_retry_t": "Die Wikipedia-Artikel erneut laden",
   "navigation_route_failed": "Gerade konnte keine Route berechnet werden. Candle versucht es erneut, sobald Sie sich bewegen.",
   "maps_link_failed": "Der geteilte Karten-Link konnte nicht geöffnet werden.",
-  "button_privacy_policy": "Unsere Datenschutzerklärung"
+  "button_privacy_policy": "Unsere Datenschutzerklärung",
+  "recording_started_t": "Aufzeichnung gestartet."
 }
