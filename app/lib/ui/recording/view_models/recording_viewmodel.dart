@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
+import 'package:candle/data/services/permissions/permission_service.dart';
 import 'package:candle/domain/models/route.dart';
 import 'package:candle/utils/command.dart';
 import 'package:candle/utils/result.dart';
@@ -17,8 +18,10 @@ class RecordingViewModel extends ChangeNotifier {
     required RecordingRepository recordingRepository,
     required RouteRepository routeRepository,
     required CompassService compassService,
+    required PermissionService permissionService,
   })  : _recording = recordingRepository,
-        _routes = routeRepository {
+        _routes = routeRepository,
+        _permissions = permissionService {
     start = Command1(_start);
     stop = Command1(_stop);
     _recording.addListener(_onRecordingChanged);
@@ -31,6 +34,7 @@ class RecordingViewModel extends ChangeNotifier {
 
   final RecordingRepository _recording;
   final RouteRepository _routes;
+  final PermissionService _permissions;
 
   late final Command1<int, (String, RecordingNotification)> start;
 
@@ -52,8 +56,9 @@ class RecordingViewModel extends ChangeNotifier {
   StreamSubscription<double>? _headings;
   StreamSubscription<Route?>? _routeUpdates;
 
-  Future<Result<int>> _start((String, RecordingNotification) args) {
+  Future<Result<int>> _start((String, RecordingNotification) args) async {
     final (name, notification) = args;
+    await _permissions.requestNotifications();
     return _recording.start(
       name.trim(),
       notificationTitle: notification.title,

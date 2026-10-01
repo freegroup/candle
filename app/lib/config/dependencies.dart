@@ -57,14 +57,13 @@ List<SingleChildWidget> get providers => [
       Provider(create: (context) => LocationRepository(database: context.read())),
       Provider(create: (context) => VoicePinRepository(database: context.read())),
       Provider(create: (context) => RouteRepository(database: context.read())),
-      Provider(
+      ChangeNotifierProvider(
         create: (context) => RecordingRepository(
           routeRepository: context.read(),
           locationService: context.read(),
           // A short vibration per recorded point tells the user that recording runs.
           onPointRecorded: () => Vibration.vibrate(duration: 100),
         ),
-        dispose: (_, recording) => recording.dispose(),
       ),
       Provider(
         create: (context) => ServerConfigService(

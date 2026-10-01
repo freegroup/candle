@@ -18,6 +18,10 @@ class PermissionService {
     return statuses.values.every((status) => status.isGranted);
   }
 
+  /// Asks for notifications (Android 13+), so the user sees while a route is recorded.
+  /// Recording also works without them.
+  Future<void> requestNotifications() => Permission.notification.request();
+
   /// Opens the system settings of the app, the only way back after a permanent denial.
   Future<void> openSettings() => openAppSettings();
 }

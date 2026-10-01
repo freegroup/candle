@@ -1,5 +1,6 @@
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
+import 'package:candle/data/services/permissions/permission_service.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/domain/models/route.dart';
 import 'package:candle/ui/recording/view_models/recording_viewmodel.dart';
@@ -11,6 +12,16 @@ import 'package:latlong2/latlong.dart';
 import '../../fakes/fake_compass_service.dart';
 import '../../fakes/fake_location_service.dart';
 
+class _FakePermissions implements PermissionService {
+  int notificationRequests = 0;
+
+  @override
+  Future<void> requestNotifications() async => notificationRequests++;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError();
+}
+
 const _notification = (title: 'title', text: 'text');
 
 void main() {
@@ -20,12 +31,14 @@ void main() {
   late RecordingRepository recording;
   late RecordingViewModel viewModel;
   late int vibrations;
+  late _FakePermissions permissions;
 
   setUp(() {
     db = CandleDatabase(NativeDatabase.memory());
     routes = RouteRepository(database: db);
     location = FakeLocationService(const Result.ok(LatLng(0, 0)));
     vibrations = 0;
+    permissions = _FakePermissions();
     recording = RecordingRepository(
       routeRepository: routes,
       locationService: location,
@@ -35,6 +48,7 @@ void main() {
       recordingRepository: recording,
       routeRepository: routes,
       compassService: FakeCompassService(),
+      permissionService: permissions,
     );
   });
 
@@ -54,6 +68,7 @@ void main() {
   test('records the walked positions into a new route and keeps it on save', () async {
     await viewModel.start.execute((' Walk ', _notification));
     expect(viewModel.isRecording, isTrue);
+    expect(permissions.notificationRequests, 1);
 
     await walk([1, 2, 3]);
     expect(viewModel.route?.name, 'Walk');
@@ -94,6 +109,7 @@ void main() {
       recordingRepository: recording,
       routeRepository: routes,
       compassService: FakeCompassService(),
+      permissionService: permissions,
     );
     await pumpEventQueue();
     expect(viewModel.isRecording, isTrue);

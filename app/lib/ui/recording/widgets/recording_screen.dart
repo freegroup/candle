@@ -23,6 +23,7 @@ Widget buildRecordingScreen() => ChangeNotifierProvider(
         recordingRepository: context.read(),
         routeRepository: context.read(),
         compassService: context.read(),
+        permissionService: context.read(),
       ),
       builder: (context, _) => RecordingScreen(viewModel: context.read()),
     );

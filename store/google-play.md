@@ -143,4 +143,16 @@ Alle anderen Datentypen: nicht erhoben. (Sprachnotizen bleiben auf dem Gerät; d
 ### Berechtigungen
 
 - **Standort im Hintergrund:** nicht mehr angefordert (seit 1.4.5, entfernt aus `AndroidManifest.xml`).
-- **Vordergrunddienst „Standort“** (`FOREGROUND_SERVICE_LOCATION`): falls die Console die Erklärung verlangt – Aufgabe *Navigation/Routenaufnahme*, vom Nutzer gestartet, Benachrichtigung sichtbar, endet beim Stoppen der Aufnahme. Google verlangt dazu ein kurzes Video (z. B. nicht gelistetes YouTube-Video), das die Aufnahme zeigt.
+- **Vordergrunddienst „Standort“** (`FOREGROUND_SERVICE_LOCATION`, Pflichtangabe unter App-Inhalte →
+  „Berechtigungen für Dienste im Vordergrund“):
+  - Aufgabe: **Navigation** (Routenaufnahme)
+  - Beschreibung (de):
+    ```
+    Candle ist eine Navigations-App für blinde Menschen. Die Nutzerin oder der Nutzer startet die Aufzeichnung eines Fußwegs selbst mit „Aufzeichnen“. Solange die Aufzeichnung läuft, speichert der Dienst die GPS-Position, auch bei gesperrtem Bildschirm – blinde Menschen tragen das Handy dabei meist in der Tasche. Eine Benachrichtigung „Candle zeichnet auf“ ist die ganze Zeit sichtbar. Der Dienst endet, sobald die Aufzeichnung gespeichert oder verworfen wird. Die aufgezeichnete Strecke bleibt auf dem Gerät und führt später zurück zum Ziel.
+    ```
+  - Beschreibung (en):
+    ```
+    Candle is a navigation app for blind people. The user starts recording a walking route with "Record". While the recording runs, the service stores the GPS position, also with the screen locked – blind people usually carry the phone in a pocket. A notification "Candle is recording" is shown the whole time. The service ends as soon as the recording is saved or discarded. The recorded route stays on the device and later guides the user back to the destination.
+    ```
+  - Video: https://www.youtube.com/watch?v=-asALgd-ADw (nicht gelistet, 54 s). Es zeigt: Aufnahme starten → Benachrichtigungs-Erlaubnis →
+    Route auf der Karte → Benachrichtigung „Candle is recording“ → Speichern.
