@@ -29,11 +29,15 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
     return Expanded(
       child: SizedBox(
         width: double.infinity,
-        child: Column(
+        // Large system fonts may need more room than the pane has: shrink then
+        // instead of cutting the text off.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: double.infinity,
               child: Semantics(
                 label: widget.headlineTalkback,
                 child: ExcludeSemantics(
@@ -50,7 +54,6 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
               ),
             ),
             SizedBox(
-              width: double.infinity,
               child: Semantics(
                 label: widget.subtitleTalkback,
                 child: ExcludeSemantics(
@@ -67,6 +70,7 @@ class _TwolinerWidgetState extends State<TwolinerWidget> {
               ),
             ),
           ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 
 mixin SemanticAnnouncer<T extends StatefulWidget> on State<T> {
   

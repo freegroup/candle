@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/route.dart' as model;
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/recording/widgets/recording_screen.dart';
 import 'package:candle/ui/routes/view_models/routes_viewmodel.dart';

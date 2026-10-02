@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/ui/core/icons/compass.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/compass/view_models/compass_viewmodel.dart';

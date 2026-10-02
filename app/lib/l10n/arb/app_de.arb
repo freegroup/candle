@@ -400,5 +400,6 @@
   "recording_cancel_title": "Aufzeichnung abbrechen?",
   "recording_cancel_body": "Die bisher aufgezeichnete Strecke wird nicht gespeichert.",
   "button_cancel_recording_confirm": "Ja, abbrechen",
-  "button_continue_recording": "Weiter aufzeichnen"
+  "button_continue_recording": "Weiter aufzeichnen",
+  "featureflag_short_talkback": "Kurze Ansagen (für erfahrene TalkBack-Nutzer)"
 }

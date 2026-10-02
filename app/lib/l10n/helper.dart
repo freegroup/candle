@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 
 String getHorizon(BuildContext context, int angle) {
   var l10n = AppLocalizations.of(context)!;

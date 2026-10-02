@@ -10,7 +10,7 @@ import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 
 class ImportLocationScreen extends StatefulWidget {
   final LocationAddress address;

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/recording/view_models/recording_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';

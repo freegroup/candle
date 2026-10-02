@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/locations/view_models/locations_viewmodel.dart';

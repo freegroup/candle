@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/voicepin.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/voicepins/widgets/text_overlay_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/voicepins/view_models/voicepins_viewmodel.dart';

@@ -1,6 +1,6 @@
 import 'package:candle/ui/core/icons/compass.dart';
 import 'package:candle/ui/core/icons/poi_favorite.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/about/widgets/about_screen.dart';
 import 'package:candle/ui/compass/widgets/compass_screen.dart';
 import 'package:candle/ui/home/view_models/home_viewmodel.dart';

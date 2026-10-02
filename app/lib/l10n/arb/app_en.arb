@@ -1362,5 +1362,6 @@
   "recording_cancel_title": "Cancel recording?",
   "recording_cancel_body": "The route recorded so far will not be saved.",
   "button_cancel_recording_confirm": "Yes, cancel",
-  "button_continue_recording": "Keep recording"
+  "button_continue_recording": "Keep recording",
+  "featureflag_short_talkback": "Short announcements (for experienced TalkBack users)"
 }

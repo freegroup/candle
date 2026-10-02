@@ -125,7 +125,7 @@ void main() {
     test('searches once the user pauses typing and ignores single letters', () {
       fakeAsync((async) {
         geocoding.searchResults = [_place('Main street', 1)];
-        final viewModel = AddressSearchViewModel(geocodingRepository: geocoding, languageCode: 'de');
+        final viewModel = AddressSearchViewModel(geocodingRepository: geocoding);
 
         viewModel.search('M');
         async.elapse(const Duration(seconds: 2));

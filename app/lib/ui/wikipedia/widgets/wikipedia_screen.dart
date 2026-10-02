@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/article_ref.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/wikipedia/view_models/wikipedia_viewmodel.dart';
 import 'package:candle/ui/wikipedia/widgets/article_screen.dart';
 import 'package:candle/utils/result.dart';
@@ -18,7 +18,6 @@ Widget buildWikipediaScreen() => ChangeNotifierProvider(
       create: (context) => WikipediaViewModel(
         wikipediaRepository: context.read(),
         locationService: context.read(),
-        languageCode: Localizations.localeOf(context).languageCode,
       ),
       builder: (context, _) => WikipediaScreen(viewModel: context.read()),
     );

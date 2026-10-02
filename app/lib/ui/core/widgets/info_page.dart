@@ -19,12 +19,15 @@ class GenericInfoPage extends StatelessWidget {
       p: theme.textTheme.bodyLarge,
     );
 
+    // The whole page scrolls: with a large system font the header alone can be
+    // taller than the screen.
     return MergeSemantics(
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Fixed header
+          // Header
           Container(
             color: theme.cardColor,
             child: Padding(
@@ -36,31 +39,19 @@ class GenericInfoPage extends StatelessWidget {
             ),
           ),
           Container(color: theme.primaryColor.withAlpha(30), height: 1.0),
-
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    MarkdownBody(
-                      data: body,
-                      styleSheet: markdownStyle,
-                    ),
-                    const SizedBox(height: 50),
-                    Center(
-                      child: SizedBox(
-                        width: imageWidth,
-                        child: decoration,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                MarkdownBody(data: body, styleSheet: markdownStyle),
+                const SizedBox(height: 50),
+                Center(child: SizedBox(width: imageWidth, child: decoration)),
+              ],
             ),
           ),
         ],
+        ),
       ),
     );
   }

@@ -13,16 +13,16 @@ ArticleRef _article(String title, double lat) =>
 
 class _FakeWikipedia implements WikipediaRepository {
   Result<List<ArticleRef>> nearbyResult = Result.ok([_article('far', 1.1), _article('near', 1.01)]);
-  final requests = <(LatLng, String)>[];
+  final requests = <LatLng>[];
 
   @override
-  Future<Result<List<ArticleRef>>> nearby(LatLng position, {required String languageCode}) async {
-    requests.add((position, languageCode));
+  Future<Result<List<ArticleRef>>> nearby(LatLng position) async {
+    requests.add(position);
     return nearbyResult;
   }
 
   @override
-  Future<Result<ArticleSummary>> summary(ArticleRef article, {required String languageCode}) async =>
+  Future<Result<ArticleSummary>> summary(ArticleRef article) async =>
       Result.ok(ArticleSummary(pageid: article.pageid, title: article.title, extract: 'text'));
 }
 
@@ -36,13 +36,13 @@ void main() {
   });
 
   WikipediaViewModel create() =>
-      WikipediaViewModel(wikipediaRepository: wikipedia, locationService: location, languageCode: 'en');
+      WikipediaViewModel(wikipediaRepository: wikipedia, locationService: location);
 
-  test('loads the articles in the app language, nearest first', () async {
+  test('loads the articles nearest first', () async {
     final viewModel = create();
     await pumpEventQueue();
     expect(viewModel.articles.map((a) => a.title), ['near', 'far']);
-    expect(wikipedia.requests.single.$2, 'en');
+    expect(wikipedia.requests, hasLength(1));
     viewModel.dispose();
   });
 

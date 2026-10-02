@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/poi.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// Localized labels and icons for the explore feature.

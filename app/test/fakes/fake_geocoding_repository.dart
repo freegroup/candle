@@ -12,6 +12,6 @@ class FakeGeocodingRepository implements GeocodingRepository {
       address == null ? Result.error(Exception('no address')) : Result.ok(address!);
 
   @override
-  Future<Result<List<LocationAddress>>> search(String query, {required String languageCode}) async =>
+  Future<Result<List<LocationAddress>>> search(String query) async =>
       Result.ok(searchResults);
 }

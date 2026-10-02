@@ -4,7 +4,7 @@ import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart' as model;
 import 'package:candle/domain/models/voicepin.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';

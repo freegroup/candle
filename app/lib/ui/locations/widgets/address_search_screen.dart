@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/locations/view_models/address_search_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/accessible_text_input.dart';
@@ -9,10 +9,7 @@ import 'package:provider/provider.dart';
 
 /// Address search with its own view model; pops with the chosen [LocationAddress].
 Widget buildAddressSearchScreen({String query = ''}) => ChangeNotifierProvider(
-      create: (context) => AddressSearchViewModel(
-        geocodingRepository: context.read(),
-        languageCode: Localizations.localeOf(context).languageCode,
-      ),
+      create: (context) => AddressSearchViewModel(geocodingRepository: context.read()),
       builder: (context, _) => AddressSearchScreen(viewModel: context.read(), query: query),
     );
 

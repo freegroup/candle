@@ -1,7 +1,7 @@
 import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/poi.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/explore/view_models/poi_category_viewmodel.dart';
 import 'package:candle/ui/explore/widgets/poi_category_screen.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';

@@ -13,12 +13,10 @@ final _log = Logger();
 class AddressSearchViewModel extends ChangeNotifier {
   AddressSearchViewModel({
     required GeocodingRepository geocodingRepository,
-    required this.languageCode,
     this.debounce = const Duration(seconds: 1),
   }) : _geocoding = geocodingRepository;
 
   final GeocodingRepository _geocoding;
-  final String languageCode;
   final Duration debounce;
 
   Timer? _timer;
@@ -36,7 +34,7 @@ class AddressSearchViewModel extends ChangeNotifier {
       return;
     }
     _timer = Timer(debounce, () async {
-      final result = await _geocoding.search(query.trim(), languageCode: languageCode);
+      final result = await _geocoding.search(query.trim());
       // A newer query may have started while this one was running.
       if (generation != _generation) return;
       switch (result) {

@@ -1,7 +1,7 @@
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 
 class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String talkback;

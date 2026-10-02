@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/import/widgets/import_location_screen.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:flutter/material.dart';

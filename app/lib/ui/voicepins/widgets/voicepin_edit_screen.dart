@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/voicepin.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/voicepins/view_models/voicepin_edit_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
@@ -76,7 +76,9 @@ class _VoicePinEditScreenState extends State<VoicePinEditScreen> with SemanticAn
               onLock: () => _save(close: false),
             ),
           ),
-          bottom: Column(
+          // scrolls when large system fonts need more room than the pane has
+          bottom: SingleChildScrollView(
+            child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(35.0, 25.0, 35.0, 10.0),
@@ -97,6 +99,7 @@ class _VoicePinEditScreenState extends State<VoicePinEditScreen> with SemanticAn
                   onTab: () => _save(close: true),
                 ),
             ],
+            ),
           ),
         ),
       ),

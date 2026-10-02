@@ -4,7 +4,7 @@ import 'package:candle/utils/global_logger.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 
 class AccessibleTextInput extends StatefulWidget {
   final TextEditingController controller;

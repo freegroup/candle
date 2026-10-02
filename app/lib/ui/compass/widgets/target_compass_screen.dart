@@ -4,7 +4,7 @@ import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/route.dart' as model;
 import 'package:candle/ui/core/icons/location_arrow.dart';
 import 'package:candle/ui/core/icons/location_dot.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';

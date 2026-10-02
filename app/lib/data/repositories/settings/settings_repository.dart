@@ -18,6 +18,8 @@ enum Setting {
   vibrateCompass('vibrateCompass'),
   // Route recording is still beta and off by default.
   betaRecording('betaRecording', initial: false),
+  // Short screen reader texts for experienced users (see lib/l10n/arb/short).
+  shortTalkback('shortTalkback', initial: false),
   // iOS has its own dictation key on the keyboard.
   dictationInput('dictationInput', supportedOnIOS: false);
 

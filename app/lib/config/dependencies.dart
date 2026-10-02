@@ -18,6 +18,7 @@ import 'package:candle/data/services/candle_api/server_config_service.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
+import 'package:candle/data/services/language/language_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/data/services/nominatim/nominatim_client.dart';
 import 'package:candle/data/services/ors/ors_client.dart';
@@ -40,13 +41,20 @@ final _log = Logger();
 List<SingleChildWidget> get providers => [
       Provider<http.Client>(create: (_) => http.Client(), dispose: (_, client) => client.close()),
       Provider(create: (context) => OverpassClient(client: context.read())),
+      ChangeNotifierProvider(create: (_) => LanguageService()),
       Provider(create: (context) => NominatimClient(client: context.read())),
-      Provider(create: (context) => GeocodingRepository(nominatim: context.read())),
+      Provider(
+        create: (context) =>
+            GeocodingRepository(nominatim: context.read(), language: context.read()),
+      ),
       Provider(create: (_) => ShareService()),
       Provider(create: (_) => SharedContentService()),
       Provider(create: (_) => PermissionService()),
       Provider(create: (context) => WikipediaClient(client: context.read())),
-      Provider(create: (context) => WikipediaRepository(client: context.read())),
+      Provider(
+        create: (context) =>
+            WikipediaRepository(client: context.read(), language: context.read()),
+      ),
       Provider(create: (context) => OrsClient(client: context.read())),
       Provider(create: (context) => RoutingRepository(ors: context.read())),
       Provider(create: (_) => LocationService()),

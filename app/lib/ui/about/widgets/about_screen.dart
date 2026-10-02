@@ -4,7 +4,7 @@ import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:flutter/material.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:candle/ui/about/view_models/about_viewmodel.dart';
 import 'package:provider/provider.dart';

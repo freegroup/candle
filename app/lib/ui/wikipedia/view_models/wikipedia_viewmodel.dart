@@ -18,7 +18,6 @@ class WikipediaViewModel extends ChangeNotifier {
   WikipediaViewModel({
     required WikipediaRepository wikipediaRepository,
     required LocationService locationService,
-    required this.languageCode,
     this.reloadDistanceInMeter = 500,
   })  : _wikipedia = wikipediaRepository,
         _location = locationService {
@@ -28,7 +27,6 @@ class WikipediaViewModel extends ChangeNotifier {
 
   final WikipediaRepository _wikipedia;
   final LocationService _location;
-  final String languageCode;
   final int reloadDistanceInMeter;
 
   late final Command0<void> load;
@@ -57,7 +55,7 @@ class WikipediaViewModel extends ChangeNotifier {
     if (position == null) return Result.error(Exception('No GPS position available'));
     _position = position;
 
-    final result = await _wikipedia.nearby(position, languageCode: languageCode);
+    final result = await _wikipedia.nearby(position);
     switch (result) {
       case Ok(:final value):
         _articles = value;
@@ -75,7 +73,7 @@ class WikipediaViewModel extends ChangeNotifier {
   }
 
   Future<Result<ArticleSummary>> _summary(ArticleRef article) =>
-      _wikipedia.summary(article, languageCode: languageCode);
+      _wikipedia.summary(article);
 
   void _onPosition(LatLng position) {
     _position = position;

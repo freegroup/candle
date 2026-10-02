@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/locations/view_models/location_edit_viewmodel.dart';
 import 'package:candle/ui/locations/widgets/address_search_screen.dart';
 import 'package:candle/ui/core/utils/semantic.dart';

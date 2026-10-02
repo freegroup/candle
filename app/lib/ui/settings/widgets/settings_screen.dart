@@ -1,5 +1,5 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -96,6 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
       Setting.vibrateDuringNavigation => l10n.featureflag_vibraterouting,
       Setting.vibrateCompass => l10n.featureflag_vibratecompass,
       Setting.betaRecording => l10n.featureflag_beta_recording,
+      Setting.shortTalkback => l10n.featureflag_short_talkback,
     };
   }
 }

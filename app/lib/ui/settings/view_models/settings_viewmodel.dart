@@ -21,6 +21,7 @@ class SettingsViewModel extends ChangeNotifier {
       ];
 
   List<Setting> get common => [
+        Setting.shortTalkback,
         if (Setting.dictationInput.isAvailable) Setting.dictationInput,
         Setting.vibrateCompass,
         Setting.vibrateDuringNavigation,

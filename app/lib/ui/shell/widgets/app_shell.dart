@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_screen.dart';

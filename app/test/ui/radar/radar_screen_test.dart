@@ -1,5 +1,5 @@
 import 'package:candle/domain/models/poi.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/radar/view_models/radar_viewmodel.dart';
 import 'package:candle/ui/radar/widgets/radar_screen.dart';

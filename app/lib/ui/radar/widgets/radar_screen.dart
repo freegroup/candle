@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/poi.dart';
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';

@@ -30,4 +30,6 @@ GitHub Pages (privacy policy, `api.json` with the server address) in `docs/`.
 ## Checks
 
 - App: `flutter analyze`, `flutter test` (in `app/`, with `--dart-define-from-file=env/dev.json` for builds).
+- Texts: edit `app/lib/l10n/arb/*.arb` (Flutter generates `lib/l10n/gen/`); short screen reader texts in
+  `app/lib/l10n/arb/short/*.arb`, then run `dart run tool/gen_short_l10n.dart` (a test fails if forgotten).
 - Server: `npm run typecheck`, `npm test` (in `server/`).

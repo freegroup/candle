@@ -1,4 +1,4 @@
-import 'package:candle/l10n/app_localizations.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/onboarding/view_models/onboarding_viewmodel.dart';
 import 'package:candle/ui/shell/widgets/app_shell.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
