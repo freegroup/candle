@@ -80,15 +80,51 @@ class _LocationEditScreenState extends State<LocationEditScreen> with SemanticAn
     );
   }
 
+  // A place is a name and an address. Both sit in a rounded "blob", joined by a
+  // connector line, like a start and a destination on a map. The address blob is a
+  // button with a pencil, so it is visible that the address can be changed.
   Widget _buildForm(BuildContext context) {
+    return SingleChildScrollView(
+      // top aligned so the name field stays above the keyboard
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 24, 18, 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _nameBlob(context),
+            _connector(context),
+            _addressBlob(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  BoxDecoration _blobDecoration(BuildContext context) {
+    final theme = Theme.of(context);
+    return BoxDecoration(
+      color: theme.cardColor,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: theme.primaryColor.withValues(alpha: 0.4), width: 1.5),
+    );
+  }
+
+  Widget _nameBlob(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
-    return SingleChildScrollView(
-      child: Column(
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: _blobDecoration(context),
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(18.0),
+          ExcludeSemantics(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(Icons.label_outline, color: theme.primaryColor, size: 28),
+            ),
+          ),
+          Expanded(
             child: AccessibleTextInput(
               maxLines: 1,
               mandatory: true,
@@ -98,30 +134,78 @@ class _LocationEditScreenState extends State<LocationEditScreen> with SemanticAn
               controller: _nameController,
             ),
           ),
-          ListenableBuilder(
-            listenable: _viewModel,
-            builder: (context, _) => Semantics(
-              button: true,
-              label: '${l10n.inputhint_address}: ${_viewModel.location.formattedAddress}',
-              excludeSemantics: true,
-              onTap: _searchAddress,
-              child: InkWell(
-                onTap: _searchAddress,
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
+        ],
+      ),
+    );
+  }
+
+  Widget _addressBlob(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return ListenableBuilder(
+      listenable: _viewModel,
+      builder: (context, _) => Semantics(
+        button: true,
+        label: '${l10n.inputhint_address}: ${_viewModel.location.formattedAddress}. '
+            '${l10n.location_address_change_hint_t}',
+        excludeSemantics: true,
+        onTap: _searchAddress,
+        child: InkWell(
+          onTap: _searchAddress,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: _blobDecoration(context),
+            child: Row(
+              children: [
+                ExcludeSemantics(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Icon(Icons.place, color: theme.primaryColor, size: 28),
+                  ),
+                ),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(l10n.inputhint_address, style: theme.textTheme.labelMedium),
-                      const SizedBox(height: 8),
-                      Text(_viewModel.location.formattedAddress, style: theme.textTheme.bodyLarge),
-                      const Divider(),
+                      const SizedBox(height: 6),
+                      Text(_viewModel.location.formattedAddress,
+                          style: theme.textTheme.headlineSmall),
                     ],
                   ),
                 ),
-              ),
+                ExcludeSemantics(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    // same size and right/middle position as the microphone in the name field
+                    child: Icon(Icons.edit, color: theme.primaryColor, size: 48),
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  // Decorative line that ties the name and address blobs together.
+  Widget _connector(BuildContext context) {
+    final color = Theme.of(context).primaryColor;
+    Widget dot() => Container(
+          width: 11,
+          height: 11,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        );
+    return ExcludeSemantics(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          dot(),
+          Container(width: 3, height: 56, color: color),
+          dot(),
         ],
       ),
     );

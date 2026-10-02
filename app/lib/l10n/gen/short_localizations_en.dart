@@ -8,7 +8,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String screen_show_announcement_t(String title) => '$title';
   @override
-  String get screen_header_import_location_t => 'Shared location';
+  String get screen_header_import_location_t => 'Shared place';
   @override
   String get screen_header_import_location_note_t => 'Shared location note';
   @override
@@ -24,9 +24,9 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get navigation_announcement_hint => 'Navigation. Tap below for announcements.';
   @override
-  String get screen_header_location_add_t => 'Save location';
+  String get screen_header_location_add_t => 'Save place';
   @override
-  String get screen_header_location_update_t => 'Edit location';
+  String get screen_header_location_update_t => 'Rename place';
   @override
   String get screen_header_location_note_add_t => 'New location note';
   @override
@@ -90,11 +90,11 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get buttonbar_locations_t => 'Locations';
   @override
-  String get button_location_create_t => 'Save location';
+  String get button_location_create_t => 'Save place';
   @override
   String get button_wikipedia_t => 'Wikipedia';
   @override
-  String get button_import_location_t => 'Import location';
+  String get button_import_location_t => 'Import place';
   @override
   String get button_import_location_note_t => 'Import location note';
   @override
@@ -110,7 +110,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get route_add_speak_t => 'Speak name';
   @override
-  String get location_name_t => 'Location name';
+  String get location_name_t => 'Place name';
   @override
   String get route_name_t => 'Route name';
   @override

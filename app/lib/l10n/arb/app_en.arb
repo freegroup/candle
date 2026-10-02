@@ -107,11 +107,11 @@
   },
 
 
-  "screen_header_import_location_t": "Import shared Location or start navigation",
+  "screen_header_import_location_t": "Import shared place or start navigation",
   "@screen_header_import_location_t": {
     "description": "Talkback for location shared screen"
   },
-  "screen_header_import_location": "Shared Location",
+  "screen_header_import_location": "Shared Place",
   "@screen_header_import_location": {
     "description": "Title for the location shared screen"
   },
@@ -428,8 +428,8 @@
     }
   },
 
-  "locations_placeholder_header": "Oh, what a pity... you haven't saved any favorites yet.",
-  "locations_placeholder_body": "Why not start by adding **HOME** or WORK as your first favorites? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first favorite today and experience the joy of effortless navigation!",
+  "locations_placeholder_header": "Oh, what a pity... you haven't saved any places yet.",
+  "locations_placeholder_body": "Why not start by adding **HOME** or WORK as your first places? It's a simple yet effective way to begin your journey with Candle, ensuring you're always just a few steps away from the places that matter most. Add your first place today and experience the joy of effortless navigation!",
  
   "routes_recording_placeholder_header": "Looks like you haven't recorded any routes yet.",
   "routes_recording_placeholder_body": "Discover the joy of seamless navigation with Candle's route recording. Record your journeys, from exploring new destinations to returning to familiar comforts. Start today and let Candle guide you confidently every step of the way. Experience the freedom of reliable navigation, right at your fingertips!",
@@ -437,7 +437,7 @@
   "location_notes_placeholder_header": "No location notes yet.",
   "location_notes_placeholder_body": "A location note is a hint Candle reads out when you reach that spot, for example \"stairs after the door\". Add location notes at important spots like the **front door** or the **nearest crosswalk**.",
 
-  "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
+  "no_location_for_category": "It seems we've come up short... We couldn't find any places for the selected category.",
 
   "remaining_route_distance_t": "The remaining distance to your destination is {meters} meters.",
   "@remaining_route_distance_t": {
@@ -471,12 +471,12 @@
     }
   },
 
-  "location_name_t": "Input field for the location name",
+  "location_name_t": "Input field for the place name",
   "@location_name_t": {
     "description": "Talkback for the input field for a location name"
   },
 
-  "location_name": "Location name",
+  "location_name": "Place name",
   "@location_name": {
     "description": "The label for the location name input"
   },
@@ -550,7 +550,7 @@
     "description": "The label if the user has reached the location"
   },
 
-  "location_name_required_snackbar": "Favorite name is required",
+  "location_name_required_snackbar": "Please enter a name for the place.",
   "@location_name_required_snackbar": {
     "description": "The required message for the location name input"
   },
@@ -582,7 +582,7 @@
   },
    
   
-  "location_saved_toast": "Location '{name}' has been saved as a favorite.",
+  "location_saved_toast": "Place '{name}' has been saved.",
   "@location_saved_toast": {
     "description": "Information that the favorite has saved with success",
     "placeholders": {
@@ -610,7 +610,7 @@
   },
   
 
-  "location_deleted_toast": "Location '{name}' deleted.",
+  "location_deleted_toast": "Place '{name}' deleted.",
   "@location_saved_toast": {
     "description": "Information that the favorite has deleted with success",
     "placeholders": {
@@ -653,7 +653,8 @@
     }
   },
 
-  "location_add_speak_t": "Press to name the location using voice input",
+  "location_add_speak_t": "Press to name the place using voice input",
+  "location_address_change_hint_t": "Tap to change the address.",
   "@location_add_speak_t": {
     "description": "Talkback for the start voice recoding button"
   },
@@ -664,21 +665,21 @@
     "description": "Talkback for the start voice recoding button of a LocationNote"
   },
 
-  "screen_header_location_add_t": "Give the location a name to save it in your favorites.",
+  "screen_header_location_add_t": "Give the place a name to save it.",
   "@screen_header_location_add_t": {
     "description": "Talkback for the save location AppBar"
   },
-  "screen_header_location_add": "Save Location",
+  "screen_header_location_add": "Save Place",
   "@screen_header_location_add": {
     "description": "Title for location add dialog"
   },
 
 
-  "screen_header_location_update_t": "Give the location a new name and save it.",
+  "screen_header_location_update_t": "Give the place a new name.",
   "@screen_header_location_update_t": {
     "description": "Talkback for the update location/favorite AppBar"
   },
-  "screen_header_location_update": "Update Location",
+  "screen_header_location_update": "Rename Place",
   "@screen_header_location_update": {
     "description": "Title for location/favorite update dialog"
   },
@@ -910,16 +911,16 @@
   },
 
 
-  "label_favorites_empty_t": "You have not added any favorites yet. If you have any, they will be listed in this area.",
+  "label_favorites_empty_t": "You have not saved any places yet. If you have any, they will be listed in this area.",
   "@label_favorites_empty_t": {
     "description": "Common message for an empty fovirite area"
   },
-  "label_favorites_empty": "You have not added any favorites yet.",
+  "label_favorites_empty": "You have not saved any places yet.",
   "@label_favorites_empty": {
     "description": "Common message for an empty favorite screen"
   },
 
-  "location_saved_snackbar": "Location saved as Favorite.",
+  "location_saved_snackbar": "Place saved.",
   "@location_saved_snackbar": {
     "description": "Common message if a location has saved or updated"
   },
@@ -1045,7 +1046,7 @@
     "description": "Title for location Featureflag"
   },
 
-  "button_share_location_t": "Share your location",
+  "button_share_location_t": "Share the place",
   "@button_share_location_t": {
     "description": "Talkback for Location Share Button"
   },
@@ -1065,11 +1066,11 @@
   },
 
 
-  "button_location_create_t": "Save current location in your favorites",
+  "button_location_create_t": "Save the current place",
   "@button_location_create_t": {
     "description": "Talkback for Location Create Button"
   },
-  "button_location_create": "Save Location",
+  "button_location_create": "Save Place",
   "@button_location_create": {
     "description": "Title for Location create button"
   },
@@ -1085,7 +1086,7 @@
   },
 
 
-  "button_import_location_t": "Import shared location into your favorites.",
+  "button_import_location_t": "Import the shared place.",
   "@button_import_location_t": {
     "description": "Talkback for location import Button"
   },

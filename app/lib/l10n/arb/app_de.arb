@@ -17,8 +17,8 @@
   "screen_header_recorder_start_t": "Strecke aufzeichnen",
   "screen_header_recorder_start": "Strecke aufzeichnen",
 
-  "screen_header_import_location_t": "Geteilten Standort importieren oder direkt Navigation starten",
-  "screen_header_import_location": "Geteilter Standort",
+  "screen_header_import_location_t": "Geteilten Ort importieren oder direkt Navigation starten",
+  "screen_header_import_location": "Geteilter Ort",
 
   "screen_header_import_location_note_t": "Geteilte Ortsnotiz übernehmen oder direkt die Navigation starten",
   "screen_header_import_location_note": "Geteilte Ortsnotiz",
@@ -79,20 +79,20 @@
 
   "button_contact_me": "Schreiben Sie mir eine E-Mail",
 
-  "button_share_location_t": "Standort teilen",
+  "button_share_location_t": "Ort teilen",
   "button_share_location": "Teilen",
   
   "button_share_location_note_t": "Ortsnotiz teilen",
   "button_share_location_note": "Teilen",
 
-  "button_location_create_t": "Aktuellen Standort in Ihren Favoriten speichern",
+  "button_location_create_t": "Aktuellen Ort speichern",
   "button_location_create": "Ort speichern",
 
 
   "button_recording_t": "Strecke aufzeichnen.",
   "button_recording": "Aufzeichnen",
 
-  "button_import_location_t": "Geteilten Standort als Favorit importieren",
+  "button_import_location_t": "Geteilten Ort importieren",
   "button_import_location": "Ort importieren",
 
 
@@ -179,12 +179,12 @@
 
   "label_address_load_fail": "Aktuelle Adresse konnte nicht bestimmt werden",
 
-  "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
+  "location_saved_snackbar": "Ort wurde gespeichert.",
   "location_note_saved_snackbar": "Ortsnotiz wurde gespeichert.",
 
 
-  "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
-  "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
+  "label_favorites_empty_t": "Sie haben noch keine Orte gespeichert. Sollten Sie welche haben, werden diese hier aufgelistet.",
+  "label_favorites_empty": "Sie haben noch keine Orte gespeichert.",
 
   "settings_header_tiles_t": "Kacheln auf der Übersichtsseite einblenden oder ausblenden",
   "settings_header_tiles": "Kacheln der Übersicht",
@@ -222,8 +222,8 @@
   "waypoint_distance": "Nächster Wegpunkt: {meters} m",
   
 
-  "locations_placeholder_header": "Oh, wie schade... Sie haben noch keine Favoriten gespeichert.",
-  "locations_placeholder_body": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Favoriten hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Favoriten hinzu und erleben Sie die Freude an müheloser Navigation!",
+  "locations_placeholder_header": "Oh, wie schade... Sie haben noch keine Orte gespeichert.",
+  "locations_placeholder_body": "Warum nicht damit beginnen, **ZUHAUSE** oder **ARBEIT** als Ihre ersten Orte hinzuzufügen? Es ist ein einfacher, aber effektiver Weg, Ihre Reise mit Candle zu beginnen und sicherzustellen, dass Sie immer nur wenige Schritte von den Orten entfernt sind, die am meisten zählen. Fügen Sie heute Ihren ersten Ort hinzu und erleben Sie die Freude an müheloser Navigation!",
 
   "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
   "routes_recording_placeholder_body": "Entdecken Sie mit Candles Routenaufzeichnung die Freude am sicheren Navigieren. Zeichnen Sie Ihre Wege auf, von kleinen Abenteuern bis hin zur Rückkehr ins Hotel. Beginnen Sie jetzt und erleben Sie, wie Candle Sie verlässlich begleitet und Orientierung bietet – jederzeit und überall!",
@@ -231,18 +231,18 @@
   "location_notes_placeholder_header": "Noch keine Ortsnotizen.",
   "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis, den Candle vorliest, sobald Sie an diese Stelle kommen, zum Beispiel „Treppe nach der Tür“. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
 
-  "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
+  "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Orte für die ausgewählte Kategorie finden.",
 
 
   "remaining_route_distance_t": "Die verbleibende Entfernung bis zu Ihrem Ziel beträgt {meters} Meter.",
   "remaining_route_distance": "{meters} Meter",
   "remaining_waypoint_distance": "{meters} Meter",
 
-  "screen_header_location_add_t": "Geben Sie dem Standort einen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "screen_header_location_add": "Standort anlegen",
+  "screen_header_location_add_t": "Geben Sie dem Ort einen Namen, um ihn zu speichern.",
+  "screen_header_location_add": "Ort speichern",
 
-  "screen_header_location_update_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
-  "screen_header_location_update": "Standort bearbeiten",
+  "screen_header_location_update_t": "Geben Sie dem Ort einen neuen Namen.",
+  "screen_header_location_update": "Ort umbenennen",
 
   "screen_header_location_note_add_t": "Neue Ortsnotiz für diese Stelle anlegen.",
   "screen_header_location_note_add": "Ortsnotiz anlegen",
@@ -262,13 +262,14 @@
   "route_add_speak_t": "Drücken Sie, um die Strecke mittels Spracheingabe zu benennen.",
   "route_recording_intro": "Benennen Sie Ihre Strecke und starten Sie die Aufzeichnung mit **Aufzeichnen**. Am Ziel angekommen, können Sie die Strecke mit **Speichern** behalten oder mit **Abbrechen** verwerfen. Gespeicherte Strecken leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
 
-  "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
+  "location_add_speak_t": "Drücken Sie, um den Ort mittels Spracheingabe zu benennen.",
+  "location_address_change_hint_t": "Antippen, um die Adresse zu ändern.",
   
   "location_note_add_speak_t": "Ortsnotiz hinzufügen",
 
-  "location_name_t": "Eingabefeld für den Favoritennamen.",
-  "location_name": "Favoritenname",
-  "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
+  "location_name_t": "Eingabefeld für den Namen des Ortes.",
+  "location_name": "Name des Ortes",
+  "location_name_required_snackbar": "Bitte geben Sie einen Namen für den Ort ein.",
   "location_reached": "Sie sind da. Willkommen!",
   
   "location_note_memo_required_snackbar": "Bitte geben Sie einen Text für die Ortsnotiz ein, um sie zu speichern.",
@@ -283,8 +284,8 @@
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von Ihnen entfernt.",
   "location_note_distance_t": "Die Ortsnotiz liegt {meters} Meter Luftlinie von hier entfernt.",
 
-  "location_saved_toast": "Ort '{name}' wurde in Ihren Favoriten gespeichert.",
-  "location_deleted_toast": "Ort '{name}' wurde aus Ihren Favoriten entfernt.",
+  "location_saved_toast": "Ort '{name}' wurde gespeichert.",
+  "location_deleted_toast": "Ort '{name}' wurde entfernt.",
   
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  

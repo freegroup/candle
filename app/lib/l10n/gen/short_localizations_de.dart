@@ -8,7 +8,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String screen_show_announcement_t(String title) => '$title';
   @override
-  String get screen_header_import_location_t => 'Geteilter Standort';
+  String get screen_header_import_location_t => 'Geteilter Ort';
   @override
   String get screen_header_import_location_note_t => 'Geteilte Ortsnotiz';
   @override
@@ -24,9 +24,9 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get navigation_announcement_hint => 'Wegführung. Unten tippen für Ansagen.';
   @override
-  String get screen_header_location_add_t => 'Ort anlegen';
+  String get screen_header_location_add_t => 'Ort speichern';
   @override
-  String get screen_header_location_update_t => 'Ort bearbeiten';
+  String get screen_header_location_update_t => 'Ort umbenennen';
   @override
   String get screen_header_location_note_add_t => 'Ortsnotiz anlegen';
   @override
