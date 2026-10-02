@@ -1,3 +1,4 @@
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:flutter/material.dart';
 
 class TileButton extends StatelessWidget {
@@ -25,10 +26,7 @@ class TileButton extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           stops: const [0.0, 1.0],
-          colors: [
-            const Color.fromARGB(255, 10, 10, 10),
-            theme.cardColor,
-          ],
+          colors: theme.tileGradient,
         ),
         borderRadius: BorderRadius.circular(borderRadius),
       ),

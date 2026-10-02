@@ -188,6 +188,16 @@
 
   "settings_header_tiles_t": "Kacheln auf der Übersichtsseite einblenden oder ausblenden",
   "settings_header_tiles": "Kacheln der Übersicht",
+  "settings_header_appearance": "Farbschema",
+  "settings_header_appearance_t": "Farbschema der App",
+  "theme_amber_dark": "Gelb auf Schwarz",
+  "theme_amber_dark_hint": "gut bei Lichtempfindlichkeit",
+  "theme_white_dark": "Weiß auf Schwarz",
+  "theme_white_dark_hint": "maximaler Kontrast, blendarm",
+  "theme_black_light": "Schwarz auf Weiß",
+  "theme_black_light_hint": "maximaler Kontrast, hell",
+  "theme_blue_yellow": "Blau auf Gelb",
+  "theme_blue_yellow_hint": "bei Farbsehschwäche",
 
   "settings_header_gps_t": "GPS-Einstellungen für die App",
   "settings_header_gps": "GPS-Einstellungen",

@@ -1149,6 +1149,16 @@
     "description": "Talkback for overview Button"
   },
   "settings_header_tiles": "Overview Tiles",
+  "settings_header_appearance": "Color scheme",
+  "settings_header_appearance_t": "Color scheme of the app",
+  "theme_amber_dark": "Yellow on black",
+  "theme_amber_dark_hint": "good for light sensitivity",
+  "theme_white_dark": "White on black",
+  "theme_white_dark_hint": "maximum contrast, low glare",
+  "theme_black_light": "Black on white",
+  "theme_black_light_hint": "maximum contrast, bright",
+  "theme_blue_yellow": "Blue on yellow",
+  "theme_blue_yellow_hint": "for colour vision deficiency",
   "@settings_header_tiles": {
     "description": "Title for overview button"
   },

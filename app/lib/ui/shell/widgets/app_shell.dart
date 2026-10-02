@@ -149,9 +149,9 @@ class _AppShellState extends State<AppShell> {
     }
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 1), // Top border
+          top: BorderSide(color: theme.scaffoldBackgroundColor, width: 1), // Top border
         ),
       ),
       child: BottomAppBar(

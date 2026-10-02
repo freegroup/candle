@@ -1,5 +1,6 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
+import 'package:candle/ui/core/themes/candle_theme.dart';
 import 'package:candle/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -51,6 +52,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
                 builder: (context, _) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _themeSection(context),
+                    const SizedBox(height: 40),
                     _header(l10n.settings_header_tiles, l10n.settings_header_tiles_t),
                     ...widget.viewModel.tiles.map(_toggle),
                     const SizedBox(height: 40),
@@ -99,4 +102,60 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
       Setting.shortTalkback => l10n.featureflag_short_talkback,
     };
   }
+
+  Widget _themeSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _header(l10n.settings_header_appearance, l10n.settings_header_appearance_t),
+        ...widget.viewModel.themes.map((t) => _themeTile(context, t)),
+      ],
+    );
+  }
+
+  // A colour profile as an accessible radio row; TalkBack announces the name,
+  // the hint and whether it is selected, and the choice applies immediately.
+  Widget _themeTile(BuildContext context, CandleTheme t) {
+    final theme = Theme.of(context);
+    final selected = widget.viewModel.selectedTheme.id == t.id;
+    final (name, hint) = _themeTexts(AppLocalizations.of(context)!, t.id);
+    return InkWell(
+      onTap: () => widget.viewModel.selectTheme(t.id),
+      child: Semantics(
+        inMutuallyExclusiveGroup: true,
+        checked: selected,
+        label: '\$name. \$hint',
+        excludeSemantics: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(selected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                  color: theme.primaryColor, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(name, style: theme.textTheme.labelLarge),
+                    Text(hint, style: theme.textTheme.labelMedium),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  (String, String) _themeTexts(AppLocalizations l10n, String id) => switch (id) {
+        'amber_dark' => (l10n.theme_amber_dark, l10n.theme_amber_dark_hint),
+        'white_dark' => (l10n.theme_white_dark, l10n.theme_white_dark_hint),
+        'black_light' => (l10n.theme_black_light, l10n.theme_black_light_hint),
+        'blue_yellow' => (l10n.theme_blue_yellow, l10n.theme_blue_yellow_hint),
+        _ => (id, ''),
+      };
 }

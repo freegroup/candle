@@ -21,7 +21,7 @@ class CandleApp extends StatelessWidget {
       builder: (context, _) => MaterialApp(
       title: 'Candle Navigation',
       debugShowCheckedModeBanner: false,
-      theme: CThemeData.darkTheme,
+      theme: CThemeData.theme(settings.colorTheme),
       localizationsDelegates: [
         CandleLocalizationsDelegate(short: settings.isEnabled(Setting.shortTalkback)),
         GlobalMaterialLocalizations.delegate,

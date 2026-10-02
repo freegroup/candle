@@ -28,3 +28,20 @@ MaterialColor createMaterialColor(Color color) {
   }
   return MaterialColor(color.toARGB32(), swatch);
 }
+
+Color lighten(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslLightened = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+  return hslLightened.toColor();
+}
+
+/// Moves [base] toward more contrast with itself: lightens a dark colour,
+/// darkens a light one. Used to build subtle surface shades from the background,
+/// so the shared background widgets look right on dark and light profiles alike.
+Color elevate(Color base, double amount) {
+  final hsl = HSLColor.fromColor(base);
+  return hsl.lightness < 0.5 ? lighten(base, amount) : darken(base, amount);
+}

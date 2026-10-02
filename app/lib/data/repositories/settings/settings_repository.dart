@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:candle/ui/core/themes/candle_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,6 +48,18 @@ class SettingsRepository extends ChangeNotifier {
 
   Future<void> setEnabled(Setting setting, bool value) async {
     await _prefs.setBool(setting.key, value);
+    notifyListeners();
+  }
+
+  /// The id of the selected colour theme; defaults to the first built-in profile.
+  String get themeId => _prefs.getString('colorTheme') ?? candleThemes.first.id;
+
+  /// The selected colour theme, falling back to the default for an unknown id.
+  CandleTheme get colorTheme =>
+      candleThemes.firstWhere((t) => t.id == themeId, orElse: () => candleThemes.first);
+
+  Future<void> setThemeId(String id) async {
+    await _prefs.setString('colorTheme', id);
     notifyListeners();
   }
 }

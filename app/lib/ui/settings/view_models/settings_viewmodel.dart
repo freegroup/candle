@@ -1,4 +1,5 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/ui/core/themes/candle_theme.dart';
 import 'package:flutter/foundation.dart';
 
 /// The switches of the settings screen.
@@ -32,6 +33,11 @@ class SettingsViewModel extends ChangeNotifier {
   bool isEnabled(Setting setting) => _settings.isEnabled(setting);
 
   Future<void> setEnabled(Setting setting, bool value) => _settings.setEnabled(setting, value);
+
+  /// The built-in colour profiles and the selected one.
+  List<CandleTheme> get themes => candleThemes;
+  CandleTheme get selectedTheme => _settings.colorTheme;
+  Future<void> selectTheme(String id) => _settings.setThemeId(id);
 
   @override
   void dispose() {

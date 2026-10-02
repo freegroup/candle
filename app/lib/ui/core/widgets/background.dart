@@ -1,3 +1,4 @@
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundWidget extends StatelessWidget {
@@ -6,16 +7,14 @@ class BackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.0, 1.0],
-          colors: [
-            Color.fromARGB(255, 36, 36, 36),
-            Color.fromARGB(255, 25, 25, 25),
-          ],
+          stops: const [0.0, 1.0],
+          colors: theme.backgroundGradient,
         ),
       ),
       child: child,

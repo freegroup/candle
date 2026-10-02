@@ -1,3 +1,4 @@
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:flutter/material.dart';
 
 class CandleListTile extends StatelessWidget {
@@ -27,9 +28,9 @@ class CandleListTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             // color: Colors.black,
-            gradient: const LinearGradient(
-              colors: [Color.fromRGBO(12, 12, 12, 1), Color.fromRGBO(3, 3, 3, 1)],
-              stops: [0.25, 0.75],
+            gradient: LinearGradient(
+              colors: theme.rowGradient,
+              stops: const [0.25, 0.75],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

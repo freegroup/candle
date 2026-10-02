@@ -1,3 +1,4 @@
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class DividedWidget extends StatelessWidget {
               topLeft: Radius.circular(corner),
               topRight: Radius.circular(corner),
             ),
-            child: Container(color: Colors.black),
+            child: Container(color: theme.panelColor),
           ),
         )
       ];
@@ -73,15 +74,12 @@ class DividedWidget extends StatelessWidget {
                 topRight: Radius.circular(corner),
               ),
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [
-                      Color.fromARGB(255, 2, 2, 2),
-                      Color.fromARGB(255, 9, 9, 9),
-                    ],
+                    stops: const [0.0, 1.0],
+                    colors: theme.panelGradient,
                   ),
                 ),
                 child: bottom,
