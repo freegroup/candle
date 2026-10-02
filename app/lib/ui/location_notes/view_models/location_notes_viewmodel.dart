@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/data/services/share/share_service.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/utils/command.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
@@ -14,12 +14,12 @@ import 'package:logger/logger.dart';
 final _log = Logger();
 
 /// The voice pins, nearest first while the user walks.
-class VoicePinsViewModel extends ChangeNotifier {
-  VoicePinsViewModel({
-    required VoicePinRepository voicePinRepository,
+class LocationNotesViewModel extends ChangeNotifier {
+  LocationNotesViewModel({
+    required LocationNoteRepository locationNoteRepository,
     required LocationService locationService,
     required ShareService shareService,
-  })  : _pins = voicePinRepository,
+  })  : _pins = locationNoteRepository,
         _location = locationService,
         _share = shareService {
     delete = Command1(_delete);
@@ -43,33 +43,33 @@ class VoicePinsViewModel extends ChangeNotifier {
     }));
   }
 
-  final VoicePinRepository _pins;
+  final LocationNoteRepository _pins;
   final LocationService _location;
   final ShareService _share;
   late final List<StreamSubscription<Object?>> _subscriptions;
 
-  late final Command1<void, VoicePin> delete;
-  late final Command1<void, VoicePin> share;
+  late final Command1<void, LocationNote> delete;
+  late final Command1<void, LocationNote> share;
 
   bool _loaded = false;
 
   /// False until the pins were read the first time.
   bool get loaded => _loaded;
 
-  List<VoicePin> _all = [];
-  List<VoicePin> get pins => _all;
+  List<LocationNote> _all = [];
+  List<LocationNote> get pins => _all;
 
   LatLng? _position;
   LatLng? get position => _position;
 
   /// Meters from the user to [pin], null without a GPS position.
-  int? distanceTo(VoicePin pin) =>
+  int? distanceTo(LocationNote pin) =>
       _position == null ? null : calculateDistance(pin.latlng(), _position!).round();
 
   /// A new, empty pin at the current position; null without a GPS position.
-  VoicePin? newPinHere() => _position == null
+  LocationNote? newPinHere() => _position == null
       ? null
-      : VoicePin(name: '', memo: '', lat: _position!.latitude, lon: _position!.longitude);
+      : LocationNote(name: '', memo: '', lat: _position!.latitude, lon: _position!.longitude);
 
   void _sort() {
     if (_position != null) {
@@ -78,11 +78,11 @@ class VoicePinsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Result<void>> _delete(VoicePin pin) => _pins.delete(pin.id!);
+  Future<Result<void>> _delete(LocationNote pin) => _pins.delete(pin.id!);
 
-  Future<Result<void>> _sharePin(VoicePin pin) async {
+  Future<Result<void>> _sharePin(LocationNote pin) async {
     try {
-      await _share.shareVoicePin(pin);
+      await _share.shareLocationNote(pin);
       return const Result.ok(null);
     } on Exception catch (e) {
       return Result.error(e);

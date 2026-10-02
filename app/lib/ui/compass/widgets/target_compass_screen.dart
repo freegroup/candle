@@ -8,7 +8,7 @@ import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
-import 'package:candle/ui/compass/view_models/compass_viewmodel.dart';
+import 'package:candle/ui/compass/view_models/target_compass_viewmodel.dart';
 import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';

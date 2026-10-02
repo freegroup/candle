@@ -20,8 +20,8 @@
   "screen_header_import_location_t": "Geteilten Standort importieren oder direkt Navigation starten",
   "screen_header_import_location": "Geteilter Standort",
 
-  "screen_header_import_voicepin_t": "Geteilte Sprachnotiz importieren oder direkt Navigation starten",
-  "screen_header_import_voicepin": "Geteilte Sprachnotiz",
+  "screen_header_import_location_note_t": "Geteilte Ortsnotiz übernehmen oder direkt die Navigation starten",
+  "screen_header_import_location_note": "Geteilte Ortsnotiz",
 
   "screen_header_recorder_recording_t": "Strecke wird aufgezeichnet",
   "screen_header_recorder_recording": "Aufzeichnen...",
@@ -30,11 +30,11 @@
   "screen_header_about": "Information",
   "about_app_description": "Willkommen bei Candle, einer Navigations-App, die speziell für Sehbehinderte und Blinde entwickelt wurde. Sie ist mehr als nur ein Werkzeug; sie ist ein Begleiter, der Ihnen hilft, die Welt mit Zuversicht zu erkunden. \n\nUnser Fokus liegt auf Einfachheit und Barrierefreiheit, ergänzt durch umfassende TalkBack-Unterstützung, was die Navigation intuitiv und benutzerfreundlich macht.\n\nSpeichern und navigieren Sie einfach zu Ihren bevorzugten Orten.",
 
-  "screen_header_locations_t": "Orte verwalten",
-  "screen_header_locations": "Orte",
+  "screen_header_locations_t": "Meine Orte verwalten",
+  "screen_header_locations": "Meine Orte",
 
-  "screen_header_voicepin_t": "VoicePins verwalten",
-  "screen_header_voicepin": "VoicePin",
+  "screen_header_location_note_t": "Ortsnotizen verwalten",
+  "screen_header_location_note": "Ortsnotiz",
 
   "screen_header_routes_t": "Strecken verwalten",
   "screen_header_routes": "Strecken",
@@ -67,8 +67,8 @@
   "buttonbar_explore": "Erkunden",
 
 
-  "buttonbar_voicepins_t": "Ortsabhängige Sprachnachrichten",
-  "buttonbar_voicepins": "VoicePins",
+  "buttonbar_location_notes_t": "Ortsnotizen",
+  "buttonbar_location_notes": "Notizen",
 
 
   "button_radar_t": "Orte Radar, zeigt Orte nach einer Himmelsrichtung an.",
@@ -82,8 +82,8 @@
   "button_share_location_t": "Standort teilen",
   "button_share_location": "Teilen",
   
-  "button_share_voicepin_t": "Sprachnotiz zu einem Ort teilen",
-  "button_share_voicepin": "Teilen",
+  "button_share_location_note_t": "Ortsnotiz teilen",
+  "button_share_location_note": "Teilen",
 
   "button_location_create_t": "Aktuellen Standort in Ihren Favoriten speichern",
   "button_location_create": "Ort speichern",
@@ -96,8 +96,8 @@
   "button_import_location": "Ort importieren",
 
 
-  "button_import_voicepin_t": "Geteilte Sprachnotiz als Favorit importieren",
-  "button_import_voicepin": "Notiz importieren",
+  "button_import_location_note_t": "Geteilte Ortsnotiz übernehmen",
+  "button_import_location_note": "Ortsnotiz übernehmen",
 
   "button_settings_t": "Einstellungen der App anpassen",
   "button_settings": "Einstellungen",
@@ -180,7 +180,7 @@
   "label_address_load_fail": "Aktuelle Adresse konnte nicht bestimmt werden",
 
   "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
-  "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",
+  "location_note_saved_snackbar": "Ortsnotiz wurde gespeichert.",
 
 
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
@@ -228,8 +228,8 @@
   "routes_recording_placeholder_header": "Sieht so aus, als hätten Sie noch keine Routen aufgezeichnet.",
   "routes_recording_placeholder_body": "Entdecken Sie mit Candles Routenaufzeichnung die Freude am sicheren Navigieren. Zeichnen Sie Ihre Wege auf, von kleinen Abenteuern bis hin zur Rückkehr ins Hotel. Beginnen Sie jetzt und erleben Sie, wie Candle Sie verlässlich begleitet und Orientierung bietet – jederzeit und überall!",
 
-  "voicepins_placeholder_header": "Noch keine VoicePins gesetzt.",
-  "voicepins_placeholder_body": "Erleichtern Sie sich die Orientierung mit VoicePins. Platzieren Sie Ihre ersten Sprachnotizen an wichtigen Orten, wie der **Haupteingangstür** oder dem **nächsten Fußgängerüberweg**. Ein VoicePin hilft Ihnen, sich besser zurechtzufinden. Probieren Sie es aus und verbessern Sie Ihre Reisesicherheit!",
+  "location_notes_placeholder_header": "Noch keine Ortsnotizen.",
+  "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis, den Candle vorliest, sobald Sie an diese Stelle kommen, zum Beispiel „Treppe nach der Tür“. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Standorte für die ausgewählte Kategorie finden.",
 
@@ -244,11 +244,11 @@
   "screen_header_location_update_t": "Vergeben Sie dem Standort einen neuen Namen, um ihn in Ihren Favoriten zu speichern.",
   "screen_header_location_update": "Standort bearbeiten",
 
-  "screen_header_voicepin_add_t": "Erstellen Sie einen neuen VoicePin mit standortspezifischer Notiz.",
-  "screen_header_voicepin_add": "VoicePin anlegen",
+  "screen_header_location_note_add_t": "Neue Ortsnotiz für diese Stelle anlegen.",
+  "screen_header_location_note_add": "Ortsnotiz anlegen",
 
-  "screen_header_voicepin_update_t": "Bearbeiten Sie die Notiz des VoicePins, um standortbezogene Informationen zu aktualisieren.",
-  "screen_header_voicepin_update": "VoicePin bearbeiten",
+  "screen_header_location_note_update_t": "Den Text der Ortsnotiz bearbeiten.",
+  "screen_header_location_note_update": "Ortsnotiz bearbeiten",
 
   "screen_header_route_update_t": "Strecke umbenennen",
   "screen_header_route_update": "Name ändern",
@@ -264,24 +264,24 @@
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
   
-  "voicepin_add_speak_t": "Tippen Sie hier, um dem Standort eine sprachbasierte Notiz hinzuzufügen.",
+  "location_note_add_speak_t": "Ortsnotiz hinzufügen",
 
   "location_name_t": "Eingabefeld für den Favoritennamen.",
   "location_name": "Favoritenname",
   "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
   "location_reached": "Sie sind da. Willkommen!",
   
-  "voicepin_memo_required_snackbar": "Bitte fügen Sie eine Notiz zum VoicePin hinzu, um ihn zu speichern, oder brechen Sie ab.",
+  "location_note_memo_required_snackbar": "Bitte geben Sie einen Text für die Ortsnotiz ein, um sie zu speichern.",
 
-  "voicepin_memo_t": "Eingabefeld für die ortsbezogene Notiz",
-  "voicepin_memo": "Notiz",
+  "location_note_memo_t": "Eingabefeld für den Text der Ortsnotiz",
+  "location_note_memo": "Notiz",
 
-  "voicepin_deleted_toast": "Sprachnachricht gelöscht.",
+  "location_note_deleted_toast": "Ortsnotiz gelöscht.",
 
-  "voicepin_readout": "{distance} Meter entfernt aufgezeichnete Nachricht: {memo}.",
+  "location_note_readout": "Ortsnotiz in {distance} Metern: {memo}.",
 
   "location_distance_t": "{name} ist {meters} Meter Luftlinie von Ihnen entfernt.",
-  "voicepin_distance_t": "Die Sprachnotiz wurde {meters} Meter Luftlinie von hier aufgenommen.",
+  "location_note_distance_t": "Die Ortsnotiz liegt {meters} Meter Luftlinie von hier entfernt.",
 
   "location_saved_toast": "Ort '{name}' wurde in Ihren Favoriten gespeichert.",
   "location_deleted_toast": "Ort '{name}' wurde aus Ihren Favoriten entfernt.",
@@ -304,8 +304,8 @@
   "screen_header_permissions_t": "Berechtigungen der App erteilen",
   "screen_header_permissions": "Berechtigungen",
 
-  "screen_header_voicepins_t": "Sprachnotizen mit einem Ort verknüpfen",
-  "screen_header_voicepins": "Sprachnotizen",
+  "screen_header_location_notes_t": "Ortsnotizen verwalten",
+  "screen_header_location_notes": "Ortsnotizen",
 
   "screen_header_wikipedia_t": "Wikipedia-Artikel mit Bezug zu Ihrem Standort",
   "screen_header_wikipedia": "Wikipedia-Artikel",
@@ -401,5 +401,13 @@
   "recording_cancel_body": "Die bisher aufgezeichnete Strecke wird nicht gespeichert.",
   "button_cancel_recording_confirm": "Ja, abbrechen",
   "button_continue_recording": "Weiter aufzeichnen",
-  "featureflag_short_talkback": "Kurze Ansagen (für erfahrene TalkBack-Nutzer)"
+  "featureflag_short_talkback": "Kurze Ansagen\nFür erfahrene TalkBack-Nutzer",
+  "radar_places_count": "{count, plural, =1{1 Ort} other{{count} Orte}}",
+  "radar_point_title": "In eine Richtung zeigen",
+  "radar_point_hint": "Handy flach vor sich halten",
+  "radar_tilted": "Handy flach halten",
+  "compass_letter_north": "N",
+  "compass_letter_east": "O",
+  "compass_letter_south": "S",
+  "compass_letter_west": "W"
 }

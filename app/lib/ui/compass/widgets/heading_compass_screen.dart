@@ -5,7 +5,7 @@ import 'package:candle/ui/core/icons/compass.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
-import 'package:candle/ui/compass/view_models/compass_viewmodel.dart';
+import 'package:candle/ui/compass/view_models/heading_compass_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -18,9 +18,9 @@ import 'package:flutter/semantics.dart';
 import 'package:provider/provider.dart';
 
 /// Compass screen with its own view model, disposed together with the screen.
-Widget buildCompassScreen() => ChangeNotifierProvider(
-      create: (context) => CompassViewModel(compassService: context.read()),
-      builder: (context, _) => CompassScreen(
+Widget buildHeadingCompassScreen() => ChangeNotifierProvider(
+      create: (context) => HeadingCompassViewModel(compassService: context.read()),
+      builder: (context, _) => HeadingCompassScreen(
         viewModel: context.read(),
         vibrate: () => context.read<VibrationService>().compass(duration: 100),
       ),
@@ -28,18 +28,18 @@ Widget buildCompassScreen() => ChangeNotifierProvider(
 
 /// Shows where north is. Entering one of the eight compass directions vibrates
 /// and announces it.
-class CompassScreen extends StatefulWidget {
-  const CompassScreen({super.key, required this.viewModel, required this.vibrate});
+class HeadingCompassScreen extends StatefulWidget {
+  const HeadingCompassScreen({super.key, required this.viewModel, required this.vibrate});
 
-  final CompassViewModel viewModel;
+  final HeadingCompassViewModel viewModel;
   final Future<void> Function() vibrate;
 
   @override
-  State<CompassScreen> createState() => _CompassScreenState();
+  State<HeadingCompassScreen> createState() => _HeadingCompassScreenState();
 }
 
-class _CompassScreenState extends State<CompassScreen> with SemanticAnnouncer {
-  CompassViewModel get _viewModel => widget.viewModel;
+class _HeadingCompassScreenState extends State<HeadingCompassScreen> with SemanticAnnouncer {
+  HeadingCompassViewModel get _viewModel => widget.viewModel;
 
   int? _announcedDirection;
   bool _wasTilted = false;

@@ -1,26 +1,26 @@
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/utils/command.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
 /// Adds a new voice pin or edits a saved one.
-class VoicePinEditViewModel extends ChangeNotifier {
-  VoicePinEditViewModel({
-    required VoicePinRepository voicePinRepository,
+class LocationNoteEditViewModel extends ChangeNotifier {
+  LocationNoteEditViewModel({
+    required LocationNoteRepository locationNoteRepository,
     required this._pin,
-  }) : _pins = voicePinRepository {
+  }) : _pins = locationNoteRepository {
     save = Command1(_save);
   }
 
-  final VoicePinRepository _pins;
+  final LocationNoteRepository _pins;
 
   /// Saves the pin with the given memo.
   late final Command1<int, String> save;
 
-  VoicePin _pin;
-  VoicePin get pin => _pin;
+  LocationNote _pin;
+  LocationNote get pin => _pin;
 
   bool get isUpdate => _pin.id != null;
 

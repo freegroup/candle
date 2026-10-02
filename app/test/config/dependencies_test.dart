@@ -4,7 +4,7 @@ import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +32,7 @@ void main() {
 
     expect(context.read<RecordingRepository>(), isNotNull);
     expect(context.read<LocationRepository>(), isNotNull);
-    expect(context.read<VoicePinRepository>(), isNotNull);
+    expect(context.read<LocationNoteRepository>(), isNotNull);
     expect(context.read<RouteRepository>(), isNotNull);
     expect(context.read<RoutingRepository>(), isNotNull);
     expect(context.read<WikipediaRepository>(), isNotNull);

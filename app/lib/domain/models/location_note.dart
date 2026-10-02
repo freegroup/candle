@@ -3,7 +3,7 @@ import 'package:candle/utils/geo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:latlong2/latlong.dart';
 
-class VoicePin implements LatLngProvider {
+class LocationNote implements LatLngProvider {
   final int? id;
   final String name;
   final String memo;
@@ -11,7 +11,7 @@ class VoicePin implements LatLngProvider {
   final double lon;
   final DateTime? created; // Optional timestamp
 
-  VoicePin({
+  LocationNote({
     this.id,
     required this.name,
     required this.memo,
@@ -25,7 +25,7 @@ class VoicePin implements LatLngProvider {
     return LatLng(lat, lon);
   }
 
-  VoicePin copyWith({
+  LocationNote copyWith({
     ValueGetter<int?>? id,
     String? name,
     String? memo,
@@ -33,7 +33,7 @@ class VoicePin implements LatLngProvider {
     double? lon,
     DateTime? created,
   }) {
-    return VoicePin(
+    return LocationNote(
       id: (id != null) ? id.call() : this.id,
       name: name ?? this.name,
       memo: memo ?? this.memo,
@@ -55,7 +55,7 @@ class VoicePin implements LatLngProvider {
   }
 
   /// Reads the map written by [toMap], e.g. from a shared `.candle` file.
-  factory VoicePin.fromMap(Map<String, dynamic> map) => VoicePin(
+  factory LocationNote.fromMap(Map<String, dynamic> map) => LocationNote(
         id: (map['id'] as num?)?.toInt(),
         name: map['name'] as String? ?? '',
         memo: map['memo'] as String? ?? '',
@@ -66,14 +66,14 @@ class VoicePin implements LatLngProvider {
 
   @override
   String toString() {
-    return 'VoicePin(id: $id, name: $name, memo: $memo, lat: $lat, lon: $lon, created: $created)';
+    return 'LocationNote(id: $id, name: $name, memo: $memo, lat: $lat, lon: $lon, created: $created)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is VoicePin &&
+    return other is LocationNote &&
         other.id == id &&
         other.name == name &&
         other.memo == memo &&

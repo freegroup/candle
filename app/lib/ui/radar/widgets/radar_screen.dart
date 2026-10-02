@@ -11,6 +11,7 @@ import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
+import 'package:candle/ui/core/widgets/compass_heading_small.dart';
 import 'package:candle/ui/core/widgets/info_page.dart';
 import 'package:candle/ui/core/widgets/list_tile.dart';
 import 'package:candle/ui/core/widgets/semantic_header.dart';
@@ -115,20 +116,60 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
         talkback: l10n.screen_header_radar_t,
       ),
       body: BackgroundWidget(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: ListenableBuilder(
-            listenable: Listenable.merge([_viewModel, _viewModel.load]),
-            builder: (context, _) {
-              final load = _viewModel.load;
-              if (load.running) return _buildLoading(context);
-              if (load.error) return _buildError(context);
-              if (_viewModel.poisInDirection.isEmpty) return _buildNoContent(context);
-              return _buildPoiList(context);
-            },
+        child: ListenableBuilder(
+          listenable: Listenable.merge([_viewModel, _viewModel.load]),
+          builder: (context, _) => Column(
+            children: [
+              // Shows that the list depends on where the phone points. Screen readers
+              // get this from the announcements already.
+              ExcludeSemantics(child: _buildHeading(context)),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: _buildContent(context),
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    final load = _viewModel.load;
+    if (load.running) return _buildLoading(context);
+    if (load.error) return _buildError(context);
+    if (_viewModel.poisInDirection.isEmpty) return _buildNoContent(context);
+    return _buildPoiList(context);
+  }
+
+  Widget _buildHeading(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final direction = _viewModel.direction;
+    if (_viewModel.isTilted) {
+      return CompassHeadingSmall(
+        heading: _viewModel.heading,
+        title: l10n.radar_tilted,
+        subtitle: l10n.radar_point_hint,
+        warning: true,
+      );
+    }
+    if (direction == null) {
+      return CompassHeadingSmall(
+        heading: _viewModel.heading,
+        title: l10n.radar_point_title,
+        subtitle: l10n.radar_point_hint,
+      );
+    }
+    return CompassHeadingSmall(
+      heading: _viewModel.heading,
+      title: getHorizon(context, direction).toUpperCase(),
+      subtitle: _viewModel.load.completed
+          ? l10n.radar_places_count(_viewModel.poisInDirection.length)
+          : l10n.label_common_loading,
+      // between two directions the list still shows the last one
+      dimmed: _viewModel.snappedDirection == null,
     );
   }
 

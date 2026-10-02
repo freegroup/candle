@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart' as model;
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
@@ -25,7 +25,7 @@ Widget buildNavigationScreen({required LatLng source, required LatLng target, mo
     ChangeNotifierProvider(
       create: (context) => NavigationViewModel(
         routingRepository: context.read(),
-        voicePinRepository: context.read(),
+        locationNoteRepository: context.read(),
         locationService: context.read(),
         compassService: context.read(),
         source: source,
@@ -56,7 +56,7 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
 
   bool _wasAligned = false;
   NavigationPoint? _lastWaypoint;
-  VoicePin? _lastVoicePin;
+  LocationNote? _lastLocationNote;
 
   @override
   void initState() {
@@ -86,9 +86,9 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
       _lastWaypoint = waypoint;
       unawaited(widget.vibrate());
     }
-    final pin = _viewModel.nearbyVoicePin;
-    if (pin != null && pin != _lastVoicePin) {
-      _lastVoicePin = pin;
+    final pin = _viewModel.nearbyLocationNote;
+    if (pin != null && pin != _lastLocationNote) {
+      _lastLocationNote = pin;
       showSnackbar(context, pin.memo);
     }
   }
@@ -131,7 +131,7 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
         currentWaypoint: _viewModel.headingWaypoint?.latlng(),
         marker1: _viewModel.turnWaypoint?.latlng(),
         marker2: _viewModel.nextTurnWaypoint?.latlng(),
-        marker: _viewModel.voicePins,
+        marker: _viewModel.locationNotes,
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/database/candle_database.dart';
@@ -16,10 +16,10 @@ import 'package:candle/domain/models/article_ref.dart';
 import 'package:candle/domain/models/article_summary.dart';
 import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/domain/models/route.dart' as model;
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/about/widgets/about_screen.dart';
-import 'package:candle/ui/compass/widgets/compass_screen.dart';
+import 'package:candle/ui/compass/widgets/heading_compass_screen.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
@@ -31,8 +31,8 @@ import 'package:candle/ui/recording/widgets/recording_screen.dart';
 import 'package:candle/ui/routes/widgets/route_edit_screen.dart';
 import 'package:candle/ui/routes/widgets/routes_screen.dart';
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
-import 'package:candle/ui/voicepins/widgets/voicepin_edit_screen.dart';
-import 'package:candle/ui/voicepins/widgets/voicepins_screen.dart';
+import 'package:candle/ui/location_notes/widgets/location_note_edit_screen.dart';
+import 'package:candle/ui/location_notes/widgets/location_notes_screen.dart';
 import 'package:candle/ui/wikipedia/widgets/wikipedia_screen.dart';
 import 'package:candle/utils/result.dart';
 import 'package:drift/native.dart';
@@ -113,7 +113,7 @@ void main() {
         Provider<PermissionService>.value(value: _Permissions()),
         Provider.value(value: VibrationService(settingsRepository: settings)),
         Provider.value(value: LocationRepository(database: db)),
-        Provider.value(value: VoicePinRepository(database: db)),
+        Provider.value(value: LocationNoteRepository(database: db)),
         Provider.value(value: routes),
         ChangeNotifierProvider(
           create: (_) => RecordingRepository(routeRepository: routes, locationService: location),
@@ -139,14 +139,14 @@ void main() {
     'home': buildHomeScreen,
     'about': buildAboutScreen,
     'settings': buildSettingsScreen,
-    'compass': buildCompassScreen,
+    'heading compass': buildHeadingCompassScreen,
     'target compass': () => buildTargetCompassScreen(target: _here, targetName: 'Home'),
     'locations': buildLocationsScreen,
     'location edit': () => buildLocationEditScreen(_address),
     'address search': () => buildAddressSearchScreen(query: 'Main'),
-    'voice pins': buildVoicePinsScreen,
+    'voice pins': buildLocationNotesScreen,
     'voice pin edit': () =>
-        buildVoicePinEditScreen(VoicePin(name: '', memo: '', lat: _here.latitude, lon: _here.longitude)),
+        buildLocationNoteEditScreen(LocationNote(name: '', memo: '', lat: _here.latitude, lon: _here.longitude)),
     'routes': buildRoutesScreen,
     'route edit': () => buildRouteEditScreen(model.Route(name: 'Walk', points: [])),
     'recording': buildRecordingScreen,

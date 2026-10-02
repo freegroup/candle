@@ -1,9 +1,9 @@
 import 'package:candle/data/repositories/routing/routing_repository.dart';
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';
 import 'package:candle/utils/result.dart';
 import 'package:drift/native.dart';
@@ -32,14 +32,14 @@ class _FakeRouting implements RoutingRepository {
 
 void main() {
   late CandleDatabase db;
-  late VoicePinRepository pins;
+  late LocationNoteRepository pins;
   late FakeLocationService location;
   late FakeCompassService compass;
   late _FakeRouting routing;
 
   setUp(() {
     db = CandleDatabase(NativeDatabase.memory());
-    pins = VoicePinRepository(database: db);
+    pins = LocationNoteRepository(database: db);
     location = FakeLocationService(const Result.ok(LatLng(50, 8)));
     compass = FakeCompassService();
     routing = _FakeRouting();
@@ -49,7 +49,7 @@ void main() {
   NavigationViewModel create({Route? route, LatLng source = const LatLng(50, 8)}) =>
       NavigationViewModel(
         routingRepository: routing,
-        voicePinRepository: pins,
+        locationNoteRepository: pins,
         locationService: location,
         compassService: compass,
         source: source,
@@ -128,13 +128,13 @@ void main() {
   });
 
   test('a voice pin on the way is offered for reading out', () async {
-    await pins.save(VoicePin(name: '', memo: 'Stairs', lat: 50.001, lon: 8.00005));
+    await pins.save(LocationNote(name: '', memo: 'Stairs', lat: 50.001, lon: 8.00005));
     final viewModel = create(route: _northRoute(50, 4));
     await pumpEventQueue();
-    expect(viewModel.nearbyVoicePin, isNull);
+    expect(viewModel.nearbyLocationNote, isNull);
 
     await walkTo(50.001);
-    expect(viewModel.nearbyVoicePin?.memo, 'Stairs');
+    expect(viewModel.nearbyLocationNote?.memo, 'Stairs');
     viewModel.dispose();
   });
 }

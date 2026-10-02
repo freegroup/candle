@@ -117,13 +117,13 @@
   },
 
 
-  "screen_header_import_voicepin_t": "Import shared voicepin or start navigation",
-  "@screen_header_import_voicepin_t": {
-    "description": "Talkback for voicepin shared screen"
+  "screen_header_import_location_note_t": "Import a shared location note or start navigation",
+  "@screen_header_import_location_note_t": {
+    "description": "Talkback for location_note shared screen"
   },
-  "screen_header_import_voicepin": "Shared VoicePin",
-  "@screen_header_import_voicepin": {
-    "description": "Title for the voicepin shared screen"
+  "screen_header_import_location_note": "Shared location note",
+  "@screen_header_import_location_note": {
+    "description": "Title for the location_note shared screen"
   },
 
   "screen_header_recorder_recording_t": "Route is being recorded.",
@@ -149,11 +149,11 @@
     "description": "Description text on the About screen for the Candle app"
   },
 
-  "screen_header_locations_t": "Location Screen",
+  "screen_header_locations_t": "Manage my locations",
   "@screen_header_locations_t": {
     "description": "Talkback for Favorites"
   },
-  "screen_header_locations": "Locations",
+  "screen_header_locations": "My locations",
   "@screen_header_locations": {
     "description": "Title for Favorites screen"
   },
@@ -168,13 +168,13 @@
     "description": "Title for Wikipedia screen"
   },
 
-  "screen_header_voicepins_t": "VoicePins Screen",
-  "@screen_header_voicepins_t": {
-    "description": "Talkback for VoicePins"
+  "screen_header_location_notes_t": "Manage location notes",
+  "@screen_header_location_notes_t": {
+    "description": "Talkback for LocationNotes"
   },
-  "screen_header_voicepins": "VoicePins",
-  "@screen_header_voicepins": {
-    "description": "Title for VoicePins screen"
+  "screen_header_location_notes": "Location notes",
+  "@screen_header_location_notes": {
+    "description": "Title for LocationNotes screen"
   },
 
   "screen_header_routes_t": "Routes Screen",
@@ -301,13 +301,13 @@
   },
 
 
-  "buttonbar_voicepins_t": "VoicePin Screen",
-  "@buttonbar_voicepins_t": {
-    "description": "Talkback for VoicePin ButtonBar Entry"
+  "buttonbar_location_notes_t": "Location notes",
+  "@buttonbar_location_notes_t": {
+    "description": "Talkback for LocationNote ButtonBar Entry"
   },
-  "buttonbar_voicepins": "VoicePins",
-  "@buttonbar_voicepins": {
-    "description": "Title for VoicePin ButtonBar Entry"
+  "buttonbar_location_notes": "Notes",
+  "@buttonbar_location_notes": {
+    "description": "Title for LocationNote ButtonBar Entry"
   },
 
 
@@ -434,8 +434,8 @@
   "routes_recording_placeholder_header": "Looks like you haven't recorded any routes yet.",
   "routes_recording_placeholder_body": "Discover the joy of seamless navigation with Candle's route recording. Record your journeys, from exploring new destinations to returning to familiar comforts. Start today and let Candle guide you confidently every step of the way. Experience the freedom of reliable navigation, right at your fingertips!",
 
-  "voicepins_placeholder_header": "No VoicePins Set Yet.",
-  "voicepins_placeholder_body": "Simplify navigation with VoicePins at key locations like the **front door** or **nearest crosswalk**. These audio cues enhance orientation and safety. Try setting your first VoicePin today for a more familiar journey!",
+  "location_notes_placeholder_header": "No location notes yet.",
+  "location_notes_placeholder_body": "A location note is a hint Candle reads out when you reach that spot, for example \"stairs after the door\". Add location notes at important spots like the **front door** or the **nearest crosswalk**.",
 
   "no_location_for_category": "It seems we've come up short... We couldn't find any locations for the selected category.",
 
@@ -482,14 +482,14 @@
   },
 
 
-  "voicepin_memo_t": "Input field for the VoicePin memo",
-  "@voicepin_memo_t": {
-    "description": "Talkback for the input field for a voicepin memo text"
+  "location_note_memo_t": "Input field for the text of the location note",
+  "@location_note_memo_t": {
+    "description": "Talkback for the input field for a location_note memo text"
   },
 
-  "voicepin_memo": "Memo",
-  "@voicepin_memo": {
-    "description": "The label for the voicepin memo input"
+  "location_note_memo": "Memo",
+  "@location_note_memo": {
+    "description": "The label for the location_note memo input"
   },
 
   "route_name_t": "Input field for the route name",
@@ -540,8 +540,8 @@
     "description": "Intro message for the route recording screen"
   },
 
-  "voicepin_memo_required_snackbar": "Please add a memo to the VoicePin to save it, or cancel the action.",
-  "@voicepin_memo_required_snackbar": {
+  "location_note_memo_required_snackbar": "Please enter a text for the location note to save it.",
+  "@location_note_memo_required_snackbar": {
     "description": "The required message for the location name input"
   },
 
@@ -570,13 +570,13 @@
     }
   },
 
-  "voicepin_distance_t": "The voice pin was recorded {meters} meters as the crow flies from here.",
-  "@voicepin_distance_t": {
-    "description": "Information how far the voicepin is from you",
+  "location_note_distance_t": "The location note is {meters} meters away as the crow flies.",
+  "@location_note_distance_t": {
+    "description": "Information how far the location_note is from you",
     "placeholders": {
       "meters": {
         "type": "int",
-        "description": "The distance in meters of the voicepin"
+        "description": "The distance in meters of the location_note"
       }
     }
   },
@@ -621,10 +621,10 @@
     }
   },
 
- "voicepin_deleted_toast": "VoicePin deleted.",
+ "location_note_deleted_toast": "Location note deleted.",
 
- "voicepin_readout":"Recorded message {distance} meters away: {memo}.",
-  "@voicepin_readout": {
+ "location_note_readout":"Location note in {distance} meters: {memo}.",
+  "@location_note_readout": {
     "description": "Information that the favorite has deleted with success",
     "placeholders": {
       "distance": {
@@ -659,9 +659,9 @@
   },
 
 
-  "voicepin_add_speak_t": "Press to record a notice for this location using voice input",
-  "@voicepin_add_speak_t": {
-    "description": "Talkback for the start voice recoding button of a VoicePin"
+  "location_note_add_speak_t": "Add location note",
+  "@location_note_add_speak_t": {
+    "description": "Talkback for the start voice recoding button of a LocationNote"
   },
 
   "screen_header_location_add_t": "Give the location a name to save it in your favorites.",
@@ -683,22 +683,22 @@
     "description": "Title for location/favorite update dialog"
   },
 
-  "screen_header_voicepin_add_t": "Set a new VoicePin at this location.",
-  "@screen_header_voicepin_add_t": {
-    "description": "Talkback for the create VoicePin AppBar"
+  "screen_header_location_note_add_t": "Add a location note for this spot.",
+  "@screen_header_location_note_add_t": {
+    "description": "Talkback for the create LocationNote AppBar"
   },
-  "screen_header_voicepin_add": "Set a VoicePin",
-  "@screen_header_voicepin_add": {
-    "description": "Title for VoicePin add dialog"
+  "screen_header_location_note_add": "New location note",
+  "@screen_header_location_note_add": {
+    "description": "Title for LocationNote add dialog"
   },
 
-  "screen_header_voicepin_update_t": "Edit VoicePin memo to update location-related information.",
-  "@screen_header_voicepin_update_t": {
-    "description": "Talkback for the update VoicePin Edit AppBar"
+  "screen_header_location_note_update_t": "Edit the text of the location note.",
+  "@screen_header_location_note_update_t": {
+    "description": "Talkback for the update LocationNote Edit AppBar"
   },
-  "screen_header_voicepin_update": "Update VoicePin",
-  "@screen_header_voicepin_update": {
-    "description": "Title for VoicePin update dialog"
+  "screen_header_location_note_update": "Edit location note",
+  "@screen_header_location_note_update": {
+    "description": "Title for LocationNote update dialog"
   },
 
 
@@ -924,9 +924,9 @@
     "description": "Common message if a location has saved or updated"
   },
 
-  "voicepin_saved_snackbar": "VoicePin saved.",
-  "@voicepin_saved_snackbar": {
-    "description": "Common message if a VoicePin has saved or updated"
+  "location_note_saved_snackbar": "Location note saved.",
+  "@location_note_saved_snackbar": {
+    "description": "Common message if a LocationNote has saved or updated"
   },
 
   "button_compass_t": "Compass to North",
@@ -1055,13 +1055,13 @@
   },
 
 
-  "button_share_voicepin_t": "Share your voice pin",
-  "@button_share_voicepin_t": {
-    "description": "Talkback for voicepin Share Button"
+  "button_share_location_note_t": "Share location note",
+  "@button_share_location_note_t": {
+    "description": "Talkback for location_note Share Button"
   },
-  "button_share_voicepin": "Share",
-  "@button_share_voicepin": {
-    "description": "Title for share voicepin button"
+  "button_share_location_note": "Share",
+  "@button_share_location_note": {
+    "description": "Title for share location_note button"
   },
 
 
@@ -1095,13 +1095,13 @@
   },
 
 
-  "button_import_voicepin_t": "Import shared voicepin into your favorites.",
-  "@button_import_voicepin_t": {
-    "description": "Talkback for voicepin import Button"
+  "button_import_location_note_t": "Import the shared location note",
+  "@button_import_location_note_t": {
+    "description": "Talkback for location_note import Button"
   },
-  "button_import_voicepin": "Import Voicepin",
-  "@button_import_voicepin": {
-    "description": "Title for voicepin import button"
+  "button_import_location_note": "Import location note",
+  "@button_import_location_note": {
+    "description": "Title for location_note import button"
   },
 
 
@@ -1363,5 +1363,18 @@
   "recording_cancel_body": "The route recorded so far will not be saved.",
   "button_cancel_recording_confirm": "Yes, cancel",
   "button_continue_recording": "Keep recording",
-  "featureflag_short_talkback": "Short announcements (for experienced TalkBack users)"
+  "featureflag_short_talkback": "Short announcements\nFor experienced TalkBack users",
+  "radar_places_count": "{count, plural, =1{1 place} other{{count} places}}",
+  "radar_point_title": "Point in a direction",
+  "radar_point_hint": "Hold the phone flat in front of you",
+  "radar_tilted": "Hold the phone flat",
+  "@radar_places_count": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "compass_letter_north": "N",
+  "compass_letter_east": "E",
+  "compass_letter_south": "S",
+  "compass_letter_west": "W"
 }

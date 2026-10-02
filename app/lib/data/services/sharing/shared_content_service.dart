@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:logger/logger.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -17,9 +17,9 @@ class SharedLocation extends SharedContent {
   final LocationAddress location;
 }
 
-class SharedVoicePin extends SharedContent {
-  SharedVoicePin(this.pin);
-  final VoicePin pin;
+class SharedLocationNote extends SharedContent {
+  SharedLocationNote(this.pin);
+  final LocationNote pin;
 }
 
 /// A short Google Maps link; its position is only known after following it.
@@ -36,8 +36,9 @@ SharedContent? parseCandleFile(String content) {
   if (json['locations'] case [final Map<String, dynamic> location]) {
     return SharedLocation(LocationAddress.fromMap(location));
   }
+  // "voicepins": the key of the first app versions, kept so files can be shared between versions
   if (json['voicepins'] case [final Map<String, dynamic> pin]) {
-    return SharedVoicePin(VoicePin.fromMap(pin));
+    return SharedLocationNote(LocationNote.fromMap(pin));
   }
   return null;
 }

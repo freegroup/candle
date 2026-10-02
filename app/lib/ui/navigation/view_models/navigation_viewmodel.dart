@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:candle/data/repositories/routing/routing_repository.dart';
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +20,7 @@ final _log = Logger();
 class NavigationViewModel extends ChangeNotifier {
   NavigationViewModel({
     required RoutingRepository routingRepository,
-    required VoicePinRepository voicePinRepository,
+    required LocationNoteRepository locationNoteRepository,
     required LocationService locationService,
     required CompassService compassService,
     required LatLng source,
@@ -32,8 +32,8 @@ class NavigationViewModel extends ChangeNotifier {
       locationService.positions().listen(_onPosition, onError: _logError),
       compassService.headings().listen(_onHeading, onError: _logError),
     ];
-    unawaited(voicePinRepository.watchAll().first.then((pins) {
-      _voicePins = pins;
+    unawaited(locationNoteRepository.watchAll().first.then((pins) {
+      _locationNotes = pins;
       notifyListeners();
     }, onError: _logError));
     _updateWaypoints();
@@ -46,7 +46,7 @@ class NavigationViewModel extends ChangeNotifier {
   static const offRouteDistance = 15;
 
   /// Voice pins closer than this are read out.
-  static const voicePinDistance = 8;
+  static const locationNoteDistance = 8;
 
   final LatLng target;
   final RoutingRepository _routing;
@@ -90,15 +90,15 @@ class NavigationViewModel extends ChangeNotifier {
   bool _targetReached = false;
   bool get targetReached => _targetReached;
 
-  List<VoicePin> _voicePins = [];
+  List<LocationNote> _locationNotes = [];
 
   /// Voice pins to show on the map.
-  List<VoicePin> get voicePins => _voicePins;
+  List<LocationNote> get locationNotes => _locationNotes;
 
-  VoicePin? _nearbyVoicePin;
+  LocationNote? _nearbyLocationNote;
 
   /// The voice pin the user just reached, to read out once.
-  VoicePin? get nearbyVoicePin => _nearbyVoicePin;
+  LocationNote? get nearbyLocationNote => _nearbyLocationNote;
 
   /// Bearing from the user to [headingWaypoint].
   int get waypointHeading =>
@@ -129,7 +129,7 @@ class NavigationViewModel extends ChangeNotifier {
   void _onPosition(LatLng position) {
     _position = position;
     _updateWaypoints();
-    _updateNearbyVoicePin();
+    _updateNearbyLocationNote();
     notifyListeners();
   }
 
@@ -140,17 +140,17 @@ class NavigationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateNearbyVoicePin() {
-    final nearest = _voicePins
-        .where((pin) => calculateDistance(pin.latlng(), _position) < voicePinDistance)
-        .fold<VoicePin?>(
+  void _updateNearbyLocationNote() {
+    final nearest = _locationNotes
+        .where((pin) => calculateDistance(pin.latlng(), _position) < locationNoteDistance)
+        .fold<LocationNote?>(
             null,
             (best, pin) => best == null ||
                     calculateDistance(pin.latlng(), _position) <
                         calculateDistance(best.latlng(), _position)
                 ? pin
                 : best);
-    if (nearest != null) _nearbyVoicePin = nearest;
+    if (nearest != null) _nearbyLocationNote = nearest;
   }
 
   Future<void> _calculateRoute() async {

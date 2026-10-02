@@ -121,6 +121,27 @@ void main() {
     await tester.pump(const Duration(seconds: 5)); // snackbar timer
   });
 
+  testWidgets('the heading bar tells sighted users to point the phone, then shows the direction',
+      (tester) async {
+    await pumpScreen(tester);
+    expect(find.text('In eine Richtung zeigen'), findsOneWidget);
+
+    await point(tester, 0);
+    expect(find.text('NORDEN'), findsOneWidget);
+    expect(find.text('2 Orte'), findsOneWidget);
+
+    await point(tester, 25); // between north and north-east: the list still shows north
+    expect(find.text('NORDEN'), findsOneWidget);
+  });
+
+  testWidgets('the heading bar is not read out twice by screen readers', (tester) async {
+    final semantics = tester.ensureSemantics();
+    await pumpScreen(tester);
+    await point(tester, 0);
+    expect(find.bySemanticsLabel('NORDEN'), findsNothing);
+    semantics.dispose();
+  });
+
   testWidgets('shows an error with a retry button instead of crashing', (tester) async {
     repository.result = Result.error(Exception('overpass down'));
     await pumpScreen(tester);

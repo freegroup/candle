@@ -580,12 +580,12 @@ class LocationsCompanion extends UpdateCompanion<LocationRow> {
   }
 }
 
-class $VoicePinsTable extends VoicePins
-    with TableInfo<$VoicePinsTable, VoicePinRow> {
+class $LocationNotesTable extends LocationNotes
+    with TableInfo<$LocationNotesTable, LocationNoteRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $VoicePinsTable(this.attachedDatabase, [this._alias]);
+  $LocationNotesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -657,7 +657,7 @@ class $VoicePinsTable extends VoicePins
   static const String $name = 'voice_pins';
   @override
   VerificationContext validateIntegrity(
-    Insertable<VoicePinRow> instance, {
+    Insertable<LocationNoteRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -707,9 +707,9 @@ class $VoicePinsTable extends VoicePins
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  VoicePinRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+  LocationNoteRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return VoicePinRow(
+    return LocationNoteRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -738,19 +738,19 @@ class $VoicePinsTable extends VoicePins
   }
 
   @override
-  $VoicePinsTable createAlias(String alias) {
-    return $VoicePinsTable(attachedDatabase, alias);
+  $LocationNotesTable createAlias(String alias) {
+    return $LocationNotesTable(attachedDatabase, alias);
   }
 }
 
-class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
+class LocationNoteRow extends DataClass implements Insertable<LocationNoteRow> {
   final int id;
   final String name;
   final String memo;
   final double lat;
   final double lon;
   final DateTime created;
-  const VoicePinRow({
+  const LocationNoteRow({
     required this.id,
     required this.name,
     required this.memo,
@@ -770,8 +770,8 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
     return map;
   }
 
-  VoicePinsCompanion toCompanion(bool nullToAbsent) {
-    return VoicePinsCompanion(
+  LocationNotesCompanion toCompanion(bool nullToAbsent) {
+    return LocationNotesCompanion(
       id: Value(id),
       name: Value(name),
       memo: Value(memo),
@@ -781,12 +781,12 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
     );
   }
 
-  factory VoicePinRow.fromJson(
+  factory LocationNoteRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return VoicePinRow(
+    return LocationNoteRow(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       memo: serializer.fromJson<String>(json['memo']),
@@ -808,14 +808,14 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
     };
   }
 
-  VoicePinRow copyWith({
+  LocationNoteRow copyWith({
     int? id,
     String? name,
     String? memo,
     double? lat,
     double? lon,
     DateTime? created,
-  }) => VoicePinRow(
+  }) => LocationNoteRow(
     id: id ?? this.id,
     name: name ?? this.name,
     memo: memo ?? this.memo,
@@ -823,8 +823,8 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
     lon: lon ?? this.lon,
     created: created ?? this.created,
   );
-  VoicePinRow copyWithCompanion(VoicePinsCompanion data) {
-    return VoicePinRow(
+  LocationNoteRow copyWithCompanion(LocationNotesCompanion data) {
+    return LocationNoteRow(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       memo: data.memo.present ? data.memo.value : this.memo,
@@ -836,7 +836,7 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
 
   @override
   String toString() {
-    return (StringBuffer('VoicePinRow(')
+    return (StringBuffer('LocationNoteRow(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('memo: $memo, ')
@@ -852,7 +852,7 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is VoicePinRow &&
+      (other is LocationNoteRow &&
           other.id == this.id &&
           other.name == this.name &&
           other.memo == this.memo &&
@@ -861,14 +861,14 @@ class VoicePinRow extends DataClass implements Insertable<VoicePinRow> {
           other.created == this.created);
 }
 
-class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
+class LocationNotesCompanion extends UpdateCompanion<LocationNoteRow> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> memo;
   final Value<double> lat;
   final Value<double> lon;
   final Value<DateTime> created;
-  const VoicePinsCompanion({
+  const LocationNotesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.memo = const Value.absent(),
@@ -876,7 +876,7 @@ class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
     this.lon = const Value.absent(),
     this.created = const Value.absent(),
   });
-  VoicePinsCompanion.insert({
+  LocationNotesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     this.memo = const Value.absent(),
@@ -886,7 +886,7 @@ class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
   }) : name = Value(name),
        lat = Value(lat),
        lon = Value(lon);
-  static Insertable<VoicePinRow> custom({
+  static Insertable<LocationNoteRow> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? memo,
@@ -904,7 +904,7 @@ class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
     });
   }
 
-  VoicePinsCompanion copyWith({
+  LocationNotesCompanion copyWith({
     Value<int>? id,
     Value<String>? name,
     Value<String>? memo,
@@ -912,7 +912,7 @@ class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
     Value<double>? lon,
     Value<DateTime>? created,
   }) {
-    return VoicePinsCompanion(
+    return LocationNotesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       memo: memo ?? this.memo,
@@ -948,7 +948,7 @@ class VoicePinsCompanion extends UpdateCompanion<VoicePinRow> {
 
   @override
   String toString() {
-    return (StringBuffer('VoicePinsCompanion(')
+    return (StringBuffer('LocationNotesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('memo: $memo, ')
@@ -1658,7 +1658,7 @@ abstract class _$CandleDatabase extends GeneratedDatabase {
   _$CandleDatabase(QueryExecutor e) : super(e);
   $CandleDatabaseManager get managers => $CandleDatabaseManager(this);
   late final $LocationsTable locations = $LocationsTable(this);
-  late final $VoicePinsTable voicePins = $VoicePinsTable(this);
+  late final $LocationNotesTable locationNotes = $LocationNotesTable(this);
   late final $RoutesTable routes = $RoutesTable(this);
   late final $RoutePointsTable routePoints = $RoutePointsTable(this);
   @override
@@ -1667,7 +1667,7 @@ abstract class _$CandleDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     locations,
-    voicePins,
+    locationNotes,
     routes,
     routePoints,
   ];
@@ -1983,8 +1983,8 @@ typedef $$LocationsTableProcessedTableManager =
       LocationRow,
       PrefetchHooks Function()
     >;
-typedef $$VoicePinsTableCreateCompanionBuilder =
-    VoicePinsCompanion Function({
+typedef $$LocationNotesTableCreateCompanionBuilder =
+    LocationNotesCompanion Function({
       Value<int> id,
       required String name,
       Value<String> memo,
@@ -1992,8 +1992,8 @@ typedef $$VoicePinsTableCreateCompanionBuilder =
       required double lon,
       Value<DateTime> created,
     });
-typedef $$VoicePinsTableUpdateCompanionBuilder =
-    VoicePinsCompanion Function({
+typedef $$LocationNotesTableUpdateCompanionBuilder =
+    LocationNotesCompanion Function({
       Value<int> id,
       Value<String> name,
       Value<String> memo,
@@ -2002,9 +2002,9 @@ typedef $$VoicePinsTableUpdateCompanionBuilder =
       Value<DateTime> created,
     });
 
-class $$VoicePinsTableFilterComposer
-    extends Composer<_$CandleDatabase, $VoicePinsTable> {
-  $$VoicePinsTableFilterComposer({
+class $$LocationNotesTableFilterComposer
+    extends Composer<_$CandleDatabase, $LocationNotesTable> {
+  $$LocationNotesTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2042,9 +2042,9 @@ class $$VoicePinsTableFilterComposer
   );
 }
 
-class $$VoicePinsTableOrderingComposer
-    extends Composer<_$CandleDatabase, $VoicePinsTable> {
-  $$VoicePinsTableOrderingComposer({
+class $$LocationNotesTableOrderingComposer
+    extends Composer<_$CandleDatabase, $LocationNotesTable> {
+  $$LocationNotesTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2082,9 +2082,9 @@ class $$VoicePinsTableOrderingComposer
   );
 }
 
-class $$VoicePinsTableAnnotationComposer
-    extends Composer<_$CandleDatabase, $VoicePinsTable> {
-  $$VoicePinsTableAnnotationComposer({
+class $$LocationNotesTableAnnotationComposer
+    extends Composer<_$CandleDatabase, $LocationNotesTable> {
+  $$LocationNotesTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2110,35 +2110,41 @@ class $$VoicePinsTableAnnotationComposer
       $composableBuilder(column: $table.created, builder: (column) => column);
 }
 
-class $$VoicePinsTableTableManager
+class $$LocationNotesTableTableManager
     extends
         RootTableManager<
           _$CandleDatabase,
-          $VoicePinsTable,
-          VoicePinRow,
-          $$VoicePinsTableFilterComposer,
-          $$VoicePinsTableOrderingComposer,
-          $$VoicePinsTableAnnotationComposer,
-          $$VoicePinsTableCreateCompanionBuilder,
-          $$VoicePinsTableUpdateCompanionBuilder,
+          $LocationNotesTable,
+          LocationNoteRow,
+          $$LocationNotesTableFilterComposer,
+          $$LocationNotesTableOrderingComposer,
+          $$LocationNotesTableAnnotationComposer,
+          $$LocationNotesTableCreateCompanionBuilder,
+          $$LocationNotesTableUpdateCompanionBuilder,
           (
-            VoicePinRow,
-            BaseReferences<_$CandleDatabase, $VoicePinsTable, VoicePinRow>,
+            LocationNoteRow,
+            BaseReferences<
+              _$CandleDatabase,
+              $LocationNotesTable,
+              LocationNoteRow
+            >,
           ),
-          VoicePinRow,
+          LocationNoteRow,
           PrefetchHooks Function()
         > {
-  $$VoicePinsTableTableManager(_$CandleDatabase db, $VoicePinsTable table)
-    : super(
+  $$LocationNotesTableTableManager(
+    _$CandleDatabase db,
+    $LocationNotesTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$VoicePinsTableFilterComposer($db: db, $table: table),
+              $$LocationNotesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$VoicePinsTableOrderingComposer($db: db, $table: table),
+              $$LocationNotesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$VoicePinsTableAnnotationComposer($db: db, $table: table),
+              $$LocationNotesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -2147,7 +2153,7 @@ class $$VoicePinsTableTableManager
                 Value<double> lat = const Value.absent(),
                 Value<double> lon = const Value.absent(),
                 Value<DateTime> created = const Value.absent(),
-              }) => VoicePinsCompanion(
+              }) => LocationNotesCompanion(
                 id: id,
                 name: name,
                 memo: memo,
@@ -2163,7 +2169,7 @@ class $$VoicePinsTableTableManager
                 required double lat,
                 required double lon,
                 Value<DateTime> created = const Value.absent(),
-              }) => VoicePinsCompanion.insert(
+              }) => LocationNotesCompanion.insert(
                 id: id,
                 name: name,
                 memo: memo,
@@ -2174,11 +2180,11 @@ class $$VoicePinsTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$VoicePinsTable, VoicePinRow>(table),
+                  e.readTable<$LocationNotesTable, LocationNoteRow>(table),
                   BaseReferences<
                     _$CandleDatabase,
-                    $VoicePinsTable,
-                    VoicePinRow
+                    $LocationNotesTable,
+                    LocationNoteRow
                   >(db, table, e),
                 ),
               )
@@ -2188,21 +2194,21 @@ class $$VoicePinsTableTableManager
       );
 }
 
-typedef $$VoicePinsTableProcessedTableManager =
+typedef $$LocationNotesTableProcessedTableManager =
     ProcessedTableManager<
       _$CandleDatabase,
-      $VoicePinsTable,
-      VoicePinRow,
-      $$VoicePinsTableFilterComposer,
-      $$VoicePinsTableOrderingComposer,
-      $$VoicePinsTableAnnotationComposer,
-      $$VoicePinsTableCreateCompanionBuilder,
-      $$VoicePinsTableUpdateCompanionBuilder,
+      $LocationNotesTable,
+      LocationNoteRow,
+      $$LocationNotesTableFilterComposer,
+      $$LocationNotesTableOrderingComposer,
+      $$LocationNotesTableAnnotationComposer,
+      $$LocationNotesTableCreateCompanionBuilder,
+      $$LocationNotesTableUpdateCompanionBuilder,
       (
-        VoicePinRow,
-        BaseReferences<_$CandleDatabase, $VoicePinsTable, VoicePinRow>,
+        LocationNoteRow,
+        BaseReferences<_$CandleDatabase, $LocationNotesTable, LocationNoteRow>,
       ),
-      VoicePinRow,
+      LocationNoteRow,
       PrefetchHooks Function()
     >;
 typedef $$RoutesTableCreateCompanionBuilder =
@@ -2820,8 +2826,8 @@ class $CandleDatabaseManager {
   $CandleDatabaseManager(this._db);
   $$LocationsTableTableManager get locations =>
       $$LocationsTableTableManager(_db, _db.locations);
-  $$VoicePinsTableTableManager get voicePins =>
-      $$VoicePinsTableTableManager(_db, _db.voicePins);
+  $$LocationNotesTableTableManager get locationNotes =>
+      $$LocationNotesTableTableManager(_db, _db.locationNotes);
   $$RoutesTableTableManager get routes =>
       $$RoutesTableTableManager(_db, _db.routes);
   $$RoutePointsTableTableManager get routePoints =>

@@ -19,7 +19,7 @@ Candle – Navigation für Blinde
 Orientierung für blinde Menschen: Kompass, Orte in der Nähe und Fußwege
 ```
 
-**Vollständige Beschreibung** (1606/4000)
+**Vollständige Beschreibung** (1637/4000)
 ```
 Candle hilft blinden und sehbehinderten Menschen, sich unterwegs zu orientieren. Die App ist von Grund auf für VoiceOver und TalkBack gebaut: große Schaltflächen, klare Ansagen und Vibration statt Blick auf die Karte.
 
@@ -35,12 +35,12 @@ ORTE IN DER NÄHE
 EIGENE ORTE UND WEGE
 • Lieblingsorte speichern – über die aktuelle Position oder die Adresssuche, auch per Spracheingabe.
 • Fußgängernavigation zu gespeicherten Orten.
-• Sprachnotizen (Voice-Pins): Sprich an einer Stelle einen Hinweis ein, z. B. „Treppe nach der Tür“.
+• Ortsnotizen: Hinterlege an einer Stelle einen Hinweis, z. B. „Treppe nach der Tür“ – Candle liest ihn vor, sobald du dort ankommst.
 • Orte teilen und von Familie oder Freunden empfangen.
 • Wege aufzeichnen (Beta).
 
 DATENSCHUTZ
-Keine Anmeldung, keine Werbung, kein Tracking. Deine Orte, Wege und Sprachnotizen bleiben auf deinem Gerät. Für Karten, Orte und Routen nutzt Candle offene Dienste wie OpenStreetMap.
+Keine Anmeldung, keine Werbung, kein Tracking. Deine Orte, Wege und Ortsnotizen bleiben auf deinem Gerät. Für Karten, Orte und Routen nutzt Candle offene Dienste wie OpenStreetMap.
 
 OPEN SOURCE
 Candle ist kostenlos und quelloffen: github.com/freegroup/candle
@@ -59,7 +59,7 @@ Candle – Blind Navigation
 Orientation for blind people: compass, nearby places and walking routes
 ```
 
-**Full description** (1466/4000)
+**Full description** (1507/4000)
 ```
 Candle helps blind and visually impaired people find their way. The app is built for VoiceOver and TalkBack from the ground up: large buttons, clear announcements and vibration instead of looking at a map.
 
@@ -75,12 +75,12 @@ PLACES NEARBY
 YOUR PLACES AND ROUTES
 • Save favourite places – from your current position or by address search, also by voice.
 • Walking navigation to saved places.
-• Voice pins: record a spoken note at a spot, e.g. "stairs after the door".
+• Location notes: leave a hint at a spot, e.g. "stairs after the door" – Candle reads it out when you get there.
 • Share places and receive them from family and friends.
 • Record routes (beta).
 
 PRIVACY
-No sign-up, no ads, no tracking. Your places, routes and voice pins stay on your device. For maps, places and routes Candle uses open services such as OpenStreetMap.
+No sign-up, no ads, no tracking. Your places, routes and location notes stay on your device. For maps, places and routes Candle uses open services such as OpenStreetMap.
 
 OPEN SOURCE
 Candle is free and open source: github.com/freegroup/candle
@@ -138,7 +138,7 @@ Datentypen:
 | App-Aktivitäten → Suchverlauf in der App | Ja | Ja (Nominatim, Adresssuche) | Ja | Optional | App-Funktionen |
 | Geräte- oder andere IDs | Ja (anonyme Installations-ID) | Nein | Nein | Erforderlich | App-Funktionen; Betrugsprävention, Sicherheit und Compliance |
 
-Alle anderen Datentypen: nicht erhoben. (Sprachnotizen bleiben auf dem Gerät; die Spracheingabe erledigt der Spracherkenner des Betriebssystems.)
+Alle anderen Datentypen: nicht erhoben. (Ortsnotizen sind kurze Texte und bleiben auf dem Gerät; die Spracheingabe erledigt der Spracherkenner des Betriebssystems.)
 
 ### Berechtigungen
 

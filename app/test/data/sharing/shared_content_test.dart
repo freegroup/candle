@@ -20,7 +20,7 @@ void main() {
         {'name': '', 'memo': 'Stairs', 'lat': 1.0, 'lon': 2.0, 'created': '2025-01-01T10:00:00.000'},
       ],
     }));
-    expect((content as SharedVoicePin).pin.memo, 'Stairs');
+    expect((content as SharedLocationNote).pin.memo, 'Stairs');
   });
 
   test('ignores lists and foreign files', () {

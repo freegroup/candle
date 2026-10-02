@@ -18,9 +18,14 @@ class Locations extends Table {
   RealColumn get lon => real()();
 }
 
-/// Spoken notes bound to a position.
-@DataClassName('VoicePinRow')
-class VoicePins extends Table {
+/// Notes bound to a position, read out when the user gets there.
+@DataClassName('LocationNoteRow')
+class LocationNotes extends Table {
+  // the name of the first version ("voice pins"); renaming it would hide the
+  // notes saved with that version
+  @override
+  String get tableName => 'voice_pins';
+
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
   TextColumn get memo => text().withDefault(const Constant(''))();
@@ -48,7 +53,7 @@ class RoutePoints extends Table {
   TextColumn get annotation => text().withDefault(const Constant(''))();
 }
 
-@DriftDatabase(tables: [Locations, VoicePins, Routes, RoutePoints])
+@DriftDatabase(tables: [Locations, LocationNotes, Routes, RoutePoints])
 class CandleDatabase extends _$CandleDatabase {
   CandleDatabase([QueryExecutor? executor]) : super(executor ?? _open());
 

@@ -10,7 +10,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get screen_header_import_location_t => 'Shared location';
   @override
-  String get screen_header_import_voicepin_t => 'Shared voice pin';
+  String get screen_header_import_location_note_t => 'Shared location note';
   @override
   String get screen_header_settings_t => 'Settings';
   @override
@@ -28,13 +28,13 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get screen_header_location_update_t => 'Edit location';
   @override
-  String get screen_header_voicepin_add_t => 'New voice pin';
+  String get screen_header_location_note_add_t => 'New location note';
   @override
-  String get screen_header_voicepin_update_t => 'Edit voice pin';
+  String get screen_header_location_note_update_t => 'Edit location note';
   @override
-  String get screen_header_voicepins_t => 'Voice pins';
+  String get screen_header_location_notes_t => 'Location notes';
   @override
-  String get screen_header_locations_t => 'Locations';
+  String get screen_header_locations_t => 'My locations';
   @override
   String get screen_header_wikipedia_t => 'Wikipedia';
   @override
@@ -60,9 +60,9 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String location_distance_t(String name, int meters) => '$name, $meters meters';
   @override
-  String voicepin_distance_t(int meters) => 'Voice pin, $meters meters';
+  String location_note_distance_t(int meters) => 'Location note, $meters meters';
   @override
-  String voicepin_readout(int distance, String memo) => '$memo, $distance meters';
+  String location_note_readout(int distance, String memo) => '$memo, $distance meters';
   @override
   String compassDirection(String direction) => '$direction';
   @override
@@ -82,7 +82,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get buttonbar_explore_t => 'Explore';
   @override
-  String get buttonbar_voicepins_t => 'Voice pins';
+  String get buttonbar_location_notes_t => 'Location notes';
   @override
   String get buttonbar_routes_t => 'Routes';
   @override
@@ -96,7 +96,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get button_import_location_t => 'Import location';
   @override
-  String get button_import_voicepin_t => 'Import voice pin';
+  String get button_import_location_note_t => 'Import location note';
   @override
   String get button_settings_t => 'Settings';
   @override
@@ -110,13 +110,11 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get route_add_speak_t => 'Speak name';
   @override
-  String get voicepin_add_speak_t => 'Add voice pin';
-  @override
   String get location_name_t => 'Location name';
   @override
   String get route_name_t => 'Route name';
   @override
-  String get voicepin_memo_t => 'Memo';
+  String get location_note_memo_t => 'Memo';
   @override
   String get label_common_loading_t => 'Loading';
   @override
@@ -132,7 +130,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get routes_recording_placeholder_body => 'Record a walk to follow it again later.';
   @override
-  String get voicepins_placeholder_body => 'Leave voice notes at important spots, for example at the **front door**.';
+  String get location_notes_placeholder_body => 'Hints Candle reads out at a spot, for example at the **front door**.';
   @override
   String get no_location_for_category => 'No places found in this category.';
   @override

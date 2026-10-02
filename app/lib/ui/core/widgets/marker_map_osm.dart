@@ -52,7 +52,7 @@ class _RouteMapWidgetState extends State<MarkerMapWidget> {
   @override
   Widget build(BuildContext context) {
 
-    List<Marker> voicePinMarkers = widget.pins.map((pin) {
+    List<Marker> locationNoteMarkers = widget.pins.map((pin) {
       return Marker(
         width: 35.0,
         height: 35.0,
@@ -81,7 +81,7 @@ class _RouteMapWidgetState extends State<MarkerMapWidget> {
               //urlTemplate: 'https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png',
               userAgentPackageName: 'de.freegroup.candle',
             ),
-            MarkerLayer(markers: voicePinMarkers),
+            MarkerLayer(markers: locationNoteMarkers),
             //MarkerLayer(markers: [nonRotatingMarker]),
           ],
         ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -17,8 +17,9 @@ class ShareService {
         subject: subject ?? '${location.name}\n\n${location.formattedAddress}',
       );
 
-  Future<void> shareVoicePin(VoicePin pin) => _share(
-        'voicepin',
+  Future<void> shareLocationNote(LocationNote pin) => _share(
+        'location_note',
+        // "voicepins": the key of the first app versions, kept so older apps can read the file
         {'voicepins': [pin.copyWith(id: () => null).toMap()]},
         subject: '${pin.memo}\n\n',
       );

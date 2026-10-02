@@ -7,13 +7,13 @@ import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_screen.dart';
-import 'package:candle/ui/import/widgets/import_voicepin_screen.dart';
+import 'package:candle/ui/import/widgets/import_location_note_screen.dart';
 import 'package:candle/ui/import/widgets/maps_link_screen.dart';
 import 'package:candle/ui/locations/widgets/locations_screen.dart';
 import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/ui/routes/widgets/routes_screen.dart';
 import 'package:candle/ui/shell/view_models/app_shell_viewmodel.dart';
-import 'package:candle/ui/voicepins/widgets/voicepins_screen.dart';
+import 'package:candle/ui/location_notes/widgets/location_notes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +64,7 @@ class _AppShellState extends State<AppShell> {
   void _import(SharedContent content) {
     final screen = switch (content) {
       SharedLocation(:final location) => buildImportLocationScreen(location),
-      SharedVoicePin(:final pin) => buildImportVoicepinScreen(pin),
+      SharedLocationNote(:final pin) => buildImportLocationNoteScreen(pin),
       SharedMapsLink(:final url) => MapsLinkScreen(url: url),
     };
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => screen));
@@ -84,7 +84,7 @@ class _AppShellState extends State<AppShell> {
   Widget _buildTab(int index) => switch (index) {
         1 => buildLocationsScreen(),
         2 => buildRoutesScreen(),
-        3 => buildVoicePinsScreen(),
+        3 => buildLocationNotesScreen(),
         4 => const PoiCategoriesScreen(),
         5 => buildRadarScreen(),
         _ => buildHomeScreen(),
@@ -113,8 +113,8 @@ class _AppShellState extends State<AppShell> {
         isVisible: context.read<SettingsRepository>().isEnabled(Setting.betaRecording),
       ),
       ButtonBarEntry(
-        label: l10n.buttonbar_voicepins,
-        talkback: l10n.buttonbar_voicepins_t,
+        label: l10n.buttonbar_location_notes,
+        talkback: l10n.buttonbar_location_notes_t,
         icon: const Icon(Icons.mic),
       ),
       ButtonBarEntry(

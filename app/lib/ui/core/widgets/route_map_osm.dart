@@ -46,7 +46,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
     List<LatLng> routePoints = widget.route == null
         ? []
         : widget.route!.points.map((navPoint) => navPoint.latlng()).toList();
-    List<Marker> voicePinMarkers = widget.marker.map((pin) {
+    List<Marker> locationNoteMarkers = widget.marker.map((pin) {
       return Marker(
         width: 25.0,
         height: 25.0,
@@ -124,7 +124,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
             ),
             PolylineLayer(polylines: polylines),
             CircleLayer(circles: markers),
-            MarkerLayer(markers: voicePinMarkers),
+            MarkerLayer(markers: locationNoteMarkers),
             //MarkerLayer(markers: [nonRotatingMarker]),
           ],
         ),

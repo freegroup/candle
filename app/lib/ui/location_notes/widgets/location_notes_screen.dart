@@ -1,9 +1,9 @@
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
-import 'package:candle/ui/voicepins/widgets/text_overlay_screen.dart';
+import 'package:candle/ui/location_notes/widgets/text_overlay_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
-import 'package:candle/ui/voicepins/view_models/voicepins_viewmodel.dart';
-import 'package:candle/ui/voicepins/widgets/voicepin_edit_screen.dart';
+import 'package:candle/ui/location_notes/view_models/location_notes_viewmodel.dart';
+import 'package:candle/ui/location_notes/widgets/location_note_edit_screen.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -16,34 +16,34 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 /// Voice pins screen with its own view model, disposed together with the screen.
-Widget buildVoicePinsScreen() => ChangeNotifierProvider(
-      create: (context) => VoicePinsViewModel(
-        voicePinRepository: context.read(),
+Widget buildLocationNotesScreen() => ChangeNotifierProvider(
+      create: (context) => LocationNotesViewModel(
+        locationNoteRepository: context.read(),
         locationService: context.read(),
         shareService: context.read(),
       ),
-      builder: (context, _) => VoicePinsScreen(viewModel: context.read()),
+      builder: (context, _) => LocationNotesScreen(viewModel: context.read()),
     );
 
 /// The voice pins, nearest first. Sighted users can switch to a map; with a
 /// screen reader the list is shown alone.
-class VoicePinsScreen extends StatefulWidget {
-  const VoicePinsScreen({super.key, required this.viewModel});
+class LocationNotesScreen extends StatefulWidget {
+  const LocationNotesScreen({super.key, required this.viewModel});
 
-  final VoicePinsViewModel viewModel;
+  final LocationNotesViewModel viewModel;
 
   @override
-  State<VoicePinsScreen> createState() => _VoicePinsScreenState();
+  State<LocationNotesScreen> createState() => _LocationNotesScreenState();
 }
 
-class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnouncer {
-  VoicePinsViewModel get _viewModel => widget.viewModel;
+class _LocationNotesScreenState extends State<LocationNotesScreen> with SemanticAnnouncer {
+  LocationNotesViewModel get _viewModel => widget.viewModel;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_voicepins_t);
+      announceOnShow(AppLocalizations.of(context)!.screen_header_location_notes_t);
     });
   }
 
@@ -56,8 +56,8 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
       listenable: _viewModel,
       builder: (context, _) {
         final appBar = CandleAppBar(
-          title: Text(l10n.screen_header_voicepins),
-          talkback: l10n.screen_header_voicepins_t,
+          title: Text(l10n.screen_header_location_notes),
+          talkback: l10n.screen_header_location_notes_t,
           settingsEnabled: true,
           bottom: screenReader ? null : _tabBar(context),
         );
@@ -128,8 +128,8 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
     if (!_viewModel.loaded) return _loading(context);
     if (_viewModel.pins.isEmpty) {
       return GenericInfoPage(
-        header: l10n.voicepins_placeholder_header,
-        body: l10n.voicepins_placeholder_body,
+        header: l10n.location_notes_placeholder_header,
+        body: l10n.location_notes_placeholder_body,
         decoration: Image.asset('assets/images/voicepin.png', fit: BoxFit.cover),
       );
     }
@@ -142,7 +142,7 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
     );
   }
 
-  Widget _tile(BuildContext context, VoicePin pin) {
+  Widget _tile(BuildContext context, LocationNote pin) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final distance = _viewModel.distanceTo(pin);
@@ -151,7 +151,7 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
       // Swiping is hard with a screen reader, so the actions are offered as custom actions too.
       customSemanticsActions: {
         CustomSemanticsAction(label: l10n.button_common_edit_t): () => _edit(pin),
-        CustomSemanticsAction(label: l10n.button_share_voicepin_t): () =>
+        CustomSemanticsAction(label: l10n.button_share_location_note_t): () =>
             _viewModel.share.execute(pin),
         CustomSemanticsAction(label: l10n.button_common_delete_t): () => _delete(pin),
       },
@@ -180,7 +180,7 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
           ],
         ),
         child: Semantics(
-          label: l10n.voicepin_readout(distance ?? 0, pin.memo),
+          label: l10n.location_note_readout(distance ?? 0, pin.memo),
           child: ExcludeSemantics(
             child: CandleListTile(
               title: pin.name,
@@ -188,7 +188,7 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
               trailing: distance == null ? null : '$distance m',
               onTap: () {
                 if (MediaQuery.of(context).accessibleNavigation) {
-                  showSnackbar(context, l10n.voicepin_readout(distance ?? 0, pin.memo));
+                  showSnackbar(context, l10n.location_note_readout(distance ?? 0, pin.memo));
                 } else {
                   Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (_) => TextOverlayScreen(text: pin.memo),
@@ -202,11 +202,11 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
     );
   }
 
-  void _edit(VoicePin pin) => Navigator.of(context)
-      .push(MaterialPageRoute<void>(builder: (_) => buildVoicePinEditScreen(pin)));
+  void _edit(LocationNote pin) => Navigator.of(context)
+      .push(MaterialPageRoute<void>(builder: (_) => buildLocationNoteEditScreen(pin)));
 
-  Future<void> _delete(VoicePin pin) async {
-    final message = AppLocalizations.of(context)!.voicepin_deleted_toast;
+  Future<void> _delete(LocationNote pin) async {
+    final message = AppLocalizations.of(context)!.location_note_deleted_toast;
     await _viewModel.delete.execute(pin);
     if (mounted && _viewModel.delete.completed) showSnackbar(context, message);
   }
@@ -214,7 +214,7 @@ class _VoicePinsScreenState extends State<VoicePinsScreen> with SemanticAnnounce
   Widget _addButton(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return FloatingActionButton(
-      tooltip: l10n.voicepin_add_speak_t,
+      tooltip: l10n.location_note_add_speak_t,
       onPressed: () {
         final pin = _viewModel.newPinHere();
         if (pin == null) {

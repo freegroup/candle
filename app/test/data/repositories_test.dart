@@ -1,11 +1,11 @@
 import 'package:candle/data/repositories/locations/location_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
-import 'package:candle/data/repositories/voicepins/voicepin_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
-import 'package:candle/domain/models/voicepin.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/utils/result.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,11 +53,11 @@ void main() {
     });
   });
 
-  group('VoicePinRepository', () {
+  group('LocationNoteRepository', () {
     test('lists the newest pin first and keeps the update id', () async {
-      final repository = VoicePinRepository(database: db);
-      VoicePin pin(String name, DateTime created, {int? id}) =>
-          VoicePin(id: id, name: name, memo: 'memo', lat: 1, lon: 2, created: created);
+      final repository = LocationNoteRepository(database: db);
+      LocationNote pin(String name, DateTime created, {int? id}) =>
+          LocationNote(id: id, name: name, memo: 'memo', lat: 1, lon: 2, created: created);
 
       final old = _id(await repository.save(pin('old', DateTime(2024))));
       await repository.save(pin('new', DateTime(2025)));

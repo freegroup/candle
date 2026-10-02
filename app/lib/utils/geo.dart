@@ -75,3 +75,19 @@ double distanceToSegment({required LatLng point, required LatLng start, required
 
   return calculateDistance(point, projection);
 }
+
+/// Smallest angle between two compass directions (0..180).
+num angleBetween(num a, num b) {
+  final difference = (a - b).abs() % 360;
+  return difference > 180 ? 360 - difference : difference;
+}
+
+/// A compass direction counts as reached within ±[snapRange]° around it.
+const snapRange = 10;
+
+/// The compass direction (0, 45, … 315) within ±[snapRange]° of [heading], or null
+/// between two directions.
+int? snapToDirection(num heading) {
+  final nearest = (heading / 45).round() % 8 * 45;
+  return angleBetween(heading, nearest) <= snapRange ? nearest : null;
+}

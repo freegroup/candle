@@ -10,7 +10,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get screen_header_import_location_t => 'Geteilter Standort';
   @override
-  String get screen_header_import_voicepin_t => 'Geteilte Sprachnotiz';
+  String get screen_header_import_location_note_t => 'Geteilte Ortsnotiz';
   @override
   String get screen_header_settings_t => 'Einstellungen';
   @override
@@ -28,11 +28,11 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get screen_header_location_update_t => 'Ort bearbeiten';
   @override
-  String get screen_header_voicepin_add_t => 'VoicePin anlegen';
+  String get screen_header_location_note_add_t => 'Ortsnotiz anlegen';
   @override
-  String get screen_header_voicepin_update_t => 'VoicePin bearbeiten';
+  String get screen_header_location_note_update_t => 'Ortsnotiz bearbeiten';
   @override
-  String get screen_header_voicepins_t => 'Sprachnotizen';
+  String get screen_header_location_notes_t => 'Ortsnotizen';
   @override
   String get screen_header_wikipedia_t => 'Wikipedia';
   @override
@@ -56,9 +56,9 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String location_distance_t(String name, int meters) => '$name, $meters Meter';
   @override
-  String voicepin_distance_t(int meters) => 'Sprachnotiz, $meters Meter';
+  String location_note_distance_t(int meters) => 'Ortsnotiz, $meters Meter';
   @override
-  String voicepin_readout(int distance, String memo) => '$memo, $distance Meter';
+  String location_note_readout(int distance, String memo) => '$memo, $distance Meter';
   @override
   String compassDirection(String direction) => '$direction';
   @override
@@ -78,7 +78,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get buttonbar_explore_t => 'Erkunden';
   @override
-  String get buttonbar_voicepins_t => 'VoicePins';
+  String get buttonbar_location_notes_t => 'Ortsnotizen';
   @override
   String get buttonbar_routes_t => 'Strecken';
   @override
@@ -88,7 +88,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get button_import_location_t => 'Ort importieren';
   @override
-  String get button_import_voicepin_t => 'Notiz importieren';
+  String get button_import_location_note_t => 'Ortsnotiz übernehmen';
   @override
   String get button_settings_t => 'Einstellungen';
   @override
@@ -100,13 +100,11 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get route_add_speak_t => 'Name sprechen';
   @override
-  String get voicepin_add_speak_t => 'Sprachnotiz hinzufügen';
-  @override
   String get location_name_t => 'Name des Ortes';
   @override
   String get route_name_t => 'Name der Strecke';
   @override
-  String get voicepin_memo_t => 'Notiz';
+  String get location_note_memo_t => 'Notiz';
   @override
   String get settings_header_tiles_t => 'Kacheln der Übersicht';
   @override
@@ -120,7 +118,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get routes_recording_placeholder_body => 'Zeichnen Sie einen Weg auf, um ihn später wieder zu gehen.';
   @override
-  String get voicepins_placeholder_body => 'Hinterlassen Sie Sprachnotizen an wichtigen Stellen, zum Beispiel an der **Haustür**.';
+  String get location_notes_placeholder_body => 'Hinweise, die Candle an einer Stelle vorliest, zum Beispiel an der **Haustür**.';
   @override
   String get no_location_for_category => 'Keine Orte in dieser Kategorie gefunden.';
   @override
