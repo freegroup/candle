@@ -154,5 +154,5 @@ Alle anderen Datentypen: nicht erhoben. (Sprachnotizen bleiben auf dem Gerät; d
     ```
     Candle is a navigation app for blind people. The user starts recording a walking route with "Record". While the recording runs, the service stores the GPS position, also with the screen locked – blind people usually carry the phone in a pocket. A notification "Candle is recording" is shown the whole time. The service ends as soon as the recording is saved or discarded. The recorded route stays on the device and later guides the user back to the destination.
     ```
-  - Video: https://www.youtube.com/watch?v=-asALgd-ADw (nicht gelistet, 54 s). Es zeigt: Aufnahme starten → Benachrichtigungs-Erlaubnis →
+  - Video: https://www.youtube.com/watch?v=kIbBLrHklZA (nicht gelistet, 54 s). Es zeigt: Aufnahme starten → Benachrichtigungs-Erlaubnis →
     Route auf der Karte → Benachrichtigung „Candle is recording“ → Speichern.

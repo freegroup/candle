@@ -73,7 +73,7 @@
   },
 
 
-  "screen_show_announcement_t": "New Screen opend: {title}",
+  "screen_show_announcement_t": "New screen opened: {title}",
   "@screen_show_announcement_t": {
     "description": "Announcement if a new screen is shown",
     "placeholders": {
@@ -126,7 +126,7 @@
     "description": "Title for the voicepin shared screen"
   },
 
-  "screen_header_recorder_recording_t": "Route gets recorded.",
+  "screen_header_recorder_recording_t": "Route is being recorded.",
   "@screen_header_recorder_recording_t": {
     "description": "Talkback for route recording screen"
   },
@@ -210,7 +210,7 @@
   "@explore_category_header": {
     "description": "Heaeer for the category list"
   },
-  "explore_category_header_t": "There are {count} categories in the list below available",
+  "explore_category_header_t": "There are {count} categories in the list below.",
   "@explore_category_header_t": {
     "description": "Header for the category list",
     "placeholders": {
@@ -221,11 +221,11 @@
     }
   },
 
-  "explore_poi_header": "Gefundene Orte",
+  "explore_poi_header": "Places found",
   "@explore_poi_header": {
     "description": "Header for the category poi list"
   },
-  "explore_poi_header_t": "There are {count} locations in the list below available",
+  "explore_poi_header_t": "There are {count} places in the list below.",
   "@explore_poi_header_t": {
     "description": "Header for the category location list",
     "placeholders": {
@@ -291,7 +291,7 @@
   },
 
 
-  "buttonbar_radar_t": "A radar which show locations in the given direction.",
+  "buttonbar_radar_t": "A radar that shows the places in the direction the phone points to.",
   "@buttonbar_radar_t": {
     "description": "Talkback for Radar ButtonBar Entry"
   },
@@ -395,7 +395,7 @@
   "compass_hint_horizontal": "For optimal compass performance, please hold your phone horizontally.",
 
 
-  "screen_header_navigation_poi_t": "Pedestrian Navigation to your Target has started.",
+  "screen_header_navigation_poi_t": "Pedestrian navigation to your destination has started.",
   "@screen_header_navigation_poi_t": {
     "description": "Talkback for the CompassDialog AppBar"
   },
@@ -508,7 +508,7 @@
   },
 
 
-  "route_saved_toast": "Route '{name}' has saved.",
+  "route_saved_toast": "Route '{name}' has been saved.",
   "@route_saved_toast": {
     "description": "Information that the route has saved with success",
     "placeholders": {
@@ -535,7 +535,7 @@
     "description": "Talkback for the start voice recoding button"
   },
 
-  "route_recording_intro": "Enter a name for your route and press **Record** to begin tracking. Once you reach your destination, select **Save** to keep the route, or **Skip** to discard it. Your saved routes assist in guiding you back to your starting point or forward to your destination, depending on your current location.",
+  "route_recording_intro": "Enter a name for your route and press **Record Track** to begin. Once you reach your destination, select **Save** to keep the route, or **Cancel** to discard it. Your saved routes guide you back to your starting point or forward to your destination, depending on your current location.",
   "@route_recording_intro": {
     "description": "Intro message for the route recording screen"
   },
@@ -570,7 +570,7 @@
     }
   },
 
-  "voicepin_distance_t": "voicepin is {meters} meters as the crow flies from you",
+  "voicepin_distance_t": "The voice pin was recorded {meters} meters as the crow flies from here.",
   "@voicepin_distance_t": {
     "description": "Information how far the voicepin is from you",
     "placeholders": {
@@ -582,7 +582,7 @@
   },
    
   
-  "location_saved_toast": "Location '{name}' has saved as favorite.",
+  "location_saved_toast": "Location '{name}' has been saved as a favorite.",
   "@location_saved_toast": {
     "description": "Information that the favorite has saved with success",
     "placeholders": {
@@ -777,7 +777,7 @@
     "description": "Infotext for the permissions gps_allways request"
   },
 
-  "button_permissions_request": "Continue..",
+  "button_permissions_request": "Continue",
   "@button_permissions_request": {
     "description": "Button text for the permissions request"
   },
@@ -793,7 +793,7 @@
     "description": "Button text for the contactMe button"
   },
 
-  "button_navigate_poi_t": "Start turn by turn navigation",
+  "button_navigate_poi_t": "Start turn-by-turn navigation",
   "@button_navigate_poi_t": {
     "description": "Talkback for navigate to Poi"
   },
@@ -890,7 +890,7 @@
     "description": "Label for a tab to show a map version of data"
   },
 
-  "label_common_required": "Field is requried",
+  "label_common_required": "This field is required",
   "@label_common_required": {
     "description": "Infotext for a required input field"
   },
@@ -899,7 +899,7 @@
   "@label_common_loading_t": {
     "description": "Common loading message"
   },
-  "label_common_loading": "Loading..",
+  "label_common_loading": "Loading …",
   "@label_common_loading": {
     "description": "Common loading message"
   },
@@ -924,7 +924,7 @@
     "description": "Common message if a location has saved or updated"
   },
 
-  "voicepin_saved_snackbar": "VoicePin saved as Favorite.",
+  "voicepin_saved_snackbar": "VoicePin saved.",
   "@voicepin_saved_snackbar": {
     "description": "Common message if a VoicePin has saved or updated"
   },
@@ -959,7 +959,7 @@
   },
 
 
-  "featureflag_radar_t": "Compass which fetches point of interest from the direction",
+  "featureflag_radar_t": "Compass that shows the places in the direction you point to",
   "@featureflag_radar_t": {
     "description": "Talkback for Compass Featureflag"
   },
@@ -1055,7 +1055,7 @@
   },
 
 
-  "button_share_voicepin_t": "Share your voicdepin",
+  "button_share_voicepin_t": "Share your voice pin",
   "@button_share_voicepin_t": {
     "description": "Talkback for voicepin Share Button"
   },
@@ -1124,7 +1124,7 @@
     "description": "Title for settings button"
   },
 
-  "button_wikipedia_t": "Wikipedia articles near by you",
+  "button_wikipedia_t": "Wikipedia articles near you",
   "@button_wikipedia_t": {
     "description": "Talkback for wikipedia Button"
   },
@@ -1172,7 +1172,7 @@
   },
 
 
-  "settings_header_beta_t": "Not well tested beta features.",
+  "settings_header_beta_t": "Beta features that are still being tested.",
   "@settings_header_beta_t": {
     "description": "Talkback for beta features section"
   },
@@ -1257,7 +1257,7 @@
     }
   },
 
-  "appbar_slogan": "brings a little bit of light into the darkness",
+  "appbar_slogan": "Brings a little light into the darkness",
   "@appbar_slogan": {
     "description": "The slogan of the cnadle app"
   },
@@ -1298,7 +1298,7 @@
 
 
   "crossing_traffic_signal": "Crossing with traffic signal",
-  "crossing_rebra_marking": "Crossing with with zebra marking",
+  "crossing_rebra_marking": "Crossing with zebra marking",
   "crossing_with_island": "Crossing with island",
   "crossing_unmarked": "Unmarked crossing",
 
@@ -1342,8 +1342,6 @@
   "button_common_retry": "Try again",
   "button_common_retry_t": "Try to load the places again",
   "poi_audible_signal": "Traffic light with audible signal",
-  "button_discard_recording": "Discard",
-  "button_discard_recording_t": "Discard the recording",
   "button_save_recording": "Save",
   "button_save_recording_t": "Save the recorded route",
   "recording_notification_title": "Candle is recording",
@@ -1358,5 +1356,11 @@
   "navigation_route_failed": "No route could be calculated right now. Candle tries again as soon as you move.",
   "maps_link_failed": "The shared map link could not be opened.",
   "button_privacy_policy": "Our privacy policy",
-  "recording_started_t": "Recording started."
+  "recording_started_t": "Recording started.",
+  "button_cancel_recording": "Cancel",
+  "button_cancel_recording_t": "Cancel recording",
+  "recording_cancel_title": "Cancel recording?",
+  "recording_cancel_body": "The route recorded so far will not be saved.",
+  "button_cancel_recording_confirm": "Yes, cancel",
+  "button_continue_recording": "Keep recording"
 }

@@ -9,7 +9,6 @@ import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/accessible_text_input.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
-import 'package:candle/ui/core/widgets/bold_icon_button.dart';
 import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/pulse_icon.dart';
@@ -105,7 +104,8 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
           ),
           body: BackgroundWidget(
             child: DividedWidget(
-              fraction: screenHeight * (7 / 9),
+              // the stop buttons need more room than the single start button
+              fraction: screenHeight * ((recording ? 6 : 7) / 9),
               top: recording ? _buildMap(context) : _buildNameInput(context),
               bottom: recording ? _buildStopButtons(context) : _buildStartButton(context),
             ),
@@ -199,29 +199,52 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
   Widget _buildStopButtons(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Row(
-      children: [
-        Expanded(
-          child: BoldIconButton(
-            talkback: l10n.button_discard_recording_t,
-            buttonWidth: 50,
-            icons: Icons.close_outlined,
-            onTab: () => _viewModel.stop.execute(false),
-          ),
-        ),
-        Expanded(
-          child: BoldIconButton(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          DialogButton(
+            label: l10n.button_save_recording,
             talkback: l10n.button_save_recording_t,
-            buttonWidth: 120,
-            icons: Icons.label_important_outline,
-            circle: false,
             onTab: () async {
               await _viewModel.stop.execute(true);
               if (context.mounted) Navigator.of(context).pop();
             },
           ),
-        ),
-      ],
+          DialogButton(
+            label: l10n.button_cancel_recording,
+            talkback: l10n.button_cancel_recording_t,
+            outlined: true,
+            onTab: _confirmCancel,
+          ),
+        ],
+      ),
     );
+  }
+
+  /// Cancelling throws the recorded route away, so it is confirmed first.
+  Future<void> _confirmCancel() async {
+    final theme = Theme.of(context);
+    final cancel = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+          backgroundColor: theme.cardColor,
+          title: Text(l10n.recording_cancel_title),
+          content: Text(l10n.recording_cancel_body, style: theme.textTheme.bodyLarge),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.button_continue_recording),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.button_cancel_recording_confirm),
+            ),
+          ],
+        );
+      },
+    );
+    if (cancel ?? false) await _viewModel.stop.execute(false);
   }
 }

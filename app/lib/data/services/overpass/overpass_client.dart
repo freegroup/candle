@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:candle/data/services/overpass/endpoint_ranking.dart';
 import 'package:candle/data/services/overpass/overpass_element.dart';
 import 'package:candle/utils/configuration.dart';
 import 'package:candle/utils/result.dart';
@@ -11,39 +12,48 @@ final _log = Logger();
 
 /// Thin client for the Overpass API.
 ///
-/// The public instances are frequently overloaded (429/5xx) or slow, so the
-/// query is retried on the next endpoint in [endpoints].
+/// The public instances are frequently overloaded (429/5xx) or slow. Each query
+/// goes to the endpoint that answered fastest recently ([EndpointRanking]) and
+/// falls back to the next one if it fails; callers never see which one answered.
 class OverpassClient {
   OverpassClient({
     required this._client,
-    this.endpoints = defaultEndpoints,
-    this.timeout = const Duration(seconds: 25),
-  });
+    List<String> endpoints = defaultEndpoints,
+    this.timeout = const Duration(seconds: 10),
+  }) : _ranking = EndpointRanking(endpoints);
 
-  // Other public instances were tested as fallback (09/2026): private.coffee and
-  // kumi.systems did not answer, maps.mail.ru is operated in Russia and must not
-  // receive the positions of our users. The own Candle server goes here later.
-  static const defaultEndpoints = ['https://overpass-api.de/api/interpreter'];
+  // Tested 10/2026. Both have worldwide data and are run in the EU. Not used:
+  // private.coffee and kumi.systems did not answer, overpass.osm.ch has Swiss data
+  // only, maps.mail.ru is operated in Russia and must not receive the positions of
+  // our users. The own Candle server goes here later.
+  static const defaultEndpoints = [
+    'https://overpass.openstreetmap.fr/api/interpreter',
+    'https://overpass-api.de/api/interpreter',
+  ];
 
   final http.Client _client;
-  final List<String> endpoints;
+  final EndpointRanking _ranking;
+
+  /// Longest wait for one endpoint before the next one is asked.
   final Duration timeout;
 
   /// Runs an Overpass QL query that returns JSON (`[out:json]`).
   Future<Result<List<OverpassElement>>> query(String overpassQl) async {
     Exception lastError = Exception('No Overpass endpoint configured');
 
-    for (final endpoint in endpoints) {
+    for (final endpoint in _ranking.ordered) {
+      final stopwatch = Stopwatch()..start();
       try {
         final response = await _client
             .post(Uri.parse(endpoint), headers: kHttpHeaders, body: {'data': overpassQl})
             .timeout(timeout);
 
         if (response.statusCode == 200) {
+          _ranking.recordSuccess(endpoint, stopwatch.elapsed);
           return Result.ok(_parse(response.bodyBytes));
         }
         lastError = OverpassException(endpoint, response.statusCode);
-        // Only overload/server errors are worth retrying on another instance.
+        // Other client errors mean a broken query, not a broken server.
         if (response.statusCode != 429 && response.statusCode < 500) break;
       } on TimeoutException {
         lastError = OverpassException(endpoint, null, 'timeout');
@@ -52,6 +62,7 @@ class OverpassClient {
       } on FormatException catch (e) {
         return Result.error(e);
       }
+      _ranking.recordFailure(endpoint);
       _log.w('Overpass request failed: $lastError');
     }
     return Result.error(lastError);

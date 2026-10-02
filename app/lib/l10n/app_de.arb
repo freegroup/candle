@@ -63,7 +63,7 @@
   "buttonbar_routes_t": "Aufgezeichnete Strecken",
   "buttonbar_routes": "Strecken",
 
-  "buttonbar_explore_t": "Interessante Orte in deiner Umgebung",
+  "buttonbar_explore_t": "Interessante Orte in Ihrer Umgebung",
   "buttonbar_explore": "Erkunden",
 
 
@@ -77,15 +77,15 @@
   "button_compass_t": "Kompass anzeigen",
   "button_compass": "Kompass",
 
-  "button_contact_me": "Schick mir eine E-Mail",
+  "button_contact_me": "Schreiben Sie mir eine E-Mail",
 
-  "button_share_location_t": "Standort Teilen",
+  "button_share_location_t": "Standort teilen",
   "button_share_location": "Teilen",
   
   "button_share_voicepin_t": "Sprachnotiz zu einem Ort teilen",
   "button_share_voicepin": "Teilen",
 
-  "button_location_create_t": "Aktuellen Standort in ihren Favoriten speichern",
+  "button_location_create_t": "Aktuellen Standort in Ihren Favoriten speichern",
   "button_location_create": "Ort speichern",
 
 
@@ -105,7 +105,7 @@
   "button_about_t": "Info über diese App",
   "button_about": "Info",
 
-  "button_wikipedia_t": "Wikipedia Artikel mit Bezug zu deiner aktuellen Position",
+  "button_wikipedia_t": "Wikipedia-Artikel mit Bezug zu Ihrer aktuellen Position",
   "button_wikipedia": "Wikipedia",
 
   "button_common_edit_t": "Eintrag bearbeiten",
@@ -117,32 +117,32 @@
   "button_common_enter_target_t": "Geben Sie ein Ziel ein, um die Navigation zu starten",
   "button_common_enter_target": "Zieladresse eingeben",
 
-  "button_common_app_settings_t": "App Einstellungen öffnen",
-  "button_common_app_settings": "App Einstellungen",
+  "button_common_app_settings_t": "App-Einstellungen öffnen",
+  "button_common_app_settings": "App-Einstellungen",
 
-  "button_common_close_t": "Fenter schliessen",
-  "button_common_close": "Schliessen",
+  "button_common_close_t": "Fenster schließen",
+  "button_common_close": "Schließen",
 
   "button_common_save_t": "Speichern",
   "button_common_save": "Speichern",
 
   "button_address_reload": "Aktualisieren",
-  "button_address_reload_t": "Aktualisieren der Addresse",
+  "button_address_reload_t": "Adresse aktualisieren",
 
   "button_suggest_to_friends": "App teilen",
   "button_suggest_to_friends_t": "App mit Freunden teilen",
 
-  "button_navigate_poi_t": "Starte Weg Führung zum Ziel.",
+  "button_navigate_poi_t": "Wegführung zum Ziel starten.",
   "button_navigate_poi": "Navigation starten",
 
   "featureflag_recorder_t": "Aufzeichnen von Routen aktivieren",
-  "featureflag_recorder": "Strecke Aufzeichnen",
+  "featureflag_recorder": "Strecke aufzeichnen",
 
 
   "featureflag_dictation_t": "Spracheingabe-Shortcut aktivieren. Tippen, um das Mikrofonsymbol als Shortcut für die Spracheingabe in Textfeldern anzuzeigen.",
   "featureflag_dictation": "Spracheingabe-Shortcut aktiviert",
 
-  "featureflag_radar_t": "Kompass der einem in der gezeigten Richtung Orte anzeigt",
+  "featureflag_radar_t": "Kompass, der Orte in der gezeigten Richtung anzeigt",
   "featureflag_radar": "Orte Radar",
 
   "featureflag_compass_t": "Kompass auf der Übersicht aktivieren.",
@@ -154,30 +154,30 @@
   "featureflag_share_t": "Ort teilen auf der Übersicht aktivieren",
   "featureflag_share": "Ort teilen",
 
-  "featureflag_allwaysgps_t": "Stetiger GPS Zugriff zulassen, auch wenn die App gechlossen ist",
-  "featureflag_allwaysgps": "Stetiger Zugriff erlauben",
+  "featureflag_allwaysgps_t": "Ständigen GPS-Zugriff zulassen, auch wenn die App geschlossen ist",
+  "featureflag_allwaysgps": "Ständigen Zugriff erlauben",
 
-  "featureflag_location_t": "Ort speihern auf der Übersicht aktivieren",
-  "featureflag_location": "Ort Speichern",
+  "featureflag_location_t": "Ort speichern auf der Übersicht aktivieren",
+  "featureflag_location": "Ort speichern",
 
   "featureflag_vibratecompass_t": "Vibrierender Kompass",
   "featureflag_vibratecompass": "Vibrierender Kompass",
 
-  "featureflag_vibraterouting_t": "Vibrieren wärend dem Navigieren",
-  "featureflag_vibraterouting": "Vibrieren wärend dem Navigieren",
+  "featureflag_vibraterouting_t": "Vibrieren während der Navigation",
+  "featureflag_vibraterouting": "Vibrieren während der Navigation",
 
   "featureflag_beta_recording_t": "Strecken aufzeichnen und später abgehen",
   "featureflag_beta_recording": "Strecken aufzeichnen",
 
   "label_common_loading_t": "Lade Daten.",
-  "label_common_loading": "Laden...",
+  "label_common_loading": "Laden …",
   "label_common_required": "Pflichtfeld",
   "label_common_selected": "Ausgewählt",
 
   "label_common_list": "Liste",
   "label_common_map": "Karte",
 
-  "label_address_load_fail": "Aktuelle Addresse konnte nicht bestimmt werden",
+  "label_address_load_fail": "Aktuelle Adresse konnte nicht bestimmt werden",
 
   "location_saved_snackbar": "Ort wurde als Favorit gespeichert.",
   "voicepin_saved_snackbar": "Sprachnachricht wurde gespeichert",
@@ -186,33 +186,33 @@
   "label_favorites_empty_t": "Sie haben noch keine Favoriten hinzugefügt. Sollten Sie welche haben, werden diese hier aufgelistet.",
   "label_favorites_empty": "Sie haben noch keine Favoriten hinzugefügt.",
 
-  "settings_header_tiles_t": "Kacheln  auf der Übersichtsseite einblenden oder ausblenden",
-  "settings_header_tiles": "Übersicht Kacheln",
+  "settings_header_tiles_t": "Kacheln auf der Übersichtsseite einblenden oder ausblenden",
+  "settings_header_tiles": "Kacheln der Übersicht",
 
-  "settings_header_gps_t": "GPS Einstellungen für die App",
-  "settings_header_gps": "GPS Einstellungen",
+  "settings_header_gps_t": "GPS-Einstellungen für die App",
+  "settings_header_gps": "GPS-Einstellungen",
 
   "settings_header_common_t": "Allgemeine Einstellungen",
   "settings_header_common": "Allgemein",
   
-  "settings_header_beta_t": "Noch nicht offiziel freigegebenen Funktionen, welche sich noch in Testphase befinden.",
+  "settings_header_beta_t": "Noch nicht offiziell freigegebene Funktionen, die sich in der Testphase befinden.",
   "settings_header_beta": "Funktionen im Test",
 
   "screen_header_compass_poi": "Kompass",
-  "screen_header_compass_poi_t": "Ein Kompass der ihnen die Richtung und Distanz zu {name} ansagt",
+  "screen_header_compass_poi_t": "Ein Kompass, der Ihnen Richtung und Entfernung zu {name} ansagt",
   "label_rotate_left_target_t": "{degree} Grad nach links, um direkt auf das Ziel zu zeigen.",
   "label_rotate_right_target_t": "{degree} Grad nach rechts, um direkt auf das Ziel zu zeigen.",
-  "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von ihnen entfernt.",
+  "label_rotate_no_target_t": "Sie zeigen jetzt direkt auf das Ziel. Es ist {meters} Meter Luftlinie von Ihnen entfernt.",
 
   "label_rotate_left_waypoint_t": "{degree} Grad nach links, um direkt auf den nächsten Wegpunkt zu zeigen.",
   "label_rotate_right_waypoint_t": "{degree} Grad nach rechts, um direkt auf den nächsten Wegpunkt zu zeigen.",
   "label_rotate_no_waypoint_t": "Sie zeigen direkt auf den nächsten Wegpunkt.",
 
-  "screen_header_compass_t": "Ein Kompass der ihnen die Himmelsrichtung ansagen kann.",
+  "screen_header_compass_t": "Ein Kompass, der Ihnen die Himmelsrichtung ansagen kann.",
   "screen_header_compass": "Kompass",
   "compass_hint_horizontal": "Für beste Kompass-Ergebnisse bitte das Telefon horizontal halten",
 
-  "screen_header_navigation_poi_t": "Die Weg Führung zu ihrem Ziel wurde gestartet.",
+  "screen_header_navigation_poi_t": "Die Wegführung zu Ihrem Ziel wurde gestartet.",
   "screen_header_navigation_poi": "Wegführung",
 
 
@@ -247,11 +247,11 @@
   "screen_header_voicepin_add_t": "Erstellen Sie einen neuen VoicePin mit standortspezifischer Notiz.",
   "screen_header_voicepin_add": "VoicePin anlegen",
 
-  "screen_header_voicepin_update_t": "Bearbeiten Sie den VoicePin-Memo, um standortbezogene Informationen zu aktualisieren.",
+  "screen_header_voicepin_update_t": "Bearbeiten Sie die Notiz des VoicePins, um standortbezogene Informationen zu aktualisieren.",
   "screen_header_voicepin_update": "VoicePin bearbeiten",
 
-  "screen_header_route_update_t": "Strecken Name umbenennen",
-  "screen_header_route_update": "Name andern",
+  "screen_header_route_update_t": "Strecke umbenennen",
+  "screen_header_route_update": "Name ändern",
 
   "route_name_t": "Eingabefeld für den Streckennamen",
   "route_name": "Name",
@@ -259,15 +259,15 @@
 
   "route_saved_toast": "Strecke '{name}' wurde gespeichert.",
   "route_delete_toast": "Strecke '{name}' wurde gelöscht.",
-  "route_add_speak_t": "Drücken Sie, um die Stecke mittels Spracheingabe zu benennen.",
-  "route_recording_intro": "Benennen Sie Ihre Route und starten Sie die Aufzeichnung mit **Aufnehmen**. Am Ziel angekommen, können Sie mit **Speichern** die Route behalten oder mit **Überspringen** verwerfen. Gespeicherte Routen leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
+  "route_add_speak_t": "Drücken Sie, um die Strecke mittels Spracheingabe zu benennen.",
+  "route_recording_intro": "Benennen Sie Ihre Strecke und starten Sie die Aufzeichnung mit **Aufzeichnen**. Am Ziel angekommen, können Sie die Strecke mit **Speichern** behalten oder mit **Abbrechen** verwerfen. Gespeicherte Strecken leiten Sie sicher zum Ausgangspunkt oder Ziel zurück.",
 
   "location_add_speak_t": "Drücken Sie, um den Standort mittels Spracheingabe zu benennen.",
   
   "voicepin_add_speak_t": "Tippen Sie hier, um dem Standort eine sprachbasierte Notiz hinzuzufügen.",
 
   "location_name_t": "Eingabefeld für den Favoritennamen.",
-  "location_name": "Favoriten Name",
+  "location_name": "Favoritenname",
   "location_name_required_snackbar": "Favoritenname ist ein Pflichtfeld.",
   "location_reached": "Sie sind da. Willkommen!",
   
@@ -280,42 +280,42 @@
 
   "voicepin_readout": "{distance} Meter entfernt aufgezeichnete Nachricht: {memo}.",
 
-  "location_distance_t": "{name} ist {meters} Meter Luftlinie von ihnen entfernt.",
-  "voicepin_distance_t": "Sprachnotiz wurde {meters} meter Luftlinie von hier aufgenommen",
+  "location_distance_t": "{name} ist {meters} Meter Luftlinie von Ihnen entfernt.",
+  "voicepin_distance_t": "Die Sprachnotiz wurde {meters} Meter Luftlinie von hier aufgenommen.",
 
-  "location_saved_toast": "Ort '{name}' wurde in ihren Favoriten gespeichert.",
-  "location_deleted_toast": "Ort '{name}' wurde in ihren Favoriten entfernt.",
+  "location_saved_toast": "Ort '{name}' wurde in Ihren Favoriten gespeichert.",
+  "location_deleted_toast": "Ort '{name}' wurde aus Ihren Favoriten entfernt.",
   
   "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
  
   "locations_in_direction_toast": "{heading}, {count} nahegelegene Orte.",
   
-  "buttonbar_radar_t": "Ein Radar mir der Anzeige von Orten in der Richtung wie das Handy gehalten wird",
+  "buttonbar_radar_t": "Ein Radar, das Orte in der Richtung anzeigt, in die das Handy zeigt",
   "buttonbar_radar": "Orte Radar",
 
 
   "input_address_search_t": "Geben Sie Teile einer Adresse ein, um passende Adressen zu finden. Wählen Sie die beste aus.",
-  "screen_header_address_search_t": "Adresse Suchen",
-  "screen_header_address_search": "Adresse Suchen",
+  "screen_header_address_search_t": "Adresse suchen",
+  "screen_header_address_search": "Adresse suchen",
   "address_search_list": "Vorgeschlagene Adressen",
 
   "address_search_doubletab_hint_t": "Doppeltippen, um die Adresse zu ändern und nach einer anderen zu suchen.",
 
-  "screen_header_permissions_t": "App Berechtigungen erfragen",
+  "screen_header_permissions_t": "Berechtigungen der App erteilen",
   "screen_header_permissions": "Berechtigungen",
 
   "screen_header_voicepins_t": "Sprachnotizen mit einem Ort verknüpfen",
   "screen_header_voicepins": "Sprachnotizen",
 
-  "screen_header_wikipedia_t": "Wikipedia Artikel mit Bezug zu ihrem Standort",
-  "screen_header_wikipedia": "Wikipedia Artikel",
+  "screen_header_wikipedia_t": "Wikipedia-Artikel mit Bezug zu Ihrem Standort",
+  "screen_header_wikipedia": "Wikipedia-Artikel",
 
   "label_permissions_explain": "# Willkommen bei Candle!\n\nFür die Navigation benötigt Candle den Zugriff auf Ihren Standort und die Spracheingabe. Diese sind für die Funktionalität der App entscheidend.\n\nWenn Sie Candle als Navigationshilfe nutzen möchten, sind diese Berechtigungen nötig. Ihre Entscheidung steht an erster Stelle—ohne Berechtigungen ist die Nutzung nicht möglich.\n\nDanke, dass Sie über die vollständige Aktivierung Ihrer Candle-Erfahrung nachdenken.",
-  "button_permissions_request": "Weiter..",
+  "button_permissions_request": "Weiter",
   
   "label_permissions_allwaysgps_explain": "# Stellen Sie die Standortberechtigung auf **'Immer zulassen'** ein, um wichtige App-Funktionen wie die **Routenaufzeichnung** zu ermöglichen. \n\nDiese Berechtigung ist entscheidend für die **Standortverfolgung im Hintergrund** und ermöglicht die **Routenaufzeichnung, auch wenn die App geschlossen ist oder nicht verwendet wird**, was besonders für sehbehinderte Benutzer nützlich ist. Ihre Daten bleiben ausschließlich auf Ihrem **Gerät privat** und werden nur für **App-Funktionen verwendet**. Die Erteilung dieser Berechtigung ist optional; wird sie nicht erteilt, wird die Aufzeichnungsfunktion im Hintergrund deaktiviert.",
 
-  "permissions_denied_title": "Berechtigungen Verweigert",
+  "permissions_denied_title": "Berechtigungen verweigert",
   "permissions_denied_description": "Candle benötigt für die vollständige Navigationsfunktion Zugriff auf Standort und Mikrofon. Ohne diese Zugriffe ist eine Navigation nicht möglich. Ihre Wahl und Privatsphäre stehen bei uns hoch im Kurs. Sie können die Berechtigungen in den Einstellungen Ihres Geräts jederzeit anpassen, falls Sie sich dafür entscheiden.",
 
   "accessible_text_input_t": "Texteingabefeld.",
@@ -345,12 +345,12 @@
 
   "appbar_slogan": "Bringt ein wenig Licht ins Dunkel",
 
-  "email_contact_subject": "Candle Benutzer Anfrage",
-  "error_no_email_launch": "E-Mail Programm kann nicht gestartet werden",
-  "email_share_subject": "App Empfehlung: Candle",
+  "email_contact_subject": "Candle-Benutzeranfrage",
+  "error_no_email_launch": "E-Mail-Programm kann nicht gestartet werden",
+  "email_share_subject": "App-Empfehlung: Candle",
   "email_share_body": "Ich möchte dir die App 'Candle' empfehlen. Nette App zur GPS Navigation.\n\nHier sind die Links zur App:\n\n",
 
-  "poi_category_crossing": "Fussgängerüberweg",
+  "poi_category_crossing": "Fußgängerüberweg",
   "poi_category_bars": "Bars",
   "poi_category_atms": "Geldautomaten",
   "poi_category_restaurants": "Restaurants",
@@ -365,7 +365,7 @@
   "crossing_traffic_signal": "Übergang mit Ampel",
   "crossing_rebra_marking": "Zebrastreifen",
   "crossing_with_island": "Übergang mit Verkehrsinsel",
-  "crossing_unmarked": "Unmarkierter Fussgängerübergang",
+  "crossing_unmarked": "Unmarkierter Fußgängerübergang",
 
   "turnInstruction": "Nach {distance} Metern, {turn}.",
   "turnInstruction_t": "Nach {distance} Metern, {turn}.",
@@ -380,8 +380,6 @@
   "button_common_retry": "Erneut versuchen",
   "button_common_retry_t": "Die Orte erneut laden",
   "poi_audible_signal": "Ampel mit akustischem Signal",
-  "button_discard_recording": "Verwerfen",
-  "button_discard_recording_t": "Aufzeichnung verwerfen",
   "button_save_recording": "Speichern",
   "button_save_recording_t": "Aufgezeichnete Strecke speichern",
   "recording_notification_title": "Candle zeichnet auf",
@@ -396,5 +394,11 @@
   "navigation_route_failed": "Gerade konnte keine Route berechnet werden. Candle versucht es erneut, sobald Sie sich bewegen.",
   "maps_link_failed": "Der geteilte Karten-Link konnte nicht geöffnet werden.",
   "button_privacy_policy": "Unsere Datenschutzerklärung",
-  "recording_started_t": "Aufzeichnung gestartet."
+  "recording_started_t": "Aufzeichnung gestartet.",
+  "button_cancel_recording": "Abbrechen",
+  "button_cancel_recording_t": "Aufzeichnung abbrechen",
+  "recording_cancel_title": "Aufzeichnung abbrechen?",
+  "recording_cancel_body": "Die bisher aufgezeichnete Strecke wird nicht gespeichert.",
+  "button_cancel_recording_confirm": "Ja, abbrechen",
+  "button_continue_recording": "Weiter aufzeichnen"
 }

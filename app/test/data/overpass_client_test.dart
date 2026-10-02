@@ -84,4 +84,35 @@ void main() {
     );
     expect(await client.query('q'), isA<Error<List<OverpassElement>>>());
   });
+
+  test('after a failure the next query goes to the other endpoint first', () async {
+    final asked = <String>[];
+    final client = OverpassClient(
+      client: MockClient((request) async {
+        asked.add(request.url.host);
+        return request.url.host == 'a' ? http.Response('', 504) : _ok();
+      }),
+      endpoints: ['https://a', 'https://b'],
+    );
+
+    await client.query('q1');
+    expect(asked, ['a', 'b']);
+
+    asked.clear();
+    await client.query('q2');
+    expect(asked, ['b'], reason: 'the failing endpoint is no longer asked first');
+  });
+
+  test('gives up on a hanging endpoint after the timeout and asks the next', () async {
+    final client = OverpassClient(
+      client: MockClient((request) async {
+        if (request.url.host == 'a') await Future<void>.delayed(const Duration(seconds: 1));
+        return _ok();
+      }),
+      endpoints: ['https://a', 'https://b'],
+      timeout: const Duration(milliseconds: 50),
+    );
+
+    expect(await client.query('q'), isA<Ok<List<OverpassElement>>>());
+  });
 }
