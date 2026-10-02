@@ -23,6 +23,7 @@ import 'package:candle/ui/compass/widgets/heading_compass_screen.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
+import 'package:candle/ui/onboarding/widgets/welcome_screen.dart';
 import 'package:candle/ui/locations/widgets/address_search_screen.dart';
 import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
 import 'package:candle/ui/locations/widgets/locations_screen.dart';
@@ -137,6 +138,7 @@ void main() {
 
   final screens = <String, Widget Function()>{
     'home': buildHomeScreen,
+    'welcome': () => WelcomeScreen(onContinue: () {}, onSettings: () {}),
     'about': buildAboutScreen,
     'settings': buildSettingsScreen,
     'heading compass': buildHeadingCompassScreen,

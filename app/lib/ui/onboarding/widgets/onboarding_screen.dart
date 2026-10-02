@@ -1,5 +1,7 @@
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/onboarding/view_models/onboarding_viewmodel.dart';
+import 'package:candle/ui/onboarding/widgets/welcome_screen.dart';
+import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:candle/ui/shell/widgets/app_shell.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -11,12 +13,23 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Start of the app: the tabs once all permissions are granted, the request for them before.
 Widget buildOnboarding() => ChangeNotifierProvider(
-      create: (context) => OnboardingViewModel(permissionService: context.read()),
+      create: (context) => OnboardingViewModel(permissionService: context.read(), settingsRepository: context.read()),
       builder: (context, _) => Consumer<OnboardingViewModel>(
-        builder: (context, viewModel, _) => switch (viewModel.granted) {
-          null => const Scaffold(body: Center(child: CircularProgressIndicator())),
-          true => buildAppShell(),
-          false => PermissionsScreen(viewModel: viewModel),
+        builder: (context, viewModel, _) {
+          const loading = Scaffold(body: Center(child: CircularProgressIndicator()));
+          if (viewModel.welcomeDone == null) return loading;
+          if (viewModel.welcomeDone == false) {
+            return WelcomeScreen(
+              onContinue: viewModel.completeWelcome,
+              onSettings: () => Navigator.of(context)
+                  .push(MaterialPageRoute<void>(builder: (_) => buildSettingsScreen())),
+            );
+          }
+          return switch (viewModel.granted) {
+            null => loading,
+            true => buildAppShell(),
+            false => PermissionsScreen(viewModel: viewModel),
+          };
         },
       ),
     );

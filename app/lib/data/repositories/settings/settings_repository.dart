@@ -62,4 +62,14 @@ class SettingsRepository extends ChangeNotifier {
     await _prefs.setString('colorTheme', id);
     notifyListeners();
   }
+
+  /// The app version whose welcome screen the user has already seen, or null.
+  /// Comparing it to the current version decides whether to show the welcome
+  /// screen again after an install or update.
+  String? get welcomeSeenVersion => _prefs.getString('welcomeSeenVersion');
+
+  Future<void> setWelcomeSeen(String version) async {
+    await _prefs.setString('welcomeSeenVersion', version);
+    notifyListeners();
+  }
 }
