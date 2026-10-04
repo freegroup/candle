@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     showLoadingDialog(context);
     await viewModel.sharePosition.execute((address) =>
-        '${l10n.location_share_message(address.lat, address.lon)}\n\n${address.formattedAddress}');
+        '${l10n.location_share_message}\n\n${address.formattedAddress}');
     if (!context.mounted) return;
     Navigator.of(context).pop(); // the loading dialog
     if (viewModel.sharePosition.error) showSnackbar(context, l10n.location_position_unavailable);

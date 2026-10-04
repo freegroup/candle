@@ -104,7 +104,7 @@ class HomeViewModel extends ChangeNotifier {
     final address = (result as Ok<LocationAddress>).value;
     try {
       await _share.shareLocation(address.copyWith(name: 'MyPosition'),
-          subject: subject(address), basename: 'my_location');
+          subject: subject(address));
       return const Result.ok(null);
     } on Exception catch (e) {
       return Result.error(e);

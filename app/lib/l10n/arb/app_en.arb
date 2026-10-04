@@ -638,20 +638,7 @@
     }
   },
 
-  "location_share_message": "Here is my current location: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
-  "@location_share_message": {
-    "description": "Information that the favorite has deleted with success",
-    "placeholders": {
-      "latitude": {
-        "type": "double",
-        "description": "The latitude of the current location"
-      },
-      "longitude": {
-        "type": "double",
-        "description": "The longitude of the current location"
-      }
-    }
-  },
+  "location_share_message": "Here is my current position:",
 
   "location_add_speak_t": "Press to name the place using voice input",
   "location_address_change_hint_t": "Tap to change the address.",

@@ -34,6 +34,7 @@ dependencies:
   rxdart: ^0.28.0
   sensors_plus: ^7.1.0
   share_plus: ^13.3.0
+  app_links: ^6.3.3
   shared_preferences: ^2.5.5
   simple_shadow: ^0.3.1
   speech_to_text: ^7.5.0

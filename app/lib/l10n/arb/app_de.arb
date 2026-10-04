@@ -310,7 +310,7 @@
   "location_saved_toast": "Ort '{name}' wurde gespeichert.",
   "location_deleted_toast": "Ort '{name}' wurde entfernt.",
   
-  "location_share_message": "Hier ist meine aktuelle Position: https://www.google.com/maps/search/?api=1&query={latitude},{longitude}.",
+  "location_share_message": "Hier ist meine aktuelle Position:",
  
   "locations_in_direction_toast": "{heading}, {count} nahegelegene Orte.",
   

@@ -44,6 +44,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
+            <!-- https share links (App Links): open Candle and import the point -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="freegroup.de" android:pathPrefix="/candle/share" />
+            </intent-filter>
+
             <!-- Open *.candle files (shared locations / voicepins) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
