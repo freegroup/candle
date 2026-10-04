@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:candle/data/services/attestation/attestation_service.dart';
 import 'package:candle/data/services/candle_api/candle_api_exceptions.dart';
 import 'package:candle/data/services/candle_api/server_config_service.dart';
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/utils/result.dart';
 import 'package:http/http.dart' as http;
 
@@ -90,7 +90,7 @@ class CandleApiClient {
 
     final request = http.Request(method, (base as Ok<Uri>).value.resolve(path))
       ..headers.addAll({
-        ...kHttpHeaders,
+        ...HttpConfig.headers,
         'Accept': 'application/json',
         if (accessToken != null) 'Authorization': 'Bearer $accessToken',
       });

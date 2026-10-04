@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:candle/domain/models/article_ref.dart';
 import 'package:candle/domain/models/article_summary.dart';
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/utils/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -53,7 +53,7 @@ class WikipediaClient {
           'uselang': languageCode,
           ...params,
         }),
-        headers: kHttpHeaders,
+        headers: HttpConfig.headers,
       );
       if (response.statusCode != 200) {
         return Result.error(http.ClientException('Wikipedia ${response.statusCode}'));

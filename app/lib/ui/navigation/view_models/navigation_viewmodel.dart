@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
@@ -38,15 +39,6 @@ class NavigationViewModel extends ChangeNotifier {
     }, onError: _logError));
     _updateWaypoints();
   }
-
-  /// A waypoint counts as passed within this many meters.
-  static const passedDistance = 5;
-
-  /// Farther away from the route than this, a new route is calculated.
-  static const offRouteDistance = 15;
-
-  /// Voice pins closer than this are read out.
-  static const locationNoteDistance = 8;
 
   final LatLng target;
   final RoutingRepository _routing;
@@ -95,20 +87,23 @@ class NavigationViewModel extends ChangeNotifier {
   /// Voice pins to show on the map.
   List<LocationNote> get locationNotes => _locationNotes;
 
-  LocationNote? _nearbyLocationNote;
+  final _reachedLocationNotes = StreamController<LocationNote>.broadcast();
 
-  /// The voice pin the user just reached, to read out once.
-  LocationNote? get nearbyLocationNote => _nearbyLocationNote;
+  /// A location note the user just reached. It comes again only after the user was
+  /// [LocationNoteConfig.resetDistance] away from it, or in a new navigation.
+  Stream<LocationNote> get reachedLocationNotes => _reachedLocationNotes.stream;
+
+  final _announcedLocationNotes = <LocationNote>{};
 
   /// Bearing from the user to [headingWaypoint].
   int get waypointHeading =>
       _headingWaypoint == null ? 0 : calculateNorthBearing(_position, _headingWaypoint!.latlng());
 
-  /// Whether the phone points to [headingWaypoint] (±8°).
+  /// Whether the phone points to [headingWaypoint] (±[NavigationConfig.alignedTolerance]°).
   bool get isAligned {
     if (_headingWaypoint == null) return false;
     final diff = (_deviceHeading - waypointHeading).abs();
-    return diff <= 8 || diff >= 352;
+    return diff <= NavigationConfig.alignedTolerance || diff >= 360 - NavigationConfig.alignedTolerance;
   }
 
   /// Rotation of the arrow that points to [headingWaypoint].
@@ -129,7 +124,7 @@ class NavigationViewModel extends ChangeNotifier {
   void _onPosition(LatLng position) {
     _position = position;
     _updateWaypoints();
-    _updateNearbyLocationNote();
+    _updateLocationNotes();
     notifyListeners();
   }
 
@@ -140,17 +135,23 @@ class NavigationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateNearbyLocationNote() {
+  void _updateLocationNotes() {
+    _announcedLocationNotes.removeWhere(
+        (note) => calculateDistance(note.latlng(), _position) >= LocationNoteConfig.resetDistance);
     final nearest = _locationNotes
-        .where((pin) => calculateDistance(pin.latlng(), _position) < locationNoteDistance)
+        .where((note) =>
+            !_announcedLocationNotes.contains(note) &&
+            calculateDistance(note.latlng(), _position) < LocationNoteConfig.announceDistance)
         .fold<LocationNote?>(
             null,
-            (best, pin) => best == null ||
-                    calculateDistance(pin.latlng(), _position) <
+            (best, note) => best == null ||
+                    calculateDistance(note.latlng(), _position) <
                         calculateDistance(best.latlng(), _position)
-                ? pin
+                ? note
                 : best);
-    if (nearest != null) _nearbyLocationNote = nearest;
+    if (nearest == null) return;
+    _announcedLocationNotes.add(nearest);
+    _reachedLocationNotes.add(nearest);
   }
 
   Future<void> _calculateRoute() async {
@@ -182,7 +183,7 @@ class NavigationViewModel extends ChangeNotifier {
     }
 
     final closest = route.findClosestSegment(_position);
-    if ((closest['distance'] as double) > offRouteDistance) {
+    if ((closest['distance'] as double) > NavigationConfig.offRouteDistance) {
       _log.d('Left the route by ${closest['distance']} m, calculating a new one');
       if (recalculate) unawaited(_calculateRoute());
       return;
@@ -192,7 +193,7 @@ class NavigationViewModel extends ChangeNotifier {
     var start = (closest['start'] as Map<String, dynamic>)['index'] as int;
     var next = (closest['end'] as Map<String, dynamic>)['index'] as int;
     while (next < points.length &&
-        calculateDistance(_position, points[next].latlng()) < passedDistance) {
+        calculateDistance(_position, points[next].latlng()) < NavigationConfig.waypointPassedDistance) {
       start = next;
       next++;
     }
@@ -213,7 +214,8 @@ class NavigationViewModel extends ChangeNotifier {
     if (start + 3 < points.length) {
       _nextTurnWaypoint = points[start + 3];
     } else if (_headingWaypoint == _nextTurnWaypoint &&
-        calculateDistance(_position, _headingWaypoint!.latlng()) < passedDistance * 2) {
+        calculateDistance(_position, _headingWaypoint!.latlng()) <
+            NavigationConfig.waypointPassedDistance * 2) {
       // the last waypoint is almost reached
       _targetReached = true;
     }
@@ -226,6 +228,7 @@ class NavigationViewModel extends ChangeNotifier {
     for (final subscription in _subscriptions) {
       unawaited(subscription.cancel());
     }
+    unawaited(_reachedLocationNotes.close());
     super.dispose();
   }
 }

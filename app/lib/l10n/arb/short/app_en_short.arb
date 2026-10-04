@@ -63,7 +63,7 @@
   "locations_placeholder_body": "Save your most important places, for example **HOME** or **WORK**.",
   "routes_recording_placeholder_header": "No routes recorded yet.",
   "routes_recording_placeholder_body": "Record a walk to follow it again later.",
-  "location_notes_placeholder_body": "Hints Candle reads out at a spot, for example at the **front door**.",
+  "location_notes_placeholder_body": "Hints Candle gives you at a spot while navigating, for example at the **front door**.",
   "no_location_for_category": "No places found in this category.",
   "route_recording_intro": "Enter a name, then **Record Track**."
 }

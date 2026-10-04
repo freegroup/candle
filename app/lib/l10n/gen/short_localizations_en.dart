@@ -130,7 +130,7 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get routes_recording_placeholder_body => 'Record a walk to follow it again later.';
   @override
-  String get location_notes_placeholder_body => 'Hints Candle reads out at a spot, for example at the **front door**.';
+  String get location_notes_placeholder_body => 'Hints Candle gives you at a spot while navigating, for example at the **front door**.';
   @override
   String get no_location_for_category => 'No places found in this category.';
   @override

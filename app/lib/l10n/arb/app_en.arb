@@ -435,7 +435,7 @@
   "routes_recording_placeholder_body": "Discover the joy of seamless navigation with Candle's route recording. Record your journeys, from exploring new destinations to returning to familiar comforts. Start today and let Candle guide you confidently every step of the way. Experience the freedom of reliable navigation, right at your fingertips!",
 
   "location_notes_placeholder_header": "No location notes yet.",
-  "location_notes_placeholder_body": "A location note is a hint Candle reads out when you reach that spot, for example \"stairs after the door\". Add location notes at important spots like the **front door** or the **nearest crosswalk**.",
+  "location_notes_placeholder_body": "A location note is a hint tied to a spot, for example \"stairs after the door\". When you navigate to a destination and reach that spot, Candle tells you the hint automatically. Add location notes at important spots like the **front door** or the **nearest crosswalk**.",
 
   "no_location_for_category": "It seems we've come up short... We couldn't find any places for the selected category.",
 

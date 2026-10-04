@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/utils/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -91,7 +91,7 @@ class NominatimClient {
     try {
       final response = await _client.get(
         Uri.https('nominatim.openstreetmap.org', path, query),
-        headers: kHttpHeaders,
+        headers: HttpConfig.headers,
       );
       if (response.statusCode != 200) {
         return Result.error(http.ClientException('Nominatim ${response.statusCode}'));

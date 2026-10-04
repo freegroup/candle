@@ -1,4 +1,4 @@
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -213,7 +213,7 @@ class _AboutScreenState extends State<AboutScreen> with SemanticAnnouncer {
     AppLocalizations l10n = AppLocalizations.of(context)!;
     final String subject = l10n.email_share_subject;
     final String body =
-        '${l10n.email_share_body}\n\nApple: $kAppStoreLink\n\nAndroid: $kPlayStoreLink';
+        '${l10n.email_share_body}\n\nApple: ${StoreConfig.appStoreLink}\n\nAndroid: ${StoreConfig.playStoreLink}';
 
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',

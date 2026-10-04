@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:candle/config/app_config.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
 import 'package:candle/utils/result.dart';
@@ -14,16 +15,27 @@ const String _orsApiKey = String.fromEnvironment('ORS_API_KEY');
 
 /// Walking routes from openrouteservice.org.
 class OrsClient {
-  OrsClient({required this._client});
+  OrsClient({required this._client, this.servers = OrsConfig.servers});
 
   final http.Client _client;
 
+  /// Base URLs of the openrouteservice servers, asked in this order.
+  final List<String> servers;
+
   /// The walking route from [start] to [end]; its first point is [start] itself.
   Future<Result<Route>> walkingRoute(LatLng start, LatLng end) async {
+    Result<Route> result = Result.error(http.ClientException('no openrouteservice server'));
+    for (final server in servers) {
+      result = await _walkingRoute(server, start, end);
+      if (result is Ok<Route>) break;
+    }
+    return result;
+  }
+
+  Future<Result<Route>> _walkingRoute(String server, LatLng start, LatLng end) async {
     try {
       final response = await _client.post(
-        // api.openrouteservice.org is deprecated in favour of api.heigit.org (same key).
-        Uri.https('api.heigit.org', '/openrouteservice/v2/directions/foot-walking/geojson'),
+        Uri.parse('$server/v2/directions/foot-walking/geojson'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $_orsApiKey',

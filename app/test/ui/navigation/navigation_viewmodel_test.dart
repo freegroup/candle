@@ -127,14 +127,27 @@ void main() {
     viewModel.dispose();
   });
 
-  test('a voice pin on the way is offered for reading out', () async {
+  test('a location note is announced once, and again after the user was 50 m away', () async {
     await pins.save(LocationNote(name: '', memo: 'Stairs', lat: 50.001, lon: 8.00005));
     final viewModel = create(route: _northRoute(50, 4));
+    final reached = <String>[];
+    viewModel.reachedLocationNotes.listen((note) => reached.add(note.memo));
     await pumpEventQueue();
-    expect(viewModel.nearbyLocationNote, isNull);
+    expect(reached, isEmpty);
 
     await walkTo(50.001);
-    expect(viewModel.nearbyLocationNote?.memo, 'Stairs');
+    expect(reached, ['Stairs']);
+
+    // staying close or only ~33 m away does not repeat it
+    await walkTo(50.00102);
+    await walkTo(50.0007);
+    await walkTo(50.001);
+    expect(reached, ['Stairs']);
+
+    // ~111 m away resets it
+    await walkTo(50);
+    await walkTo(50.001);
+    expect(reached, ['Stairs', 'Stairs']);
     viewModel.dispose();
   });
 }

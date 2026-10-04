@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:candle/data/services/overpass/endpoint_ranking.dart';
 import 'package:candle/data/services/overpass/overpass_element.dart';
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/utils/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -18,18 +18,9 @@ final _log = Logger();
 class OverpassClient {
   OverpassClient({
     required this._client,
-    List<String> endpoints = defaultEndpoints,
-    this.timeout = const Duration(seconds: 10),
+    List<String> endpoints = OverpassConfig.endpoints,
+    this.timeout = OverpassConfig.timeout,
   }) : _ranking = EndpointRanking(endpoints);
-
-  // Tested 10/2026. Both have worldwide data and are run in the EU. Not used:
-  // private.coffee and kumi.systems did not answer, overpass.osm.ch has Swiss data
-  // only, maps.mail.ru is operated in Russia and must not receive the positions of
-  // our users. The own Candle server goes here later.
-  static const defaultEndpoints = [
-    'https://overpass.openstreetmap.fr/api/interpreter',
-    'https://overpass-api.de/api/interpreter',
-  ];
 
   final http.Client _client;
   final EndpointRanking _ranking;
@@ -45,7 +36,7 @@ class OverpassClient {
       final stopwatch = Stopwatch()..start();
       try {
         final response = await _client
-            .post(Uri.parse(endpoint), headers: kHttpHeaders, body: {'data': overpassQl})
+            .post(Uri.parse(endpoint), headers: HttpConfig.headers, body: {'data': overpassQl})
             .timeout(timeout);
 
         if (response.statusCode == 200) {

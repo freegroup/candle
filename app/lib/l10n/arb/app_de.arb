@@ -252,7 +252,7 @@
   "routes_recording_placeholder_body": "Entdecken Sie mit Candles Routenaufzeichnung die Freude am sicheren Navigieren. Zeichnen Sie Ihre Wege auf, von kleinen Abenteuern bis hin zur Rückkehr ins Hotel. Beginnen Sie jetzt und erleben Sie, wie Candle Sie verlässlich begleitet und Orientierung bietet – jederzeit und überall!",
 
   "location_notes_placeholder_header": "Noch keine Ortsnotizen.",
-  "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis, den Candle vorliest, sobald Sie an diese Stelle kommen, zum Beispiel „Treppe nach der Tür“. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
+  "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis zu einer Stelle, zum Beispiel „Treppe nach der Tür“. Wenn Sie zu einem Ziel navigieren und an diese Stelle kommen, meldet Candle den Hinweis automatisch. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Orte für die ausgewählte Kategorie finden.",
 

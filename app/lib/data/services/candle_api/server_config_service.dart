@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:candle/data/services/candle_api/candle_api_exceptions.dart';
-import 'package:candle/utils/configuration.dart';
+import 'package:candle/config/app_config.dart';
 import 'package:candle/utils/result.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,7 +34,7 @@ class ServerConfigService {
     if (known != null) return Result.ok(known);
 
     try {
-      final response = await _client.get(configUrl, headers: kHttpHeaders).timeout(timeout);
+      final response = await _client.get(configUrl, headers: HttpConfig.headers).timeout(timeout);
       if (response.statusCode != 200) {
         return Result.error(ServerUnavailableException('server config: HTTP ${response.statusCode}'));
       }
