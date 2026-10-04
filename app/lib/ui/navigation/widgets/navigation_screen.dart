@@ -74,6 +74,7 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
   }
 
   void _onChanged() {
+    if (!isOnTop) return;
     final aligned = _viewModel.isAligned;
     if (aligned != _wasAligned) {
       _wasAligned = aligned;

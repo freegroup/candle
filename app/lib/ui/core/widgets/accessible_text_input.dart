@@ -10,7 +10,6 @@ class AccessibleTextInput extends StatefulWidget {
   final TextEditingController controller;
   final InputDecoration? decoration;
   final bool mandatory;
-  final bool hideMicrophone;
   final bool? autofocus;
   final String hintText;
   final int maxLines;
@@ -24,7 +23,6 @@ class AccessibleTextInput extends StatefulWidget {
     this.decoration,
     this.autofocus,
     this.mandatory = false,
-    this.hideMicrophone = false,
     this.maxLines = 1,
     this.hintText = '',
     this.onSubmitted,
@@ -113,7 +111,7 @@ class _InputState extends State<AccessibleTextInput> {
         // Label in der ersten Zeile
         _buildInputLabel(),
         // Textfeld und Icon in der zweiten Zeile
-        (context.watch<SettingsRepository>().isEnabled(Setting.dictationInput) && widget.hideMicrophone == false)
+        context.watch<SettingsRepository>().isEnabled(Setting.dictationInput)
             ? _buildDictationInputField()
             : _buildInputField(),
       ],

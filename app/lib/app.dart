@@ -4,6 +4,7 @@ import 'package:candle/l10n/localizations_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:candle/ui/onboarding/widgets/onboarding_screen.dart';
+import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:flutter/material.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 
@@ -35,6 +36,7 @@ class CandleApp extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: SafeArea(top: false, left: false, right: false, child: child!),
       ),
+      navigatorObservers: [candleRouteObserver],
       home: buildOnboarding(),
       ),
     );

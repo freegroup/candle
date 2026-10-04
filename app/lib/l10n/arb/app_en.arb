@@ -1376,6 +1376,7 @@
   "button_continue_recording": "Keep recording",
   "featureflag_short_talkback": "Short announcements\nFor experienced TalkBack users",
   "featureflag_location_notes_always": "Always announce location notes",
+  "location_note_add_here": "Add location note here",
   "radar_places_count": "{count, plural, =1{1 place} other{{count} places}}",
   "radar_point_title": "Point in a direction",
   "radar_point_hint": "Hold the phone flat in front of you",

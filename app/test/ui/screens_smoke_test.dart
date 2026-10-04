@@ -3,6 +3,7 @@ import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
@@ -104,6 +105,7 @@ void main() {
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     final location = FakeLocationService(const Result.ok(_here));
     final routes = RouteRepository(database: db);
+    final notes = LocationNoteRepository(database: db);
     await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: settings),
@@ -116,7 +118,12 @@ void main() {
         Provider<PermissionService>.value(value: _Permissions()),
         Provider.value(value: VibrationService(settingsRepository: settings)),
         Provider.value(value: LocationRepository(database: db)),
-        Provider.value(value: LocationNoteRepository(database: db)),
+        Provider.value(value: notes),
+        Provider(
+          create: (_) => LocationNoteAnnouncer(
+              locationNoteRepository: notes, locationService: location, settingsRepository: settings),
+          dispose: (_, announcer) => announcer.dispose(),
+        ),
         Provider.value(value: routes),
         ChangeNotifierProvider(
           create: (_) => RecordingRepository(routeRepository: routes, locationService: location),

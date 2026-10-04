@@ -65,6 +65,30 @@ void main() {
     expect(find.text('Stairs'), findsNothing);
   });
 
+  testWidgets('a tap closes a sticky message, which shows an X', (tester) async {
+    await openScreen(tester);
+
+    showSnackbar(screen, 'Stairs', sticky: true);
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.close), findsOneWidget);
+
+    await tester.tap(find.text('Stairs'));
+    await tester.pumpAndSettle();
+    expect(find.text('Stairs'), findsNothing);
+  });
+
+  testWidgets('a normal message has no X and closes on a tap too', (tester) async {
+    await openScreen(tester);
+
+    showSnackbar(screen, 'Saved');
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.close), findsNothing);
+
+    await tester.tap(find.text('Saved'));
+    await tester.pumpAndSettle();
+    expect(find.text('Saved'), findsNothing);
+  });
+
   testWidgets('a normal message goes after its duration', (tester) async {
     await openScreen(tester);
 

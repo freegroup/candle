@@ -427,6 +427,7 @@
   "button_continue_recording": "Weiter aufzeichnen",
   "featureflag_short_talkback": "Kurze Ansagen\nFür erfahrene TalkBack-Nutzer",
   "featureflag_location_notes_always": "Ortsnotizen immer ansagen",
+  "location_note_add_here": "Ortsnotiz hier anlegen",
   "radar_places_count": "{count, plural, =1{1 Ort} other{{count} Orte}}",
   "radar_point_title": "In eine Richtung zeigen",
   "radar_point_hint": "Handy flach vor sich halten",

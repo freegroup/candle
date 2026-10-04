@@ -94,6 +94,41 @@ void main() {
     announcer.stopNavigation();
   });
 
+  test('nothing is reported while paused; notes around the user then count as heard', () async {
+    create();
+    announcer.pause();
+    await walkTo(50.001);
+    // a note added during the pause right here
+    await notes.save(LocationNote(name: '', memo: 'Bench', lat: 50.00101, lon: 8));
+    expect(reached, isEmpty);
+
+    announcer.resume();
+    await walkTo(50.001);
+    expect(reached, isEmpty);
+
+    // ~111 m away and back: both come again
+    await walkTo(50);
+    await walkTo(50.001);
+    expect(reached, unorderedEquals(['Stairs']));
+    await walkTo(50.00101);
+    expect(reached, unorderedEquals(['Stairs', 'Bench']));
+  });
+
+  test('pauses can overlap; reporting goes on after the last one ends', () async {
+    create();
+    announcer
+      ..pause()
+      ..pause()
+      ..resume();
+    await walkTo(50.001);
+    expect(reached, isEmpty);
+
+    announcer.resume();
+    await walkTo(50);
+    await walkTo(50.001);
+    expect(reached, ['Stairs']);
+  });
+
   test('nothing is reported while Candle is in the background', () async {
     create();
     // the platform reports the steps one by one

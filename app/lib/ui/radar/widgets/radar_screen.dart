@@ -15,6 +15,7 @@ import 'package:candle/ui/core/widgets/compass_heading_small.dart';
 import 'package:candle/ui/core/widgets/info_page.dart';
 import 'package:candle/ui/core/widgets/list_tile.dart';
 import 'package:candle/ui/core/widgets/semantic_header.dart';
+import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +28,12 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
         locationService: context.read(),
         compassService: context.read(),
       ),
-      builder: (context, _) => RadarScreen(
-        viewModel: context.read(),
-        vibrate: () => context.read<VibrationService>().compass(duration: 100),
+      builder: (context, _) => ReportCovered(
+        target: context.read<RadarViewModel>(),
+        child: RadarScreen(
+          viewModel: context.read(),
+          vibrate: () => context.read<VibrationService>().compass(duration: 100),
+        ),
       ),
     );
 
@@ -69,6 +73,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
   }
 
   void _onViewModelChanged() {
+    if (!isOnTop) return;
     final snapped = _viewModel.snappedDirection;
     if (snapped != _announcedDirection) {
       _announcedDirection = snapped;
@@ -83,6 +88,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
 
   void _onLoadChanged() {
     final load = _viewModel.load;
+    if (!isOnTop) return;
     if (load.error) {
       unawaited(_announce(AppLocalizations.of(context)!.explore_load_error));
     } else if (load.completed) {

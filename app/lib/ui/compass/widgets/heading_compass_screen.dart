@@ -60,6 +60,7 @@ class _HeadingCompassScreenState extends State<HeadingCompassScreen> with Semant
   }
 
   void _onChanged() {
+    if (!isOnTop) return;
     final snapped = _viewModel.snappedDirection;
     if (snapped != _announcedDirection) {
       _announcedDirection = snapped;

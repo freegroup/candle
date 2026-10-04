@@ -1,3 +1,4 @@
+import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -10,6 +11,9 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final List<Widget>? actions;
   final bool settingsEnabled;
+
+  /// Whether the screen reader offers the action "add location note here" on the title.
+  final bool offerNewLocationNote;
   const CandleAppBar(
       {super.key,
       required this.talkback,
@@ -17,7 +21,8 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.subtitle,
       this.actions,
       this.bottom,
-      this.settingsEnabled = false});
+      this.settingsEnabled = false,
+      this.offerNewLocationNote = true});
 
   @override
   State<CandleAppBar> createState() => _CandleAppBarState();
@@ -40,6 +45,12 @@ class _CandleAppBarState extends State<CandleAppBar> {
         header: true,
         sortKey: const OrdinalSortKey(0),
         label: widget.talkback,
+        customSemanticsActions: widget.offerNewLocationNote
+            ? {
+                CustomSemanticsAction(label: AppLocalizations.of(context)!.location_note_add_here):
+                    () => openNewLocationNoteHere(context),
+              }
+            : null,
         child: ExcludeSemantics(
           child: Padding(
             padding: const EdgeInsets.all(18.0),

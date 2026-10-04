@@ -27,6 +27,7 @@ import 'package:candle/data/services/overpass/overpass_client.dart';
 import 'package:candle/data/services/permissions/permission_service.dart';
 import 'package:candle/data/services/share/share_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
+import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
 import 'package:candle/data/services/wikipedia/wikipedia_client.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
@@ -50,6 +51,7 @@ List<SingleChildWidget> get providers => [
       ),
       Provider(create: (_) => ShareService()),
       Provider(create: (_) => SharedContentService()),
+      Provider(create: (_) => AppShortcutService()),
       Provider(create: (_) => PermissionService()),
       Provider(create: (context) => WikipediaClient(client: context.read())),
       Provider(

@@ -1,6 +1,7 @@
 import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/location_notes/view_models/location_note_edit_viewmodel.dart';
+import 'package:candle/ui/location_notes/widgets/pause_location_notes.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/accessible_text_input.dart';
@@ -13,16 +14,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Edit screen for [pin] with its own view model; a pin without id is added.
-Widget buildLocationNoteEditScreen(LocationNote pin) => ChangeNotifierProvider(
-      create: (context) => LocationNoteEditViewModel(locationNoteRepository: context.read(), pin: pin),
-      builder: (context, _) => LocationNoteEditScreen(viewModel: context.read()),
+/// With [focusMemo] the text field is focused at once. No location notes are
+/// reported while it is open.
+Widget buildLocationNoteEditScreen(LocationNote pin, {bool focusMemo = false}) =>
+    PauseLocationNotes(
+      child: ChangeNotifierProvider(
+        create: (context) => LocationNoteEditViewModel(locationNoteRepository: context.read(), pin: pin),
+        builder: (context, _) => LocationNoteEditScreen(viewModel: context.read(), focusMemo: focusMemo),
+      ),
     );
 
 /// The memo of a voice pin; sighted users can move the pin on a map.
 class LocationNoteEditScreen extends StatefulWidget {
-  const LocationNoteEditScreen({super.key, required this.viewModel});
+  const LocationNoteEditScreen({super.key, required this.viewModel, this.focusMemo = false});
 
   final LocationNoteEditViewModel viewModel;
+  final bool focusMemo;
 
   @override
   State<LocationNoteEditScreen> createState() => _LocationNoteEditScreenState();
@@ -65,6 +72,7 @@ class _LocationNoteEditScreenState extends State<LocationNoteEditScreen> with Se
         talkback: _viewModel.isUpdate
             ? l10n.screen_header_location_note_update_t
             : l10n.screen_header_location_note_add_t,
+        offerNewLocationNote: false,
       ),
       body: BackgroundWidget(
         child: DividedWidget(
@@ -83,7 +91,7 @@ class _LocationNoteEditScreenState extends State<LocationNoteEditScreen> with Se
               Padding(
                 padding: const EdgeInsets.fromLTRB(35.0, 25.0, 35.0, 10.0),
                 child: AccessibleTextInput(
-                  hideMicrophone: true,
+                  autofocus: widget.focusMemo,
                   maxLines: keyboardVisible ? 6 : 4,
                   mandatory: true,
                   hintText: l10n.location_note_memo,

@@ -5,6 +5,7 @@ import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
+import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
 import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
@@ -18,6 +19,7 @@ import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/ui/routes/widgets/routes_screen.dart';
 import 'package:candle/ui/shell/view_models/app_shell_viewmodel.dart';
 import 'package:candle/ui/location_notes/widgets/location_notes_screen.dart';
+import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -67,6 +69,15 @@ class _AppShellState extends State<AppShell> {
     super.initState();
     _shared = widget.viewModel.sharedContent.listen(_import);
     _locationNotes = widget.viewModel.reachedLocationNotes.listen(_showLocationNote);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(context.read<AppShortcutService>().register(
+        title: AppLocalizations.of(context)!.location_note_add_here,
+        onNewLocationNote: () {
+          if (mounted) unawaited(openNewLocationNoteHere(context));
+        },
+      ));
+    });
   }
 
   @override

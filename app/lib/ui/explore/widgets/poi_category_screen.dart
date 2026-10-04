@@ -77,7 +77,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
   Future<void> _announce(String message) async {
     final wait = _titleAnnouncementDelay - DateTime.now().difference(_openedAt);
     if (!wait.isNegative) await Future<void>.delayed(wait);
-    if (!mounted) return;
+    if (!mounted || !isOnTop) return;
     await SemanticsService.sendAnnouncement(View.of(context), message, Directionality.of(context));
   }
 

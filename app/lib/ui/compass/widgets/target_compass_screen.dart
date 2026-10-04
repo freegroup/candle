@@ -75,7 +75,7 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
     _viewModel.addListener(_onChanged);
     // A steady reminder while the phone points to the target.
     _alignedTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      if (_viewModel.isAligned) unawaited(widget.vibrate());
+      if (_viewModel.isAligned && isOnTop) unawaited(widget.vibrate());
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       announceOnShow(
@@ -92,6 +92,7 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
   }
 
   void _onChanged() {
+    if (!isOnTop) return;
     final aligned = _viewModel.isAligned;
     if (aligned != _wasAligned) {
       _wasAligned = aligned;

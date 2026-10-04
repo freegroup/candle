@@ -4,6 +4,7 @@ import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/ui/compass/view_models/base_compass_viewmodel.dart';
+import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:candle/utils/command.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
@@ -16,7 +17,7 @@ final _log = Logger();
 ///
 /// The heading snaps to the eight compass directions (N, NE, E, …); between
 /// them the last direction is kept.
-class RadarViewModel extends BaseCompassViewModel {
+class RadarViewModel extends BaseCompassViewModel implements CoveredAware {
   RadarViewModel({
     required this._poiRepository,
     required this._locationService,
@@ -98,8 +99,28 @@ class RadarViewModel extends BaseCompassViewModel {
     _positions ??= _locationService.positions().listen(_onPosition, onError: _logError);
   }
 
+  /// While another screen covers the radar its list is not updated; it catches up
+  /// when the radar is on top again. Compass and position keep coming.
+  bool _covered = false;
+
+  @override
+  void onCovered() => _covered = true;
+
+  @override
+  void onUncovered() {
+    _covered = false;
+    onHeadingChanged(heading);
+    _refresh();
+  }
+
   void _onPosition(LatLng position) {
     _location = position;
+    if (!_covered) _refresh();
+  }
+
+  void _refresh() {
+    final position = _location;
+    if (position == null) return;
     _pois = [..._pois]..sort((a, b) => distanceTo(a).compareTo(distanceTo(b)));
     _updatePoisInDirection();
     notifyListeners();
@@ -114,6 +135,7 @@ class RadarViewModel extends BaseCompassViewModel {
 
   @override
   void onHeadingChanged(int heading) {
+    if (_covered) return;
     final snapped = snapToDirection(heading);
     if (snapped == _snappedDirection) return;
     _snappedDirection = snapped;

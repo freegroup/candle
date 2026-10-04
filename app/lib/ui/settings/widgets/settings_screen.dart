@@ -120,13 +120,15 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
   Widget _themeTile(BuildContext context, CandleTheme t) {
     final theme = Theme.of(context);
     final selected = widget.viewModel.selectedTheme.id == t.id;
-    final (name, hint) = _themeTexts(AppLocalizations.of(context)!, t.id);
+    final l10n = AppLocalizations.of(context)!;
+    final name = t.name(l10n);
+    final hint = t.hint(l10n);
     return InkWell(
       onTap: () => widget.viewModel.selectTheme(t.id),
       child: Semantics(
         inMutuallyExclusiveGroup: true,
         checked: selected,
-        label: '\$name. \$hint',
+        label: '$name. $hint',
         excludeSemantics: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -151,12 +153,4 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
       ),
     );
   }
-
-  (String, String) _themeTexts(AppLocalizations l10n, String id) => switch (id) {
-        'amber_dark' => (l10n.theme_amber_dark, l10n.theme_amber_dark_hint),
-        'white_dark' => (l10n.theme_white_dark, l10n.theme_white_dark_hint),
-        'black_light' => (l10n.theme_black_light, l10n.theme_black_light_hint),
-        'blue_yellow' => (l10n.theme_blue_yellow, l10n.theme_blue_yellow_hint),
-        _ => (id, ''),
-      };
 }

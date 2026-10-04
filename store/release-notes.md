@@ -4,9 +4,9 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
-- Ortsnotizen werden jetzt überall gemeldet, solange Candle offen ist, nicht nur beim Navigieren. Wer sie nur beim Navigieren möchte, schaltet „Ortsnotizen immer ansagen“ in den Einstellungen aus.
-- Erreichen Sie eine Notiz, vibriert das Handy dreimal. Ohne Screenreader bleibt der Hinweis sichtbar, bis der nächste kommt. Waren Sie mindestens 50 m entfernt, wird die Notiz beim Zurückkommen wieder gemeldet.
-- Klarere Erklärung der Ortsnotizen auf dem Notizen-Screen.
+- Ortsnotizen werden überall gemeldet, solange Candle offen ist (abschaltbar: „Ortsnotizen immer ansagen“). Das Handy vibriert dreimal, der Hinweis bleibt sichtbar, bis Sie ihn antippen.
+- Schnell eine Ortsnotiz anlegen: lange auf das Candle-Symbol drücken oder mit TalkBack über die Aktionen der Überschrift. Diktieren per Mikrofon-Knopf.
+- TalkBack: Verdeckte Screens sagen nichts mehr an, die Farbschemata werden richtig vorgelesen.
 
 ## 1.5.6 (54)
 

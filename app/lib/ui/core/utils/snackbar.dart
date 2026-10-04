@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:candle/config/app_config.dart';
+import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
 
@@ -9,27 +10,53 @@ typedef _SnackBarController = ScaffoldFeatureController<SnackBar, SnackBarClosed
 /// The [sticky] snack bar on screen, null when none is shown.
 _SnackBarController? _sticky;
 
-/// Shows [message] at the bottom of the screen for [SnackbarConfig.duration].
+/// Shows [message] at the bottom of the screen for [SnackbarConfig.duration]; a tap closes it.
 ///
 /// A [sticky] message replaces the one on screen and, without a screen reader,
-/// stays until the next message or until the user leaves the screen it was shown on.
+/// stays until it is tapped, the next message comes or the user leaves the screen
+/// it was shown on.
 void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
   log.d(message);
   ThemeData theme = Theme.of(context);
   final messenger = ScaffoldMessenger.of(context);
   if (sticky || _sticky != null) messenger.removeCurrentSnackBar();
 
+  final foreground = theme.cardColor;
+
   final controller = messenger.showSnackBar(
     SnackBar(
       backgroundColor: theme.primaryColor,
-      content: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: theme.textTheme.bodyLarge
-              ?.copyWith(fontWeight: FontWeight.bold, color: theme.cardColor),
+      // a tap anywhere closes it; the X only marks the messages that stay
+      content: MergeSemantics(
+        child: Semantics(
+          onTap: messenger.hideCurrentSnackBar,
+          onTapHint: AppLocalizations.of(context)?.button_common_close,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            excludeFromSemantics: true,
+            onTap: messenger.hideCurrentSnackBar,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.bold, color: foreground),
+                    ),
+                  ),
+                  if (sticky)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: ExcludeSemantics(child: Icon(Icons.close, size: 32, color: foreground)),
+                    ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
       duration: SnackbarConfig.duration,

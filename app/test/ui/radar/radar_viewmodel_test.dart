@@ -87,6 +87,28 @@ void main() {
     viewModel.dispose();
   });
 
+  test('covered, it keeps listening but updates its list only when on top again', () async {
+    final viewModel = create();
+    await pumpEventQueue();
+    compass.headingController.add(0);
+    await pumpEventQueue();
+    expect(viewModel.direction, 0);
+
+    viewModel.onCovered();
+    compass.headingController.add(90);
+    location.controller.add(const LatLng(52.5300, 13.3777));
+    await pumpEventQueue();
+    expect(compass.headingController.hasListener, isTrue);
+    expect(viewModel.direction, 0);
+    expect(repository.calls, 1);
+
+    viewModel.onUncovered();
+    await pumpEventQueue();
+    expect(viewModel.direction, 90);
+    expect(repository.calls, 2);
+    viewModel.dispose();
+  });
+
   test('warns only after the phone has been tilted for a while', () async {
     const delay = Duration(milliseconds: 60);
     final viewModel = RadarViewModel(
