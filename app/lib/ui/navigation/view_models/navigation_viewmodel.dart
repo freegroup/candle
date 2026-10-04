@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
@@ -22,13 +23,17 @@ class NavigationViewModel extends ChangeNotifier {
   NavigationViewModel({
     required RoutingRepository routingRepository,
     required LocationNoteRepository locationNoteRepository,
+    required LocationNoteAnnouncer locationNoteAnnouncer,
     required LocationService locationService,
     required CompassService compassService,
     required LatLng source,
     required this.target,
     this._route,
   })  : _routing = routingRepository,
+        _announcer = locationNoteAnnouncer,
         _position = source {
+    // the announcer reports the location notes on the way
+    _announcer.startNavigation();
     _subscriptions = [
       locationService.positions().listen(_onPosition, onError: _logError),
       compassService.headings().listen(_onHeading, onError: _logError),
@@ -42,6 +47,7 @@ class NavigationViewModel extends ChangeNotifier {
 
   final LatLng target;
   final RoutingRepository _routing;
+  final LocationNoteAnnouncer _announcer;
   late final List<StreamSubscription<Object>> _subscriptions;
 
   Route? _route;
@@ -87,13 +93,6 @@ class NavigationViewModel extends ChangeNotifier {
   /// Voice pins to show on the map.
   List<LocationNote> get locationNotes => _locationNotes;
 
-  final _reachedLocationNotes = StreamController<LocationNote>.broadcast();
-
-  /// A location note the user just reached. It comes again only after the user was
-  /// [LocationNoteConfig.resetDistance] away from it, or in a new navigation.
-  Stream<LocationNote> get reachedLocationNotes => _reachedLocationNotes.stream;
-
-  final _announcedLocationNotes = <LocationNote>{};
 
   /// Bearing from the user to [headingWaypoint].
   int get waypointHeading =>
@@ -124,7 +123,6 @@ class NavigationViewModel extends ChangeNotifier {
   void _onPosition(LatLng position) {
     _position = position;
     _updateWaypoints();
-    _updateLocationNotes();
     notifyListeners();
   }
 
@@ -133,25 +131,6 @@ class NavigationViewModel extends ChangeNotifier {
     if (rounded == _deviceHeading) return;
     _deviceHeading = rounded;
     notifyListeners();
-  }
-
-  void _updateLocationNotes() {
-    _announcedLocationNotes.removeWhere(
-        (note) => calculateDistance(note.latlng(), _position) >= LocationNoteConfig.resetDistance);
-    final nearest = _locationNotes
-        .where((note) =>
-            !_announcedLocationNotes.contains(note) &&
-            calculateDistance(note.latlng(), _position) < LocationNoteConfig.announceDistance)
-        .fold<LocationNote?>(
-            null,
-            (best, note) => best == null ||
-                    calculateDistance(note.latlng(), _position) <
-                        calculateDistance(best.latlng(), _position)
-                ? note
-                : best);
-    if (nearest == null) return;
-    _announcedLocationNotes.add(nearest);
-    _reachedLocationNotes.add(nearest);
   }
 
   Future<void> _calculateRoute() async {
@@ -228,7 +207,7 @@ class NavigationViewModel extends ChangeNotifier {
     for (final subscription in _subscriptions) {
       unawaited(subscription.cancel());
     }
-    unawaited(_reachedLocationNotes.close());
+    _announcer.stopNavigation();
     super.dispose();
   }
 }

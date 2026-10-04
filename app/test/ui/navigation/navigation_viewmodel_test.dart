@@ -1,5 +1,7 @@
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
+import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
@@ -9,6 +11,9 @@ import 'package:candle/utils/result.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 import '../../fakes/fake_compass_service.dart';
 import '../../fakes/fake_location_service.dart';
@@ -31,25 +36,38 @@ class _FakeRouting implements RoutingRepository {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late CandleDatabase db;
   late LocationNoteRepository pins;
   late FakeLocationService location;
   late FakeCompassService compass;
   late _FakeRouting routing;
+  late SettingsRepository settings;
+  late LocationNoteAnnouncer announcer;
 
-  setUp(() {
+  setUp(() async {
     db = CandleDatabase(NativeDatabase.memory());
     pins = LocationNoteRepository(database: db);
     location = FakeLocationService(const Result.ok(LatLng(50, 8)));
     compass = FakeCompassService();
     routing = _FakeRouting();
+    SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
+    settings = SettingsRepository(await SharedPreferencesWithCache.create(
+        cacheOptions: const SharedPreferencesWithCacheOptions()));
+    await settings.setEnabled(Setting.locationNotesAlways, false);
+    announcer = LocationNoteAnnouncer(
+        locationNoteRepository: pins, locationService: location, settingsRepository: settings);
   });
-  tearDown(() => db.close());
+  tearDown(() async {
+    announcer.dispose();
+    await db.close();
+  });
 
   NavigationViewModel create({Route? route, LatLng source = const LatLng(50, 8)}) =>
       NavigationViewModel(
         routingRepository: routing,
         locationNoteRepository: pins,
+        locationNoteAnnouncer: announcer,
         locationService: location,
         compassService: compass,
         source: source,
@@ -127,27 +145,19 @@ void main() {
     viewModel.dispose();
   });
 
-  test('a location note is announced once, and again after the user was 50 m away', () async {
+  test('location notes are reported during the navigation only', () async {
     await pins.save(LocationNote(name: '', memo: 'Stairs', lat: 50.001, lon: 8.00005));
-    final viewModel = create(route: _northRoute(50, 4));
     final reached = <String>[];
-    viewModel.reachedLocationNotes.listen((note) => reached.add(note.memo));
+    announcer.reached.listen((note) => reached.add(note.memo));
+
+    final viewModel = create(route: _northRoute(50, 4));
     await pumpEventQueue();
-    expect(reached, isEmpty);
-
     await walkTo(50.001);
     expect(reached, ['Stairs']);
 
-    // staying close or only ~33 m away does not repeat it
-    await walkTo(50.00102);
-    await walkTo(50.0007);
-    await walkTo(50.001);
-    expect(reached, ['Stairs']);
-
-    // ~111 m away resets it
+    viewModel.dispose();
     await walkTo(50);
     await walkTo(50.001);
-    expect(reached, ['Stairs', 'Stairs']);
-    viewModel.dispose();
+    expect(reached, ['Stairs']);
   });
 }

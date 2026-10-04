@@ -1,16 +1,13 @@
 import 'dart:async';
 
-import 'package:candle/config/app_config.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart' as model;
-import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
-import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/route_map_osm.dart';
@@ -27,6 +24,7 @@ Widget buildNavigationScreen({required LatLng source, required LatLng target, mo
       create: (context) => NavigationViewModel(
         routingRepository: context.read(),
         locationNoteRepository: context.read(),
+        locationNoteAnnouncer: context.read(),
         locationService: context.read(),
         compassService: context.read(),
         source: source,
@@ -37,23 +35,16 @@ Widget buildNavigationScreen({required LatLng source, required LatLng target, mo
         viewModel: context.read(),
         vibrate: ({int duration = 100, int repeat = -1}) =>
             context.read<VibrationService>().navigation(duration: duration, repeat: repeat),
-        vibratePulses: (count) => context.read<VibrationService>().navigationPulses(count),
       ),
     );
 
 /// Turn-by-turn guidance: vibrates when the phone points to the next waypoint
-/// and when a waypoint is passed, and shows location notes on the way.
+/// and when a waypoint is passed. Location notes on the way are shown by the app shell.
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({
-    super.key,
-    required this.viewModel,
-    required this.vibrate,
-    required this.vibratePulses,
-  });
+  const NavigationScreen({super.key, required this.viewModel, required this.vibrate});
 
   final NavigationViewModel viewModel;
   final Future<void> Function({int duration, int repeat}) vibrate;
-  final Future<void> Function(int count) vibratePulses;
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
@@ -64,14 +55,12 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
 
   bool _wasAligned = false;
   NavigationPoint? _lastWaypoint;
-  late final StreamSubscription<LocationNote> _locationNotes;
 
   @override
   void initState() {
     super.initState();
     ScreenWakeService.keepOn(true);
     _viewModel.addListener(_onChanged);
-    _locationNotes = _viewModel.reachedLocationNotes.listen(_onLocationNote);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       announceOnShow(AppLocalizations.of(context)!.navigation_announcement_hint);
     });
@@ -81,7 +70,6 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
   void dispose() {
     ScreenWakeService.keepOn(false);
     _viewModel.removeListener(_onChanged);
-    unawaited(_locationNotes.cancel());
     super.dispose();
   }
 
@@ -98,10 +86,6 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
     }
   }
 
-  void _onLocationNote(LocationNote note) {
-    unawaited(widget.vibratePulses(LocationNoteConfig.vibrationCount));
-    showSnackbar(context, note.memo, sticky: true);
-  }
 
   @override
   Widget build(BuildContext context) {

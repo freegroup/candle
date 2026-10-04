@@ -100,6 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
       Setting.vibrateCompass => l10n.featureflag_vibratecompass,
       Setting.betaRecording => l10n.featureflag_beta_recording,
       Setting.shortTalkback => l10n.featureflag_short_talkback,
+      Setting.locationNotesAlways => l10n.featureflag_location_notes_always,
     };
   }
 

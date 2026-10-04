@@ -26,6 +26,7 @@ class SettingsViewModel extends ChangeNotifier {
         if (Setting.dictationInput.isAvailable) Setting.dictationInput,
         Setting.vibrateCompass,
         Setting.vibrateDuringNavigation,
+        Setting.locationNotesAlways,
       ];
 
   List<Setting> get beta => const [Setting.betaRecording];

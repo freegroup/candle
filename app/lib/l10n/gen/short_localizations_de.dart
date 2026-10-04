@@ -118,7 +118,7 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get routes_recording_placeholder_body => 'Zeichnen Sie einen Weg auf, um ihn später wieder zu gehen.';
   @override
-  String get location_notes_placeholder_body => 'Hinweise, die Candle beim Navigieren an einer Stelle meldet, zum Beispiel an der **Haustür**.';
+  String get location_notes_placeholder_body => 'Hinweise, die Candle an einer Stelle meldet, zum Beispiel an der **Haustür**.';
   @override
   String get no_location_for_category => 'Keine Orte in dieser Kategorie gefunden.';
   @override

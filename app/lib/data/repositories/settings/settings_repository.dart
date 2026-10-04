@@ -17,6 +17,8 @@ enum Setting {
   // Vibration can be annoying for sighted users, so it can be turned off.
   vibrateDuringNavigation('vibrateDuringNavigation'),
   vibrateCompass('vibrateCompass'),
+  // Location notes are announced while Candle is open; when off only while navigating.
+  locationNotesAlways('locationNotesAlways'),
   // Route recording is still beta and off by default.
   betaRecording('betaRecording', initial: false),
   // Short screen reader texts for experienced users (see lib/l10n/arb/short).

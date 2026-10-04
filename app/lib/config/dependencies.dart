@@ -10,6 +10,7 @@ import 'package:candle/data/repositories/poi/poi_repository_remote.dart';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/attestation/attestation_service.dart';
@@ -64,6 +65,14 @@ List<SingleChildWidget> get providers => [
       Provider(create: (_) => CandleDatabase(), dispose: (_, db) => db.close()),
       Provider(create: (context) => LocationRepository(database: context.read())),
       Provider(create: (context) => LocationNoteRepository(database: context.read())),
+      Provider(
+        create: (context) => LocationNoteAnnouncer(
+          locationNoteRepository: context.read(),
+          locationService: context.read(),
+          settingsRepository: context.read(),
+        ),
+        dispose: (_, announcer) => announcer.dispose(),
+      ),
       Provider(create: (context) => RouteRepository(database: context.read())),
       ChangeNotifierProvider(
         create: (context) => RecordingRepository(

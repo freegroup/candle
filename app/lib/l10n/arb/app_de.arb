@@ -252,7 +252,7 @@
   "routes_recording_placeholder_body": "Entdecken Sie mit Candles Routenaufzeichnung die Freude am sicheren Navigieren. Zeichnen Sie Ihre Wege auf, von kleinen Abenteuern bis hin zur Rückkehr ins Hotel. Beginnen Sie jetzt und erleben Sie, wie Candle Sie verlässlich begleitet und Orientierung bietet – jederzeit und überall!",
 
   "location_notes_placeholder_header": "Noch keine Ortsnotizen.",
-  "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis zu einer Stelle, zum Beispiel „Treppe nach der Tür“. Wenn Sie zu einem Ziel navigieren und an diese Stelle kommen, meldet Candle den Hinweis automatisch. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
+  "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis zu einer Stelle, zum Beispiel „Treppe nach der Tür“. Kommen Sie an diese Stelle, während Candle offen ist, meldet Candle den Hinweis automatisch. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
 
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Orte für die ausgewählte Kategorie finden.",
 
@@ -426,6 +426,7 @@
   "button_cancel_recording_confirm": "Ja, abbrechen",
   "button_continue_recording": "Weiter aufzeichnen",
   "featureflag_short_talkback": "Kurze Ansagen\nFür erfahrene TalkBack-Nutzer",
+  "featureflag_location_notes_always": "Ortsnotizen immer ansagen",
   "radar_places_count": "{count, plural, =1{1 Ort} other{{count} Orte}}",
   "radar_point_title": "In eine Richtung zeigen",
   "radar_point_hint": "Handy flach vor sich halten",

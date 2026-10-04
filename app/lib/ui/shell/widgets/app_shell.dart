@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
+import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
+import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_note_screen.dart';
@@ -19,8 +23,14 @@ import 'package:provider/provider.dart';
 
 /// The app with its tab bar, with its own view model.
 Widget buildAppShell() => ChangeNotifierProvider(
-      create: (context) => AppShellViewModel(sharedContentService: context.read()),
-      builder: (context, _) => AppShell(viewModel: context.read()),
+      create: (context) => AppShellViewModel(
+        sharedContentService: context.read(),
+        locationNoteAnnouncer: context.read(),
+      ),
+      builder: (context, _) => AppShell(
+        viewModel: context.read(),
+        vibratePulses: (count) => context.read<VibrationService>().navigationPulses(count),
+      ),
     );
 
 class ButtonBarEntry {
@@ -36,11 +46,13 @@ class ButtonBarEntry {
   });
 }
 
-/// The tabs of the app; content shared by other apps opens the matching import screen.
+/// The tabs of the app; content shared by other apps opens the matching import
+/// screen, and a location note the user reaches is shown above any screen.
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.viewModel});
+  const AppShell({super.key, required this.viewModel, required this.vibratePulses});
 
   final AppShellViewModel viewModel;
+  final Future<void> Function(int count) vibratePulses;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -48,17 +60,25 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   late final StreamSubscription<SharedContent> _shared;
+  late final StreamSubscription<LocationNote> _locationNotes;
 
   @override
   void initState() {
     super.initState();
     _shared = widget.viewModel.sharedContent.listen(_import);
+    _locationNotes = widget.viewModel.reachedLocationNotes.listen(_showLocationNote);
   }
 
   @override
   void dispose() {
     unawaited(_shared.cancel());
+    unawaited(_locationNotes.cancel());
     super.dispose();
+  }
+
+  void _showLocationNote(LocationNote note) {
+    unawaited(widget.vibratePulses(LocationNoteConfig.vibrationCount));
+    showSnackbar(context, note.memo, sticky: true);
   }
 
   void _import(SharedContent content) {
