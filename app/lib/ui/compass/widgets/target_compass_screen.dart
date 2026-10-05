@@ -108,8 +108,8 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
   }
 
   Future<void> _announce() async {
-    await widget.vibrate();
     await widget.interruptSpeech();
+    unawaited(widget.vibrate());
     if (!mounted) return;
     await SemanticsService.sendAnnouncement(
       View.of(context),

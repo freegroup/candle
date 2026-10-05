@@ -80,8 +80,8 @@ class _HeadingCompassScreenState extends State<HeadingCompassScreen> with Semant
   }
 
   Future<void> _announce(int direction) async {
-    await widget.vibrate();
     await widget.interruptSpeech();
+    unawaited(widget.vibrate());
     if (!mounted) return;
     await SemanticsService.sendAnnouncement(
         View.of(context), getHorizon(context, direction), Directionality.of(context));

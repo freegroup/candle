@@ -108,8 +108,8 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
   Future<void> _announceDirection(int direction) async {
     final l10n = AppLocalizations.of(context)!;
     final horizon = getHorizon(context, direction);
-    await widget.vibrate();
     await widget.interruptSpeech();
+    unawaited(widget.vibrate());
     await _announce(_viewModel.load.completed
         ? l10n.locations_in_direction_toast(horizon, _viewModel.poisInDirection.length)
         : horizon);
