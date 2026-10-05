@@ -4,6 +4,7 @@ import { ChallengeStore } from './auth/challenges.ts';
 import { googleIntegrityDecoder, PlayIntegrityVerifier } from './auth/google.ts';
 import { TokenService } from './auth/tokens.ts';
 import { loadConfig } from './config.ts';
+import { PlacesDatabase } from './places/places_database.ts';
 
 const config = loadConfig();
 const { android } = config;
@@ -22,6 +23,7 @@ const app = await buildApp(
         })
       : undefined,
     debugAttestationToken: config.debugAttestationToken,
+    places: new PlacesDatabase(config.placesDatabase),
   },
   // behind nginx: take the client address from X-Forwarded-For
   { logger: true, trustProxy: true },

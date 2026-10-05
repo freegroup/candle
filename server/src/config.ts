@@ -23,6 +23,8 @@ export interface Config {
   };
   /** Shared secret for simulators/emulators, which cannot attest. Leave unset in production. */
   debugAttestationToken?: string;
+  /** The places file built by tools/build_pois.py; the server answers 503 while it is missing. */
+  placesDatabase: string;
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
@@ -53,6 +55,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
         .filter((certificate) => certificate.length > 0),
     },
     debugAttestationToken: env.DEBUG_ATTESTATION_TOKEN || undefined,
+    placesDatabase: env.PLACES_DATABASE ?? '/home/candle/data/places.sqlite',
   };
 }
 

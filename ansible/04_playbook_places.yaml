@@ -1,0 +1,43 @@
+# Puts a places file on the server: the data of POST /v1/overpass (see
+# server/src/places/). The file is built on the Mac with server/tools/build_pois.py,
+# e.g. for DACH (see server/tools/README.md):
+#
+#   ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml \
+#     -e places_file=gis-test/dach.sqlite
+#
+# The server picks up the new file with the next query; no restart needed.
+# Later the server builds the file itself every week and this playbook is only
+# needed for a first or a manual upload.
+- name: Upload the places data
+  hosts: candle
+
+  tasks:
+
+  - name: Require the file to upload
+    ansible.builtin.assert:
+      that: places_file is defined
+      fail_msg: "Pass the file to upload: -e places_file=path/to/places.sqlite"
+
+  - name: Create the data directory
+    ansible.builtin.file:
+      path: /home/candle/data
+      state: directory
+      owner: candle
+      group: candle
+      mode: '0755'
+
+  # Next to the live file first: a server query must never read half a file
+  - name: Upload the places file
+    ansible.builtin.copy:
+      src: "{{ places_file }}"
+      dest: /home/candle/data/places.sqlite.uploading
+      owner: candle
+      group: candle
+      mode: '0644'
+
+  - name: Put the new places file live
+    ansible.builtin.command: mv /home/candle/data/places.sqlite.uploading /home/candle/data/places.sqlite
+
+  # The site has the request limit of the places endpoint
+  - name: Write the nginx site
+    include_tasks: nginx_site.yaml
