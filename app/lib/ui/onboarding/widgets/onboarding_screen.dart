@@ -3,7 +3,6 @@ import 'package:candle/ui/onboarding/view_models/onboarding_viewmodel.dart';
 import 'package:candle/ui/onboarding/widgets/welcome_screen.dart';
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:candle/ui/shell/widgets/app_shell.dart';
-import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:flutter/material.dart';
@@ -44,15 +43,7 @@ class PermissionsScreen extends StatefulWidget {
   State<PermissionsScreen> createState() => _PermissionsScreenState();
 }
 
-class _PermissionsScreenState extends State<PermissionsScreen> with SemanticAnnouncer {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_permissions_t);
-    });
-  }
-
+class _PermissionsScreenState extends State<PermissionsScreen> {
   Future<void> _request() async {
     await widget.viewModel.request.execute();
     if (mounted && widget.viewModel.request.error) _showDeniedDialog();

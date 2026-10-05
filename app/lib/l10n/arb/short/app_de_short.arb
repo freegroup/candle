@@ -1,7 +1,6 @@
 {
   "@@locale": "de",
   "@note": "Short texts for experienced screen reader users; see tool/gen_short_l10n.dart",
-  "screen_show_announcement_t": "{title}",
   "screen_header_import_location_t": "Geteilter Ort",
   "screen_header_import_location_note_t": "Geteilte Ortsnotiz",
   "screen_header_settings_t": "Einstellungen",

@@ -73,16 +73,6 @@
   },
 
 
-  "screen_show_announcement_t": "New screen opened: {title}",
-  "@screen_show_announcement_t": {
-    "description": "Announcement if a new screen is shown",
-    "placeholders": {
-      "title": {
-        "type": "String",
-        "description": "The title of the new Screen"
-      }
-    }
-  },
 
 
   "screen_header_location_always": "Background Location Access",

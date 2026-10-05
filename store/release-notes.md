@@ -4,6 +4,8 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+- TalkBack: Auch Kompass und Zielkompass brechen beim Drehen die alte Ansage ab. Willkommen und Berechtigungen starten mit der Überschrift.
+
 ## 1.5.7 (55)
 
 - Ortsnotizen werden überall gemeldet, solange Candle offen ist (abschaltbar: „Ortsnotizen immer ansagen“). Das Handy vibriert dreimal, der Hinweis bleibt sichtbar, bis Sie ihn antippen.

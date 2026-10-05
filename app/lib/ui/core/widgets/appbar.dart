@@ -1,3 +1,4 @@
+import 'package:candle/ui/core/widgets/focus_on_show.dart';
 import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -33,24 +34,13 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CandleAppBarState extends State<CandleAppBar> {
-  final _titleKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    // A new screen or tab starts with the screen reader on its title, which is read out.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _titleKey.currentContext?.findRenderObject()?.sendSemanticsEvent(const FocusSemanticEvent());
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    // TalkBack puts its focus on the first element when a screen opens: that is the
-    // title, so the user hears where they are at once (and the speech about the
-    // previous screen stops). The back button and the actions follow.
+    // A new screen or tab starts with the screen reader on its title (FocusOnShow), so
+    // the user hears where they are at once; the title also comes first in the reading
+    // order, then the back button and the actions.
     List<Widget> actions = [
       for (final action in [
         if (widget.settingsEnabled) _buildSettingsButton(context),
@@ -75,8 +65,8 @@ class _CandleAppBarState extends State<CandleAppBar> {
       // the title marks itself as header and screen name, so it sits next to the back
       // button in the semantics tree and its sort key counts
       excludeHeaderSemantics: true,
-      title: Semantics(
-        key: _titleKey,
+      title: FocusOnShow(
+        child: Semantics(
         header: true,
         namesRoute: defaultTargetPlatform == TargetPlatform.iOS ||
                 defaultTargetPlatform == TargetPlatform.macOS
@@ -102,6 +92,7 @@ class _CandleAppBarState extends State<CandleAppBar> {
               ],
             ),
           ),
+        ),
         ),
       ),
       backgroundColor: theme.appBarTheme.backgroundColor,

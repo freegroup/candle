@@ -17,6 +17,7 @@ import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:flutter/semantics.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,7 @@ Widget buildTargetCompassScreen({
         route: route,
         vibrate: ({int duration = 100, int repeat = -1}) =>
             context.read<VibrationService>().compass(duration: duration, repeat: repeat),
+        interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
       ),
     );
 
@@ -50,12 +52,16 @@ class TargetCompassScreen extends StatefulWidget {
     super.key,
     required this.viewModel,
     required this.vibrate,
+    required this.interruptSpeech,
     this.route,
   });
 
   final TargetCompassViewModel viewModel;
   final model.Route? route;
   final Future<void> Function({int duration, int repeat}) vibrate;
+
+  /// Stops the screen reader, so the announcement of an old direction is not read to the end.
+  final Future<void> Function() interruptSpeech;
 
   @override
   State<TargetCompassScreen> createState() => _TargetCompassScreenState();
@@ -103,6 +109,7 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
 
   Future<void> _announce() async {
     await widget.vibrate();
+    await widget.interruptSpeech();
     if (!mounted) return;
     await SemanticsService.sendAnnouncement(
       View.of(context),

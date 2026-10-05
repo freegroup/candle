@@ -1,5 +1,5 @@
 import 'package:candle/l10n/gen/app_localizations.dart';
-import 'package:candle/ui/core/utils/semantic.dart';
+import 'package:candle/ui/core/widgets/focus_on_show.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:flutter/foundation.dart';
@@ -19,15 +19,7 @@ class WelcomeScreen extends StatefulWidget {
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> with SemanticAnnouncer {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.welcome_title_t);
-    });
-  }
-
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -48,9 +40,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SemanticAnnouncer {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Semantics(
-                          header: true,
-                          child: Text(l10n.welcome_title, style: theme.textTheme.headlineMedium),
+                        // the screen reader starts on the title and reads it out
+                        FocusOnShow(
+                          child: Semantics(
+                            header: true,
+                            child: Text(l10n.welcome_title, style: theme.textTheme.headlineMedium),
+                          ),
                         ),
                         const SizedBox(height: 12),
                         Text(l10n.welcome_intro, style: theme.textTheme.titleMedium),

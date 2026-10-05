@@ -35,7 +35,7 @@ ORTE IN DER NÄHE
 EIGENE ORTE UND WEGE
 • Lieblingsorte speichern – über die aktuelle Position oder die Adresssuche, auch per Spracheingabe.
 • Fußgängernavigation zu gespeicherten Orten.
-• Ortsnotizen: Hinterlege an einer Stelle einen Hinweis, z. B. „Treppe nach der Tür“ – Candle liest ihn vor, sobald du dort ankommst.
+• Ortsnotizen: Hinterlege an einer Stelle einen Hinweis, z. B. „Treppe nach der Tür“ – kommst du dort vorbei, während Candle offen ist, vibriert das Handy und Candle meldet den Hinweis. Eine neue Notiz legst du schnell mit einem langen Druck auf das Candle-Symbol an.
 • Orte teilen und von Familie oder Freunden empfangen.
 • Wege aufzeichnen (Beta).
 
@@ -75,7 +75,7 @@ PLACES NEARBY
 YOUR PLACES AND ROUTES
 • Save favourite places – from your current position or by address search, also by voice.
 • Walking navigation to saved places.
-• Location notes: leave a hint at a spot, e.g. "stairs after the door" – Candle reads it out when you get there.
+• Location notes: leave a hint at a spot, e.g. "stairs after the door" – when you pass it with Candle open, your phone vibrates and Candle tells you the hint. Add a new one quickly with a long press on the Candle icon.
 • Share places and receive them from family and friends.
 • Record routes (beta).
 

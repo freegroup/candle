@@ -6,8 +6,6 @@ import 'package:candle/l10n/gen/app_localizations_en.dart';
 
 class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
-  String screen_show_announcement_t(String title) => '$title';
-  @override
   String get screen_header_import_location_t => 'Shared place';
   @override
   String get screen_header_import_location_note_t => 'Shared location note';

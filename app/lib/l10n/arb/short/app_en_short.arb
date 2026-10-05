@@ -1,7 +1,6 @@
 {
   "@@locale": "en",
   "@note": "Short texts for experienced screen reader users; see tool/gen_short_l10n.dart",
-  "screen_show_announcement_t": "{title}",
   "screen_header_import_location_t": "Shared place",
   "screen_header_import_location_note_t": "Shared location note",
   "screen_header_settings_t": "Settings",

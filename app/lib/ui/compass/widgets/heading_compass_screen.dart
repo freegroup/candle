@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/ui/core/icons/compass.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
@@ -23,16 +24,25 @@ Widget buildHeadingCompassScreen() => ChangeNotifierProvider(
       builder: (context, _) => HeadingCompassScreen(
         viewModel: context.read(),
         vibrate: () => context.read<VibrationService>().compass(duration: 100),
+        interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
       ),
     );
 
 /// Shows where north is. Entering one of the eight compass directions vibrates
 /// and announces it.
 class HeadingCompassScreen extends StatefulWidget {
-  const HeadingCompassScreen({super.key, required this.viewModel, required this.vibrate});
+  const HeadingCompassScreen({
+    super.key,
+    required this.viewModel,
+    required this.vibrate,
+    required this.interruptSpeech,
+  });
 
   final HeadingCompassViewModel viewModel;
   final Future<void> Function() vibrate;
+
+  /// Stops the screen reader, so the announcement of an old direction is not read to the end.
+  final Future<void> Function() interruptSpeech;
 
   @override
   State<HeadingCompassScreen> createState() => _HeadingCompassScreenState();
@@ -71,6 +81,7 @@ class _HeadingCompassScreenState extends State<HeadingCompassScreen> with Semant
 
   Future<void> _announce(int direction) async {
     await widget.vibrate();
+    await widget.interruptSpeech();
     if (!mounted) return;
     await SemanticsService.sendAnnouncement(
         View.of(context), getHorizon(context, direction), Directionality.of(context));
