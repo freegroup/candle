@@ -37,43 +37,67 @@ void main() {
     overpass = FakeOverpassClient(const Result.ok([]));
   });
 
-  test('good GPS outside any building: outdoors', () async {
-    expect(await create().isProbablyIndoors(), isFalse);
-    expect(overpass.queries.single, contains('[building]'));
+  group('1. poor reception', () {
+    test('accuracy worse than the limit: indoors or poor reception', () async {
+      location.accuracy = const Result.ok(40);
+      expect(await create().isProbablyIndoors(), isTrue);
+    });
+
+    test('no GPS fix in time counts as poor reception', () async {
+      location.accuracy = Result.error(Exception('timeout'));
+      expect(await create().isProbablyIndoors(), isTrue);
+    });
+
+    test('without map data it is the only case', () async {
+      overpass.result = Result.error(Exception('offline'));
+      expect(await create().isProbablyIndoors(), isFalse);
+      location.accuracy = const Result.ok(40);
+      expect(await create().isProbablyIndoors(), isTrue);
+    });
   });
 
-  test('a GPS point inside a building outline with good accuracy is not enough', () async {
-    // standing outside next to a wall often puts the point into the outline
-    overpass.result = const Result.ok([building]);
-    expect(await create().isProbablyIndoors(), isFalse);
+  group('2. inside a building outline, away from its walls', () {
+    test('~11 m from every wall: indoors', () async {
+      overpass.result = const Result.ok([building]);
+      expect(await create().isProbablyIndoors(), isTrue);
+      expect(overpass.queries.single, contains('[building]'));
+    });
+
+    test('the accuracy plays no part here', () async {
+      overpass.result = const Result.ok([building]);
+      location.accuracy = const Result.ok(15);
+      expect(await create().isProbablyIndoors(), isTrue);
+    });
+
+    test('~4 m from a wall is still inside', () async {
+      overpass.result = const Result.ok([building]);
+      location.position = const Result.ok(LatLng(52.500064, 13.4));
+      expect(await create().isProbablyIndoors(), isTrue);
+    });
   });
 
-  test('inside a building outline with mediocre accuracy: indoors', () async {
-    overpass.result = const Result.ok([building]);
-    location.accuracy = const Result.ok(20);
-    expect(await create().isProbablyIndoors(), isTrue);
-  });
+  group('3. outdoors', () {
+    test('good GPS outside any building', () async {
+      expect(await create().isProbablyIndoors(), isFalse);
+    });
 
-  test('bad accuracy alone: indoors or poor reception', () async {
-    location.accuracy = const Result.ok(40);
-    expect(await create().isProbablyIndoors(), isTrue);
-  });
-
-  test('no GPS fix in time counts as bad accuracy', () async {
-    location.accuracy = Result.error(Exception('timeout'));
-    expect(await create().isProbablyIndoors(), isTrue);
-  });
-
-  test('without map data only the accuracy counts', () async {
-    overpass.result = Result.error(Exception('offline'));
-    expect(await create().isProbablyIndoors(), isFalse);
-    location.accuracy = const Result.ok(40);
-    expect(await create().isProbablyIndoors(), isTrue);
+    test('inside the outline but less than 2 m from a wall, e.g. on the pavement', () async {
+      overpass.result = const Result.ok([building]);
+      location.position = const Result.ok(LatLng(52.500092, 13.4)); // ~1 m from the north wall
+      expect(await create().isProbablyIndoors(), isFalse);
+    });
   });
 
   test('a point is inside a polygon only when it is', () {
     expect(isInsidePolygon(here, building.geometry), isTrue);
     expect(isInsidePolygon(const LatLng(52.5003, 13.4), building.geometry), isFalse);
+  });
+
+  test('with an inset, a point close to an edge does not count as inside', () {
+    const nearEdge = LatLng(52.500092, 13.4); // ~1 m from the north edge
+    expect(isInsidePolygon(nearEdge, building.geometry), isTrue);
+    expect(isInsidePolygon(nearEdge, building.geometry, inset: 2), isFalse);
+    expect(isInsidePolygon(here, building.geometry, inset: 2), isTrue);
   });
 
   test('ways with geometry are parsed with their outline', () {

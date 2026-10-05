@@ -4,6 +4,10 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.11 (59)
+
+- Navigation: Der Gebäude-Hinweis kommt jetzt auch bei gutem GPS-Empfang, wenn man deutlich innerhalb eines Gebäudes steht, aber nicht direkt an der Hauswand.
+
 ## 1.5.10 (58)
 
 - Navigation: Startet man sie vermutlich in einem Gebäude oder bei schlechtem GPS-Empfang, weist Candle einmal darauf hin, das Gebäude auf gewohntem Weg zu verlassen.

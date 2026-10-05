@@ -92,9 +92,15 @@ int? snapToDirection(num heading) {
   return angleBetween(heading, nearest) <= snapRange ? nearest : null;
 }
 
-/// Whether [point] lies inside the closed [polygon] (ray casting; fine for the
-/// small areas of buildings, where latitude and longitude act as plane coordinates).
-bool isInsidePolygon(LatLng point, List<LatLng> polygon) {
+/// Whether [point] lies inside the closed [polygon] shrunk by [inset] meters, i.e.
+/// inside and at least [inset] meters away from each of its edges (ray casting; fine for small areas like buildings,
+/// where latitude and longitude act as plane coordinates).
+bool isInsidePolygon(LatLng point, List<LatLng> polygon, {double inset = 0}) {
+  for (var i = 1; i < polygon.length; i++) {
+    if (distanceToSegment(point: point, start: polygon[i - 1], end: polygon[i]) < inset) {
+      return false;
+    }
+  }
   var inside = false;
   for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
     final a = polygon[i];

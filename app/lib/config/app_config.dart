@@ -50,27 +50,22 @@ abstract final class LocationNoteConfig {
 }
 
 abstract final class IndoorConfig {
-  /// GPS accuracy (radius in meters) that counts as outdoors; better is never indoors.
-  static const goodAccuracy = 10.0;
+  /// GPS accuracy (radius in meters) worse than this counts as poor reception,
+  /// typical indoors; then the user gets the hint.
+  static const poorAccuracy = 30.0;
 
-  /// GPS accuracy (meters) that counts as indoors; in between it is scaled.
-  static const badAccuracy = 30.0;
-
-  /// Longest wait for a fresh GPS fix; none in time counts as bad accuracy.
+  /// Longest wait for a fresh GPS fix; none in time counts as poor reception.
   static const fixTimeout = Duration(seconds: 5);
 
   /// Building outlines within this many meters are checked.
   static const buildingSearchRadius = 30;
 
-  /// Longest wait for the building outlines; without them only the accuracy counts.
+  /// A position counts as inside a building only this many meters away from its
+  /// walls; closer to a wall it may be the pavement right next to the facade.
+  static const wallInset = 2.0;
+
+  /// Longest wait for the building outlines; without them only the reception counts.
   static const mapTimeout = Duration(seconds: 4);
-
-  /// Share of the GPS accuracy and of "inside a building outline" in the probability.
-  static const accuracyWeight = 0.6;
-  static const buildingWeight = 0.4;
-
-  /// From this probability on the user counts as indoors (or with poor GPS reception).
-  static const threshold = 0.6;
 }
 
 abstract final class OrsConfig {
