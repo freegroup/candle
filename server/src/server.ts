@@ -17,6 +17,7 @@ const app = await buildApp(
       ? new PlayIntegrityVerifier({
           packageName: android.packageName,
           acceptUnrecognizedApp: android.acceptUnrecognizedApp,
+          debugCertificates: android.debugCertificates,
           decode: googleIntegrityDecoder(android.packageName, android.serviceAccountFile),
         })
       : undefined,

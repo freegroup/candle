@@ -27,17 +27,23 @@ export function googleIntegrityDecoder(packageName: string, serviceAccountFile: 
 export class PlayIntegrityVerifier {
   readonly #packageName: string;
   readonly #acceptUnrecognizedApp: boolean;
+  readonly #debugCertificates: Buffer[];
   readonly #decode: IntegrityDecoder;
   readonly #now: () => number;
 
   constructor(options: {
     packageName: string;
     acceptUnrecognizedApp: boolean;
+    /** SHA-256 of our debug signing certificates, hex with colons (see Config). */
+    debugCertificates?: readonly string[];
     decode: IntegrityDecoder;
     now?: () => number;
   }) {
     this.#packageName = options.packageName;
     this.#acceptUnrecognizedApp = options.acceptUnrecognizedApp;
+    this.#debugCertificates = (options.debugCertificates ?? []).map((hex) =>
+      Buffer.from(hex.replaceAll(':', ''), 'hex'),
+    );
     this.#decode = options.decode;
     this.#now = options.now ?? Date.now;
   }
@@ -56,12 +62,29 @@ export class PlayIntegrityVerifier {
     const age = this.#now() - Number(request.timestampMillis);
     if (!(age >= -60_000 && age <= 5 * 60_000)) throw new AttestationError('Token is too old');
 
-    const allowed = this.#acceptUnrecognizedApp ? ['PLAY_RECOGNIZED', 'UNRECOGNIZED_VERSION'] : ['PLAY_RECOGNIZED'];
-    if (!allowed.includes(payload.appIntegrity?.appRecognitionVerdict ?? '')) {
+    const verdict = payload.appIntegrity?.appRecognitionVerdict ?? '';
+    const fromGooglePlay = verdict === 'PLAY_RECOGNIZED';
+    const notFromGooglePlay = verdict === 'UNRECOGNIZED_VERSION';
+    const ownDebugBuild = notFromGooglePlay && this.#signedWithDebugCertificate(payload);
+    const sideloadAllowed = notFromGooglePlay && this.#acceptUnrecognizedApp;
+    if (!fromGooglePlay && !ownDebugBuild && !sideloadAllowed) {
       throw new AttestationError('App is not the one from Google Play');
     }
     if (!payload.deviceIntegrity?.deviceRecognitionVerdict?.includes('MEETS_DEVICE_INTEGRITY')) {
       throw new AttestationError('Device does not pass integrity checks');
     }
+  }
+
+  /** Whether Google saw the app signed with one of our debug certificates. */
+  #signedWithDebugCertificate(payload: IntegrityPayload): boolean {
+    // Google sends the digests base64 encoded (web-safe); Node's base64 decoder reads both alphabets
+    const digests = payload.appIntegrity?.certificateSha256Digest ?? [];
+    for (const digest of digests) {
+      const bytes = Buffer.from(digest, 'base64');
+      for (const certificate of this.#debugCertificates) {
+        if (bytes.equals(certificate)) return true;
+      }
+    }
+    return false;
   }
 }

@@ -14,6 +14,12 @@ export interface Config {
     serviceAccountFile?: string;
     /** Accept builds not installed from Google Play (sideloaded test builds). Never in production. */
     acceptUnrecognizedApp: boolean;
+    /**
+     * SHA-256 of the signing certificates of our own debug builds (hex with colons,
+     * as keytool prints them). Such a build passes although it is not from Google
+     * Play: only its developer has the private key to sign it.
+     */
+    debugCertificates: string[];
   };
   /** Shared secret for simulators/emulators, which cannot attest. Leave unset in production. */
   debugAttestationToken?: string;
@@ -41,6 +47,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
       packageName: env.ANDROID_PACKAGE ?? 'de.freegroup.candle.app',
       serviceAccountFile: env.GOOGLE_SERVICE_ACCOUNT_FILE || undefined,
       acceptUnrecognizedApp: env.PLAY_ACCEPT_UNRECOGNIZED === 'true',
+      debugCertificates: (env.PLAY_DEBUG_CERTIFICATES ?? '')
+        .split(',')
+        .map((certificate) => certificate.trim())
+        .filter((certificate) => certificate.length > 0),
     },
     debugAttestationToken: env.DEBUG_ATTESTATION_TOKEN || undefined,
   };
