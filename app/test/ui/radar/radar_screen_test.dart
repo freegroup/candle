@@ -31,6 +31,7 @@ void main() {
   late RadarViewModel viewModel;
   late List<String> announcements;
   late int vibrations;
+  late int interruptions;
 
   Future<void> pumpScreen(WidgetTester tester) async {
     viewModel = RadarViewModel(
@@ -43,7 +44,11 @@ void main() {
       locale: const Locale('de'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RadarScreen(viewModel: viewModel, vibrate: () async => vibrations++),
+      home: RadarScreen(
+        viewModel: viewModel,
+        vibrate: () async => vibrations++,
+        interruptSpeech: () async => interruptions++,
+      ),
     ));
     await tester.pump();
     // let the delayed screen announcement run out
@@ -61,6 +66,7 @@ void main() {
     compass = FakeCompassService();
     announcements = [];
     vibrations = 0;
+    interruptions = 0;
   });
 
   setUpAll(() {
@@ -86,6 +92,7 @@ void main() {
     expect(find.text('Unter den Linden 42, Berlin'), findsOneWidget);
     expect(find.text('78 m'), findsOneWidget);
     expect(vibrations, 1);
+    expect(interruptions, 1);
     expect(announcements.last, 'Norden, 2 nahegelegene Orte.');
   });
 

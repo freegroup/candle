@@ -254,6 +254,7 @@
   "location_notes_placeholder_header": "Noch keine Ortsnotizen.",
   "location_notes_placeholder_body": "Eine Ortsnotiz ist ein Hinweis zu einer Stelle, zum Beispiel „Treppe nach der Tür“. Kommen Sie an diese Stelle, während Candle offen ist, meldet Candle den Hinweis automatisch. Legen Sie Ortsnotizen an wichtigen Stellen an, etwa an der **Haustür** oder am **nächsten Fußgängerüberweg**.",
 
+  "radar_no_places": "Keine Orte in dieser Richtung. Drehen Sie sich weiter.",
   "no_location_for_category": "Wie bedauerlich... Wir konnten leider keine Orte für die ausgewählte Kategorie finden.",
 
 

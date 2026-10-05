@@ -27,9 +27,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_settings_t);
-    });
   }
 
   @override

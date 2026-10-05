@@ -132,6 +132,8 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get location_notes_placeholder_body => 'Hints Candle gives you at a spot, for example at the **front door**.';
   @override
+  String get radar_no_places => 'No places in this direction.';
+  @override
   String get no_location_for_category => 'No places found in this category.';
   @override
   String get route_recording_intro => 'Enter a name, then **Record Track**.';

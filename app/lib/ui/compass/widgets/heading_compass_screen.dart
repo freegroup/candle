@@ -48,9 +48,6 @@ class _HeadingCompassScreenState extends State<HeadingCompassScreen> with Semant
   void initState() {
     super.initState();
     _viewModel.addListener(_onChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_compass_t);
-    });
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
@@ -33,6 +34,7 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
         child: RadarScreen(
           viewModel: context.read(),
           vibrate: () => context.read<VibrationService>().compass(duration: 100),
+          interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
         ),
       ),
     );
@@ -40,10 +42,18 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
 /// Lists the places in the direction the phone points to. Entering one of the
 /// eight compass directions vibrates and announces it with the number of places.
 class RadarScreen extends StatefulWidget {
-  const RadarScreen({super.key, required this.viewModel, required this.vibrate});
+  const RadarScreen({
+    super.key,
+    required this.viewModel,
+    required this.vibrate,
+    required this.interruptSpeech,
+  });
 
   final RadarViewModel viewModel;
   final Future<void> Function() vibrate;
+
+  /// Stops the screen reader, so the places of an old direction are not read to the end.
+  final Future<void> Function() interruptSpeech;
 
   @override
   State<RadarScreen> createState() => _RadarScreenState();
@@ -60,9 +70,6 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
     super.initState();
     _viewModel.addListener(_onViewModelChanged);
     _viewModel.load.addListener(_onLoadChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_radar_t);
-    });
   }
 
   @override
@@ -102,6 +109,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
     final l10n = AppLocalizations.of(context)!;
     final horizon = getHorizon(context, direction);
     await widget.vibrate();
+    await widget.interruptSpeech();
     await _announce(_viewModel.load.completed
         ? l10n.locations_in_direction_toast(horizon, _viewModel.poisInDirection.length)
         : horizon);
@@ -190,7 +198,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
   Widget _buildNoContent(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return GenericInfoPage(
-      header: l10n.no_location_for_category,
+      header: l10n.radar_no_places,
       body: '',
       decoration: Icon(Icons.not_listed_location, color: Theme.of(context).primaryColor, size: 160),
     );

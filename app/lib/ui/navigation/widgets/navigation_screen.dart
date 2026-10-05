@@ -61,9 +61,6 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
     super.initState();
     ScreenWakeService.keepOn(true);
     _viewModel.addListener(_onChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.navigation_announcement_hint);
-    });
   }
 
   @override
@@ -101,10 +98,14 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
       body: ListenableBuilder(
         listenable: _viewModel,
         builder: (context, _) => MergeSemantics(
-          child: DividedWidget(
-            fraction: screenHeight * (6 / 9),
-            top: _buildMap(context),
-            bottom: _buildInstruction(context),
+          // read by the screen reader after the instruction, a moment later
+          child: Semantics(
+            hint: l10n.navigation_announcement_hint,
+            child: DividedWidget(
+              fraction: screenHeight * (6 / 9),
+              top: _buildMap(context),
+              bottom: _buildInstruction(context),
+            ),
           ),
         ),
       ),

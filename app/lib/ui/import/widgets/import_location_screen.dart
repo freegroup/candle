@@ -27,9 +27,6 @@ class _ScreenState extends State<ImportLocationScreen> with SemanticAnnouncer {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_import_location_t);
-    });
   }
 
   @override

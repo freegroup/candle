@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
 import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
@@ -32,6 +33,7 @@ Widget buildAppShell() => ChangeNotifierProvider(
       builder: (context, _) => AppShell(
         viewModel: context.read(),
         vibratePulses: (count) => context.read<VibrationService>().navigationPulses(count),
+        interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
       ),
     );
 
@@ -51,10 +53,19 @@ class ButtonBarEntry {
 /// The tabs of the app; content shared by other apps opens the matching import
 /// screen, and a location note the user reaches is shown above any screen.
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.viewModel, required this.vibratePulses});
+  const AppShell({
+    super.key,
+    required this.viewModel,
+    required this.vibratePulses,
+    required this.interruptSpeech,
+  });
 
   final AppShellViewModel viewModel;
   final Future<void> Function(int count) vibratePulses;
+
+  /// Stops the screen reader when the user switches the tab; what it said
+  /// belongs to the tab before.
+  final Future<void> Function() interruptSpeech;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -85,6 +96,14 @@ class _AppShellState extends State<AppShell> {
     unawaited(_shared.cancel());
     unawaited(_locationNotes.cancel());
     super.dispose();
+  }
+
+  // Stops what the screen reader says about the old tab; the title of the new tab
+  // then takes the screen reader focus (see CandleAppBar) and is read out.
+  void _selectTab(int index) {
+    if (index == widget.viewModel.currentIndex) return;
+    unawaited(widget.interruptSpeech());
+    widget.viewModel.select(index);
   }
 
   void _showLocationNote(LocationNote note) {
@@ -206,7 +225,7 @@ class _AppShellState extends State<AppShell> {
                   visible: item.isVisible,
                   child: Expanded(
                     child: InkWell(
-                      onTap: () => widget.viewModel.select(index),
+                      onTap: () => _selectTab(index),
                       child: Semantics(
                         label: label,
                         child: Container(

@@ -44,12 +44,6 @@ class _LocationNoteEditScreenState extends State<LocationNoteEditScreen> with Se
   void initState() {
     super.initState();
     _memoController.text = _viewModel.pin.memo;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final l10n = AppLocalizations.of(context)!;
-      announceOnShow(_viewModel.isUpdate
-          ? l10n.screen_header_location_note_update_t
-          : l10n.screen_header_location_note_add_t);
-    });
   }
 
   @override

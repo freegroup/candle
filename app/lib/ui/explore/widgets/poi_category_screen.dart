@@ -48,10 +48,6 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
   void initState() {
     super.initState();
     _viewModel.load.addListener(_onLoadChanged);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final l10n = AppLocalizations.of(context)!;
-      announceOnShow(l10n.poiCategoryTitle(_viewModel.category));
-    });
   }
 
   @override

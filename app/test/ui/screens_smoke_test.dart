@@ -4,6 +4,7 @@ import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
@@ -115,6 +116,7 @@ void main() {
         Provider<PoiRepository>.value(value: FakePoiRepository(const Result.ok([]))),
         Provider<WikipediaRepository>.value(value: _Wikipedia()),
         Provider<ShareService>.value(value: _NoShare()),
+        Provider.value(value: AccessibilityService()),
         Provider<PermissionService>.value(value: _Permissions()),
         Provider.value(value: VibrationService(settingsRepository: settings)),
         Provider.value(value: LocationRepository(database: db)),

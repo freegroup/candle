@@ -1,5 +1,6 @@
 import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
 import 'package:candle/ui/settings/widgets/settings_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
@@ -32,17 +33,55 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CandleAppBarState extends State<CandleAppBar> {
+  final _titleKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    // A new screen or tab starts with the screen reader on its title, which is read out.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _titleKey.currentContext?.findRenderObject()?.sendSemanticsEvent(const FocusSemanticEvent());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    List<Widget> actions = widget.settingsEnabled
-        ? [_buildSettingsButton(context), ...?widget.actions]
-        : [...?widget.actions];
+    // TalkBack puts its focus on the first element when a screen opens: that is the
+    // title, so the user hears where they are at once (and the speech about the
+    // previous screen stops). The back button and the actions follow.
+    List<Widget> actions = [
+      for (final action in [
+        if (widget.settingsEnabled) _buildSettingsButton(context),
+        ...?widget.actions,
+      ])
+        Semantics(container: true, sortKey: const OrdinalSortKey(2), child: action),
+    ];
+
+    final route = ModalRoute.of(context);
+    final leading = (route?.impliesAppBarDismissal ?? false)
+        ? Semantics(
+            container: true,
+            sortKey: const OrdinalSortKey(1),
+            child: route is PageRoute && route.fullscreenDialog
+                ? const CloseButton()
+                : const BackButton(),
+          )
+        : null;
 
     return AppBar(
+      leading: leading,
+      // the title marks itself as header and screen name, so it sits next to the back
+      // button in the semantics tree and its sort key counts
+      excludeHeaderSemantics: true,
       title: Semantics(
+        key: _titleKey,
         header: true,
+        namesRoute: defaultTargetPlatform == TargetPlatform.iOS ||
+                defaultTargetPlatform == TargetPlatform.macOS
+            ? null
+            : true,
         sortKey: const OrdinalSortKey(0),
         label: widget.talkback,
         customSemanticsActions: widget.offerNewLocationNote

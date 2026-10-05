@@ -38,12 +38,6 @@ class _LocationEditScreenState extends State<LocationEditScreen> with SemanticAn
   void initState() {
     super.initState();
     _nameController.text = _viewModel.location.name;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final l10n = AppLocalizations.of(context)!;
-      announceOnShow(_viewModel.isUpdate
-          ? l10n.screen_header_location_update_t
-          : l10n.screen_header_location_add_t);
-    });
   }
 
   @override

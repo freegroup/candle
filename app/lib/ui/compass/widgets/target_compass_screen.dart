@@ -77,10 +77,6 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
     _alignedTimer = Timer.periodic(const Duration(seconds: 3), (_) {
       if (_viewModel.isAligned && isOnTop) unawaited(widget.vibrate());
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(
-          AppLocalizations.of(context)!.screen_header_compass_poi_t(_viewModel.targetName));
-    });
   }
 
   @override

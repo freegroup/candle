@@ -32,9 +32,6 @@ class _AddressSearchScreenState extends State<AddressSearchScreen> with Semantic
     _controller.text = widget.query;
     _controller.addListener(() => widget.viewModel.search(_controller.text));
     widget.viewModel.search(widget.query);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_address_search_t);
-    });
   }
 
   @override

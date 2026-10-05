@@ -42,9 +42,6 @@ class _LocationNotesScreenState extends State<LocationNotesScreen> with Semantic
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_location_notes_t);
-    });
   }
 
   @override

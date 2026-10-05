@@ -24,10 +24,6 @@ class _AboutScreenState extends State<AboutScreen> with SemanticAnnouncer {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AppLocalizations l10n = AppLocalizations.of(context)!;
-      announceOnShow(l10n.screen_header_about_t);
-    });
 
   }
 

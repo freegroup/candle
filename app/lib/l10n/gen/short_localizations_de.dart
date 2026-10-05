@@ -120,6 +120,8 @@ class AppLocalizationsDeShort extends AppLocalizationsDe {
   @override
   String get location_notes_placeholder_body => 'Hinweise, die Candle an einer Stelle meldet, zum Beispiel an der **Haustür**.';
   @override
+  String get radar_no_places => 'Keine Orte in dieser Richtung.';
+  @override
   String get no_location_for_category => 'Keine Orte in dieser Kategorie gefunden.';
   @override
   String get route_recording_intro => 'Namen eingeben, dann **Aufzeichnen**.';

@@ -46,9 +46,6 @@ class _LocationsScreenState extends State<LocationsScreen> with SemanticAnnounce
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_locations_t);
-    });
   }
 
   @override

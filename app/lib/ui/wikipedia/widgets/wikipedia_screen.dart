@@ -38,9 +38,6 @@ class _WikipediaScreenState extends State<WikipediaScreen> with SemanticAnnounce
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      announceOnShow(AppLocalizations.of(context)!.screen_header_wikipedia_t);
-    });
   }
 
   @override

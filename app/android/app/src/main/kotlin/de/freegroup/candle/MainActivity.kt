@@ -7,5 +7,6 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         AttestationChannel(applicationContext).register(flutterEngine.dartExecutor.binaryMessenger)
+        AccessibilityChannel(applicationContext).register(flutterEngine.dartExecutor.binaryMessenger)
     }
 }
