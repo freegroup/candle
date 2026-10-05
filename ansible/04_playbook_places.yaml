@@ -29,7 +29,8 @@
   # Next to the live file first: a server query must never read half a file
   - name: Upload the places file
     ansible.builtin.copy:
-      src: "{{ places_file }}"
+      # relative to where ansible-playbook runs (the repository root), not to this playbook
+      src: "{{ places_file | realpath }}"
       dest: /home/candle/data/places.sqlite.uploading
       owner: candle
       group: candle
