@@ -19,6 +19,7 @@ import 'package:candle/ui/locations/widgets/locations_screen.dart';
 import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/ui/routes/widgets/routes_screen.dart';
 import 'package:candle/ui/shell/view_models/app_shell_viewmodel.dart';
+import 'package:candle/ui/shell/widgets/shared_flow.dart';
 import 'package:candle/ui/location_notes/widgets/location_notes_screen.dart';
 import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,8 @@ class _AppShellState extends State<AppShell> {
       SharedLocationNote(:final pin) => buildImportLocationNoteScreen(pin),
       SharedMapsLink(:final url) => MapsLinkScreen(url: url),
     };
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => screen));
+    // only one shared-content preview on the stack (clears a previous link's screens)
+    showSharedContent(Navigator.of(context), screen);
   }
 
   @override

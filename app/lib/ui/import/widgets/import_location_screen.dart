@@ -2,11 +2,9 @@ import 'package:candle/ui/import/view_models/distance_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:candle/domain/models/location_address.dart';
-import 'package:candle/ui/core/utils/snackbar.dart';
-import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
-import 'package:candle/ui/core/utils/semantic.dart';
+import 'package:candle/ui/shell/widgets/shared_flow.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/dialog_button.dart';
@@ -25,12 +23,7 @@ class ImportLocationScreen extends StatefulWidget {
   State<ImportLocationScreen> createState() => _ScreenState();
 }
 
-class _ScreenState extends State<ImportLocationScreen> with SemanticAnnouncer {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _ScreenState extends State<ImportLocationScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -63,16 +56,15 @@ class _ScreenState extends State<ImportLocationScreen> with SemanticAnnouncer {
                   DialogButton(
                     label: l10n.button_import_location,
                     talkback: l10n.button_import_location_t,
-                    onTab: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<void>(builder: (_) => buildLocationEditScreen(a)),
-                    ),
+                    onTab: () => _replaceWith(buildLocationEditScreen(a)),
                   ),
                   DialogButton(
                     label: l10n.button_navigate_poi,
                     talkback: l10n.button_navigate_poi_t,
                     outlined: true,
-                    onTab: () => _navigate(context, a.latlng()),
+                    // like exploring a place: the target compass first, the navigation starts there
+                    onTab: () =>
+                        _replaceWith(buildTargetCompassScreen(targetName: a.name, target: a.latlng())),
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -84,18 +76,9 @@ class _ScreenState extends State<ImportLocationScreen> with SemanticAnnouncer {
     );
   }
 
-  // The import screen is replaced: after choosing an action it has no use any more.
-  void _navigate(BuildContext context, LatLng target) {
-    final position = widget.distanceViewModel.position;
-    if (position == null) {
-      showSnackbar(context, AppLocalizations.of(context)!.location_position_unavailable);
-      return;
-    }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<void>(builder: (_) => buildNavigationScreen(source: position, target: target)),
-    );
-  }
+  // The chosen screen stays part of the shared-content flow, so a new link clears it too.
+  void _replaceWith(Widget screen) =>
+      Navigator.pushReplacement(context, sharedFlowRoute(screen));
 }
 
 /// Import screen for a shared [address] with a view model for the distance to it.
