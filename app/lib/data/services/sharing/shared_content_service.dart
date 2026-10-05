@@ -73,8 +73,8 @@ class SharedContentService {
             (files) => _forward(files, controller),
             onError: (Object e) => _log.w('Sharing intent error: $e'),
           );
-      final initialLink = await appLinks.getInitialLink();
-      if (initialLink != null) _forwardUri(initialLink, controller);
+      // the stream brings the link that started the app as well; asking for it
+      // separately opened the import screen twice
       linkSubscription = appLinks.uriLinkStream.listen(
             (uri) => _forwardUri(uri, controller),
             onError: (Object e) => _log.w('App link error: $e'),

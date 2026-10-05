@@ -27,7 +27,13 @@ class DistanceViewModel extends ChangeNotifier {
   /// Meters to [target], null until the first GPS position.
   int? get distance => _distance;
 
+  LatLng? _position;
+
+  /// The user's position, null until the first GPS position.
+  LatLng? get position => _position;
+
   void _onPosition(LatLng position) {
+    _position = position;
     _distance = calculateDistance(position, target).round();
     notifyListeners();
   }

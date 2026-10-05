@@ -4,6 +4,10 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.12 (60)
+
+- Geteilte Orte: Der Link öffnet den Import nur noch einmal. Statt „Kompass“ gibt es „Navigation starten“.
+
 ## 1.5.11 (59)
 
 - Navigation: Der Gebäude-Hinweis kommt jetzt auch bei gutem GPS-Empfang, wenn man deutlich innerhalb eines Gebäudes steht, aber nicht direkt an der Hauswand.

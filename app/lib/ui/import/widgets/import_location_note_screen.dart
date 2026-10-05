@@ -2,7 +2,9 @@ import 'package:candle/ui/import/view_models/distance_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:candle/domain/models/location_note.dart';
-import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
+import 'package:candle/ui/core/utils/snackbar.dart';
+import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:candle/ui/location_notes/widgets/location_note_edit_screen.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -64,15 +66,10 @@ class _ScreenState extends State<ImportLocationNoteScreen> with SemanticAnnounce
                     ),
                   ),
                   DialogButton(
-                    label: l10n.button_compass,
-                    talkback: l10n.button_compass_t,
+                    label: l10n.button_navigate_poi,
+                    talkback: l10n.button_navigate_poi_t,
                     outlined: true,
-                    onTab: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (_) => buildTargetCompassScreen(targetName: note.name, target: note.latlng()),
-                      ),
-                    ),
+                    onTab: () => _navigate(context, note.latlng()),
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -81,6 +78,19 @@ class _ScreenState extends State<ImportLocationNoteScreen> with SemanticAnnounce
           ),
         ),
       ),
+    );
+  }
+
+  // The import screen is replaced: after choosing an action it has no use any more.
+  void _navigate(BuildContext context, LatLng target) {
+    final position = widget.distanceViewModel.position;
+    if (position == null) {
+      showSnackbar(context, AppLocalizations.of(context)!.location_position_unavailable);
+      return;
+    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<void>(builder: (_) => buildNavigationScreen(source: position, target: target)),
     );
   }
 }
