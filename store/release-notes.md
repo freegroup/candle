@@ -4,6 +4,8 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.8 (56)
+
 - TalkBack: Auch Kompass und Zielkompass brechen beim Drehen die alte Ansage ab. Willkommen und Berechtigungen starten mit der Überschrift.
 
 ## 1.5.7 (55)
