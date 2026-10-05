@@ -28,7 +28,7 @@ ansible-galaxy collection install community.general   # once
 ansible-playbook -i ./ansible/inventory.ini ./ansible/01_playbook_setup.yaml
 ansible-playbook -i ./ansible/inventory.ini ./ansible/02_playbook_deploy.yaml
 ansible-playbook -i ./ansible/inventory.ini ./ansible/03_playbook_letsencrypt.yaml
-ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml -e places_file=gis-test/dach.sqlite  # places data, see server/tools/README.md
+ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml  # places data + weekly self-update, see server/tools/README.md
 ```
 
 - `01` - node (nodesource), pm2, user, firewall (22/80/443 only), SSH key-only, automatic security updates, nginx

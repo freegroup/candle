@@ -1,22 +1,32 @@
-# Puts a places file on the server: the data of POST /v1/overpass (see
-# server/src/places/). The file is built on the Mac with server/tools/build_pois.py,
-# e.g. for DACH (see server/tools/README.md):
+# The places data of POST /v1/overpass (see server/src/places/ and
+# server/tools/README.md). Run after 02_playbook_deploy.yaml, which brings the
+# tools to the server.
 #
-#   ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml \
-#     -e places_file=gis-test/dach.sqlite
+# Sets up the weekly self-update (systemd timer candle-places-update, Sunday
+# night): it downloads the Geofabrik extract of `places_region`, builds the file
+# and puts it live. The server picks up a new file with the next query.
 #
-# The server picks up the new file with the next query; no restart needed.
-# Later the server builds the file itself every week and this playbook is only
-# needed for a first or a manual upload.
-- name: Upload the places data
+#   ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml
+#
+# Options:
+#   -e update_now=true                        start an update right away
+#   -e places_file=gis-test/dach.sqlite       upload a file built on the Mac
+#   -e places_region=europe/germany           another Geofabrik area (default DACH)
+- name: Places data
   hosts: candle
+
+  vars:
+    places_region: europe/dach
+    update_now: false
 
   tasks:
 
-  - name: Require the file to upload
-    ansible.builtin.assert:
-      that: places_file is defined
-      fail_msg: "Pass the file to upload: -e places_file=path/to/places.sqlite"
+  - name: Install Python venv for the build tool
+    ansible.builtin.apt:
+      name: [python3-venv, curl]
+      state: present
+      update_cache: true
+      cache_valid_time: 86400
 
   - name: Create the data directory
     ansible.builtin.file:
@@ -26,8 +36,32 @@
       group: candle
       mode: '0755'
 
+  - name: Install the build tool's Python packages (pyosmium)
+    become: true
+    become_user: candle
+    ansible.builtin.pip:
+      requirements: /home/candle/candle/server/tools/requirements.txt
+      virtualenv: /home/candle/places-venv
+      virtualenv_command: python3 -m venv
+
+  - name: Write the update service and its weekly timer
+    ansible.builtin.template:
+      src: "templates/{{ item }}.j2"
+      dest: "/etc/systemd/system/{{ item }}"
+      mode: '0644'
+    loop:
+      - candle-places-update.service
+      - candle-places-update.timer
+
+  - name: Enable the weekly update
+    ansible.builtin.systemd:
+      name: candle-places-update.timer
+      enabled: true
+      state: started
+      daemon_reload: true
+
   # Next to the live file first: a server query must never read half a file
-  - name: Upload the places file
+  - name: Upload a places file built on the Mac
     ansible.builtin.copy:
       # relative to where ansible-playbook runs (the repository root), not to this playbook
       src: "{{ places_file | realpath }}"
@@ -35,9 +69,16 @@
       owner: candle
       group: candle
       mode: '0644'
+    when: places_file is defined
 
-  - name: Put the new places file live
+  - name: Put the uploaded places file live
     ansible.builtin.command: mv /home/candle/data/places.sqlite.uploading /home/candle/data/places.sqlite
+    when: places_file is defined
+
+  # Takes about an hour; it runs on in the background (journalctl -u candle-places-update)
+  - name: Start an update right away
+    ansible.builtin.command: systemctl start --no-block candle-places-update.service
+    when: update_now | bool
 
   # The site has the request limit of the places endpoint
   - name: Write the nginx site

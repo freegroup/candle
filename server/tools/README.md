@@ -18,7 +18,28 @@ venv/bin/python ../server/tools/build_pois.py dach-latest.osm.pbf dach.poly dach
 
 It prints its progress every 50 million nodes. Berlin takes under a minute.
 
-## Put it on the server
+## On the server: weekly self-update
+
+`ansible/04_playbook_places.yaml` sets up the systemd timer
+`candle-places-update` (Sunday night). It runs `update_places.sh`: downloads the
+Geofabrik extract and outline of `places_region` (default `europe/dach`), builds
+the file next to the live one with this tool, renames it into place and deletes
+the extract. When a step fails the live file stays as it is.
+
+```bash
+ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml                      # set up
+ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml -e update_now=true   # and update now
+```
+
+On the server:
+
+```bash
+systemctl start candle-places-update          # update now
+systemctl list-timers candle-places-update    # when it runs next
+journalctl -u candle-places-update            # how it went (with the build progress)
+```
+
+## Upload a file built on the Mac
 
 ```bash
 ansible-playbook -i ./ansible/inventory.ini ./ansible/04_playbook_places.yaml -e places_file=gis-test/dach.sqlite

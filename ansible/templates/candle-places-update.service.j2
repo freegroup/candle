@@ -1,0 +1,20 @@
+# Managed by ansible - changes on the server are overwritten.
+# Builds the places data of POST /v1/overpass (server/tools/update_places.sh).
+# Run it now by hand:  systemctl start candle-places-update
+# See how it went:     journalctl -u candle-places-update
+
+[Unit]
+Description=Candle: update the places data from OpenStreetMap (Geofabrik {{ places_region }})
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=candle
+Group=candle
+Environment=PLACES_REGION={{ places_region }}
+ExecStart=/bin/bash /home/candle/candle/server/tools/update_places.sh
+# one CPU core only: the API comes first, the build takes what is left
+Nice=19
+IOSchedulingClass=idle
+TimeoutStartSec=6h

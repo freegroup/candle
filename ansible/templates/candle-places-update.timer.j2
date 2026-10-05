@@ -1,0 +1,14 @@
+# Managed by ansible - changes on the server are overwritten.
+
+[Unit]
+Description=Candle: weekly update of the places data
+
+[Timer]
+OnCalendar=Sun *-*-* 03:00:00
+# Geofabrik gets many requests on the hour
+RandomizedDelaySec=30min
+# catch up after the server was off at that time
+Persistent=true
+
+[Install]
+WantedBy=timers.target
