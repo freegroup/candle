@@ -84,6 +84,19 @@ abstract final class OverpassConfig {
     'https://overpass-api.de/api/interpreter',
   ];
 
-  /// Longest wait for one endpoint before the next one is asked.
-  static const timeout = Duration(seconds: 10);
+  /// Longest wait for one endpoint before the next one is asked. Matches the
+  /// `[timeout:25]` of the queries: the fallback server often needs 13-16 s for
+  /// the radar (all categories, 2 km), so a shorter wait made it fail every time.
+  static const timeout = Duration(seconds: 25);
+
+  /// How often a query is tried in all (each time every endpoint), before the
+  /// user gets the error and can try again by hand.
+  static const attempts = 3;
+
+  /// Pause before the next attempt; the servers are often busy only for a moment.
+  static const retryPause = Duration(seconds: 3);
+
+  /// Longest wait for a query in all; after it the error comes even if not all
+  /// attempts ran, so nobody waits minutes in front of a spinner.
+  static const totalTimeout = Duration(seconds: 60);
 }

@@ -15,11 +15,16 @@ final _log = Logger();
 /// The public instances are frequently overloaded (429/5xx) or slow. Each query
 /// goes to the endpoint that answered fastest recently ([EndpointRanking]) and
 /// falls back to the next one if it fails; callers never see which one answered.
+/// When every endpoint failed, the query is tried again after a short pause, up
+/// to [attempts] times and at most [totalTimeout] in all.
 class OverpassClient {
   OverpassClient({
     required this._client,
     List<String> endpoints = OverpassConfig.endpoints,
     this.timeout = OverpassConfig.timeout,
+    this.attempts = OverpassConfig.attempts,
+    this.retryPause = OverpassConfig.retryPause,
+    this.totalTimeout = OverpassConfig.totalTimeout,
   }) : _ranking = EndpointRanking(endpoints);
 
   final http.Client _client;
@@ -28,16 +33,54 @@ class OverpassClient {
   /// Longest wait for one endpoint before the next one is asked.
   final Duration timeout;
 
+  /// How often the query is tried in all, each time with every endpoint.
+  final int attempts;
+
+  /// Pause before the next attempt.
+  final Duration retryPause;
+
+  /// Longest wait for the query in all, attempts and pauses included.
+  final Duration totalTimeout;
+
   /// Runs an Overpass QL query that returns JSON (`[out:json]`).
   Future<Result<List<OverpassElement>>> query(String overpassQl) async {
+    final elapsed = Stopwatch()..start();
+    var result = await _askEndpoints(overpassQl, elapsed);
+    for (var attempt = 2; attempt <= attempts; attempt++) {
+      if (result is Ok || !_worthRetrying(result)) return result;
+      if (elapsed.elapsed + retryPause >= totalTimeout) return result;
+      _log.w('Overpass attempt ${attempt - 1} of $attempts failed, trying again');
+      await Future<void>.delayed(retryPause);
+      result = await _askEndpoints(overpassQl, elapsed);
+    }
+    return result;
+  }
+
+  /// A broken query (4xx) or an unreadable answer stays broken; only busy or
+  /// unreachable servers are worth another try.
+  static bool _worthRetrying(Result<List<OverpassElement>> result) {
+    if (result is! Error<List<OverpassElement>>) return false;
+    final error = result.error;
+    if (error is! OverpassException) return false;
+    final status = error.statusCode;
+    return status == null || status == 429 || status >= 500;
+  }
+
+  /// One attempt: every endpoint in turn until one answers.
+  Future<Result<List<OverpassElement>>> _askEndpoints(String overpassQl, Stopwatch elapsed) async {
     Exception lastError = Exception('No Overpass endpoint configured');
 
     for (final endpoint in _ranking.ordered) {
+      final left = totalTimeout - elapsed.elapsed;
+      if (left <= Duration.zero) {
+        lastError = OverpassException(endpoint, null, 'timeout');
+        break;
+      }
       final stopwatch = Stopwatch()..start();
       try {
         final response = await _client
             .post(Uri.parse(endpoint), headers: HttpConfig.headers, body: {'data': overpassQl})
-            .timeout(timeout);
+            .timeout(left < timeout ? left : timeout);
 
         if (response.statusCode == 200) {
           _ranking.recordSuccess(endpoint, stopwatch.elapsed);

@@ -81,8 +81,62 @@ void main() {
     final client = OverpassClient(
       client: MockClient((_) async => throw http.ClientException('offline')),
       endpoints: ['https://a', 'https://b'],
+      retryPause: Duration.zero,
     );
     expect(await client.query('q'), isA<Error<List<OverpassElement>>>());
+  });
+
+  test('tries again when every endpoint failed, and succeeds when a server is free again',
+      () async {
+    var calls = 0;
+    final client = OverpassClient(
+      client: MockClient((_) async {
+        calls++;
+        return calls <= 2 ? http.Response('busy', 504) : _ok();
+      }),
+      endpoints: ['https://a', 'https://b'],
+      retryPause: Duration.zero,
+    );
+
+    expect(await client.query('q'), isA<Ok<List<OverpassElement>>>());
+    expect(calls, 3, reason: 'both endpoints in the first attempt, then one in the second');
+  });
+
+  test('gives up after the configured attempts', () async {
+    var calls = 0;
+    final client = OverpassClient(
+      client: MockClient((_) async {
+        calls++;
+        return http.Response('busy', 504);
+      }),
+      endpoints: ['https://a', 'https://b'],
+      attempts: 3,
+      retryPause: Duration.zero,
+    );
+
+    expect(await client.query('q'), isA<Error<List<OverpassElement>>>());
+    expect(calls, 6, reason: '3 attempts with 2 endpoints each');
+  });
+
+  test('stops at the total time limit, even before all attempts ran', () async {
+    var calls = 0;
+    final client = OverpassClient(
+      client: MockClient((_) async {
+        calls++;
+        await Future<void>.delayed(const Duration(seconds: 1)); // hanging server
+        return _ok();
+      }),
+      endpoints: ['https://a', 'https://b'],
+      timeout: const Duration(milliseconds: 100),
+      attempts: 3,
+      retryPause: Duration.zero,
+      totalTimeout: const Duration(milliseconds: 250),
+    );
+
+    final stopwatch = Stopwatch()..start();
+    expect(await client.query('q'), isA<Error<List<OverpassElement>>>());
+    expect(calls, lessThan(6));
+    expect(stopwatch.elapsed, lessThan(const Duration(seconds: 1)));
   });
 
   test('after a failure the next query goes to the other endpoint first', () async {
