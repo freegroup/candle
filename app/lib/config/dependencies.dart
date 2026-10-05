@@ -10,6 +10,7 @@ import 'package:candle/data/repositories/poi/poi_repository_remote.dart';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
@@ -63,6 +64,10 @@ List<SingleChildWidget> get providers => [
       Provider(create: (context) => OrsClient(client: context.read())),
       Provider(create: (context) => RoutingRepository(ors: context.read())),
       Provider(create: (_) => LocationService()),
+      Provider(
+        create: (context) =>
+            IndoorRepository(locationService: context.read(), overpassClient: context.read()),
+      ),
       Provider(create: (_) => CompassService()),
       Provider(create: (context) => VibrationService(settingsRepository: context.read())),
       Provider<PoiRepository>(create: (context) => PoiRepositoryRemote(overpass: context.read())),

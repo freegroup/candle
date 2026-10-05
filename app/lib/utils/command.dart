@@ -32,6 +32,9 @@ abstract class Command<T> extends ChangeNotifier {
 
   bool _running = false;
 
+  // An action can end after the owner disposed the command (e.g. the user left the screen).
+  bool _disposed = false;
+
   /// True when the action is running.
   bool get running => _running;
 
@@ -68,8 +71,14 @@ abstract class Command<T> extends ChangeNotifier {
       _result = await action();
     } finally {
       _running = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }
 

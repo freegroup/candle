@@ -49,6 +49,30 @@ abstract final class LocationNoteConfig {
   static const vibrationCount = 3;
 }
 
+abstract final class IndoorConfig {
+  /// GPS accuracy (radius in meters) that counts as outdoors; better is never indoors.
+  static const goodAccuracy = 10.0;
+
+  /// GPS accuracy (meters) that counts as indoors; in between it is scaled.
+  static const badAccuracy = 30.0;
+
+  /// Longest wait for a fresh GPS fix; none in time counts as bad accuracy.
+  static const fixTimeout = Duration(seconds: 5);
+
+  /// Building outlines within this many meters are checked.
+  static const buildingSearchRadius = 30;
+
+  /// Longest wait for the building outlines; without them only the accuracy counts.
+  static const mapTimeout = Duration(seconds: 4);
+
+  /// Share of the GPS accuracy and of "inside a building outline" in the probability.
+  static const accuracyWeight = 0.6;
+  static const buildingWeight = 0.4;
+
+  /// From this probability on the user counts as indoors (or with poor GPS reception).
+  static const threshold = 0.6;
+}
+
 abstract final class OrsConfig {
   /// openrouteservice servers, asked in this order until one answers.
   /// api.openrouteservice.org is deprecated in favour of api.heigit.org (same key).

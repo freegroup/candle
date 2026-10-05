@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:candle/config/app_config.dart';
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
@@ -9,6 +10,7 @@ import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
 import 'package:candle/domain/models/location_note.dart';
+import 'package:candle/utils/command.dart';
 import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
@@ -24,6 +26,7 @@ class NavigationViewModel extends ChangeNotifier {
     required RoutingRepository routingRepository,
     required LocationNoteRepository locationNoteRepository,
     required LocationNoteAnnouncer locationNoteAnnouncer,
+    required IndoorRepository indoorRepository,
     required LocationService locationService,
     required CompassService compassService,
     required LatLng source,
@@ -34,11 +37,14 @@ class NavigationViewModel extends ChangeNotifier {
         _position = source {
     // the announcer reports the location notes on the way
     _announcer.startNavigation();
+    checkIndoors = Command0(() async => Result.ok(await indoorRepository.isProbablyIndoors()))
+      ..execute();
     _subscriptions = [
       locationService.positions().listen(_onPosition, onError: _logError),
       compassService.headings().listen(_onHeading, onError: _logError),
     ];
     unawaited(locationNoteRepository.watchAll().first.then((pins) {
+      if (_disposed) return;
       _locationNotes = pins;
       notifyListeners();
     }, onError: _logError));
@@ -48,6 +54,13 @@ class NavigationViewModel extends ChangeNotifier {
   final LatLng target;
   final RoutingRepository _routing;
   final LocationNoteAnnouncer _announcer;
+
+  // The notes and a route can arrive after the user left the navigation.
+  bool _disposed = false;
+
+  /// Runs once when the navigation starts: whether the user is probably inside a
+  /// building (or has poor GPS reception), so the first directions are unreliable.
+  late final Command0<bool> checkIndoors;
   late final List<StreamSubscription<Object>> _subscriptions;
 
   Route? _route;
@@ -138,6 +151,7 @@ class NavigationViewModel extends ChangeNotifier {
     _calculating = true;
     final result = await _routing.walkingRoute(_position, target);
     _calculating = false;
+    if (_disposed) return;
     switch (result) {
       case Ok(:final value):
         _route = value;
@@ -204,10 +218,12 @@ class NavigationViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
     for (final subscription in _subscriptions) {
       unawaited(subscription.cancel());
     }
     _announcer.stopNavigation();
+    checkIndoors.dispose();
     super.dispose();
   }
 }

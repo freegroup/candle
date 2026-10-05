@@ -3,6 +3,7 @@ import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/repositories/recording/recording_repository.dart';
 import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
@@ -50,6 +51,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
+import '../fakes/fake_overpass_client.dart';
 import '../fakes/fake_compass_service.dart';
 import '../fakes/fake_geocoding_repository.dart';
 import '../fakes/fake_location_service.dart';
@@ -111,6 +113,10 @@ void main() {
       providers: [
         ChangeNotifierProvider.value(value: settings),
         Provider<LocationService>.value(value: location),
+        Provider.value(
+          value: IndoorRepository(
+              locationService: location, overpassClient: FakeOverpassClient(const Result.ok([]))),
+        ),
         Provider<CompassService>.value(value: FakeCompassService()),
         Provider<GeocodingRepository>.value(value: FakeGeocodingRepository()..address = _address),
         Provider<PoiRepository>.value(value: FakePoiRepository(const Result.ok([]))),

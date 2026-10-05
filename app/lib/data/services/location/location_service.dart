@@ -19,11 +19,13 @@ class LocationService {
   LocationService({
     PositionSource? source,
     Future<Result<LatLng>> Function()? currentPositionSource,
+    Future<Result<double>> Function(Duration timeLimit)? accuracySource,
     DateTime Function()? now,
     this._keepAlive = const Duration(seconds: 20),
     this._maxPositionAge = const Duration(seconds: 30),
   })  : _source = source ?? _platformPositions,
         _currentPositionSource = currentPositionSource ?? _platformCurrentPosition,
+        _accuracySource = accuracySource ?? _platformAccuracy,
         _now = now ?? DateTime.now;
 
   static const _settings = LocationSettings(accuracy: LocationAccuracy.best, distanceFilter: 5);
@@ -36,6 +38,7 @@ class LocationService {
 
   final PositionSource _source;
   final Future<Result<LatLng>> Function() _currentPositionSource;
+  final Future<Result<double>> Function(Duration timeLimit) _accuracySource;
   final DateTime Function() _now;
 
   final _listeners = <_Listener>[];
@@ -52,6 +55,10 @@ class LocationService {
     if (_freshPosition case final position?) return Result.ok(position);
     return _currentPositionSource();
   }
+
+  /// Accuracy (radius in meters) of a fresh GPS fix; an error when no fix comes
+  /// within [timeLimit], which is typical indoors.
+  Future<Result<double>> currentAccuracy({required Duration timeLimit}) => _accuracySource(timeLimit);
 
   /// Position updates while someone listens; starts with the last position if it is fresh.
   Stream<LatLng> positions() => _listen(null);
@@ -136,6 +143,17 @@ class LocationService {
   static Stream<LatLng> _platformPositions(LocationSettings settings) =>
       Geolocator.getPositionStream(locationSettings: settings)
           .map((p) => LatLng(p.latitude, p.longitude));
+
+  static Future<Result<double>> _platformAccuracy(Duration timeLimit) async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.best, timeLimit: timeLimit),
+      );
+      return Result.ok(position.accuracy);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+  }
 
   static Future<Result<LatLng>> _platformCurrentPosition() async {
     try {

@@ -1,7 +1,11 @@
+import 'package:latlong2/latlong.dart';
+
 /// A single OSM element returned by the Overpass API.
 ///
 /// Nodes carry their own coordinates, ways and relations only a `center`
-/// (requested with `out center;`). Both end up in [lat]/[lon].
+/// (requested with `out center;`). Both end up in [lat]/[lon]. Ways requested
+/// with `out geom;` carry their points in [geometry] instead; [lat]/[lon] is
+/// then their first point.
 final class OverpassElement {
   const OverpassElement({
     required this.type,
@@ -9,6 +13,7 @@ final class OverpassElement {
     required this.lat,
     required this.lon,
     required this.tags,
+    this.geometry = const [],
   });
 
   final String type;
@@ -17,12 +22,22 @@ final class OverpassElement {
   final double lon;
   final Map<String, String> tags;
 
+  /// The points of a way, e.g. the outline of a building.
+  final List<LatLng> geometry;
+
   /// Returns null for elements without a position (e.g. a relation without center).
   static OverpassElement? fromJson(Map<String, Object?> json) {
+    final points = json['geometry'];
+    final geometry = [
+      if (points is List<Object?>)
+        for (final point in points.whereType<Map<String, Object?>>())
+          if (point['lat'] case final num lat)
+            if (point['lon'] case final num lon) LatLng(lat.toDouble(), lon.toDouble()),
+    ];
     final center = json['center'];
     final position = center is Map<String, Object?> ? center : json;
-    final lat = position['lat'];
-    final lon = position['lon'];
+    final lat = position['lat'] ?? geometry.firstOrNull?.latitude;
+    final lon = position['lon'] ?? geometry.firstOrNull?.longitude;
     if (lat is! num || lon is! num) return null;
 
     final tags = json['tags'];
@@ -34,6 +49,7 @@ final class OverpassElement {
       tags: tags is Map<String, Object?>
           ? {for (final e in tags.entries) e.key: '${e.value}'}
           : const {},
+      geometry: geometry,
     );
   }
 }

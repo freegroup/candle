@@ -1,4 +1,5 @@
 import 'package:candle/data/repositories/routing/routing_repository.dart';
+import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
@@ -17,6 +18,7 @@ import 'package:shared_preferences_platform_interface/shared_preferences_async_p
 
 import '../../fakes/fake_compass_service.dart';
 import '../../fakes/fake_location_service.dart';
+import '../../fakes/fake_overpass_client.dart';
 
 // A straight route north along 8° east, one point every ~111 m.
 Route _northRoute(double fromLat, int count, [double lon = 8]) => Route(name: 'r', points: [
@@ -68,6 +70,8 @@ void main() {
         routingRepository: routing,
         locationNoteRepository: pins,
         locationNoteAnnouncer: announcer,
+        indoorRepository: IndoorRepository(
+            locationService: location, overpassClient: FakeOverpassClient(const Result.ok([]))),
         locationService: location,
         compassService: compass,
         source: source,
@@ -159,5 +163,19 @@ void main() {
     await walkTo(50);
     await walkTo(50.001);
     expect(reached, ['Stairs']);
+  });
+
+  test('checks once at the start whether the user is probably indoors', () async {
+    location.accuracy = const Result.ok(40);
+    final viewModel = create(route: _northRoute(50, 4));
+    await pumpEventQueue();
+    expect((viewModel.checkIndoors.result! as Ok<bool>).value, isTrue);
+    viewModel.dispose();
+  });
+
+  test('leaving right after the start is no error', () async {
+    final viewModel = create();
+    viewModel.dispose();
+    await pumpEventQueue();
   });
 }

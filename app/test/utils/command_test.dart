@@ -40,4 +40,13 @@ void main() {
     expect(command.error, isTrue);
     expect((command.result! as Error<void>).error.toString(), contains('boom'));
   });
+
+  test('an action that ends after dispose does not notify the disposed command', () async {
+    final completer = Completer<Result<void>>();
+    final command = Command0<void>(() => completer.future);
+    final running = command.execute();
+    command.dispose();
+    completer.complete(const Result.ok(null));
+    await running;
+  });
 }

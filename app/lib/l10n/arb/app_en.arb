@@ -427,6 +427,7 @@
   "location_notes_placeholder_header": "No location notes yet.",
   "location_notes_placeholder_body": "A location note is a hint tied to a spot, for example \"stairs after the door\". When you reach that spot while Candle is open, Candle tells you the hint automatically. Add location notes at important spots like the **front door** or the **nearest crosswalk**.",
 
+  "navigation_indoor_hint": "Probably indoors or poor GPS reception. Leave the building the way you usually do; until then the directions are inaccurate.",
   "radar_no_places": "No places in this direction. Keep turning.",
   "no_location_for_category": "It seems we've come up short... We couldn't find any places for the selected category.",
 

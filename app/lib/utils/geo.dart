@@ -91,3 +91,20 @@ int? snapToDirection(num heading) {
   final nearest = (heading / 45).round() % 8 * 45;
   return angleBetween(heading, nearest) <= snapRange ? nearest : null;
 }
+
+/// Whether [point] lies inside the closed [polygon] (ray casting; fine for the
+/// small areas of buildings, where latitude and longitude act as plane coordinates).
+bool isInsidePolygon(LatLng point, List<LatLng> polygon) {
+  var inside = false;
+  for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    final a = polygon[i];
+    final b = polygon[j];
+    if ((a.latitude > point.latitude) != (b.latitude > point.latitude) &&
+        point.longitude <
+            (b.longitude - a.longitude) * (point.latitude - a.latitude) / (b.latitude - a.latitude) +
+                a.longitude) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}

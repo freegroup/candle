@@ -4,6 +4,8 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+- Navigation: Startet man sie vermutlich in einem Gebäude oder bei schlechtem GPS-Empfang, weist Candle einmal darauf hin, das Gebäude auf gewohntem Weg zu verlassen.
+
 ## 1.5.9 (57)
 
 - Kompasse: Bei einer neuen Richtung verstummt die alte Ansage sofort, Vibration und neue Ansage folgen ohne Pause.

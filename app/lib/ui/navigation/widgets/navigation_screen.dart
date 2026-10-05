@@ -13,6 +13,8 @@ import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/route_map_osm.dart';
 import 'package:candle/ui/core/widgets/target_reached.dart';
 import 'package:candle/ui/core/widgets/turn_by_turn.dart';
+import 'package:candle/ui/core/utils/snackbar.dart';
+import 'package:candle/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +27,7 @@ Widget buildNavigationScreen({required LatLng source, required LatLng target, mo
         routingRepository: context.read(),
         locationNoteRepository: context.read(),
         locationNoteAnnouncer: context.read(),
+        indoorRepository: context.read(),
         locationService: context.read(),
         compassService: context.read(),
         source: source,
@@ -61,12 +64,14 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
     super.initState();
     ScreenWakeService.keepOn(true);
     _viewModel.addListener(_onChanged);
+    _viewModel.checkIndoors.addListener(_onIndoorsChecked);
   }
 
   @override
   void dispose() {
     ScreenWakeService.keepOn(false);
     _viewModel.removeListener(_onChanged);
+    _viewModel.checkIndoors.removeListener(_onIndoorsChecked);
     super.dispose();
   }
 
@@ -84,6 +89,13 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
     }
   }
 
+
+  // A one-time hint, like the one of the compass when the phone is not held flat.
+  void _onIndoorsChecked() {
+    if (_viewModel.checkIndoors.result case Ok(value: true) when isOnTop) {
+      showSnackbar(context, AppLocalizations.of(context)!.navigation_indoor_hint);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
