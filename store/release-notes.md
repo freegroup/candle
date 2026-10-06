@@ -4,6 +4,11 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.13 (61)
+
+- Navigation: Neue Einstellung „Ansagen bei der Navigation“: „Ausführlich“ wie bisher oder „Kurz“ („50 Meter, links“). Verlassen Sie die Route, sagt Candle das an, veraltete Anweisungen werden abgebrochen.
+- TalkBack: Hinweise wie „Ort wurde gespeichert“ gehen nicht mehr verloren, sie unterbrechen die laufende Ansage.
+
 ## 1.5.12 (60)
 
 - Geteilte Orte: Der Link öffnet den Import nur noch einmal. Statt „Kompass“ gibt es „Navigation starten“.
