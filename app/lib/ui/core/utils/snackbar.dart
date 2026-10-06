@@ -1,22 +1,33 @@
 import 'dart:async';
 
 import 'package:candle/config/app_config.dart';
+import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 typedef _SnackBarController = ScaffoldFeatureController<SnackBar, SnackBarClosedReason>;
 
 /// The [sticky] snack bar on screen, null when none is shown.
 _SnackBarController? _sticky;
 
+// Not from the providers: snack bars are shown from everywhere, also in tests
+// without them; the service holds no state.
+final _accessibility = AccessibilityService();
+
 /// Shows [message] at the bottom of the screen for [SnackbarConfig.duration]; a tap closes it.
+///
+/// With a screen reader the message is announced at once, interrupting what the
+/// screen reader says: it is mostly important, and a snack bar alone is read out
+/// only when the screen reader has nothing else to say.
 ///
 /// A [sticky] message replaces the one on screen and, without a screen reader,
 /// stays until it is tapped, the next message comes or the user leaves the screen
 /// it was shown on.
 void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
   log.d(message);
+  final screenReader = MediaQuery.accessibleNavigationOf(context);
   ThemeData theme = Theme.of(context);
   final messenger = ScaffoldMessenger.of(context);
   if (sticky || _sticky != null) messenger.removeCurrentSnackBar();
@@ -41,11 +52,15 @@ void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      message,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyLarge
-                          ?.copyWith(fontWeight: FontWeight.bold, color: foreground),
+                    // announced instead (see below), so it is not read out twice
+                    child: ExcludeSemantics(
+                      excluding: screenReader,
+                      child: Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.bold, color: foreground),
+                      ),
                     ),
                   ),
                   if (sticky)
@@ -64,6 +79,7 @@ void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
       behavior: SnackBarBehavior.floating,
     ),
   );
+  if (screenReader) unawaited(_announce(context, message));
   if (!sticky) return;
 
   _sticky = controller;
@@ -76,6 +92,14 @@ void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
       if (_sticky == controller) messenger.removeCurrentSnackBar();
     }));
   }
+}
+
+Future<void> _announce(BuildContext context, String message) async {
+  // taken before waiting: the screen may be gone by then
+  final view = View.of(context);
+  final direction = Directionality.of(context);
+  await _accessibility.interrupt();
+  await SemanticsService.sendAnnouncement(view, message, direction);
 }
 
 void showSnackbarAndNavigateBack(BuildContext context, String message) {

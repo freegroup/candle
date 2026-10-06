@@ -1,6 +1,7 @@
 import 'package:candle/config/app_config.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -63,6 +64,46 @@ void main() {
 
     await waitLongerThanDuration(tester);
     expect(find.text('Stairs'), findsNothing);
+  });
+
+  testWidgets('with a screen reader a message interrupts it and is announced once', (tester) async {
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(accessibleNavigation: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    // what happens to the screen reader, in order
+    final calls = <String>[];
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      const MethodChannel('candle/accessibility'),
+      (call) async {
+        calls.add(call.method);
+        return null;
+      },
+    );
+    tester.binding.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(
+      SystemChannels.accessibility,
+      (message) async {
+        final map = message! as Map<Object?, Object?>;
+        if (map['type'] == 'announce') {
+          calls.add('announce ${(map['data']! as Map<Object?, Object?>)['message']}');
+        }
+        return null;
+      },
+    );
+    addTearDown(() {
+      tester.binding.defaultBinaryMessenger
+          .setMockMethodCallHandler(const MethodChannel('candle/accessibility'), null);
+      tester.binding.defaultBinaryMessenger
+          .setMockDecodedMessageHandler<Object?>(SystemChannels.accessibility, null);
+    });
+    final semantics = tester.ensureSemantics();
+    await openScreen(tester);
+
+    showSnackbar(screen, 'Ort gespeichert');
+    await tester.pumpAndSettle();
+    expect(calls, ['interrupt', 'announce Ort gespeichert']);
+    // the visible text is not read out a second time
+    expect(find.bySemanticsLabel('Ort gespeichert'), findsNothing);
+    semantics.dispose();
   });
 
   testWidgets('a tap closes a sticky message, which shows an X', (tester) async {
