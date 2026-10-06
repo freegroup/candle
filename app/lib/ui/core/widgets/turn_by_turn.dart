@@ -1,26 +1,17 @@
+import 'package:candle/domain/models/navigation_guidance.dart';
 import 'package:candle/ui/core/icons/direction_arrow.dart';
 import 'package:candle/ui/core/icons/direction_base.dart';
 import 'package:candle/l10n/helper.dart';
-import 'package:candle/domain/models/navigation_point.dart';
-import 'package:candle/utils/geo.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 
+/// The next step of a navigation: meters to the next waypoint, an arrow and a
+/// sentence for the turn there. Shows the values of [guidance], the same ones
+/// the announcements use.
 class TurnByTurnInstructionWidget extends StatelessWidget {
-  final LatLng? currentCoord;
-  final NavigationPoint? waypoint1;
-  final NavigationPoint? waypoint2;
-  final bool isAligned;
-  final int bearing;
+  final NavigationGuidance guidance;
 
-  const TurnByTurnInstructionWidget(
-      {this.currentCoord,
-      this.waypoint1,
-      this.waypoint2,
-      super.key,
-      required this.isAligned,
-      required this.bearing});
+  const TurnByTurnInstructionWidget({super.key, required this.guidance});
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +19,12 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     String instruction = "";
-    int mapRotation = 0;
-    int distance = 0;
-    if (currentCoord != null && waypoint1 != null) {
-      distance = calculateDistance(currentCoord!, waypoint1!.latlng()).toInt();
-      int angle1 = calculateNorthBearing(currentCoord!, waypoint1!.latlng());
-      if (waypoint2 != null && waypoint1 != waypoint2) {
-        int angle2 = calculateNorthBearing(waypoint1!.latlng(), waypoint2!.latlng());
-        instruction = sayNavigationInstruction(context, distance, angle1 - angle2);
-        mapRotation = angle1 - angle2;
-      } else {
-        instruction = sayNavigationInstruction(context, distance, 0);
-      }
+    if (guidance.hasWaypoint) {
+      instruction = sayNavigationInstruction(context, guidance.distanceToWaypoint, guidance.turnAngle);
     }
 
     return Semantics(
-      label: "${sayRotateToWaypoint(context, bearing, isAligned)} $instruction",
+      label: "${sayRotateToWaypoint(context, guidance.waypointRotation, guidance.isAligned)} $instruction",
       child: ExcludeSemantics(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +41,7 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
                       width: 80,
                     ),
                     DirectionArrowIcon(
-                      rotationDegrees: -mapRotation,
+                      rotationDegrees: -guidance.turnAngle,
                       height: 80,
                       width: 80,
                     ),
@@ -68,7 +49,7 @@ class TurnByTurnInstructionWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  l10n.remaining_waypoint_distance(distance),
+                  l10n.remaining_waypoint_distance(guidance.distanceToWaypoint),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineLarge,
                 )

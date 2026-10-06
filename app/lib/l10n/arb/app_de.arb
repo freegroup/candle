@@ -436,5 +436,24 @@
   "compass_letter_north": "N",
   "compass_letter_east": "O",
   "compass_letter_south": "S",
-  "compass_letter_west": "W"
+  "compass_letter_west": "W",
+
+  "settings_header_navigation": "Ansagen bei der Navigation",
+  "settings_header_navigation_t": "Wie Candle Sie bei der Navigation führt",
+  "navigation_style_detailed": "Ausführlich",
+  "navigation_style_detailed_hint": "ganze Sätze mit der Drehung zum nächsten Wegpunkt",
+  "navigation_style_short": "Kurz",
+  "navigation_style_short_hint": "nur Meter und Richtung, z. B. „50 Meter, links“",
+  "navigation_off_route_t": "Sie haben die Route verlassen. Eine neue Route wird berechnet.",
+  "navigation_short_off_route_t": "Neue Route",
+  "navigation_short_route_failed_t": "Keine Route",
+  "navigation_short_target_reached_t": "Ziel erreicht",
+  "navigation_short_directions_t": "{meters} Meter, {turn}",
+  "navigation_short_hard_left_t": "scharf links",
+  "navigation_short_left_t": "links",
+  "navigation_short_slightly_left_t": "leicht links",
+  "navigation_short_straight_t": "geradeaus",
+  "navigation_short_slightly_right_t": "leicht rechts",
+  "navigation_short_right_t": "rechts",
+  "navigation_short_hard_right_t": "scharf rechts"
 }

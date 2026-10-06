@@ -1,11 +1,10 @@
-import 'dart:async';
-
-import 'package:candle/data/services/feedback/vibration_service.dart';
-import 'package:candle/domain/models/navigation_point.dart';
+import 'package:candle/data/repositories/navigation/navigation_controller.dart';
+import 'package:candle/domain/models/navigation_guidance.dart';
 import 'package:candle/domain/models/route.dart' as model;
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
+import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -19,35 +18,37 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
-/// Navigation from [source] to [target] with its own view model; follows
-/// [route] if given, otherwise a calculated walking route.
+/// Navigation from [source] to [target] with its own controller and view model;
+/// follows [route] if given, otherwise a calculated walking route. The
+/// navigation stops when the screen is gone.
 Widget buildNavigationScreen({required LatLng source, required LatLng target, model.Route? route}) =>
-    ChangeNotifierProvider(
-      create: (context) => NavigationViewModel(
+    Provider(
+      create: (context) => NavigationController(
         routingRepository: context.read(),
-        locationNoteRepository: context.read(),
         locationNoteAnnouncer: context.read(),
-        indoorRepository: context.read(),
         locationService: context.read(),
         compassService: context.read(),
         source: source,
         target: target,
         route: route,
       ),
-      builder: (context, _) => NavigationScreen(
-        viewModel: context.read(),
-        vibrate: ({int duration = 100, int repeat = -1}) =>
-            context.read<VibrationService>().navigation(duration: duration, repeat: repeat),
+      dispose: (_, navigation) => navigation.stop(),
+      child: ChangeNotifierProvider(
+        create: (context) => NavigationViewModel(
+          navigationController: context.read(),
+          locationNoteRepository: context.read(),
+          indoorRepository: context.read(),
+        ),
+        builder: (context, _) => NavigationScreen(viewModel: context.read()),
       ),
     );
 
-/// Turn-by-turn guidance: vibrates when the phone points to the next waypoint
-/// and when a waypoint is passed. Location notes on the way are shown by the app shell.
+/// Turn-by-turn guidance; the [NavigationAnnouncer] speaks and vibrates it the way
+/// the user chose. Location notes on the way are shown by the app shell.
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({super.key, required this.viewModel, required this.vibrate});
+  const NavigationScreen({super.key, required this.viewModel});
 
   final NavigationViewModel viewModel;
-  final Future<void> Function({int duration, int repeat}) vibrate;
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
@@ -56,37 +57,24 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnouncer {
   NavigationViewModel get _viewModel => widget.viewModel;
 
-  bool _wasAligned = false;
-  NavigationPoint? _lastWaypoint;
-
   @override
   void initState() {
     super.initState();
     ScreenWakeService.keepOn(true);
-    _viewModel.addListener(_onChanged);
     _viewModel.checkIndoors.addListener(_onIndoorsChecked);
+    // Covered by another screen it keeps quiet; the end of the navigation always gets through.
+    context.read<NavigationAnnouncer>().follow(
+        context,
+        _viewModel.guidance
+            .where((guidance) => isOnTop || guidance.event == NavigationEvent.stopped));
+    _viewModel.start();
   }
 
   @override
   void dispose() {
     ScreenWakeService.keepOn(false);
-    _viewModel.removeListener(_onChanged);
     _viewModel.checkIndoors.removeListener(_onIndoorsChecked);
     super.dispose();
-  }
-
-  void _onChanged() {
-    if (!isOnTop) return;
-    final aligned = _viewModel.isAligned;
-    if (aligned != _wasAligned) {
-      _wasAligned = aligned;
-      unawaited(aligned ? widget.vibrate(repeat: 2) : widget.vibrate(duration: 500));
-    }
-    final waypoint = _viewModel.headingWaypoint;
-    if (waypoint != _lastWaypoint) {
-      _lastWaypoint = waypoint;
-      unawaited(widget.vibrate());
-    }
   }
 
 
@@ -145,25 +133,19 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
   }
 
   Widget _buildInstruction(BuildContext context) {
-    final aligned = _viewModel.isAligned;
+    final guidance = _viewModel.currentGuidance;
     // The background is a layer of its own: changing the color of the text
     // widgets would make the screen reader read them out again.
     return Stack(
       children: [
         Container(
-          color: aligned ? Theme.of(context).positiveColor : null,
+          color: guidance.isAligned ? Theme.of(context).positiveColor : null,
           height: double.infinity,
           width: double.infinity,
         ),
         _viewModel.targetReached
             ? const TargetReachedWidget()
-            : TurnByTurnInstructionWidget(
-                currentCoord: _viewModel.position,
-                waypoint1: _viewModel.headingWaypoint,
-                waypoint2: _viewModel.turnWaypoint,
-                isAligned: aligned,
-                bearing: _viewModel.needleHeading,
-              ),
+            : TurnByTurnInstructionWidget(guidance: guidance),
       ],
     );
   }

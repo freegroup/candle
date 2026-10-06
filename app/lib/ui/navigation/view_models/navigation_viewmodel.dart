@@ -1,17 +1,13 @@
 import 'dart:async';
 
-import 'package:candle/config/app_config.dart';
-import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/location/indoor_repository.dart';
-import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
-import 'package:candle/data/services/compass/compass_service.dart';
-import 'package:candle/data/services/location/location_service.dart';
+import 'package:candle/data/repositories/navigation/navigation_controller.dart';
+import 'package:candle/domain/models/location_note.dart';
+import 'package:candle/domain/models/navigation_guidance.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
-import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/utils/command.dart';
-import 'package:candle/utils/geo.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
@@ -19,210 +15,79 @@ import 'package:logger/logger.dart';
 
 final _log = Logger();
 
-/// Guides the user along a route to [target]: the phone points to the next
-/// waypoint, and the route is calculated anew when the user leaves it.
+/// What the navigation screen shows of a [NavigationController]: redraws on
+/// every guidance; the map shows the location notes.
 class NavigationViewModel extends ChangeNotifier {
   NavigationViewModel({
-    required RoutingRepository routingRepository,
+    required NavigationController navigationController,
     required LocationNoteRepository locationNoteRepository,
-    required LocationNoteAnnouncer locationNoteAnnouncer,
     required IndoorRepository indoorRepository,
-    required LocationService locationService,
-    required CompassService compassService,
-    required LatLng source,
-    required this.target,
-    this._route,
-  })  : _routing = routingRepository,
-        _announcer = locationNoteAnnouncer,
-        _position = source {
-    // the announcer reports the location notes on the way
-    _announcer.startNavigation();
+  }) : _navigation = navigationController {
+    _subscription = _navigation.guidance.listen((guidance) {
+      _currentGuidance = guidance;
+      notifyListeners();
+    });
     checkIndoors = Command0(() async => Result.ok(await indoorRepository.isProbablyIndoors()))
       ..execute();
-    _subscriptions = [
-      locationService.positions().listen(_onPosition, onError: _logError),
-      compassService.headings().listen(_onHeading, onError: _logError),
-    ];
     unawaited(locationNoteRepository.watchAll().first.then((pins) {
       if (_disposed) return;
       _locationNotes = pins;
       notifyListeners();
-    }, onError: _logError));
-    _updateWaypoints();
+    }, onError: (Object e) => _log.w('Loading the location notes failed: $e')));
   }
 
-  final LatLng target;
-  final RoutingRepository _routing;
-  final LocationNoteAnnouncer _announcer;
+  final NavigationController _navigation;
+  late final StreamSubscription<NavigationGuidance> _subscription;
 
-  // The notes and a route can arrive after the user left the navigation.
+  // The notes can arrive after the user left the navigation.
   bool _disposed = false;
 
   /// Runs once when the navigation starts: whether the user is probably inside a
   /// building (or has poor GPS reception), so the first directions are unreliable.
   late final Command0<bool> checkIndoors;
-  late final List<StreamSubscription<Object>> _subscriptions;
 
-  Route? _route;
+  /// What happens during the navigation, for the announcements.
+  Stream<NavigationGuidance> get guidance => _navigation.guidance;
 
-  /// The route followed, null while it is calculated.
-  Route? get route => _route;
+  /// Begins the navigation; the screen calls it once it listens to [guidance].
+  void start() => _navigation.start();
 
-  bool _routeFailed = false;
+  NavigationGuidance _currentGuidance = const NavigationGuidance(event: NavigationEvent.update);
 
-  /// True when no route could be calculated; a new attempt follows the next position.
-  bool get routeFailed => _routeFailed;
-
-  bool _calculating = false;
-
-  LatLng _position;
-  LatLng get position => _position;
-
-  int _deviceHeading = 0;
-
-  /// Clockwise degrees from north the phone points to.
-  int get deviceHeading => _deviceHeading;
-
-  int _segmentIndex = -1;
-
-  NavigationPoint? _headingWaypoint;
-
-  /// The waypoint the user walks to right now.
-  NavigationPoint? get headingWaypoint => _headingWaypoint;
-
-  NavigationPoint? _turnWaypoint;
-
-  /// The waypoint after [headingWaypoint], for the turn instruction.
-  NavigationPoint? get turnWaypoint => _turnWaypoint;
-
-  NavigationPoint? _nextTurnWaypoint;
-  NavigationPoint? get nextTurnWaypoint => _nextTurnWaypoint;
-
-  bool _targetReached = false;
-  bool get targetReached => _targetReached;
+  /// The latest guidance: what the screen shows of the next step, the same the
+  /// announcements say.
+  NavigationGuidance get currentGuidance => _currentGuidance;
 
   List<LocationNote> _locationNotes = [];
 
   /// Voice pins to show on the map.
   List<LocationNote> get locationNotes => _locationNotes;
 
+  /// The route followed, null while it is calculated.
+  Route? get route => _navigation.route;
 
-  /// Bearing from the user to [headingWaypoint].
-  int get waypointHeading =>
-      _headingWaypoint == null ? 0 : calculateNorthBearing(_position, _headingWaypoint!.latlng());
+  /// True when no route could be calculated; a new attempt follows the next position.
+  bool get routeFailed => _navigation.routeFailed;
 
-  /// Whether the phone points to [headingWaypoint] (±[NavigationConfig.alignedTolerance]°).
-  bool get isAligned {
-    if (_headingWaypoint == null) return false;
-    final diff = (_deviceHeading - waypointHeading).abs();
-    return diff <= NavigationConfig.alignedTolerance || diff >= 360 - NavigationConfig.alignedTolerance;
-  }
+  LatLng get position => _navigation.position;
 
-  /// Rotation of the arrow that points to [headingWaypoint].
-  int get needleHeading => -(_deviceHeading - waypointHeading);
+  /// Clockwise degrees from north the phone points to.
+  int get deviceHeading => _navigation.deviceHeading;
 
-  /// Meters to [turnWaypoint].
-  int get distanceToTurn =>
-      _turnWaypoint == null ? 0 : calculateDistance(_position, _turnWaypoint!.latlng()).round();
+  /// The waypoint the user walks to right now.
+  NavigationPoint? get headingWaypoint => _navigation.headingWaypoint;
 
-  /// Meters along the route to the target.
-  int get distanceToTarget {
-    final route = _route;
-    final waypoint = _headingWaypoint;
-    if (route == null || waypoint == null) return 0;
-    return route.calculateResumingLengthFromWaypoint(waypoint).round() + distanceToTurn;
-  }
+  /// The waypoint after [headingWaypoint], for the turn instruction.
+  NavigationPoint? get turnWaypoint => _navigation.turnWaypoint;
 
-  void _onPosition(LatLng position) {
-    _position = position;
-    _updateWaypoints();
-    notifyListeners();
-  }
+  NavigationPoint? get nextTurnWaypoint => _navigation.nextTurnWaypoint;
 
-  void _onHeading(double heading) {
-    final rounded = heading.round() % 360;
-    if (rounded == _deviceHeading) return;
-    _deviceHeading = rounded;
-    notifyListeners();
-  }
-
-  Future<void> _calculateRoute() async {
-    if (_calculating) return;
-    _calculating = true;
-    final result = await _routing.walkingRoute(_position, target);
-    _calculating = false;
-    if (_disposed) return;
-    switch (result) {
-      case Ok(:final value):
-        _route = value;
-        _routeFailed = false;
-        // The waypoints of the new route are counted from its start.
-        _segmentIndex = -1;
-        // Not again before the next position, even if the route starts away from the user.
-        _updateWaypoints(recalculate: false);
-      case Error(:final error):
-        _log.w('Calculating the route failed: $error');
-        _routeFailed = true;
-    }
-    notifyListeners();
-  }
-
-  void _updateWaypoints({bool recalculate = true}) {
-    if (_targetReached) return;
-    final route = _route;
-    if (route == null || route.points.length < 2) {
-      if (recalculate) unawaited(_calculateRoute());
-      return;
-    }
-
-    final closest = route.findClosestSegment(_position);
-    if ((closest['distance'] as double) > NavigationConfig.offRouteDistance) {
-      _log.d('Left the route by ${closest['distance']} m, calculating a new one');
-      if (recalculate) unawaited(_calculateRoute());
-      return;
-    }
-
-    final points = route.points;
-    var start = (closest['start'] as Map<String, dynamic>)['index'] as int;
-    var next = (closest['end'] as Map<String, dynamic>)['index'] as int;
-    while (next < points.length &&
-        calculateDistance(_position, points[next].latlng()) < NavigationConfig.waypointPassedDistance) {
-      start = next;
-      next++;
-    }
-    if (start <= _segmentIndex) return;
-
-    _segmentIndex = start;
-    if (start >= points.length - 1) {
-      _targetReached = true;
-      return;
-    }
-    _headingWaypoint = points[start + 1];
-    _turnWaypoint = _headingWaypoint;
-    _nextTurnWaypoint = _headingWaypoint;
-    if (start + 2 < points.length) {
-      _turnWaypoint = points[start + 2];
-      _nextTurnWaypoint = _turnWaypoint;
-    }
-    if (start + 3 < points.length) {
-      _nextTurnWaypoint = points[start + 3];
-    } else if (_headingWaypoint == _nextTurnWaypoint &&
-        calculateDistance(_position, _headingWaypoint!.latlng()) <
-            NavigationConfig.waypointPassedDistance * 2) {
-      // the last waypoint is almost reached
-      _targetReached = true;
-    }
-  }
-
-  void _logError(Object e) => _log.w('Navigation sensor error: $e');
+  bool get targetReached => _navigation.targetReached;
 
   @override
   void dispose() {
     _disposed = true;
-    for (final subscription in _subscriptions) {
-      unawaited(subscription.cancel());
-    }
-    _announcer.stopNavigation();
+    unawaited(_subscription.cancel());
     checkIndoors.dispose();
     super.dispose();
   }

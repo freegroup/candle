@@ -65,6 +65,15 @@ class SettingsRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The id of the style navigation announcements are made in, null for the default
+  /// (see lib/ui/navigation/announcers/).
+  String? get navigationStyleId => _prefs.getString('navigationStyle');
+
+  Future<void> setNavigationStyleId(String id) async {
+    await _prefs.setString('navigationStyle', id);
+    notifyListeners();
+  }
+
   /// The app version whose welcome screen the user has already seen, or null.
   /// Comparing it to the current version decides whether to show the welcome
   /// screen again after an install or update.

@@ -1,5 +1,6 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/ui/core/themes/candle_theme.dart';
+import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
 import 'package:flutter/foundation.dart';
 
 /// The switches of the settings screen.
@@ -39,6 +40,11 @@ class SettingsViewModel extends ChangeNotifier {
   List<CandleTheme> get themes => candleThemes;
   CandleTheme get selectedTheme => _settings.colorTheme;
   Future<void> selectTheme(String id) => _settings.setThemeId(id);
+
+  /// The styles of the navigation announcements and the selected one.
+  List<NavigationStyle> get navigationStyles => allNavigationStyles;
+  NavigationStyle get selectedNavigationStyle => navigationStyleFor(_settings.navigationStyleId);
+  Future<void> selectNavigationStyle(String id) => _settings.setNavigationStyleId(id);
 
   @override
   void dispose() {

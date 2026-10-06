@@ -1,6 +1,7 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/core/themes/candle_theme.dart';
+import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
 import 'package:candle/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -50,6 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _themeSection(context),
+                    const SizedBox(height: 40),
+                    _navigationStyleSection(context),
                     const SizedBox(height: 40),
                     _header(l10n.settings_header_tiles, l10n.settings_header_tiles_t),
                     ...widget.viewModel.tiles.map(_toggle),
@@ -112,16 +115,48 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
     );
   }
 
-  // A colour profile as an accessible radio row; TalkBack announces the name,
-  // the hint and whether it is selected, and the choice applies immediately.
   Widget _themeTile(BuildContext context, CandleTheme t) {
-    final theme = Theme.of(context);
-    final selected = widget.viewModel.selectedTheme.id == t.id;
     final l10n = AppLocalizations.of(context)!;
-    final name = t.name(l10n);
-    final hint = t.hint(l10n);
-    return InkWell(
+    return _choiceTile(
+      name: t.name(l10n),
+      hint: t.hint(l10n),
+      selected: widget.viewModel.selectedTheme.id == t.id,
       onTap: () => widget.viewModel.selectTheme(t.id),
+    );
+  }
+
+  Widget _navigationStyleSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _header(l10n.settings_header_navigation, l10n.settings_header_navigation_t),
+        ...widget.viewModel.navigationStyles.map((style) => _navigationStyleTile(context, style)),
+      ],
+    );
+  }
+
+  Widget _navigationStyleTile(BuildContext context, NavigationStyle style) {
+    final l10n = AppLocalizations.of(context)!;
+    return _choiceTile(
+      name: style.name(l10n),
+      hint: style.hint(l10n),
+      selected: widget.viewModel.selectedNavigationStyle.id == style.id,
+      onTap: () => widget.viewModel.selectNavigationStyle(style.id),
+    );
+  }
+
+  // One choice as an accessible radio row; TalkBack announces the name, the hint
+  // and whether it is selected, and the choice applies immediately.
+  Widget _choiceTile({
+    required String name,
+    required String hint,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    final theme = Theme.of(context);
+    return InkWell(
+      onTap: onTap,
       child: Semantics(
         inMutuallyExclusiveGroup: true,
         checked: selected,

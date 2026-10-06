@@ -31,6 +31,7 @@ import 'package:candle/data/services/sharing/shared_content_service.dart';
 import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
 import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/wikipedia/wikipedia_client.dart';
+import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -65,6 +66,13 @@ List<SingleChildWidget> get providers => [
       Provider(create: (_) => LocationService()),
       Provider(create: (_) => CompassService()),
       Provider(create: (context) => VibrationService(settingsRepository: context.read())),
+      Provider(
+        create: (context) => NavigationAnnouncer(
+          settingsRepository: context.read(),
+          vibrationService: context.read(),
+          accessibilityService: context.read(),
+        ),
+      ),
       Provider(create: (_) => CandleDatabase(), dispose: (_, db) => db.close()),
       Provider(create: (context) => LocationRepository(database: context.read())),
       Provider(create: (context) => LocationNoteRepository(database: context.read())),

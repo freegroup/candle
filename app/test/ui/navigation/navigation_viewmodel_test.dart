@@ -1,12 +1,14 @@
-import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
+import 'package:candle/data/repositories/navigation/navigation_controller.dart';
+import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/database/candle_database.dart';
+import 'package:candle/domain/models/location_note.dart';
+import 'package:candle/domain/models/navigation_guidance.dart';
 import 'package:candle/domain/models/navigation_point.dart';
 import 'package:candle/domain/models/route.dart';
-import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';
 import 'package:candle/utils/result.dart';
 import 'package:drift/native.dart';
@@ -21,20 +23,13 @@ import '../../fakes/fake_location_service.dart';
 import '../../fakes/fake_overpass_client.dart';
 
 // A straight route north along 8° east, one point every ~111 m.
-Route _northRoute(double fromLat, int count, [double lon = 8]) => Route(name: 'r', points: [
-      for (var i = 0; i < count; i++)
-        NavigationPoint(coordinate: LatLng(fromLat + i * 0.001, lon), annotation: ''),
+Route _northRoute() => Route(name: 'r', points: [
+      for (var i = 0; i < 4; i++) NavigationPoint(coordinate: LatLng(50 + i * 0.001, 8), annotation: ''),
     ]);
 
 class _FakeRouting implements RoutingRepository {
-  final requests = <LatLng>[];
-  Result<Route> Function(LatLng start) answer = (start) => Result.ok(_northRoute(start.latitude, 4, start.longitude));
-
   @override
-  Future<Result<Route>> walkingRoute(LatLng start, LatLng end) async {
-    requests.add(start);
-    return answer(start);
-  }
+  Future<Result<Route>> walkingRoute(LatLng start, LatLng end) async => Result.ok(_northRoute());
 }
 
 void main() {
@@ -42,132 +37,70 @@ void main() {
   late CandleDatabase db;
   late LocationNoteRepository pins;
   late FakeLocationService location;
-  late FakeCompassService compass;
-  late _FakeRouting routing;
-  late SettingsRepository settings;
   late LocationNoteAnnouncer announcer;
+  late NavigationController navigation;
 
   setUp(() async {
     db = CandleDatabase(NativeDatabase.memory());
     pins = LocationNoteRepository(database: db);
     location = FakeLocationService(const Result.ok(LatLng(50, 8)));
-    compass = FakeCompassService();
-    routing = _FakeRouting();
     SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
-    settings = SettingsRepository(await SharedPreferencesWithCache.create(
+    final settings = SettingsRepository(await SharedPreferencesWithCache.create(
         cacheOptions: const SharedPreferencesWithCacheOptions()));
-    await settings.setEnabled(Setting.locationNotesAlways, false);
     announcer = LocationNoteAnnouncer(
         locationNoteRepository: pins, locationService: location, settingsRepository: settings);
+    navigation = NavigationController(
+      routingRepository: _FakeRouting(),
+      locationNoteAnnouncer: announcer,
+      locationService: location,
+      compassService: FakeCompassService(),
+      source: const LatLng(50, 8),
+      target: const LatLng(50.003, 8),
+    );
   });
   tearDown(() async {
+    navigation.stop();
     announcer.dispose();
     await db.close();
   });
 
-  NavigationViewModel create({Route? route, LatLng source = const LatLng(50, 8)}) =>
-      NavigationViewModel(
-        routingRepository: routing,
+  NavigationViewModel create() => NavigationViewModel(
+        navigationController: navigation,
         locationNoteRepository: pins,
-        locationNoteAnnouncer: announcer,
         indoorRepository: IndoorRepository(
             locationService: location, overpassClient: FakeOverpassClient(const Result.ok([]))),
-        locationService: location,
-        compassService: compass,
-        source: source,
-        target: const LatLng(50.003, 8),
-        route: route,
       );
 
-  Future<void> walkTo(double lat, [double lon = 8]) async {
-    location.controller.add(LatLng(lat, lon));
-    await pumpEventQueue();
-  }
-
-  test('calculates a route and heads to its next waypoint', () async {
+  test('starts the navigation and redraws with every guidance', () async {
     final viewModel = create();
+    var redraws = 0;
+    viewModel.addListener(() => redraws++);
+    final events = <NavigationEvent>[];
+    viewModel.guidance.listen((guidance) => events.add(guidance.event));
+
+    viewModel.start();
     await pumpEventQueue();
-    expect(routing.requests, hasLength(1));
+    expect(events, contains(NavigationEvent.routeCalculated));
+    expect(viewModel.route, isNotNull);
     expect(viewModel.headingWaypoint?.coordinate.latitude, closeTo(50.001, 1e-9));
-    expect(viewModel.turnWaypoint?.coordinate.latitude, closeTo(50.002, 1e-9));
-
-    compass.headingController.add(0);
-    await pumpEventQueue();
-    expect(viewModel.isAligned, isTrue);
-    compass.headingController.add(90);
-    await pumpEventQueue();
-    expect(viewModel.isAligned, isFalse);
+    expect(viewModel.currentGuidance.hasWaypoint, isTrue);
+    expect(viewModel.currentGuidance.distanceToWaypoint, 111);
+    // one for each guidance, one for the location notes
+    expect(redraws, events.length + 1);
     viewModel.dispose();
   });
 
-  test('moves on to the next waypoint and reaches the target', () async {
-    final viewModel = create(route: _northRoute(50, 4));
-    await pumpEventQueue();
-    expect(routing.requests, isEmpty);
-
-    await walkTo(50.001);
-    expect(viewModel.headingWaypoint?.coordinate.latitude, closeTo(50.002, 1e-9));
-    expect(viewModel.targetReached, isFalse);
-
-    await walkTo(50.003);
-    expect(viewModel.targetReached, isTrue);
-    viewModel.dispose();
-  });
-
-  test('leaving the route calculates a new one that is followed from its start', () async {
-    final viewModel = create(route: _northRoute(50, 4));
-    await pumpEventQueue();
-    await walkTo(50.002);
-    expect(viewModel.headingWaypoint?.coordinate.latitude, closeTo(50.003, 1e-9));
-
-    // ~140 m east of the route
-    await walkTo(50.002, 8.002);
-    expect(routing.requests, hasLength(1));
-    // the new route starts here; its first waypoint is the next one, not one far down the list
-    expect(viewModel.headingWaypoint?.coordinate.latitude, closeTo(50.003, 1e-9));
-    expect(viewModel.headingWaypoint?.coordinate.longitude, 8.002);
-    viewModel.dispose();
-  });
-
-  test('a new route that starts away from the user is not calculated again at once', () async {
-    routing.answer = (start) => Result.ok(_northRoute(start.latitude, 4, start.longitude + 0.01));
+  test('shows the location notes on the map', () async {
+    await pins.save(LocationNote(name: '', memo: 'Stairs', lat: 50.001, lon: 8));
     final viewModel = create();
     await pumpEventQueue();
-    expect(routing.requests, hasLength(1));
-
-    await walkTo(50.0001);
-    expect(routing.requests, hasLength(2));
+    expect(viewModel.locationNotes.map((note) => note.memo), ['Stairs']);
     viewModel.dispose();
-  });
-
-  test('reports a failed route calculation', () async {
-    routing.answer = (_) => Result.error(Exception('offline'));
-    final viewModel = create();
-    await pumpEventQueue();
-    expect(viewModel.route, isNull);
-    expect(viewModel.routeFailed, isTrue);
-    viewModel.dispose();
-  });
-
-  test('location notes are reported during the navigation only', () async {
-    await pins.save(LocationNote(name: '', memo: 'Stairs', lat: 50.001, lon: 8.00005));
-    final reached = <String>[];
-    announcer.reached.listen((note) => reached.add(note.memo));
-
-    final viewModel = create(route: _northRoute(50, 4));
-    await pumpEventQueue();
-    await walkTo(50.001);
-    expect(reached, ['Stairs']);
-
-    viewModel.dispose();
-    await walkTo(50);
-    await walkTo(50.001);
-    expect(reached, ['Stairs']);
   });
 
   test('checks once at the start whether the user is probably indoors', () async {
     location.accuracy = const Result.ok(40);
-    final viewModel = create(route: _northRoute(50, 4));
+    final viewModel = create();
     await pumpEventQueue();
     expect((viewModel.checkIndoors.result! as Ok<bool>).value, isTrue);
     viewModel.dispose();

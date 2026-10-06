@@ -1381,5 +1381,36 @@
   "compass_letter_north": "N",
   "compass_letter_east": "E",
   "compass_letter_south": "S",
-  "compass_letter_west": "W"
+  "compass_letter_west": "W",
+
+  "settings_header_navigation": "Navigation announcements",
+  "settings_header_navigation_t": "How Candle guides you while navigating",
+  "navigation_style_detailed": "Detailed",
+  "navigation_style_detailed_hint": "full sentences with the turn to the next waypoint",
+  "navigation_style_short": "Short",
+  "navigation_style_short_hint": "only meters and direction, e.g. \"50 meters, left\"",
+  "navigation_off_route_t": "You left the route. A new route is being calculated.",
+  "navigation_short_off_route_t": "New route",
+  "navigation_short_route_failed_t": "No route",
+  "navigation_short_target_reached_t": "Destination reached",
+  "navigation_short_directions_t": "{meters} meters, {turn}",
+  "@navigation_short_directions_t": {
+    "description": "Short navigation announcement: meters to the next waypoint and the turn there",
+    "placeholders": {
+      "meters": {
+        "type": "int"
+      },
+      "turn": {
+        "type": "String",
+        "description": "One of the navigation_short_*_t turns"
+      }
+    }
+  },
+  "navigation_short_hard_left_t": "sharp left",
+  "navigation_short_left_t": "left",
+  "navigation_short_slightly_left_t": "slightly left",
+  "navigation_short_straight_t": "straight on",
+  "navigation_short_slightly_right_t": "slightly right",
+  "navigation_short_right_t": "right",
+  "navigation_short_hard_right_t": "sharp right"
 }
