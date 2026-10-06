@@ -61,3 +61,5 @@ node_modules/
 ansible/secrets.env
 ansible/google-service-account.json
 ansible/google-play-publisher.json
+# App Store Connect API key (AuthKey_<KEY ID>.p8), for uploads to TestFlight
+ansible/*.p8
