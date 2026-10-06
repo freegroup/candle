@@ -21,7 +21,7 @@ async function buildTestApp(tokenSecret = secret) {
     appAttest: new AppAttestVerifier({
       teamId: 'U74C75726B',
       bundleId: 'de.freegroup.candle',
-      environment: 'development',
+      environments: ['development'],
       rootCertificatePem: device.rootPem,
       now: () => validDate,
     }),

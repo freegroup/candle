@@ -15,7 +15,9 @@ const appleRootPem = readFileSync(new URL('../../assets/apple-app-attest-root-ca
 const nonceExtensionOid = '1.2.840.113635.100.8.2';
 // DER prefix of the nonce extension: SEQUENCE { [1] { OCTET STRING (32 bytes) } }
 const nonceExtensionPrefix = Buffer.from([0x30, 0x24, 0xa1, 0x22, 0x04, 0x20]);
-const aaguids = {
+export type AppAttestEnvironment = 'development' | 'production';
+
+const aaguids: Record<AppAttestEnvironment, Buffer> = {
   development: Buffer.from('appattestdevelop'),
   production: Buffer.concat([Buffer.from('appattest'), Buffer.alloc(7)]),
 };
@@ -36,19 +38,23 @@ interface AuthenticatorData {
  */
 export class AppAttestVerifier {
   readonly #appIdHash: Buffer;
-  readonly #aaguid: Buffer;
+  readonly #aaguids: Buffer[];
   readonly #root: x509.X509Certificate;
   readonly #now: () => Date;
 
   constructor(options: {
     teamId: string;
     bundleId: string;
-    environment: 'development' | 'production';
+    /**
+     * The App Attest environments accepted: "development" for builds from Xcode,
+     * "production" for TestFlight and the App Store. Both only for this team's app.
+     */
+    environments: readonly AppAttestEnvironment[];
     rootCertificatePem?: string;
     now?: () => Date;
   }) {
     this.#appIdHash = sha256(Buffer.from(`${options.teamId}.${options.bundleId}`));
-    this.#aaguid = aaguids[options.environment];
+    this.#aaguids = options.environments.map((environment) => aaguids[environment]);
     this.#root = new x509.X509Certificate(options.rootCertificatePem ?? appleRootPem);
     this.#now = options.now ?? (() => new Date());
   }
@@ -83,7 +89,10 @@ export class AppAttestVerifier {
     const data = parseAuthenticatorData(authData, true);
     if (!data.rpIdHash.equals(this.#appIdHash)) throw new AttestationError('Attestation is for another app');
     if (data.counter !== 0) throw new AttestationError('Counter of a new key must be 0');
-    if (!data.aaguid?.equals(this.#aaguid)) throw new AttestationError('Wrong App Attest environment');
+    const aaguid = data.aaguid;
+    if (aaguid === undefined || !this.#aaguids.some((accepted) => aaguid.equals(accepted))) {
+      throw new AttestationError('Wrong App Attest environment');
+    }
     if (!data.credentialId?.equals(keyIdBytes)) throw new AttestationError('Credential id does not match key id');
 
     return publicKey.toString('base64');

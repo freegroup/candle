@@ -1,3 +1,5 @@
+import type { AppAttestEnvironment } from './auth/apple.ts';
+
 export interface Config {
   host: string;
   port: number;
@@ -6,8 +8,12 @@ export interface Config {
   apple: {
     teamId: string;
     bundleId: string;
-    /** "development" for Xcode/debug builds, "production" for TestFlight and App Store. */
-    environment: 'development' | 'production';
+    /**
+     * App Attest environments accepted: "development" for Xcode/debug builds,
+     * "production" for TestFlight and App Store; both to test from Xcode and
+     * TestFlight at the same time.
+     */
+    environments: AppAttestEnvironment[];
   };
   android: {
     packageName: string;
@@ -31,9 +37,14 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const secret = required(env, 'JWT_SECRET');
   if (secret.length < 32) throw new Error('JWT_SECRET must have at least 32 characters');
 
-  const environment = env.APP_ATTEST_ENV ?? 'production';
-  if (environment !== 'development' && environment !== 'production') {
-    throw new Error(`APP_ATTEST_ENV must be "development" or "production", not "${environment}"`);
+  // e.g. "production" or "development,production"
+  const environments: AppAttestEnvironment[] = [];
+  for (const value of (env.APP_ATTEST_ENV ?? 'production').split(',')) {
+    const environment = value.trim();
+    if (environment !== 'development' && environment !== 'production') {
+      throw new Error(`APP_ATTEST_ENV takes "development" and/or "production", not "${environment}"`);
+    }
+    environments.push(environment);
   }
 
   return {
@@ -43,7 +54,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     apple: {
       teamId: env.APPLE_TEAM_ID ?? 'U74C75726B',
       bundleId: env.APPLE_BUNDLE_ID ?? 'de.freegroup.candle',
-      environment,
+      environments,
     },
     android: {
       packageName: env.ANDROID_PACKAGE ?? 'de.freegroup.candle.app',

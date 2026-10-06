@@ -69,7 +69,7 @@ beforeEach(async () => {
   app = await buildApp({
     tokens,
     challenges: new ChallengeStore(),
-    appAttest: new AppAttestVerifier({ teamId: 'T', bundleId: 'b', environment: 'development' }),
+    appAttest: new AppAttestVerifier({ teamId: 'T', bundleId: 'b', environments: ['development'] }),
     places: new PlacesDatabase(path),
   });
   accessToken = await tokens.accessToken({ id: 'installation-1', platform: 'android' });

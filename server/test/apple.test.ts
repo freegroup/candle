@@ -16,7 +16,7 @@ describe('AppAttestVerifier', () => {
     verifier = new AppAttestVerifier({
       teamId: 'U74C75726B',
       bundleId: 'de.freegroup.candle',
-      environment: 'development',
+      environments: ['development'],
       rootCertificatePem: device.rootPem,
       now: () => validDate,
     });
@@ -40,6 +40,21 @@ describe('AppAttestVerifier', () => {
     await expect(verifier.verifyAttestation(device.keyId, await make(device), hash)).rejects.toThrow(AttestationError);
   });
 
+  it('accepts development and production when both are configured', async () => {
+    const both = new AppAttestVerifier({
+      teamId: 'U74C75726B',
+      bundleId: 'de.freegroup.candle',
+      environments: ['development', 'production'],
+      rootCertificatePem: device.rootPem,
+      now: () => validDate,
+    });
+    const production = Buffer.concat([Buffer.from('appattest'), Buffer.alloc(7)]);
+    await expect(both.verifyAttestation(device.keyId, await device.attestation(hash), hash)).resolves.toBeTruthy();
+    await expect(
+      both.verifyAttestation(device.keyId, await device.attestation(hash, { aaguid: production }), hash),
+    ).resolves.toBeTruthy();
+  });
+
   it('rejects a key id that does not belong to the certified key', async () => {
     // credential id and key id agree, but neither is the hash of the certified public key
     const otherKeyId = Buffer.alloc(32, 1);
@@ -60,7 +75,7 @@ describe('AppAttestVerifier', () => {
     const later = new AppAttestVerifier({
       teamId: 'U74C75726B',
       bundleId: 'de.freegroup.candle',
-      environment: 'development',
+      environments: ['development'],
       rootCertificatePem: device.rootPem,
       now: () => new Date('2030-01-01'),
     });
@@ -71,7 +86,7 @@ describe('AppAttestVerifier', () => {
 
   it('uses the real Apple root certificate by default', () => {
     expect(
-      () => new AppAttestVerifier({ teamId: 'T', bundleId: 'b', environment: 'production' }),
+      () => new AppAttestVerifier({ teamId: 'T', bundleId: 'b', environments: ['production'] }),
     ).not.toThrow();
   });
 
