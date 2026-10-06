@@ -17,4 +17,5 @@ ExecStart=/bin/bash /home/candle/candle/server/tools/update_places.sh
 # one CPU core only: the API comes first, the build takes what is left
 Nice=19
 IOSchedulingClass=idle
-TimeoutStartSec=6h
+# Geofabrik sends a server only ~650 KB/s: the 6 GB download alone takes ~3 h
+TimeoutStartSec=12h
