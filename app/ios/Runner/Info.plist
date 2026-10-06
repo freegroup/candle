@@ -6,6 +6,11 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>de</string>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Candle</string>
 	<key>CFBundleDocumentTypes</key>
@@ -46,19 +51,19 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need always access to your location if you wnat to record your route in the background</string>
+	<string>Candle uses your location to tell you the direction and distance of places and to guide you to your destination.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>We need access to your location for gps navigation</string>
+	<string>Candle uses your location to tell you the direction and distance of places and to guide you to your destination.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need access to your location for gps navigation</string>
+	<string>Candle uses your location to tell you the direction and distance of places and to guide you to your destination.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>To enable voice input for easier navigation and to enhance accessibility for visually impaired or blind users.</string>
+	<string>With the microphone you can dictate location notes and search terms instead of typing them.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Your app uses the motion sensor for compass functionality.</string>
+	<string>Candle uses the motion sensors for the compass and to tell whether you hold the phone flat.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We do not ask for any permissions for photo library access. this is only related to lib dependencies.</string>
+	<string>Candle does not access your photos. The entry is only required by a built-in sharing module.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Voice input to add VoicePins to any location where you are</string>
+	<string>Speech recognition turns your dictation into text, for example for location notes.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>

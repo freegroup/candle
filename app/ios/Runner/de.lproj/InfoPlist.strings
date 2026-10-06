@@ -1,0 +1,8 @@
+/* German texts of the permission prompts; the English ones are in Info.plist. */
+"NSLocationWhenInUseUsageDescription" = "Candle nutzt Ihren Standort, um Ihnen Richtung und Entfernung zu Orten anzusagen und Sie zu Ihrem Ziel zu führen.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Candle nutzt Ihren Standort, um Ihnen Richtung und Entfernung zu Orten anzusagen und Sie zu Ihrem Ziel zu führen.";
+"NSLocationUsageDescription" = "Candle nutzt Ihren Standort, um Ihnen Richtung und Entfernung zu Orten anzusagen und Sie zu Ihrem Ziel zu führen.";
+"NSMicrophoneUsageDescription" = "Mit dem Mikrofon können Sie Ortsnotizen und Suchbegriffe diktieren, statt sie zu tippen.";
+"NSSpeechRecognitionUsageDescription" = "Die Spracherkennung wandelt Ihr Diktat in Text um, zum Beispiel für Ortsnotizen.";
+"NSMotionUsageDescription" = "Candle nutzt die Bewegungssensoren für den Kompass und um zu erkennen, ob Sie das Handy flach halten.";
+"NSPhotoLibraryUsageDescription" = "Candle greift nicht auf Ihre Fotos zu. Der Eintrag wird nur von einem eingebundenen Modul zum Teilen verlangt.";
