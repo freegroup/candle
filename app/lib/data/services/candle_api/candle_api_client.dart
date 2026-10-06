@@ -65,6 +65,14 @@ class CandleApiClient {
   Future<Result<Map<String, Object?>>> get(String path, {required String accessToken}) =>
       _send('GET', path, accessToken: accessToken);
 
+  /// POST of [body] as JSON to a protected endpoint.
+  Future<Result<Map<String, Object?>>> post(
+    String path,
+    Map<String, String> body, {
+    required String accessToken,
+  }) =>
+      _send('POST', path, body: body, accessToken: accessToken);
+
   Future<Result<AuthTokens>> _tokens(String path, Map<String, String> body) async {
     final result = await _send('POST', path, body: body);
     switch (result) {

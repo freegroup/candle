@@ -10,6 +10,10 @@ import 'package:logger/logger.dart';
 
 final _log = Logger();
 
+/// Asks the own Candle server for an Overpass query and gives its JSON answer;
+/// it knows the server address and the login token.
+typedef CandleServerQuery = Future<Result<Map<String, Object?>>> Function(String overpassQl);
+
 /// Thin client for the Overpass API.
 ///
 /// The public instances are frequently overloaded (429/5xx) or slow. Each query
@@ -17,9 +21,15 @@ final _log = Logger();
 /// falls back to the next one if it fails; callers never see which one answered.
 /// When every endpoint failed, the query is tried again after a short pause, up
 /// to [attempts] times and at most [totalTimeout] in all.
+///
+/// With a [candleServer], each query goes there first. It answers from its own
+/// data within its area and refuses everything else (outside its area, another
+/// kind of query, no login); then the public endpoints are asked as before.
 class OverpassClient {
   OverpassClient({
     required this._client,
+    this._candleServer,
+    this.candleTimeout = OverpassConfig.candleTimeout,
     List<String> endpoints = OverpassConfig.endpoints,
     this.timeout = OverpassConfig.timeout,
     this.attempts = OverpassConfig.attempts,
@@ -28,7 +38,11 @@ class OverpassClient {
   }) : _ranking = EndpointRanking(endpoints);
 
   final http.Client _client;
+  final CandleServerQuery? _candleServer;
   final EndpointRanking _ranking;
+
+  /// Longest wait for the Candle server before the public endpoints are asked.
+  final Duration candleTimeout;
 
   /// Longest wait for one endpoint before the next one is asked.
   final Duration timeout;
@@ -44,6 +58,9 @@ class OverpassClient {
 
   /// Runs an Overpass QL query that returns JSON (`[out:json]`).
   Future<Result<List<OverpassElement>>> query(String overpassQl) async {
+    final fromCandle = await _askCandleServer(overpassQl);
+    if (fromCandle != null) return Result.ok(fromCandle);
+
     final elapsed = Stopwatch()..start();
     var result = await _askEndpoints(overpassQl, elapsed);
     for (var attempt = 2; attempt <= attempts; attempt++) {
@@ -54,6 +71,27 @@ class OverpassClient {
       result = await _askEndpoints(overpassQl, elapsed);
     }
     return result;
+  }
+
+  /// The places from the Candle server, or null when it did not answer them.
+  Future<List<OverpassElement>?> _askCandleServer(String overpassQl) async {
+    final candleServer = _candleServer;
+    if (candleServer == null) return null;
+    try {
+      final result = await candleServer(overpassQl).timeout(candleTimeout);
+      if (result is Error<Map<String, Object?>>) {
+        _log.d('Candle server did not answer, asking public Overpass servers: ${result.error}');
+        return null;
+      }
+      final json = (result as Ok<Map<String, Object?>>).value;
+      if (json['elements'] is! List<Object?>) return null;
+      final elements = _elementsOf(json);
+      _log.d('Candle server answered with ${elements.length} elements');
+      return elements;
+    } on TimeoutException {
+      _log.d('Candle server too slow, asking public Overpass servers');
+      return null;
+    }
   }
 
   /// A broken query (4xx) or an unreadable answer stays broken; only busy or
@@ -105,6 +143,10 @@ class OverpassClient {
   List<OverpassElement> _parse(List<int> bodyBytes) {
     final json = jsonDecode(utf8.decode(bodyBytes));
     if (json is! Map<String, Object?>) throw const FormatException('Unexpected Overpass response');
+    return _elementsOf(json);
+  }
+
+  static List<OverpassElement> _elementsOf(Map<String, Object?> json) {
     final elements = json['elements'];
     if (elements is! List<Object?>) return const [];
     return elements

@@ -99,4 +99,9 @@ abstract final class OverpassConfig {
   /// Longest wait for a query in all; after it the error comes even if not all
   /// attempts ran, so nobody waits minutes in front of a spinner.
   static const totalTimeout = Duration(seconds: 60);
+
+  /// Longest wait for the own Candle server, asked before the public servers:
+  /// server address, login token and answer together. It answers in well under
+  /// a second; when it takes longer, the public servers are asked.
+  static const candleTimeout = Duration(seconds: 8);
 }

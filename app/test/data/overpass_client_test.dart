@@ -169,4 +169,86 @@ void main() {
 
     expect(await client.query('q'), isA<Ok<List<OverpassElement>>>());
   });
+
+  group('own Candle server first', () {
+    final candleAnswer = {
+      'elements': [
+        {'type': 'node', 'id': 9, 'lat': 52.5, 'lon': 13.4, 'tags': {'name': 'From Candle'}},
+      ],
+    };
+
+    test('its answer is used and no public server is asked', () async {
+      var publicCalls = 0;
+      final client = OverpassClient(
+        client: MockClient((_) async {
+          publicCalls++;
+          return _ok();
+        }),
+        endpoints: ['https://a'],
+        candleServer: (_) async => Result.ok(candleAnswer),
+      );
+
+      final result = await client.query('q');
+      expect((result as Ok<List<OverpassElement>>).value.single.tags['name'], 'From Candle');
+      expect(publicCalls, 0);
+    });
+
+    test('when it refuses (outside its area, no login, ...) the public servers answer', () async {
+      final asked = <String>[];
+      final client = OverpassClient(
+        client: MockClient((request) async {
+          asked.add(request.url.host);
+          return _ok();
+        }),
+        endpoints: ['https://a'],
+        candleServer: (_) async => Result.error(Exception('503 position outside the covered area')),
+      );
+
+      expect(await client.query('q'), isA<Ok<List<OverpassElement>>>());
+      expect(asked, ['a']);
+    });
+
+    test('when it is too slow the public servers answer', () async {
+      final client = OverpassClient(
+        client: MockClient((_) async => _ok()),
+        endpoints: ['https://a'],
+        candleServer: (_) async {
+          await Future<void>.delayed(const Duration(seconds: 1));
+          return Result.ok(candleAnswer);
+        },
+        candleTimeout: const Duration(milliseconds: 50),
+      );
+
+      final elements = (await client.query('q') as Ok<List<OverpassElement>>).value;
+      expect(elements.map((e) => e.id), [1, 2], reason: 'the answer of the public server');
+    });
+
+    test('an answer without elements is not taken as "no places here"', () async {
+      final client = OverpassClient(
+        client: MockClient((_) async => _ok()),
+        endpoints: ['https://a'],
+        candleServer: (_) async => Result.ok(const {'something': 'else'}),
+      );
+
+      final elements = (await client.query('q') as Ok<List<OverpassElement>>).value;
+      expect(elements.map((e) => e.id), [1, 2]);
+    });
+
+    test('the public servers keep their order: a refusal of Candle is no failure of theirs',
+        () async {
+      final asked = <String>[];
+      final client = OverpassClient(
+        client: MockClient((request) async {
+          asked.add(request.url.host);
+          return _ok();
+        }),
+        endpoints: ['https://a', 'https://b'],
+        candleServer: (_) async => Result.error(Exception('refused')),
+      );
+
+      await client.query('q1');
+      await client.query('q2');
+      expect(asked, ['a', 'a']);
+    });
+  });
 }

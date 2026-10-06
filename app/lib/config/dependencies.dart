@@ -44,7 +44,6 @@ final _log = Logger();
 /// Services and repositories available to the whole app.
 List<SingleChildWidget> get providers => [
       Provider<http.Client>(create: (_) => http.Client(), dispose: (_, client) => client.close()),
-      Provider(create: (context) => OverpassClient(client: context.read())),
       ChangeNotifierProvider(create: (_) => LanguageService()),
       Provider(create: (context) => NominatimClient(client: context.read())),
       Provider(
@@ -64,13 +63,8 @@ List<SingleChildWidget> get providers => [
       Provider(create: (context) => OrsClient(client: context.read())),
       Provider(create: (context) => RoutingRepository(ors: context.read())),
       Provider(create: (_) => LocationService()),
-      Provider(
-        create: (context) =>
-            IndoorRepository(locationService: context.read(), overpassClient: context.read()),
-      ),
       Provider(create: (_) => CompassService()),
       Provider(create: (context) => VibrationService(settingsRepository: context.read())),
-      Provider<PoiRepository>(create: (context) => PoiRepositoryRemote(overpass: context.read())),
       Provider(create: (_) => CandleDatabase(), dispose: (_, db) => db.close()),
       Provider(create: (context) => LocationRepository(database: context.read())),
       Provider(create: (context) => LocationNoteRepository(database: context.read())),
@@ -120,6 +114,25 @@ List<SingleChildWidget> get providers => [
           return auth;
         },
       ),
+      // Places: first the own Candle server (address from api.json, with the login
+      // token), then the public Overpass servers. Below the auth providers it reads.
+      Provider(
+        create: (context) {
+          final api = context.read<CandleApiClient>();
+          final auth = context.read<AuthRepository>();
+          return OverpassClient(
+            client: context.read(),
+            candleServer: (query) => auth.authorized(
+              (token) => api.post('/v1/overpass', {'data': query}, accessToken: token),
+            ),
+          );
+        },
+      ),
+      Provider(
+        create: (context) =>
+            IndoorRepository(locationService: context.read(), overpassClient: context.read()),
+      ),
+      Provider<PoiRepository>(create: (context) => PoiRepositoryRemote(overpass: context.read())),
 
       // Legacy services, removed while the screens are migrated.
     ];
