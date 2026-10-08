@@ -4,6 +4,10 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.14 (62)
+
+- Neue Kachel „Tipps“ vor „Information“: kurze Tipps zur Bedienung, zum Beispiel „Was sind Ortsnotizen?“. Ungelesene Tipps stehen oben.
+
 ## 1.5.13 (61)
 
 - Navigation: Neue Einstellung „Ansagen bei der Navigation“: „Ausführlich“ wie bisher oder „Kurz“ („50 Meter, links“). Verlassen Sie die Route, sagt Candle das an, veraltete Anweisungen werden abgebrochen.
