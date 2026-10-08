@@ -66,3 +66,6 @@ ansible/*.p8
 
 # local GIS experiments and the places data built on the Mac (server/tools/README.md)
 gis-test/
+
+# 3D audio experiment (Steam Audio + Oboe), not part of Candle
+audio-test/
