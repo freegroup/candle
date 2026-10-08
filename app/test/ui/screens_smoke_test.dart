@@ -7,7 +7,12 @@ import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
+import 'package:candle/data/repositories/tips/tips_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
+import 'package:candle/data/services/language/language_service.dart';
+import 'package:candle/domain/models/tip.dart';
+import 'package:candle/ui/tips/widgets/tip_screen.dart';
+import 'package:candle/ui/tips/widgets/tips_screen.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
@@ -56,6 +61,7 @@ import '../fakes/fake_compass_service.dart';
 import '../fakes/fake_geocoding_repository.dart';
 import '../fakes/fake_location_service.dart';
 import '../fakes/fake_poi_repository.dart';
+import '../fakes/fake_tips_service.dart';
 
 const _here = LatLng(52.5163, 13.3777);
 final _address = LocationAddress(
@@ -122,6 +128,13 @@ void main() {
         Provider<PoiRepository>.value(value: FakePoiRepository(const Result.ok([]))),
         Provider<WikipediaRepository>.value(value: _Wikipedia()),
         Provider<ShareService>.value(value: _NoShare()),
+        ChangeNotifierProvider(
+          create: (_) => TipsRepository(
+            tipsService: FakeTipsService(),
+            settingsRepository: settings,
+            languageService: LanguageService(preferredLocales: () => const [Locale('de')]),
+          ),
+        ),
         Provider.value(value: AccessibilityService()),
         Provider<PermissionService>.value(value: _Permissions()),
         Provider.value(value: VibrationService(settingsRepository: settings)),
@@ -174,6 +187,9 @@ void main() {
     'recording': buildRecordingScreen,
     'radar': buildRadarScreen,
     'wikipedia': buildWikipediaScreen,
+    'tips': buildTipsScreen,
+    'tip': () => const TipScreen(
+        tip: Tip(id: 'notes', title: 'Was sind Ortsnotizen?', text: 'Ein Hinweis.\n\nNoch einer.', read: false)),
   };
 
   for (final entry in screens.entries) {

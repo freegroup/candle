@@ -14,6 +14,7 @@ enum Setting {
   overviewRadar('overviewRadar'),
   overviewShare('overviewShare'),
   overviewWikipedia('overviewWikipedia'),
+  overviewTips('overviewTips'),
   // Vibration can be annoying for sighted users, so it can be turned off.
   vibrateDuringNavigation('vibrateDuringNavigation'),
   vibrateCompass('vibrateCompass'),
@@ -71,6 +72,14 @@ class SettingsRepository extends ChangeNotifier {
 
   Future<void> setNavigationStyleId(String id) async {
     await _prefs.setString('navigationStyle', id);
+    notifyListeners();
+  }
+
+  /// The ids of the tips the user has opened.
+  Set<String> get readTips => (_prefs.getStringList('readTips') ?? const []).toSet();
+
+  Future<void> markTipRead(String id) async {
+    await _prefs.setStringList('readTips', [...readTips, id]);
     notifyListeners();
   }
 

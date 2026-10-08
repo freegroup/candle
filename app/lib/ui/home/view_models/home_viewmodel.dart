@@ -15,7 +15,7 @@ import 'package:logger/logger.dart';
 final _log = Logger();
 
 /// A function of the home screen; the user chooses which ones are shown.
-enum HomeTile { compass, location, recorder, radar, share, wikipedia, about }
+enum HomeTile { compass, location, recorder, radar, share, wikipedia, tips, about }
 
 /// The home screen: the address the user is at and the tiles of the main functions.
 class HomeViewModel extends ChangeNotifier {
@@ -76,6 +76,7 @@ class HomeViewModel extends ChangeNotifier {
         if (_settings.isEnabled(Setting.overviewRadar)) HomeTile.radar,
         if (_settings.isEnabled(Setting.overviewShare)) HomeTile.share,
         if (_settings.isEnabled(Setting.overviewWikipedia)) HomeTile.wikipedia,
+        if (_settings.isEnabled(Setting.overviewTips)) HomeTile.tips,
         HomeTile.about,
       ];
 

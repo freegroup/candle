@@ -1,0 +1,81 @@
+{
+  "tips": [
+    {
+      "id": "location_notes",
+      "title": {
+        "de": "Was sind Ortsnotizen?",
+        "en": "What are location notes?"
+      },
+      "text": {
+        "de": "Eine Ortsnotiz ist ein kurzer Hinweis an einer bestimmten Stelle, zum Beispiel „Treppe nach der Tür“ oder „Eingang links neben dem Bäcker“.\n\nKommst du an diese Stelle, vibriert das Handy dreimal und Candle zeigt den Hinweis an. Mit Screenreader wird er vorgelesen. Das klappt, solange Candle geöffnet ist, nicht nur während einer Navigation.\n\nEine Notiz kommt erst wieder, wenn du dich etwa 50 Meter entfernt hast und zurückkommst.",
+        "en": "A location note is a short hint at a certain spot, for example \"stairs after the door\" or \"entrance left of the bakery\".\n\nWhen you reach that spot, your phone vibrates three times and Candle shows the hint. With a screen reader it is read out. This works whenever Candle is open, not only during a navigation.\n\nA note comes again only after you were about 50 meters away and come back."
+      }
+    },
+    {
+      "id": "quick_location_note",
+      "title": {
+        "de": "Schnell eine Ortsnotiz anlegen",
+        "en": "Add a location note quickly"
+      },
+      "text": {
+        "de": "Du musst Candle dafür nicht erst öffnen: Drücke auf dem Startbildschirm deines Handys lange auf das Symbol der Candle-App und wähle „Ortsnotiz hier anlegen“. Candle öffnet sich direkt mit der neuen Notiz für deinen aktuellen Standort.\n\nMit Screenreader: Lege den Fokus auf das Candle-Symbol und öffne die Aktionen des Symbols. Dort steht „Ortsnotiz hier anlegen“.\n\nIst Candle schon offen, findest du denselben Eintrag in den Aktionen der Überschrift jedes Screens. Den Text kannst du diktieren.",
+        "en": "You don't have to open Candle first: on the home screen of your phone, press and hold the icon of the Candle app and choose \"Add location note here\". Candle opens with a new note for where you are.\n\nWith a screen reader: put the focus on the Candle icon and open the actions of the icon. There you find \"Add location note here\".\n\nWhen Candle is open already, you find the same entry in the actions of the heading of every screen. You can dictate the text."
+      }
+    },
+    {
+      "id": "radar",
+      "title": {
+        "de": "Wie funktioniert das Orte-Radar?",
+        "en": "How does the places radar work?"
+      },
+      "text": {
+        "de": "Halte das Handy flach vor dich und zeige in eine Richtung. Candle sagt die Himmelsrichtung an und wie viele Orte dort liegen.\n\nDarunter steht die Liste dieser Orte, die nächsten zuerst. Drehe dich weiter, um die Orte in der nächsten Richtung zu hören.",
+        "en": "Hold your phone flat in front of you and point in a direction. Candle announces the compass direction and how many places lie there.\n\nBelow is the list of these places, the nearest first. Turn further to hear the places in the next direction."
+      }
+    },
+    {
+      "id": "navigation_styles",
+      "title": {
+        "de": "Ansagen bei der Navigation wählen",
+        "en": "Choose the navigation announcements"
+      },
+      "text": {
+        "de": "In den Einstellungen unter „Ansagen bei der Navigation“ wählst du, wie Candle dich führt.\n\n„Ausführlich“ sagt ganze Sätze mit der Drehung zum nächsten Wegpunkt. „Kurz“ sagt nur Meter und Richtung, zum Beispiel „50 Meter, links“.",
+        "en": "In the settings under \"Navigation announcements\" you choose how Candle guides you.\n\n\"Detailed\" says full sentences with the turn to the next waypoint. \"Short\" only says meters and direction, for example \"50 meters, left\"."
+      }
+    },
+    {
+      "id": "repeat_instruction",
+      "title": {
+        "de": "Die Anweisung noch einmal hören",
+        "en": "Hear the instruction again"
+      },
+      "text": {
+        "de": "Während der Navigation tippst du auf die unteren zwei Drittel des Bildschirms. Dann sagt Candle die aktuelle Anweisung noch einmal an.\n\nVerlässt du die Route, sagt Candle das an und berechnet eine neue.",
+        "en": "During a navigation, tap the lower two thirds of the screen. Candle then tells you the current instruction again.\n\nWhen you leave the route, Candle tells you and calculates a new one."
+      }
+    },
+    {
+      "id": "color_schemes",
+      "title": {
+        "de": "Farbschema für Sehrest",
+        "en": "Color schemes for low vision"
+      },
+      "text": {
+        "de": "In den Einstellungen unter „Farbschema“ kannst du die Farben der App wählen: Gelb auf Schwarz, Weiß auf Schwarz, Schwarz auf Weiß oder Blau auf Gelb.\n\nDie Änderung gilt sofort. Probiere aus, was für deine Augen am angenehmsten ist.",
+        "en": "In the settings under \"Color scheme\" you choose the colors of the app: yellow on black, white on black, black on white or blue on yellow.\n\nThe change applies at once. Try what is most comfortable for your eyes."
+      }
+    },
+    {
+      "id": "short_announcements",
+      "title": {
+        "de": "Kurze Ansagen für Geübte",
+        "en": "Short announcements for experienced users"
+      },
+      "text": {
+        "de": "Kennst du Candle schon gut, schalte in den Einstellungen „Kurze Ansagen“ ein. Dann sagt der Screenreader nur das Wichtigste, zum Beispiel „45 Grad links“ statt eines ganzen Satzes.",
+        "en": "When you know Candle well, turn on \"Short announcements\" in the settings. The screen reader then says only what matters, for example \"45 degrees left\" instead of a whole sentence."
+      }
+    }
+  ]
+}

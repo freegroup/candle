@@ -455,5 +455,15 @@
   "navigation_short_straight_t": "geradeaus",
   "navigation_short_slightly_right_t": "leicht rechts",
   "navigation_short_right_t": "rechts",
-  "navigation_short_hard_right_t": "scharf rechts"
+  "navigation_short_hard_right_t": "scharf rechts",
+
+  "button_tips": "Tipps",
+  "button_tips_t": "Tipps zur Bedienung von Candle",
+  "featureflag_tips": "Tipps",
+  "screen_header_tips": "Tipps",
+  "screen_header_tips_t": "Tipps zur Bedienung von Candle",
+  "screen_header_tip": "Tipp",
+  "tips_unread": "neu",
+  "tips_unread_t": "{title}, ungelesen",
+  "tips_load_error": "Die Tipps konnten nicht geladen werden."
 }

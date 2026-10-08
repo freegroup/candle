@@ -96,6 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SemanticAnnouncer 
       Setting.overviewLocation => l10n.featureflag_location,
       Setting.overviewShare => l10n.featureflag_share,
       Setting.overviewWikipedia => l10n.featureflag_wikipedia,
+      Setting.overviewTips => l10n.featureflag_tips,
       Setting.vibrateDuringNavigation => l10n.featureflag_vibraterouting,
       Setting.vibrateCompass => l10n.featureflag_vibratecompass,
       Setting.betaRecording => l10n.featureflag_beta_recording,

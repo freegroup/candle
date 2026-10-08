@@ -1412,5 +1412,22 @@
   "navigation_short_straight_t": "straight on",
   "navigation_short_slightly_right_t": "slightly right",
   "navigation_short_right_t": "right",
-  "navigation_short_hard_right_t": "sharp right"
+  "navigation_short_hard_right_t": "sharp right",
+
+  "button_tips": "Tips",
+  "button_tips_t": "Tips on using Candle",
+  "featureflag_tips": "Tips",
+  "screen_header_tips": "Tips",
+  "screen_header_tips_t": "Tips on using Candle",
+  "screen_header_tip": "Tip",
+  "tips_unread": "new",
+  "tips_unread_t": "{title}, unread",
+  "@tips_unread_t": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "tips_load_error": "The tips could not be loaded."
 }

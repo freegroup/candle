@@ -15,6 +15,7 @@ import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/tile_button.dart';
+import 'package:candle/ui/tips/widgets/tips_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -115,6 +116,12 @@ class HomeScreen extends StatelessWidget {
           talkback: l10n.button_wikipedia_t,
           icon: const Icon(Icons.school, size: 80),
           onPressed: () => open(buildWikipediaScreen),
+        ),
+      HomeTile.tips => TileButton(
+          title: l10n.button_tips,
+          talkback: l10n.button_tips_t,
+          icon: const Icon(Icons.lightbulb_outline, size: 80),
+          onPressed: () => open(buildTipsScreen),
         ),
       HomeTile.about => TileButton(
           title: l10n.button_about,

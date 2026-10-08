@@ -13,6 +13,7 @@ import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
+import 'package:candle/data/repositories/tips/tips_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
 import 'package:candle/data/services/attestation/attestation_service.dart';
 import 'package:candle/data/services/candle_api/candle_api_client.dart';
@@ -29,6 +30,7 @@ import 'package:candle/data/services/permissions/permission_service.dart';
 import 'package:candle/data/services/share/share_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
 import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
+import 'package:candle/data/services/tips/tips_service.dart';
 import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/wikipedia/wikipedia_client.dart';
 import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
@@ -46,6 +48,14 @@ final _log = Logger();
 List<SingleChildWidget> get providers => [
       Provider<http.Client>(create: (_) => http.Client(), dispose: (_, client) => client.close()),
       ChangeNotifierProvider(create: (_) => LanguageService()),
+      Provider(create: (_) => TipsService()),
+      ChangeNotifierProvider(
+        create: (context) => TipsRepository(
+          tipsService: context.read(),
+          settingsRepository: context.read(),
+          languageService: context.read(),
+        ),
+      ),
       Provider(create: (context) => NominatimClient(client: context.read())),
       Provider(
         create: (context) =>

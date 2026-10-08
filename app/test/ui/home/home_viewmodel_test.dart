@@ -42,6 +42,16 @@ void main() {
         shareService: _NoShare(),
       );
 
+  test('the tips tile comes before the information tile and can be hidden', () async {
+    final viewModel = create();
+    await pumpEventQueue();
+    expect(viewModel.tiles.sublist(viewModel.tiles.length - 2), [HomeTile.tips, HomeTile.about]);
+
+    await settings.setEnabled(Setting.overviewTips, false);
+    expect(viewModel.tiles, isNot(contains(HomeTile.tips)));
+    viewModel.dispose();
+  });
+
   test('shows the address of the current position until the user walks away', () async {
     final viewModel = create();
     await pumpEventQueue();
