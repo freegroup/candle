@@ -2,25 +2,26 @@ import UIKit
 import Flutter
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
     private var eventSink: FlutterEventSink?
     private var methodChannel: FlutterMethodChannel?
 
-    override func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        GeneratedPluginRegistrant.register(with: self)
-        if let registrar = registrar(forPlugin: "AttestationChannel") {
+    // UIScene lifecycle (required by iOS 27): the engine only exists once the scene is
+    // connected, so plugins and channels are set up here, not in didFinishLaunching.
+    func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+        // Before the plugins, so a .candle file is handled here and not offered to them.
+        if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "CandleFileOpen") {
+            registrar.addSceneDelegate(self)
+        }
+        GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+        if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "AttestationChannel") {
             AttestationChannel.register(with: registrar)
         }
-        
-        guard let controller = window?.rootViewController as? FlutterViewController else {
-            fatalError("rootViewController is not type FlutterViewController")
-        }
-        
+
+        let messenger = engineBridge.applicationRegistrar.messenger()
+
         // Setup method channel
-        methodChannel = FlutterMethodChannel(name: "receive_sharing_intent/messages", binaryMessenger: controller.binaryMessenger)
+        methodChannel = FlutterMethodChannel(name: "receive_sharing_intent/messages", binaryMessenger: messenger)
         methodChannel?.setMethodCallHandler { [weak self] (call, result) in
             // Handle method calls here
             if call.method == "getInitialMedia" {
@@ -35,36 +36,35 @@ import Flutter
                 result(FlutterMethodNotImplemented)
             }
         }
-        
+
         // Setup event channel
-        let eventChannel = FlutterEventChannel(name: "receive_sharing_intent/events-media", binaryMessenger: controller.binaryMessenger)
+        let eventChannel = FlutterEventChannel(name: "receive_sharing_intent/events-media", binaryMessenger: messenger)
         eventChannel.setStreamHandler(self)
-        
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-    
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        print("Application called to open URL: \(url)")
-        
-        if url.pathExtension == "candle" {
-            // Handle the .candle file
-            // Prepare the data to be sent to Flutter
-            let fileInfo = [["path": url.path, "type": "file"]]
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: fileInfo, options: [])
-                let jsonString = String(data: jsonData, encoding: .utf8)
-                // Make sure to send the jsonString to the event channel
-                self.eventSink?(jsonString)
-            } catch {
-                print("Error preparing shared file info: \(error)")
-            }
 
-            return true
+}
+
+extension AppDelegate: FlutterSceneLifeCycleDelegate {
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) -> Bool {
+        guard let url = URLContexts.first?.url, url.pathExtension == "candle" else {
+            return false
         }
-        
-        return super.application(app, open: url, options: options)
-    }
+        print("Application called to open URL: \(url)")
 
+        // Handle the .candle file
+        // Prepare the data to be sent to Flutter
+        let fileInfo = [["path": url.path, "type": "file"]]
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: fileInfo, options: [])
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            // Make sure to send the jsonString to the event channel
+            self.eventSink?(jsonString)
+        } catch {
+            print("Error preparing shared file info: \(error)")
+        }
+
+        return true
+    }
 }
 
 extension AppDelegate: FlutterStreamHandler {
@@ -73,7 +73,7 @@ extension AppDelegate: FlutterStreamHandler {
         // Optionally, send any initial event if necessary
         return nil
     }
-    
+
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         self.eventSink = nil
         return nil
