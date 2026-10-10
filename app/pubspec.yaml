@@ -1,7 +1,7 @@
 name: candle
 description: "Accessible Navigation App"
 publish_to: 'none'
-version: 1.5.14+62
+version: 1.5.15+63
 
 environment:
   sdk: ^3.12.0
@@ -34,7 +34,7 @@ dependencies:
   rxdart: ^0.28.0
   sensors_plus: ^7.1.0
   share_plus: ^13.3.0
-  app_links: ^6.3.3
+  app_links: ^7.2.2
   shared_preferences: ^2.5.5
   simple_shadow: ^0.3.1
   speech_to_text: ^7.5.0

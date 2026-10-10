@@ -4,6 +4,10 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.15 (63)
+
+- Technische Aktualisierung ohne sichtbare Änderungen. Auf dem iPhone und iPad startet Candle jetzt auch unter iOS 27.
+
 ## 1.5.14 (62)
 
 - Neue Kachel „Tipps“ vor „Information“: kurze Tipps zur Bedienung, zum Beispiel „Was sind Ortsnotizen?“. Ungelesene Tipps stehen oben.
