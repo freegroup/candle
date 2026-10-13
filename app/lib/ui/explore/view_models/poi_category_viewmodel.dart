@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:candle/data/repositories/geocoding/geocoding_repository.dart';
+import 'package:candle/data/repositories/poi/poi_address.dart';
 import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/domain/models/poi.dart';
@@ -100,26 +101,9 @@ class PoiCategoryViewModel extends ChangeNotifier {
     Poi poi, {
     required String name,
     required String formattedAddress,
-  }) async {
-    if (!poi.hasAddress) {
-      final address = await _geocodingRepository.addressAt(poi.position);
-      if (address case Ok(:final value)) {
-        return value.copyWith(
-            name: name, lat: poi.position.latitude, lon: poi.position.longitude);
-      }
-    }
-    return LocationAddress(
-      name: name,
-      formattedAddress: formattedAddress,
-      street: poi.street,
-      number: poi.number,
-      zip: poi.zip,
-      city: poi.city,
-      country: '',
-      lat: poi.position.latitude,
-      lon: poi.position.longitude,
-    );
-  }
+  }) =>
+      poiToLocationAddress(poi,
+          geocoding: _geocodingRepository, name: name, formattedAddress: formattedAddress);
 
   @override
   void dispose() {

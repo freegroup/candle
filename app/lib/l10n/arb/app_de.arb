@@ -110,6 +110,8 @@
   "button_common_edit_t": "Eintrag bearbeiten",
   "button_common_edit": "Bearbeiten",
 
+  "button_save_as_location_t": "Als Ort speichern",
+
   "button_map_center_t": "Karte auf meine Position zentrieren",
   "button_map_center": "Zentrieren",
   

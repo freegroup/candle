@@ -2,15 +2,19 @@ import 'dart:async';
 
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
+import 'package:candle/data/services/share/share_service.dart';
 import 'package:candle/data/services/tts/tts.dart';
+import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';
+import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
 import 'package:candle/ui/radar/view_models/radar_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
+import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/compass_heading_small.dart';
@@ -19,6 +23,8 @@ import 'package:candle/ui/core/widgets/list_tile.dart';
 import 'package:candle/ui/core/widgets/semantic_header.dart';
 import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 /// Radar with its own view model, disposed together with the screen.
@@ -27,6 +33,7 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
       create: (context) => RadarViewModel(
         poiRepository: context.read(),
         locationService: context.read(),
+        geocodingRepository: context.read(),
         compassService: context.read(),
       ),
       builder: (context, _) => ReportCovered(
@@ -39,6 +46,10 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
 
 /// Lists the places in the direction the phone points to. Entering one of the
 /// eight compass directions vibrates and announces it with the number of places.
+///
+/// A place can be shared or saved as an own place: by swiping its row to the
+/// left, or as an action of the screen reader. While a row is swiped open the
+/// list stays as it is.
 class RadarScreen extends StatefulWidget {
   const RadarScreen({
     super.key,
@@ -56,6 +67,13 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
 
   int? _announcedDirection;
   bool _wasTilted = false;
+
+  // The header above the list; with a screen reader a new direction moves the focus to it.
+  final _headerKey = GlobalKey();
+  bool _headerHasFocus = false;
+
+  // Rows swiped open right now; the list is held while there is one.
+  int _openMenus = 0;
 
   @override
   void initState() {
@@ -106,15 +124,42 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
   }
 
   Future<void> _announceDirection(int direction) async {
-    final l10n = AppLocalizations.of(context)!;
     final horizon = getHorizon(context, direction);
+    final screenReader = MediaQuery.accessibleNavigationOf(context);
     // so the places of an old direction are not read to the end
     await TTS.interrupt();
     if (!mounted) return;
     unawaited(_pulse(duration: 100));
-    await _announce(_viewModel.load.completed
-        ? l10n.locations_in_direction_toast(horizon, _viewModel.poisInDirection.length)
-        : horizon);
+
+    // With places in the new direction the list gets its header, which says the
+    // direction and the number of places. The screen reader focus goes there, so
+    // the user starts at the top of the new list, and reading the header out is
+    // the announcement. Focusing the header again when the focus is on it already
+    // says nothing, so then (and without a header) the text is announced.
+    final listHasHeader = _viewModel.load.completed && _viewModel.poisInDirection.isNotEmpty;
+    if (screenReader && listHasHeader && !_headerHasFocus) {
+      // the header with the new text exists after the next frame
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+      _headerKey.currentContext?.findRenderObject()?.sendSemanticsEvent(const FocusSemanticEvent());
+      return;
+    }
+    await _announce(_viewModel.load.completed ? _directionText(direction) : horizon);
+  }
+
+  // What is said for a direction, e.g. "North, 6 places nearby."
+  String _directionText(int direction) => AppLocalizations.of(context)!.locations_in_direction_toast(
+      getHorizon(context, direction), _viewModel.poisInDirection.length);
+
+  // While a row is swiped open the list must not change under the finger.
+  void _onMenuChanged(bool open) {
+    if (!mounted) return;
+    _openMenus += open ? 1 : -1;
+    if (_openMenus > 0) {
+      _viewModel.onMenuOpened();
+    } else {
+      _viewModel.onMenuClosed();
+    }
   }
 
   Future<void> _announce(String message) async {
@@ -239,30 +284,97 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
 
   Widget _buildPoiList(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final pois = _viewModel.poisInDirection;
+    final direction = _viewModel.direction;
 
     return Column(
       children: [
         SemanticHeader(
+          key: _headerKey,
           title: l10n.explore_poi_header,
-          talkback: l10n.explore_poi_header_t(pois.length),
+          talkback: direction == null
+              ? l10n.explore_poi_header_t(pois.length)
+              : _directionText(direction),
+          onScreenReaderFocus: () => _headerHasFocus = true,
+          onScreenReaderFocusLost: () => _headerHasFocus = false,
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: pois.length,
-            itemBuilder: (context, index) {
-              final poi = pois[index];
-              return CandleListTile(
-                title: l10n.poiName(poi),
-                subtitle: l10n.poiAddress(poi),
-                trailing: '${_viewModel.distanceTo(poi)} m',
-                onTap: () => _openCompass(poi),
-              );
-            },
+          child: SlidableAutoCloseBehavior(
+            child: ListView.builder(
+              itemCount: pois.length,
+              itemBuilder: (context, index) {
+                final poi = pois[index];
+                // The key ties the row to its place: an action of the screen reader
+                // that was started on a row which is gone after turning does nothing,
+                // instead of hitting the place that took its position in the list.
+                return Semantics(
+                  key: ValueKey(poi.id),
+                  customSemanticsActions: {
+                    CustomSemanticsAction(label: l10n.button_save_as_location_t): () =>
+                        _addToLocations(poi),
+                    CustomSemanticsAction(label: l10n.button_share_location_t): () =>
+                        _share(poi),
+                  },
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        CustomSlidableAction(
+                          onPressed: (_) => _share(poi),
+                          padding: EdgeInsets.zero,
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
+                          child: const Icon(Icons.share, size: 35),
+                        ),
+                        CustomSlidableAction(
+                          onPressed: (_) => _addToLocations(poi),
+                          padding: EdgeInsets.zero,
+                          backgroundColor: theme.positiveColor,
+                          foregroundColor: theme.colorScheme.primary,
+                          child: const Icon(Icons.add, size: 35),
+                        ),
+                      ],
+                    ),
+                    child: _MenuWatcher(
+                      onChanged: _onMenuChanged,
+                      child: CandleListTile(
+                        title: l10n.poiName(poi),
+                        subtitle: l10n.poiAddress(poi),
+                        trailing: '${_viewModel.distanceTo(poi)} m',
+                        onTap: () => _openCompass(poi),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ],
     );
+  }
+
+  Future<LocationAddress> _toLocationAddress(Poi poi) {
+    final l10n = AppLocalizations.of(context)!;
+    return _viewModel.toLocationAddress(
+      poi,
+      name: l10n.poiName(poi),
+      formattedAddress: l10n.poiAddress(poi),
+    );
+  }
+
+  Future<void> _addToLocations(Poi poi) async {
+    final address = await _toLocationAddress(poi);
+    if (!mounted) return;
+    await Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (context) => buildLocationEditScreen(address),
+    ));
+  }
+
+  Future<void> _share(Poi poi) async {
+    final address = await _toLocationAddress(poi);
+    if (mounted) await context.read<ShareService>().shareLocation(address);
   }
 
   void _openCompass(Poi poi) {
@@ -271,4 +383,53 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
       builder: (context) => buildTargetCompassScreen(target: poi.position, targetName: l10n.poiName(poi)),
     )));
   }
+}
+
+/// Tells whether the menu of its row is open, i.e. the row is swiped to the
+/// side. Sits inside the [Slidable] of the row.
+class _MenuWatcher extends StatefulWidget {
+  const _MenuWatcher({required this.onChanged, required this.child});
+
+  final void Function(bool open) onChanged;
+  final Widget child;
+
+  @override
+  State<_MenuWatcher> createState() => _MenuWatcherState();
+}
+
+class _MenuWatcherState extends State<_MenuWatcher> {
+  SlidableController? _controller;
+  bool _open = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final controller = Slidable.of(context);
+    if (controller == _controller) return;
+    _controller?.actionPaneType.removeListener(_onMenuChanged);
+    _controller = controller;
+    controller?.actionPaneType.addListener(_onMenuChanged);
+  }
+
+  void _onMenuChanged() {
+    final open = _controller!.actionPaneType.value != ActionPaneType.none;
+    if (open == _open) return;
+    _open = open;
+    widget.onChanged(open);
+  }
+
+  @override
+  void dispose() {
+    _controller?.actionPaneType.removeListener(_onMenuChanged);
+    // A row that disappears with its menu open must not hold the list for ever.
+    // Reported after the frame: the widgets cannot be changed while one is removed.
+    if (_open) {
+      final onChanged = widget.onChanged;
+      WidgetsBinding.instance.addPostFrameCallback((_) => onChanged(false));
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

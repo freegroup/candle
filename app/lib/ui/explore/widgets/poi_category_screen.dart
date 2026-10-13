@@ -227,7 +227,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
                 final poi = pois[index];
                 return Semantics(
                   customSemanticsActions: {
-                    CustomSemanticsAction(label: l10n.button_common_edit_t): () =>
+                    CustomSemanticsAction(label: l10n.button_save_as_location_t): () =>
                         _addToLocations(poi),
                     CustomSemanticsAction(label: l10n.button_share_location_t): () =>
                         _share(poi),

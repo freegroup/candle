@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/poi.dart';
@@ -7,7 +9,9 @@ import 'package:candle/ui/radar/view_models/radar_viewmodel.dart';
 import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +20,7 @@ import 'package:shared_preferences_platform_interface/in_memory_shared_preferenc
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 import '../../fakes/fake_compass_service.dart';
+import '../../fakes/fake_geocoding_repository.dart';
 import '../../fakes/fake_location_service.dart';
 import '../../fakes/fake_poi_repository.dart';
 
@@ -36,6 +41,8 @@ void main() {
   late FakeCompassService compass;
   late RadarViewModel viewModel;
   late List<String> announcements;
+  // The semantics nodes the screen reader focus was moved to.
+  late List<int> focusedNodes;
   late int vibrations;
   late SettingsRepository settings;
   late int interruptions;
@@ -44,6 +51,7 @@ void main() {
     viewModel = RadarViewModel(
       poiRepository: repository,
       locationService: FakeLocationService(const Result.ok(here)),
+      geocodingRepository: FakeGeocodingRepository(),
       compassService: compass,
     );
     // the radar reads the vibration setting from the providers
@@ -76,6 +84,7 @@ void main() {
     repository = FakePoiRepository(const Result.ok([cafe, signal]));
     compass = FakeCompassService();
     announcements = [];
+    focusedNodes = [];
     vibrations = 0;
     interruptions = 0;
   });
@@ -84,8 +93,10 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockDecodedMessageHandler<Object?>(
       SystemChannels.accessibility,
       (Object? message) async {
-        final data = (message! as Map<Object?, Object?>)['data']! as Map<Object?, Object?>;
+        final map = message! as Map<Object?, Object?>;
+        final data = map['data']! as Map<Object?, Object?>;
         if (data['message'] case final String text) announcements.add(text);
+        if (map['type'] == 'focus') focusedNodes.add(map['nodeId']! as int);
         return null;
       },
     );
@@ -133,6 +144,71 @@ void main() {
     await point(tester, 20);
     await point(tester, 0);
     expect(vibrations, 2);
+  });
+
+  testWidgets('offers to save and to share a place as screen reader actions', (tester) async {
+    final handle = tester.ensureSemantics();
+    await pumpScreen(tester);
+    await point(tester, 0);
+
+    final actions = <String>[];
+    SemanticsNode? current = tester.getSemantics(find.text('Café Einstein'));
+    while (current != null && actions.isEmpty) {
+      final ids = current.getSemanticsData().customSemanticsActionIds ?? [];
+      actions.addAll(ids.map((id) => CustomSemanticsAction.getAction(id)!.label!));
+      current = current.parent;
+    }
+    expect(actions, unorderedEquals(['Als Ort speichern', 'Ort teilen']));
+    handle.dispose();
+  });
+
+  testWidgets('while a place is swiped open the list stays, then it shows the new direction',
+      (tester) async {
+    await pumpScreen(tester);
+    await point(tester, 0);
+    expect(find.text('Café Einstein'), findsOneWidget);
+
+    await tester.drag(find.text('Café Einstein'), const Offset(-300, 0));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.share), findsOneWidget);
+
+    await point(tester, 180); // south: no places there
+    expect(find.text('Café Einstein'), findsOneWidget);
+
+    // the row slides back, as after a tap beside the menu
+    unawaited(Slidable.of(tester.element(find.text('Café Einstein')))!.close());
+    await tester.pumpAndSettle();
+    expect(find.text('Café Einstein'), findsNothing);
+  });
+
+  testWidgets('with a screen reader a new direction moves the focus to the header of the list',
+      (tester) async {
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(accessibleNavigation: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    final handle = tester.ensureSemantics();
+    await pumpScreen(tester);
+    announcements.clear();
+    focusedNodes.clear();
+
+    await point(tester, 0);
+    await tester.pump();
+
+    // the header says the direction and the number of places; reading it out is the announcement
+    final header = tester.getSemantics(find.bySemanticsLabel('Norden, 2 nahegelegene Orte.'));
+    expect(focusedNodes, [header.id]);
+    expect(announcements, isEmpty);
+
+    // the focus is on the header already: focusing it again would say nothing
+    tester.binding.renderViews.first.owner!.semanticsOwner!
+        .performAction(header.id, SemanticsAction.didGainAccessibilityFocus);
+    await point(tester, 90); // east: no places, so no header
+    expect(announcements.last, startsWith('Osten'));
+    await point(tester, 0);
+    await tester.pump();
+    expect(announcements.last, 'Norden, 2 nahegelegene Orte.');
+    expect(focusedNodes, [header.id]);
+    handle.dispose();
   });
 
   testWidgets('shows a hint when the phone is tilted', (tester) async {

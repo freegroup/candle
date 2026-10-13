@@ -1,3 +1,4 @@
+import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/ui/radar/view_models/radar_viewmodel.dart';
 import 'package:candle/utils/result.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../fakes/fake_compass_service.dart';
+import '../../fakes/fake_geocoding_repository.dart';
 import '../../fakes/fake_location_service.dart';
 import '../../fakes/fake_poi_repository.dart';
 
@@ -25,6 +27,7 @@ void main() {
   RadarViewModel create() => RadarViewModel(
         poiRepository: repository,
         locationService: location,
+        geocodingRepository: FakeGeocodingRepository(),
         compassService: compass,
       );
 
@@ -109,11 +112,62 @@ void main() {
     viewModel.dispose();
   });
 
+  test('while the menu of a place is open the list stays, then it catches up', () async {
+    final viewModel = create();
+    await pumpEventQueue();
+    compass.headingController.add(0);
+    await pumpEventQueue();
+    expect(viewModel.poisInDirection, [northNear, northWest, north]);
+
+    viewModel.onMenuOpened();
+    compass.headingController.add(90);
+    await pumpEventQueue();
+    expect(viewModel.direction, 0);
+    expect(viewModel.poisInDirection, [northNear, northWest, north]);
+
+    viewModel.onMenuClosed();
+    await pumpEventQueue();
+    expect(viewModel.direction, 90);
+    expect(viewModel.poisInDirection, [east]);
+    viewModel.dispose();
+  });
+
+  test('a place without an address gets the one of its position for saving and sharing', () async {
+    final geocoding = FakeGeocodingRepository()
+      ..address = LocationAddress(
+        name: '',
+        formattedAddress: 'Pariser Platz 1, Berlin',
+        street: 'Pariser Platz',
+        number: '1',
+        zip: '10117',
+        city: 'Berlin',
+        country: 'Deutschland',
+        lat: 0,
+        lon: 0,
+      );
+    final viewModel = RadarViewModel(
+      poiRepository: repository,
+      locationService: location,
+      geocodingRepository: geocoding,
+      compassService: compass,
+    );
+    await pumpEventQueue();
+
+    final address = await viewModel.toLocationAddress(north, name: 'North', formattedAddress: '');
+
+    expect(address.name, 'North');
+    expect(address.formattedAddress, 'Pariser Platz 1, Berlin');
+    // the position of the place, not the one the address was looked up for
+    expect(address.latlng(), north.position);
+    viewModel.dispose();
+  });
+
   test('warns only after the phone has been tilted for a while', () async {
     const delay = Duration(milliseconds: 60);
     final viewModel = RadarViewModel(
       poiRepository: repository,
       locationService: location,
+      geocodingRepository: FakeGeocodingRepository(),
       compassService: compass,
       tiltWarningDelay: delay,
     );

@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:candle/data/repositories/geocoding/geocoding_repository.dart';
+import 'package:candle/data/repositories/poi/poi_address.dart';
 import 'package:candle/data/repositories/poi/poi_repository.dart';
 import 'package:candle/data/services/location/location_service.dart';
+import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/ui/compass/view_models/base_compass_viewmodel.dart';
 import 'package:candle/ui/core/widgets/report_covered.dart';
@@ -21,6 +24,7 @@ class RadarViewModel extends BaseCompassViewModel implements CoveredAware {
   RadarViewModel({
     required this._poiRepository,
     required this._locationService,
+    required this._geocodingRepository,
     required super.compassService,
     this.radiusInMeter = 2000,
     this.reloadDistanceInMeter = 500,
@@ -41,6 +45,7 @@ class RadarViewModel extends BaseCompassViewModel implements CoveredAware {
   final int reloadDistanceInMeter;
   final PoiRepository _poiRepository;
   final LocationService _locationService;
+  final GeocodingRepository _geocodingRepository;
 
   late final Command0<void> load;
 
@@ -103,19 +108,49 @@ class RadarViewModel extends BaseCompassViewModel implements CoveredAware {
   /// when the radar is on top again. Compass and position keep coming.
   bool _covered = false;
 
+  /// The same while the user has the menu of a place open (the row swiped to the
+  /// side): the place under the finger must not change.
+  bool _menuOpen = false;
+
+  bool get _listIsHeld => _covered || _menuOpen;
+
   @override
   void onCovered() => _covered = true;
 
   @override
   void onUncovered() {
     _covered = false;
+    _catchUp();
+  }
+
+  void onMenuOpened() => _menuOpen = true;
+
+  void onMenuClosed() {
+    if (!_menuOpen) return;
+    _menuOpen = false;
+    _catchUp();
+  }
+
+  // Shows the direction and the places of right now, once nothing holds the list any more.
+  void _catchUp() {
+    if (_listIsHeld) return;
     onHeadingChanged(heading);
     _refresh();
   }
 
+  /// Converts a place into an address that can be saved or shared.
+  /// Places without a complete OSM address are reverse geocoded.
+  Future<LocationAddress> toLocationAddress(
+    Poi poi, {
+    required String name,
+    required String formattedAddress,
+  }) =>
+      poiToLocationAddress(poi,
+          geocoding: _geocodingRepository, name: name, formattedAddress: formattedAddress);
+
   void _onPosition(LatLng position) {
     _location = position;
-    if (!_covered) _refresh();
+    if (!_listIsHeld) _refresh();
   }
 
   void _refresh() {
@@ -135,7 +170,7 @@ class RadarViewModel extends BaseCompassViewModel implements CoveredAware {
 
   @override
   void onHeadingChanged(int heading) {
-    if (_covered) return;
+    if (_listIsHeld) return;
     final snapped = snapToDirection(heading);
     if (snapped == _snappedDirection) return;
     _snappedDirection = snapped;

@@ -4,10 +4,16 @@ class SemanticHeader extends StatelessWidget {
   final String title;
   final String talkback;
 
+  /// Called when the screen reader focus enters and leaves the header.
+  final VoidCallback? onScreenReaderFocus;
+  final VoidCallback? onScreenReaderFocusLost;
+
   const SemanticHeader({
     super.key,
     required this.title,
     required this.talkback,
+    this.onScreenReaderFocus,
+    this.onScreenReaderFocusLost,
   });
 
   @override
@@ -18,6 +24,8 @@ class SemanticHeader extends StatelessWidget {
     return isScreenReaderEnabled
         ? Semantics(
             label: talkback,
+            onDidGainAccessibilityFocus: onScreenReaderFocus,
+            onDidLoseAccessibilityFocus: onScreenReaderFocusLost,
             child: ExcludeSemantics(
               child: Container(
                 width: double.infinity,

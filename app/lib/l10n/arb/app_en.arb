@@ -791,6 +791,11 @@
     "description": "Title for edit button"
   },
 
+  "button_save_as_location_t": "Save as place",
+  "@button_save_as_location_t": {
+    "description": "Screen reader action on a place of a list: saves it as one of the user's own places"
+  },
+
   "button_map_center_t": "Center the map on my position",
   "@button_map_center_t": {
     "description": "Talkback for the button that moves the map back to the own position"
