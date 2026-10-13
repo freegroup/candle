@@ -791,6 +791,15 @@
     "description": "Title for edit button"
   },
 
+  "button_map_center_t": "Center the map on my position",
+  "@button_map_center_t": {
+    "description": "Talkback for the button that moves the map back to the own position"
+  },
+  "button_map_center": "Center",
+  "@button_map_center": {
+    "description": "Button on a map that moves it back to the own position"
+  },
+
   "button_common_enter_target_t": "Enter a destination to start navigation",
   "@button_common_enter_target_t": {
     "description": "Talkback for enter target for routing bnutton"

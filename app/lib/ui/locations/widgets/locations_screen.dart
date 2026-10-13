@@ -1,6 +1,7 @@
 import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
+import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/locations/view_models/locations_viewmodel.dart';
 import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
@@ -12,10 +13,12 @@ import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/info_page.dart';
 import 'package:candle/ui/core/widgets/list_tile.dart';
+import 'package:candle/ui/core/widgets/marker_map.dart';
 import 'package:candle/ui/core/widgets/marker_map_osm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 /// Places screen with its own view model, disposed together with the screen.
@@ -111,7 +114,19 @@ class _LocationsScreenState extends State<LocationsScreen> with SemanticAnnounce
       currentLocation: position,
       pins: _viewModel.locations,
       pinImage: 'assets/images/location_marker.png',
+      pinInfo: (location) => PinInfo(title: location.name, subtitle: location.formattedAddress),
+      onNavigate: (location) => _navigateTo(location.latlng()),
     );
+  }
+
+  // The map is only there without a screen reader: a seeing user starts the
+  // navigation directly, without the compass in between.
+  void _navigateTo(LatLng target) {
+    final position = _viewModel.position;
+    if (position == null) return;
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (_) => buildNavigationScreen(source: position, target: target),
+    ));
   }
 
   Widget _list(BuildContext context) {

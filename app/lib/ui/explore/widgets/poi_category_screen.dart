@@ -5,6 +5,7 @@ import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/domain/models/latlng_provider.dart';
 import 'package:candle/domain/models/location_address.dart';
 import 'package:candle/ui/compass/widgets/target_compass_screen.dart';
+import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
 import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
@@ -17,6 +18,7 @@ import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/info_page.dart';
 import 'package:candle/ui/core/widgets/list_tile.dart';
+import 'package:candle/ui/core/widgets/marker_map.dart';
 import 'package:candle/ui/core/widgets/marker_map_osm.dart';
 import 'package:candle/ui/core/widgets/semantic_header.dart';
 import 'package:flutter/material.dart';
@@ -138,11 +140,24 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
   Widget _buildMap(BuildContext context) {
     final location = _viewModel.location;
     if (_viewModel.load.running || location == null) return _buildLoading(context);
+    final l10n = AppLocalizations.of(context)!;
     return MarkerMapWidget(
       currentLocation: location,
       pins: [for (final poi in _viewModel.pois) _PoiPin(poi)],
       pinImage: 'assets/images/location_marker.png',
+      pinInfo: (pin) => PinInfo(title: l10n.poiName(pin.poi), subtitle: l10n.poiAddress(pin.poi)),
+      onNavigate: (pin) => _navigateTo(pin.poi.position),
     );
+  }
+
+  // The map is only there without a screen reader: a seeing user starts the
+  // navigation directly, without the compass in between.
+  void _navigateTo(LatLng target) {
+    final position = _viewModel.location;
+    if (position == null) return;
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (_) => buildNavigationScreen(source: position, target: target),
+    ));
   }
 
   Widget _buildLoading(BuildContext context) {
