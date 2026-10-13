@@ -1,20 +1,15 @@
 import 'dart:async';
 
 import 'package:candle/config/app_config.dart';
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/utils/global_logger.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 
 typedef _SnackBarController = ScaffoldFeatureController<SnackBar, SnackBarClosedReason>;
 
 /// The [sticky] snack bar on screen, null when none is shown.
 _SnackBarController? _sticky;
-
-// Not from the providers: snack bars are shown from everywhere, also in tests
-// without them; the service holds no state.
-final _accessibility = AccessibilityService();
 
 /// Shows [message] at the bottom of the screen for [SnackbarConfig.duration]; a tap closes it.
 ///
@@ -79,7 +74,7 @@ void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
       behavior: SnackBarBehavior.floating,
     ),
   );
-  if (screenReader) unawaited(_announce(context, message));
+  if (screenReader) unawaited(_announce(message));
   if (!sticky) return;
 
   _sticky = controller;
@@ -94,12 +89,9 @@ void showSnackbar(BuildContext context, String message, {bool sticky = false}) {
   }
 }
 
-Future<void> _announce(BuildContext context, String message) async {
-  // taken before waiting: the screen may be gone by then
-  final view = View.of(context);
-  final direction = Directionality.of(context);
-  await _accessibility.interrupt();
-  await SemanticsService.sendAnnouncement(view, message, direction);
+Future<void> _announce(String message) async {
+  await TTS.interrupt();
+  await TTS.say(message);
 }
 
 void showSnackbarAndNavigateBack(BuildContext context, String message) {

@@ -5,7 +5,6 @@ import 'package:candle/data/repositories/routes/route_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/repositories/location/indoor_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_announcer.dart';
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/tips/tips_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
@@ -15,7 +14,6 @@ import 'package:candle/ui/tips/widgets/tip_screen.dart';
 import 'package:candle/ui/tips/widgets/tips_screen.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
 import 'package:candle/data/services/database/candle_database.dart';
-import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/data/services/permissions/permission_service.dart';
 import 'package:candle/data/services/share/share_service.dart';
@@ -135,9 +133,7 @@ void main() {
             languageService: LanguageService(preferredLocales: () => const [Locale('de')]),
           ),
         ),
-        Provider.value(value: AccessibilityService()),
         Provider<PermissionService>.value(value: _Permissions()),
-        Provider.value(value: VibrationService(settingsRepository: settings)),
         Provider.value(value: LocationRepository(database: db)),
         Provider.value(value: notes),
         Provider(

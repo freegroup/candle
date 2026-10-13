@@ -1,3 +1,5 @@
+import 'package:candle/data/repositories/settings/settings_repository.dart';
+import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
@@ -8,6 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 import '../../fakes/fake_compass_service.dart';
 import '../../fakes/fake_location_service.dart';
@@ -31,6 +37,7 @@ void main() {
   late RadarViewModel viewModel;
   late List<String> announcements;
   late int vibrations;
+  late SettingsRepository settings;
   late int interruptions;
 
   Future<void> pumpScreen(WidgetTester tester) async {
@@ -39,15 +46,15 @@ void main() {
       locationService: FakeLocationService(const Result.ok(here)),
       compassService: compass,
     );
-    await tester.pumpWidget(MaterialApp(
-      theme: CThemeData.darkTheme,
-      locale: const Locale('de'),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: RadarScreen(
-        viewModel: viewModel,
-        vibrate: () async => vibrations++,
-        interruptSpeech: () async => interruptions++,
+    // the radar reads the vibration setting from the providers
+    await tester.pumpWidget(ChangeNotifierProvider.value(
+      value: settings,
+      child: MaterialApp(
+        theme: CThemeData.darkTheme,
+        locale: const Locale('de'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: RadarScreen(viewModel: viewModel),
       ),
     ));
     await tester.pump();
@@ -61,7 +68,11 @@ void main() {
     await tester.pump();
   }
 
-  setUp(() {
+  setUp(() async {
+    SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
+    settings = SettingsRepository(await SharedPreferencesWithCache.create(
+        cacheOptions: const SharedPreferencesWithCacheOptions()));
+    VibrationService.recorder = (duration, repeat, pattern) => vibrations++;
     repository = FakePoiRepository(const Result.ok([cafe, signal]));
     compass = FakeCompassService();
     announcements = [];
@@ -78,9 +89,16 @@ void main() {
         return null;
       },
     );
+    // TTS.interrupt stops the screen reader over this channel
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(const MethodChannel('candle/accessibility'), (call) async {
+      if (call.method == 'interrupt') interruptions++;
+      return null;
+    });
   });
 
   tearDown(() => viewModel.dispose());
+  tearDown(() => VibrationService.recorder = null);
 
   testWidgets('lists the places of the direction and announces it', (tester) async {
     await pumpScreen(tester);

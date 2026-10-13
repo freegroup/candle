@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
+import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/ui/core/icons/compass.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
@@ -15,7 +16,6 @@ import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:provider/provider.dart';
 
 /// Compass screen with its own view model, disposed together with the screen.
@@ -23,8 +23,6 @@ Widget buildHeadingCompassScreen() => ChangeNotifierProvider(
       create: (context) => HeadingCompassViewModel(compassService: context.read()),
       builder: (context, _) => HeadingCompassScreen(
         viewModel: context.read(),
-        vibrate: () => context.read<VibrationService>().compass(duration: 100),
-        interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
       ),
     );
 
@@ -34,15 +32,9 @@ class HeadingCompassScreen extends StatefulWidget {
   const HeadingCompassScreen({
     super.key,
     required this.viewModel,
-    required this.vibrate,
-    required this.interruptSpeech,
   });
 
   final HeadingCompassViewModel viewModel;
-  final Future<void> Function() vibrate;
-
-  /// Stops the screen reader, so the announcement of an old direction is not read to the end.
-  final Future<void> Function() interruptSpeech;
 
   @override
   State<HeadingCompassScreen> createState() => _HeadingCompassScreenState();
@@ -79,12 +71,20 @@ class _HeadingCompassScreenState extends State<HeadingCompassScreen> with Semant
     _wasTilted = _viewModel.isTilted;
   }
 
+  // Vibrates, unless the user turned the vibration of the compass off in the settings.
+  Future<void> _pulse({required int duration}) async {
+    final settings = context.read<SettingsRepository>();
+    if (settings.isEnabled(Setting.vibrateCompass)) {
+      await VibrationService.pulse(duration: duration);
+    }
+  }
+
   Future<void> _announce(int direction) async {
-    await widget.interruptSpeech();
-    unawaited(widget.vibrate());
+    // so the announcement of an old direction is not read to the end
+    await TTS.interrupt();
     if (!mounted) return;
-    await SemanticsService.sendAnnouncement(
-        View.of(context), getHorizon(context, direction), Directionality.of(context));
+    unawaited(_pulse(duration: 100));
+    await TTS.say(getHorizon(context, direction));
   }
 
   @override

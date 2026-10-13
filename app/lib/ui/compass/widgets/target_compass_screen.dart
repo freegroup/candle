@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:candle/domain/models/route.dart' as model;
 import 'package:candle/ui/core/icons/location_arrow.dart';
@@ -7,6 +8,7 @@ import 'package:candle/ui/core/icons/location_dot.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/compass/view_models/target_compass_viewmodel.dart';
 import 'package:candle/ui/navigation/widgets/navigation_screen.dart';
@@ -17,8 +19,6 @@ import 'package:candle/ui/core/widgets/dialog_button.dart';
 import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/twoliner.dart';
 import 'package:flutter/material.dart';
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
-import 'package:flutter/semantics.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
@@ -39,9 +39,6 @@ Widget buildTargetCompassScreen({
       builder: (context, _) => TargetCompassScreen(
         viewModel: context.read(),
         route: route,
-        vibrate: ({int duration = 100, int repeat = -1}) =>
-            context.read<VibrationService>().compass(duration: duration, repeat: repeat),
-        interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
       ),
     );
 
@@ -51,17 +48,11 @@ class TargetCompassScreen extends StatefulWidget {
   const TargetCompassScreen({
     super.key,
     required this.viewModel,
-    required this.vibrate,
-    required this.interruptSpeech,
     this.route,
   });
 
   final TargetCompassViewModel viewModel;
   final model.Route? route;
-  final Future<void> Function({int duration, int repeat}) vibrate;
-
-  /// Stops the screen reader, so the announcement of an old direction is not read to the end.
-  final Future<void> Function() interruptSpeech;
 
   @override
   State<TargetCompassScreen> createState() => _TargetCompassScreenState();
@@ -81,7 +72,7 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
     _viewModel.addListener(_onChanged);
     // A steady reminder while the phone points to the target.
     _alignedTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      if (_viewModel.isAligned && isOnTop) unawaited(widget.vibrate());
+      if (_viewModel.isAligned && isOnTop) unawaited(_pulse(duration: 100));
     });
   }
 
@@ -98,7 +89,7 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
     final aligned = _viewModel.isAligned;
     if (aligned != _wasAligned) {
       _wasAligned = aligned;
-      unawaited(aligned ? widget.vibrate(repeat: 2) : widget.vibrate(duration: 500));
+      unawaited(aligned ? _pulse(duration: 100, repeat: 2) : _pulse(duration: 500));
     }
     final snapped = _viewModel.snappedDirection;
     if (snapped != _announcedDirection) {
@@ -107,16 +98,21 @@ class _TargetCompassScreenState extends State<TargetCompassScreen> with Semantic
     }
   }
 
+  // Vibrates, unless the user turned the vibration of the compass off in the settings.
+  Future<void> _pulse({required int duration, int repeat = -1}) async {
+    final settings = context.read<SettingsRepository>();
+    if (settings.isEnabled(Setting.vibrateCompass)) {
+      await VibrationService.pulse(duration: duration, repeat: repeat);
+    }
+  }
+
   Future<void> _announce() async {
-    await widget.interruptSpeech();
-    unawaited(widget.vibrate());
+    // so the announcement of an old direction is not read to the end
+    await TTS.interrupt();
     if (!mounted) return;
-    await SemanticsService.sendAnnouncement(
-      View.of(context),
-      sayRotateToTarget(
-          context, _viewModel.targetHeading, _viewModel.isAligned, _viewModel.distance),
-      Directionality.of(context),
-    );
+    unawaited(_pulse(duration: 100));
+    await TTS.say(sayRotateToTarget(
+        context, _viewModel.targetHeading, _viewModel.isAligned, _viewModel.distance));
   }
 
   @override

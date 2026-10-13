@@ -11,6 +11,7 @@ import 'package:candle/ui/core/themes/theme_data.dart';
 import 'package:candle/ui/explore/view_models/poi_category_viewmodel.dart';
 import 'package:candle/ui/explore/widgets/poi_texts.dart';
 import 'package:candle/data/services/share/share_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
@@ -74,7 +75,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
     final wait = _titleAnnouncementDelay - DateTime.now().difference(_openedAt);
     if (!wait.isNegative) await Future<void>.delayed(wait);
     if (!mounted || !isOnTop) return;
-    await SemanticsService.sendAnnouncement(View.of(context), message, Directionality.of(context));
+    await TTS.say(message);
   }
 
   @override

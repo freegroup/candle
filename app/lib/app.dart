@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:candle/ui/onboarding/widgets/onboarding_screen.dart';
 import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:candle/ui/core/utils/interrupt_speech_observer.dart';
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:flutter/material.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 
@@ -40,7 +40,7 @@ class CandleApp extends StatelessWidget {
       ),
       navigatorObservers: [
         candleRouteObserver,
-        InterruptSpeechObserver(context.read<AccessibilityService>().interrupt),
+        InterruptSpeechObserver(TTS.interrupt),
       ],
       home: buildOnboarding(),
       ),

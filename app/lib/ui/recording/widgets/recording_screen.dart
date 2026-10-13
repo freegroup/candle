@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/ui/recording/view_models/recording_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
@@ -14,7 +15,6 @@ import 'package:candle/ui/core/widgets/divided_widget.dart';
 import 'package:candle/ui/core/widgets/pulse_icon.dart';
 import 'package:candle/ui/core/widgets/route_map_osm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -79,8 +79,7 @@ class _RecordingScreenState extends State<RecordingScreen> with SemanticAnnounce
       showSnackbar(context, l10n.recording_start_failed);
     } else if (_viewModel.start.completed) {
       _viewModel.start.clearResult();
-      unawaited(SemanticsService.sendAnnouncement(
-          View.of(context), l10n.recording_started_t, Directionality.of(context)));
+      unawaited(TTS.say(l10n.recording_started_t));
     }
   }
 

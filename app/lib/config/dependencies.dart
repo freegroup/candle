@@ -19,8 +19,8 @@ import 'package:candle/data/services/attestation/attestation_service.dart';
 import 'package:candle/data/services/candle_api/candle_api_client.dart';
 import 'package:candle/data/services/candle_api/server_config_service.dart';
 import 'package:candle/data/services/compass/compass_service.dart';
-import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
+import 'package:candle/data/services/database/candle_database.dart';
 import 'package:candle/data/services/language/language_service.dart';
 import 'package:candle/data/services/location/location_service.dart';
 import 'package:candle/data/services/nominatim/nominatim_client.dart';
@@ -31,16 +31,14 @@ import 'package:candle/data/services/share/share_service.dart';
 import 'package:candle/data/services/sharing/shared_content_service.dart';
 import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
 import 'package:candle/data/services/tips/tips_service.dart';
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
 import 'package:candle/data/services/wikipedia/wikipedia_client.dart';
-import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
+import 'package:candle/ui/navigation/announcers/announcer.dart';
 import 'package:candle/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:vibration/vibration.dart';
 
 final _log = Logger();
 
@@ -64,7 +62,6 @@ List<SingleChildWidget> get providers => [
       Provider(create: (_) => ShareService()),
       Provider(create: (_) => SharedContentService()),
       Provider(create: (_) => AppShortcutService()),
-      Provider(create: (_) => AccessibilityService()),
       Provider(create: (_) => PermissionService()),
       Provider(create: (context) => WikipediaClient(client: context.read())),
       Provider(
@@ -75,12 +72,9 @@ List<SingleChildWidget> get providers => [
       Provider(create: (context) => RoutingRepository(ors: context.read())),
       Provider(create: (_) => LocationService()),
       Provider(create: (_) => CompassService()),
-      Provider(create: (context) => VibrationService(settingsRepository: context.read())),
       Provider(
         create: (context) => NavigationAnnouncer(
           settingsRepository: context.read(),
-          vibrationService: context.read(),
-          accessibilityService: context.read(),
         ),
       ),
       Provider(create: (_) => CandleDatabase(), dispose: (_, db) => db.close()),
@@ -100,7 +94,7 @@ List<SingleChildWidget> get providers => [
           routeRepository: context.read(),
           locationService: context.read(),
           // A short vibration per recorded point tells the user that recording runs.
-          onPointRecorded: () => Vibration.vibrate(duration: 100),
+          onPointRecorded: () => VibrationService.pulse(duration: 100),
         ),
       ),
       Provider(

@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:candle/data/services/accessibility/accessibility_service.dart';
+import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/services/feedback/vibration_service.dart';
+import 'package:candle/data/services/tts/tts.dart';
 import 'package:candle/domain/models/poi.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/l10n/helper.dart';
@@ -18,7 +19,6 @@ import 'package:candle/ui/core/widgets/list_tile.dart';
 import 'package:candle/ui/core/widgets/semantic_header.dart';
 import 'package:candle/ui/core/widgets/report_covered.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:provider/provider.dart';
 
 /// Radar with its own view model, disposed together with the screen.
@@ -33,8 +33,6 @@ Widget buildRadarScreen() => ChangeNotifierProvider(
         target: context.read<RadarViewModel>(),
         child: RadarScreen(
           viewModel: context.read(),
-          vibrate: () => context.read<VibrationService>().compass(duration: 100),
-          interruptSpeech: () => context.read<AccessibilityService>().interrupt(),
         ),
       ),
     );
@@ -45,15 +43,9 @@ class RadarScreen extends StatefulWidget {
   const RadarScreen({
     super.key,
     required this.viewModel,
-    required this.vibrate,
-    required this.interruptSpeech,
   });
 
   final RadarViewModel viewModel;
-  final Future<void> Function() vibrate;
-
-  /// Stops the screen reader, so the places of an old direction are not read to the end.
-  final Future<void> Function() interruptSpeech;
 
   @override
   State<RadarScreen> createState() => _RadarScreenState();
@@ -105,11 +97,21 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
     }
   }
 
+  // Vibrates, unless the user turned the vibration of the compass off in the settings.
+  Future<void> _pulse({required int duration}) async {
+    final settings = context.read<SettingsRepository>();
+    if (settings.isEnabled(Setting.vibrateCompass)) {
+      await VibrationService.pulse(duration: duration);
+    }
+  }
+
   Future<void> _announceDirection(int direction) async {
     final l10n = AppLocalizations.of(context)!;
     final horizon = getHorizon(context, direction);
-    await widget.interruptSpeech();
-    unawaited(widget.vibrate());
+    // so the places of an old direction are not read to the end
+    await TTS.interrupt();
+    if (!mounted) return;
+    unawaited(_pulse(duration: 100));
     await _announce(_viewModel.load.completed
         ? l10n.locations_in_direction_toast(horizon, _viewModel.poisInDirection.length)
         : horizon);
@@ -117,7 +119,7 @@ class _RadarScreenState extends State<RadarScreen> with SemanticAnnouncer {
 
   Future<void> _announce(String message) async {
     if (!mounted) return;
-    await SemanticsService.sendAnnouncement(View.of(context), message, Directionality.of(context));
+    await TTS.say(message);
   }
 
   @override

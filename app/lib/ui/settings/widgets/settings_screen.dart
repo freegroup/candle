@@ -1,7 +1,7 @@
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/ui/core/themes/candle_theme.dart';
-import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
+import 'package:candle/ui/navigation/announcers/abstract_style.dart';
 import 'package:candle/ui/settings/view_models/settings_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';

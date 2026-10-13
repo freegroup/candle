@@ -4,7 +4,7 @@ import 'package:candle/domain/models/route.dart' as model;
 import 'package:candle/l10n/gen/app_localizations.dart';
 import 'package:candle/data/services/screen/screen_wake_service.dart';
 import 'package:candle/ui/core/themes/theme_data.dart';
-import 'package:candle/ui/navigation/announcers/navigation_announcer.dart';
+import 'package:candle/ui/navigation/announcers/announcer.dart';
 import 'package:candle/ui/navigation/view_models/navigation_viewmodel.dart';
 import 'package:candle/ui/core/utils/semantic.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
@@ -62,11 +62,13 @@ class _NavigationScreenState extends State<NavigationScreen> with SemanticAnnoun
     super.initState();
     ScreenWakeService.keepOn(true);
     _viewModel.checkIndoors.addListener(_onIndoorsChecked);
-    // Covered by another screen it keeps quiet; the end of the navigation always gets through.
+    // Covered by another screen it keeps quiet; the end of the navigation always gets
+    // through. It is checked first: it comes when this screen is gone, and isOnTop
+    // needs the screen.
     context.read<NavigationAnnouncer>().follow(
         context,
         _viewModel.guidance
-            .where((guidance) => isOnTop || guidance.event == NavigationEvent.stopped));
+            .where((guidance) => guidance.event == NavigationEvent.stopped || isOnTop));
     _viewModel.start();
   }
 

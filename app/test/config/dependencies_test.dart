@@ -6,7 +6,6 @@ import 'package:candle/data/repositories/routing/routing_repository.dart';
 import 'package:candle/data/repositories/settings/settings_repository.dart';
 import 'package:candle/data/repositories/location_notes/location_note_repository.dart';
 import 'package:candle/data/repositories/wikipedia/wikipedia_repository.dart';
-import 'package:candle/data/services/feedback/vibration_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +35,6 @@ void main() {
     expect(context.read<RouteRepository>(), isNotNull);
     expect(context.read<RoutingRepository>(), isNotNull);
     expect(context.read<WikipediaRepository>(), isNotNull);
-    expect(context.read<VibrationService>(), isNotNull);
 
     // let the server registration started with the app give up (no network in tests)
     await tester.pumpWidget(const SizedBox());
