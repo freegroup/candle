@@ -4,6 +4,12 @@ Text für `node store/play-upload.mjs <track> <aab> "<text>"`, höchstens 500 Ze
 
 ## Nächstes Release
 
+## 1.5.16 (64)
+
+- Übersichtlichere Bedienung: aufgeräumte Startseite, „Tipps“ und „Einstellungen“ als eigene Tabs, App-Info über das (i) oben rechts.
+- Karte zeigt die eigene Position und folgt beim Gehen; „Zentrieren“ holt zurück in die Mitte; ein Tipp auf einen Ort auf der Karte startet die Navigation.
+- Orte-Radar: einen Ort teilen oder als eigenen Ort speichern.
+
 ## 1.5.15 (63)
 
 - Technische Aktualisierung ohne sichtbare Änderungen. Auf dem iPhone und iPad startet Candle jetzt auch unter iOS 27.

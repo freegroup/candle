@@ -59,13 +59,11 @@ Fehler gefunden oder eine Idee? Wir freuen uns über Rückmeldungen – besonder
 
 **Neu in dieser Version**
 ```
-Die erste große Aktualisierung seit Langem:
-• Erkunden und Radar: Orte in der Nähe kommen schneller und zuverlässiger.
-• Ortsnotizen: Hinweise an einer Stelle hinterlegen; Candle meldet sie, wenn du vorbeikommst.
-• Navigation: Ansagen wählbar (ausführlich oder kurz); verlässt du die Route, sagt Candle das an.
-• Orte als Link teilen.
-• Farbschemata für Menschen mit Sehrest.
-• VoiceOver: Neue Screens lesen ihre Überschrift vor, wichtige Hinweise gehen nicht mehr verloren.
+Übersichtlichere Bedienung:
+• Aufgeräumte Startseite: oben alles für „hier und jetzt“, darunter die Kacheln „Erkunden“ und „Orte-Radar“.
+• Tipps und Einstellungen sind jetzt eigene Tabs in der unteren Leiste; die App-Info öffnest du über das (i) oben rechts.
+• Karte (ohne VoiceOver): zeigt deine Position und folgt dir beim Gehen. „Zentrieren“ holt dich zurück in die Mitte, und ein Tipp auf einen Ort startet die Navigation.
+• Orte-Radar: einen Ort teilen oder als eigenen Ort speichern – durch Wischen nach links oder als VoiceOver-Aktion.
 ```
 
 ## English (en-US)
@@ -119,13 +117,11 @@ Found a bug or have an idea? We welcome feedback – especially from blind and v
 
 **What's new**
 ```
-The first big update in a long time:
-• Explore and radar: places nearby arrive faster and more reliably.
-• Location notes: leave a hint at a spot; Candle tells you when you pass it.
-• Navigation: choose the announcements (detailed or short); Candle tells you when you leave the route.
-• Share places as a link.
-• Colour schemes for people with low vision.
-• VoiceOver: new screens read out their title, important messages no longer get lost.
+A clearer layout:
+• Tidier home screen: everything for "here and now" on top, with "Explore" and "Location Radar" as tiles below.
+• Tips and Settings are their own tabs in the bottom bar now; open the app info via the (i) at the top right.
+• Map (without VoiceOver): shows your position and follows you as you walk. "Center" brings you back to the middle, and tapping a place starts navigation.
+• Location Radar: share a place or save it as your own — by swiping left or as a VoiceOver action.
 ```
 
 ## Beide Sprachen
@@ -144,7 +140,7 @@ The first big update in a long time:
 ```
 Candle is a navigation app for blind and visually impaired people; please try it with VoiceOver.
 No account or login is needed. Location access is required: the app shows places around the user, the direction and distance to a destination, and walking directions. Location is used only while the app is open (no background location).
-To try it: allow location, then open "Erkunden"/"Explore" and pick a category (e.g. cafés), tap a place for the compass to it, or "Navigation starten" for walking directions. "Orte Radar" lists the places in the direction the iPhone points (hold it flat).
+To try it: allow location, then on the overview (first screen) open the "Erkunden"/"Explore" tile and pick a category (e.g. cafés), tap a place for the compass to it, or "Navigation starten" for walking directions. The "Orte Radar"/"Location Radar" tile lists the places in the direction the iPhone points (hold it flat). Tips and Settings are tabs in the bottom bar.
 Microphone and speech recognition are only used for dictating names of places and notes.
 The app is open source: https://github.com/freegroup/candle
 ```

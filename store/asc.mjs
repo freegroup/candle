@@ -24,16 +24,35 @@ export function token() {
   return `${header}.${payload}.${signature.toString('base64url')}`;
 }
 
-/** Calls the API; returns the parsed JSON (or null for an empty answer), throws on an error. */
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Calls the API; returns the parsed JSON (or null for an empty answer), throws on an error.
+ *  Apple's delivery service answers transient 5xx during incidents, so a server error or a
+ *  network failure is retried a few times with a growing pause before giving up. */
 export async function call(method, path, body) {
-  const response = await fetch(path.startsWith('http') ? path : api + path, {
+  const url = path.startsWith('http') ? path : api + path;
+  const options = {
     method,
     headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const text = await response.text();
-  if (!response.ok) throw new Error(`${method} ${path}: ${response.status} ${text}`);
-  return text ? JSON.parse(text) : null;
+  };
+  for (let attempt = 1; ; attempt++) {
+    let response;
+    try {
+      response = await fetch(url, options);
+    } catch (error) {
+      if (attempt >= 6) throw error;
+      await sleep(2000 * attempt);
+      continue;
+    }
+    const text = await response.text();
+    if (response.ok) return text ? JSON.parse(text) : null;
+    if (response.status >= 500 && attempt < 6) {
+      await sleep(2000 * attempt);
+      continue;
+    }
+    throw new Error(`${method} ${path}: ${response.status} ${text}`);
+  }
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
