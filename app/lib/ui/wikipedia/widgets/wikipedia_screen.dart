@@ -51,7 +51,7 @@ class _WikipediaScreenState extends State<WikipediaScreen> with SemanticAnnounce
         final appBar = CandleAppBar(
           title: Text(l10n.screen_header_wikipedia),
           talkback: l10n.screen_header_wikipedia_t,
-          settingsEnabled: true,
+          infoEnabled: true,
           bottom: screenReader ? null : _tabBar(context),
         );
         if (screenReader) {

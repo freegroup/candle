@@ -78,6 +78,10 @@ class AppLocalizationsEnShort extends AppLocalizationsEn {
   @override
   String get buttonbar_radar_t => 'Radar';
   @override
+  String get buttonbar_tips_t => 'Tips';
+  @override
+  String get buttonbar_settings_t => 'Settings';
+  @override
   String get buttonbar_explore_t => 'Explore';
   @override
   String get buttonbar_location_notes_t => 'Location notes';

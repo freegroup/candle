@@ -35,6 +35,8 @@
   "explore_poi_header_t": "{count} Orte",
   "button_radar_t": "Orte Radar",
   "buttonbar_radar_t": "Radar",
+  "buttonbar_tips_t": "Tipps",
+  "buttonbar_settings_t": "Einstellungen",
   "buttonbar_explore_t": "Erkunden",
   "buttonbar_location_notes_t": "Ortsnotizen",
   "buttonbar_routes_t": "Strecken",

@@ -286,6 +286,22 @@
     "description": "Talkback for Radar ButtonBar Entry"
   },
   "buttonbar_radar": "Location Radar",
+  "buttonbar_tips_t": "Tips for using Candle",
+  "@buttonbar_tips_t": {
+    "description": "Talkback for Tips ButtonBar Entry"
+  },
+  "buttonbar_tips": "Tips",
+  "@buttonbar_tips": {
+    "description": "Title for Tips ButtonBar Entry"
+  },
+  "buttonbar_settings_t": "Adjust the app settings",
+  "@buttonbar_settings_t": {
+    "description": "Talkback for Settings ButtonBar Entry"
+  },
+  "buttonbar_settings": "Profile",
+  "@buttonbar_settings": {
+    "description": "Title for Settings ButtonBar Entry"
+  },
   "@buttonbar_radar_t": {
     "description": "Title for Radar ButtonBar Entry"
   },
@@ -1430,7 +1446,6 @@
 
   "button_tips": "Tips",
   "button_tips_t": "Tips on using Candle",
-  "featureflag_tips": "Tips",
   "screen_header_tips": "Tips",
   "screen_header_tips_t": "Tips on using Candle",
   "screen_header_tip": "Tip",

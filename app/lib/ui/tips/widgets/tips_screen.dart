@@ -36,7 +36,7 @@ class _TipsScreenState extends State<TipsScreen> with SemanticAnnouncer {
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_tips),
         talkback: l10n.screen_header_tips_t,
-        settingsEnabled: true,
+        infoEnabled: true,
       ),
       body: BackgroundWidget(
         child: ListenableBuilder(

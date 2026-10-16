@@ -41,7 +41,7 @@ class _RoutesScreenState extends State<RoutesScreen> with SemanticAnnouncer {
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_routes),
         talkback: l10n.screen_header_routes_t,
-        settingsEnabled: true,
+        infoEnabled: true,
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: l10n.button_recording_t,

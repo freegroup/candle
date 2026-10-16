@@ -1,6 +1,6 @@
 import 'package:candle/ui/core/widgets/focus_on_show.dart';
+import 'package:candle/ui/about/widgets/about_screen.dart';
 import 'package:candle/ui/location_notes/widgets/new_location_note_here.dart';
-import 'package:candle/ui/settings/widgets/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -12,7 +12,7 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget? subtitle;
   final PreferredSizeWidget? bottom;
   final List<Widget>? actions;
-  final bool settingsEnabled;
+  final bool infoEnabled;
 
   /// Whether the screen reader offers the action "add location note here" on the title.
   final bool offerNewLocationNote;
@@ -23,7 +23,7 @@ class CandleAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.subtitle,
       this.actions,
       this.bottom,
-      this.settingsEnabled = false,
+      this.infoEnabled = false,
       this.offerNewLocationNote = true});
 
   @override
@@ -43,7 +43,7 @@ class _CandleAppBarState extends State<CandleAppBar> {
     // order, then the back button and the actions.
     List<Widget> actions = [
       for (final action in [
-        if (widget.settingsEnabled) _buildSettingsButton(context),
+        if (widget.infoEnabled) _buildInfoButton(context),
         ...?widget.actions,
       ])
         Semantics(container: true, sortKey: const OrdinalSortKey(2), child: action),
@@ -109,19 +109,23 @@ class _CandleAppBarState extends State<CandleAppBar> {
     );
   }
 
-  Widget _buildSettingsButton(BuildContext context) {
+  // The quiet top-right slot where the settings gear used to be; settings are a tab
+  // now, this opens the app information (lowest-stakes item).
+  Widget _buildInfoButton(BuildContext context) {
     AppLocalizations l10n = AppLocalizations.of(context)!;
 
     return Semantics(
-      label: l10n.button_settings_t,
+      label: l10n.button_about_t,
       button: true,
       child: ExcludeSemantics(
         child: IconButton(
-          icon: const Icon(Icons.settings),
+          // large, so it spans the two header lines and is an easy target
+          iconSize: 44,
+          icon: const Icon(Icons.info_outline),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute<void>(builder: (context) => buildSettingsScreen()),
+              MaterialPageRoute<void>(builder: (context) => buildAboutScreen()),
             );
           },
         ),

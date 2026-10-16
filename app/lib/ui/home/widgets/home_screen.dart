@@ -1,8 +1,8 @@
 import 'package:candle/ui/core/icons/compass.dart';
 import 'package:candle/ui/core/icons/poi_favorite.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
-import 'package:candle/ui/about/widgets/about_screen.dart';
 import 'package:candle/ui/compass/widgets/heading_compass_screen.dart';
+import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/ui/home/view_models/home_viewmodel.dart';
 import 'package:candle/ui/home/widgets/address_tile.dart';
 import 'package:candle/ui/locations/widgets/location_edit_screen.dart';
@@ -15,7 +15,6 @@ import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/core/widgets/appbar.dart';
 import 'package:candle/ui/core/widgets/background.dart';
 import 'package:candle/ui/core/widgets/tile_button.dart';
-import 'package:candle/ui/tips/widgets/tips_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +45,7 @@ class HomeScreen extends StatelessWidget {
         title: Text(l10n.screen_header_home),
         subtitle: Text(l10n.appbar_slogan, style: theme.textTheme.bodyMedium),
         talkback: l10n.screen_header_home_t,
-        settingsEnabled: true,
+        infoEnabled: true,
       ),
       body: BackgroundWidget(
         child: SingleChildScrollView(
@@ -99,6 +98,12 @@ class HomeScreen extends StatelessWidget {
           icon: const Icon(Icons.route, size: 80),
           onPressed: () => open(buildRecordingScreen),
         ),
+      HomeTile.explore => TileButton(
+          title: l10n.buttonbar_explore,
+          talkback: l10n.buttonbar_explore_t,
+          icon: const Icon(Icons.travel_explore, size: 80),
+          onPressed: () => open(() => const PoiCategoriesScreen()),
+        ),
       HomeTile.radar => TileButton(
           title: l10n.button_radar,
           talkback: l10n.button_radar_t,
@@ -116,18 +121,6 @@ class HomeScreen extends StatelessWidget {
           talkback: l10n.button_wikipedia_t,
           icon: const Icon(Icons.school, size: 80),
           onPressed: () => open(buildWikipediaScreen),
-        ),
-      HomeTile.tips => TileButton(
-          title: l10n.button_tips,
-          talkback: l10n.button_tips_t,
-          icon: const Icon(Icons.lightbulb_outline, size: 80),
-          onPressed: () => open(buildTipsScreen),
-        ),
-      HomeTile.about => TileButton(
-          title: l10n.button_about,
-          talkback: l10n.button_about_t,
-          icon: const Icon(Icons.info, size: 80),
-          onPressed: () => open(buildAboutScreen),
         ),
     };
   }

@@ -55,7 +55,7 @@ class _LocationNotesScreenState extends State<LocationNotesScreen> with Semantic
         final appBar = CandleAppBar(
           title: Text(l10n.screen_header_location_notes),
           talkback: l10n.screen_header_location_notes_t,
-          settingsEnabled: true,
+          infoEnabled: true,
           bottom: screenReader ? null : _tabBar(context),
         );
         if (screenReader) {

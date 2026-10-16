@@ -31,7 +31,7 @@ class _PoiCategoriesScreenState extends State<PoiCategoriesScreen> with Semantic
       appBar: CandleAppBar(
         title: Text(l10n.screen_header_explore),
         talkback: l10n.screen_header_explore_t,
-        settingsEnabled: true,
+        infoEnabled: true,
       ),
       body: BackgroundWidget(
         child: Padding(

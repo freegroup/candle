@@ -37,6 +37,8 @@
   "explore_poi_header_t": "{count} places",
   "button_radar_t": "Location radar",
   "buttonbar_radar_t": "Radar",
+  "buttonbar_tips_t": "Tips",
+  "buttonbar_settings_t": "Settings",
   "buttonbar_explore_t": "Explore",
   "buttonbar_location_notes_t": "Location notes",
   "buttonbar_routes_t": "Routes",

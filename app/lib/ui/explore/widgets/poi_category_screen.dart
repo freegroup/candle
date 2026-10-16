@@ -103,7 +103,7 @@ class _PoiCategoryScreenState extends State<PoiCategoryScreen> with SemanticAnno
             appBar: CandleAppBar(
               title: Text(title),
               talkback: title,
-              settingsEnabled: true,
+              infoEnabled: true,
               bottom: _buildTabBar(context),
             ),
             body: TabBarView(children: [_buildList(context), _buildMap(context)]),

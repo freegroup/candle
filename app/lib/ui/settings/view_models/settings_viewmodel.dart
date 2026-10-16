@@ -21,7 +21,6 @@ class SettingsViewModel extends ChangeNotifier {
         Setting.overviewWikipedia,
         if (isEnabled(Setting.betaRecording)) Setting.overviewRecorder,
         Setting.overviewShare,
-        Setting.overviewTips,
       ];
 
   List<Setting> get common => [

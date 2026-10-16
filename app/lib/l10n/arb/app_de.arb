@@ -68,6 +68,10 @@
 
   "buttonbar_location_notes_t": "Ortsnotizen",
   "buttonbar_location_notes": "Notizen",
+  "buttonbar_tips_t": "Tipps zur Bedienung von Candle",
+  "buttonbar_tips": "Tipps",
+  "buttonbar_settings_t": "Einstellungen der App anpassen",
+  "buttonbar_settings": "Profil",
 
 
   "button_radar_t": "Orte Radar, zeigt Orte nach einer Himmelsrichtung an.",
@@ -464,7 +468,6 @@
 
   "button_tips": "Tipps",
   "button_tips_t": "Tipps zur Bedienung von Candle",
-  "featureflag_tips": "Tipps",
   "screen_header_tips": "Tipps",
   "screen_header_tips_t": "Tipps zur Bedienung von Candle",
   "screen_header_tip": "Tipp",

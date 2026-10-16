@@ -42,13 +42,14 @@ void main() {
         shareService: _NoShare(),
       );
 
-  test('the tips tile comes before the information tile and can be hidden', () async {
+  test('explore is always a tile; tips and info are tabs/button now, not tiles', () async {
     final viewModel = create();
     await pumpEventQueue();
-    expect(viewModel.tiles.sublist(viewModel.tiles.length - 2), [HomeTile.tips, HomeTile.about]);
+    expect(viewModel.tiles, contains(HomeTile.explore));
 
-    await settings.setEnabled(Setting.overviewTips, false);
-    expect(viewModel.tiles, isNot(contains(HomeTile.tips)));
+    // a tile with a setting can still be hidden
+    await settings.setEnabled(Setting.overviewRadar, false);
+    expect(viewModel.tiles, isNot(contains(HomeTile.radar)));
     viewModel.dispose();
   });
 
@@ -76,7 +77,7 @@ void main() {
   test('shows the tiles the user chose', () async {
     final viewModel = create();
     expect(viewModel.tiles, isNot(contains(HomeTile.recorder)));
-    expect(viewModel.tiles.last, HomeTile.about);
+    expect(viewModel.tiles.last, HomeTile.wikipedia);
 
     await settings.setEnabled(Setting.betaRecording, true);
     await settings.setEnabled(Setting.overviewCompass, false);

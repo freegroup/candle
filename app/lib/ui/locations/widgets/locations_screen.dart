@@ -62,7 +62,7 @@ class _LocationsScreenState extends State<LocationsScreen> with SemanticAnnounce
         final appBar = CandleAppBar(
           title: Text(l10n.screen_header_locations),
           talkback: l10n.screen_header_locations_t,
-          settingsEnabled: true,
+          infoEnabled: true,
           bottom: screenReader ? null : _tabBar(context),
         );
         if (screenReader) {

@@ -14,7 +14,6 @@ enum Setting {
   overviewRadar('overviewRadar'),
   overviewShare('overviewShare'),
   overviewWikipedia('overviewWikipedia'),
-  overviewTips('overviewTips'),
   // Vibration can be annoying for sighted users, so it can be turned off.
   vibrateDuringNavigation('vibrateDuringNavigation'),
   vibrateCompass('vibrateCompass'),

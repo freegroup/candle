@@ -9,15 +9,15 @@ import 'package:candle/data/services/sharing/shared_content_service.dart';
 import 'package:candle/data/services/shortcuts/app_shortcut_service.dart';
 import 'package:candle/domain/models/location_note.dart';
 import 'package:candle/l10n/gen/app_localizations.dart';
-import 'package:candle/ui/explore/widgets/poi_categories_screen.dart';
 import 'package:candle/ui/core/utils/snackbar.dart';
 import 'package:candle/ui/home/widgets/home_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_screen.dart';
 import 'package:candle/ui/import/widgets/import_location_note_screen.dart';
 import 'package:candle/ui/import/widgets/maps_link_screen.dart';
 import 'package:candle/ui/locations/widgets/locations_screen.dart';
-import 'package:candle/ui/radar/widgets/radar_screen.dart';
 import 'package:candle/ui/routes/widgets/routes_screen.dart';
+import 'package:candle/ui/settings/widgets/settings_screen.dart';
+import 'package:candle/ui/tips/widgets/tips_screen.dart';
 import 'package:candle/ui/shell/view_models/app_shell_viewmodel.dart';
 import 'package:candle/ui/shell/widgets/shared_flow.dart';
 import 'package:candle/ui/location_notes/widgets/location_notes_screen.dart';
@@ -132,8 +132,8 @@ class _AppShellState extends State<AppShell> {
         1 => buildLocationsScreen(),
         2 => buildRoutesScreen(),
         3 => buildLocationNotesScreen(),
-        4 => const PoiCategoriesScreen(),
-        5 => buildRadarScreen(),
+        4 => buildTipsScreen(),
+        5 => buildSettingsScreen(),
         _ => buildHomeScreen(),
       };
 
@@ -165,14 +165,14 @@ class _AppShellState extends State<AppShell> {
         icon: const Icon(Icons.mic),
       ),
       ButtonBarEntry(
-        label: l10n.buttonbar_explore,
-        talkback: l10n.buttonbar_explore_t,
-        icon: const Icon(Icons.travel_explore),
+        label: l10n.buttonbar_tips,
+        talkback: l10n.buttonbar_tips_t,
+        icon: const Icon(Icons.lightbulb_outline),
       ),
       ButtonBarEntry(
-        label: l10n.buttonbar_radar,
-        talkback: l10n.buttonbar_radar_t,
-        icon: const Icon(Icons.radar_outlined),
+        label: l10n.buttonbar_settings,
+        talkback: l10n.buttonbar_settings_t,
+        icon: const Icon(Icons.settings),
       ),
     ];
     // All labels get the same number of lines: two for every tab as soon as one label
